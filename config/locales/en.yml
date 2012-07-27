@@ -1,0 +1,15 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  hello: "Hello world"
+
+  toshokan:
+    header_links:
+      switch_user: "Switch User"
+      switch_back: "Switch Back"
+      logged_in_as: "Logged in as"
+      cwis: "User name or CWIS number"
+    tags:
+      add_tag: "Add tag"
+      tag: "Tag"

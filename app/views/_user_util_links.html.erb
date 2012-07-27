@@ -1,0 +1,18 @@
+<% if has_user_authentication_provider? %>
+  <% if current_user%>
+  <%= t('toshokan.header_links.logged_in_as') %> <%= link_to current_user, edit_user_registration_path %>
+    <% if can? :switch, User %>
+      [ <%= link_to t('toshokan.header_links.switch_user'), switch_user_path, :id => 'switch_user' %> ]
+    <% elsif can? :switch_back, User %>
+      [ <%= link_to t('toshokan.header_links.switch_back'), user_session_path, :method => :put, :id => 'switch_back' %> ]
+    <% end %>
+    |
+    <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path %>
+    |
+    <%= link_to t('blacklight.header_links.saved_searches'), saved_searches_path %>
+<% end %>
+|
+<% end %>
+<%= link_to t('blacklight.header_links.selected_items'), folder_index_path %> (<span id="folder_number"><%= "#{session[:folder_document_ids] ? session[:folder_document_ids].length : 0}" %></span>)
+|
+<%= link_to t('blacklight.header_links.search_history'), search_history_path %>

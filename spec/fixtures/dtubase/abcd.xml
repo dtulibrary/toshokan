@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <account matrikel_id="12345" cprnr="" last_updated="" last_updated_all="" auth_gateway="" fk_createdby_matrikel_id="" username="abcd" sysadm="" firstname="" lastname="" title="" company_address="" company_address_is_primary="" company_address_is_hidden="" temporary_address="" temporary_address_is_primary="" temporary_address_is_hidden="" private_homepage_url="" official_email_address="" official_picture_url="" official_picture_hide_in_cn="" sms_provider="" sms_phone="" library_pincode="" library_username="" primary_profile_id="" preferred_language="" hide_private_address="" note="" dtu_initials="" has_active_profile="" external_Phonebook="" external_Portalen="" external_Biblioteket="" nextOfKinName="" nextOfKinRelation="" nextOfKinTelephone="">
+    <private_address address_id="" hide_address="" is_primary_address="" is_secret_address="" street="" building="" room="" zipcode="" city="" country="" phone1="" phone2="" phone3="" mobile_phone="" fax="" picture_url="" homepage_url="" email_address="" institution_name="" institution_number="" title="" location_map_name="" location_map_coordinates="" />
+    <profile_employee fk_profile_id="" fk_createdby_matrikel_id="" last_updated="" fk_matrikel_id="" fk_orgunit_id="" active="" employee_number="" position_title="" position_title_uk="" note="" mail_servername="" mail_servertype="" external_Portalen="" external_Phonebook="" external_Biblioteket="" ReferenceMatrikelId="" ReferenceTypeId="">
+      <date_created>2010-07-07T13:27:00</date_created>
+      <dt_employment_start>2010-09-01T00:00:00</dt_employment_start>
+      <address address_id="" hide_address="" is_primary_address="" is_secret_address="" street="" building="" room="" zipcode="" city="" country="" phone1="" phone2="" phone3="" mobile_phone="" fax="" picture_url="" homepage_url="" email_address="" institution_name="" institution_number="" title="" location_map_name="" location_map_coordinates="" />
+      <scanpas fk_profile_id="" stiko="" stiko_stilling="" stiko_startdate="" stiko_enddate="" stiko_primary="" stiko_calcprimary="" stiko_loenform="" stiko_inst="" FacultyKey="" />
+      <scanpas fk_profile_id="" stiko="" stiko_stilling="" stiko_startdate="" stiko_enddate="" stiko_primary="" stiko_calcprimary="" stiko_loenform="" stiko_inst="" FacultyKey="" />
+      <scanpas fk_profile_id="" stiko="" stiko_stilling="" stiko_startdate="" stiko_enddate="" stiko_primary="" stiko_calcprimary="" stiko_loenform="" stiko_inst="" FacultyKey="" />
+      <scanpas fk_profile_id="" stiko="" stiko_stilling="" stiko_startdate="" stiko_enddate="" stiko_primary="" stiko_calcprimary="" stiko_loenform="" stiko_inst="" FacultyKey="" />
+      <scanpas fk_profile_id="" stiko="" stiko_stilling="" stiko_startdate="" stiko_enddate="" stiko_primary="" stiko_calcprimary="" stiko_loenform="" stiko_inst="" FacultyKey="" />
+      <scanpas fk_profile_id="" stiko="" stiko_stilling="" stiko_startdate="" stiko_primary="" stiko_calcprimary="" stiko_loenform="" stiko_inst="" FacultyKey="" />
+    </profile_employee>
+    <profile_student fk_profile_id="" phd_scanpas="" fk_createdby_matrikel_id="" last_updated="" fk_matrikel_id="" fk_orgunit_id="" active="" exchange="" phd="" open_university="" ordinary="" admission="" stads_userid="" stads_studentcode="" study_line="" study_frame="" study_frame2="" point="" note="" mail_servername="" mail_servertype="" ftp_servername="" ftp_serverport="" ftp_homedir="" ftp_username="" Adresseland="" Nationalitet="" ApplicationNo="" optagelsesaar="" uddannelse_dk="" uddannelse_uk="" retning_dk="" retning_uk="">
+      <date_end>2008-02-18T00:00:00</date_end>
+      <date_created>2007-06-12T03:47:00</date_created>
+      <date_archived>2008-02-19T05:00:00</date_archived>
+      <ramme_start_dato>2007-06-11T00:00:00</ramme_start_dato>
+      <address address_id="" hide_address="" is_primary_address="" is_secret_address="" street="" building="" room="" zipcode="" city="" country="" phone1="" phone2="" phone3="" mobile_phone="" fax="" picture_url="" homepage_url="" email_address="" institution_name="" institution_number="" title="" location_map_name="" location_map_coordinates="" />
+    </profile_student>
+  </account>
+</root>

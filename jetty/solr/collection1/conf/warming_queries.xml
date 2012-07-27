@@ -1,0 +1,46 @@
+<arr name="queries">
+	<lst>
+		<str name="q">integer</str>
+		<str name="fq">format:article</str>
+		<str name="start">0</str>
+		<str name="rows">10</str>
+		<str name="fl">*,score</str>
+		<str name="facet">on</str>
+		<str name="facet.limit">50</str>
+		<str name="facet.field">pub_date</str>
+		<str name="facet.field">keywords_facet</str>
+		<str name="facet.field">journal_title_facet</str>
+        <str name="facet.field">author_name_facet</str>
+		<str name="sort">score desc</str>
+	</lst>
+	<lst>
+		<str name="q">water</str>
+		<str name="fq">format:article</str>
+        <str name="fq">access:PUBLIC</str>
+		<str name="start">0</str>
+		<str name="rows">10</str>
+		<str name="fl">*,score</str>
+		<str name="facet">on</str>
+		<str name="facet.limit">50</str>
+        <str name="facet.field">pub_date</str>
+        <str name="facet.field">keywords_facet</str>
+        <str name="facet.field">journal_title_facet</str>
+        <str name="facet.field">author_name_facet</str>
+        <str name="sort">pub_date desc</str>
+	</lst>
+	<lst>
+		<str name="q">title_t:engineer</str>
+        <str name="fq">format:article</str>
+        <str name="fq">access:DTU</str>
+		<str name="start">0</str>
+		<str name="rows">10</str>
+		<str name="fl">*,score</str>
+		<str name="facet">on</str>
+		<str name="facet.limit">50</str>
+        <str name="facet.field">pub_date</str>
+        <str name="facet.field">keywords_facet</str>
+        <str name="facet.field">journal_title_facet</str>
+        <str name="facet.field">author_name_facet</str>
+        <str name="sort">pub_date desc</str>
+	</lst>	
+</arr>
