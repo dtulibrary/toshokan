@@ -31,6 +31,7 @@ config/initializers/secret_token.rb
 .*.swp
 .DS_Store
 .powrc
+.tmproj
 
 features/cassettes
 spec/cassettes
