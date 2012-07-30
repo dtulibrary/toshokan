@@ -15,6 +15,8 @@ Toshokan::Application.routes.draw do
   end
   resources :tags, only: [:show, :index]
   
+  resources :solr_group, :only => [:show,:update], :controller => "catalog" 
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
