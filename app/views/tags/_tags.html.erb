@@ -1,15 +1,20 @@
 <ul>
-<% tags.each do |tag| %>
-  <li>
-    <% if any_tag_in_params? %>
-      <% if tag_in_params? tag  %>
-        <span class="tag selected"><%= render_tag_value tag %></span>
+  <% tags.each do |tag| %>
+    <li>
+      <% if any_tag_in_params? %>
+        <% if tag_in_params? tag  %>
+          <span class="tag selected"><%= render_tag_value tag %></span>
+        <% else %>
+          <span class="tag unselected"><%= render_tag_value tag %></span>
+        <% end %>
       <% else %>
-        <span class="tag unselected"><%= render_tag_value tag %></span>
+        <span class="tag"><%= render_tag_value tag %></span>
       <% end %>
-    <% else %>
-      <span class="tag"><%= render_tag_value tag %></span>
+    </li>
+  <% end %>
+  <li>
+    <% if !tags.empty? %>
+      <%= link_to t('toshokan.tag.manage_your_tags'), tags_path %>
     <% end %>
   </li>
-<% end %>
 </ul>
