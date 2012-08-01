@@ -5,6 +5,9 @@ class CatalogController < ApplicationController
 
   include Blacklight::Catalog
 
+  include TagsHelper
+  self.solr_search_params_logic += [:add_tag_fq_to_solr]
+
   configure_blacklight do |config|
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = { 
@@ -171,7 +174,6 @@ class CatalogController < ApplicationController
     # mean") suggestion is offered.
     config.spell_max = 5
   end
-
 
 
 end 

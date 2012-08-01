@@ -1,3 +1,2 @@
-<% @solr_ids.each do |solr_id| %>
-  <%= link_to solr_id, catalog_path(solr_id) %>
-<% end %>
+<h3><%= @tag.name %></h3>
+<div><%= @taggings.size %> documents</div>

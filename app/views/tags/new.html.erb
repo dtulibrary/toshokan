@@ -1,5 +1,6 @@
 <%= form_tag(document_tags_path(params[:document_id])) do %>
   <%= label_tag :tag_name, t('toshokan.tags.tag') %>
   <%= text_field_tag :tag_name %>
+  <%= hidden_field_tag :return_url, params[:return_url] %>
   <%= submit_tag t('toshokan.tags.add_tag') %>
 <% end %>
