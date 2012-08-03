@@ -4,18 +4,20 @@ Then /^the user should be "(.*?)"$/ do |username|
   page.should have_selector '#user_util_links a', :text => username
 end
 
-Given /^The following users? exists?:$/ do |table|
+Given /^the following users? exists?:$/ do |table|
   table.map_column!('roles') { |roles| roles.scan(/"(.*?)"/).flatten }
   table.hashes.each do |hash|
+    hash['name'] ||= 'John Doe'
     *given_names, birth_name = hash['name'].split ' '
     user = User.new(
       :identifier => hash['cwis'],
       :username => hash['username'] || 'john_doe',
       :provider => hash['provider'] || 'cas',
-      :firstname => given_names.join(' ') || 'John',
-      :lastname => birth_name || 'Doe'
+      :firstname => given_names.join(' '),
+      :lastname => birth_name,
+      :email => hash['email'] || 'john_doe@example.com'
     )
-    hash['roles'].each { |role| user.roles << Role.find_by_name(role) }
+    hash['roles'].each { |role| user.roles << Role.find_by_name(role) } 
     user.save!
     account = Dtubase::Account.new
     account.cwis = user.identifier
@@ -45,7 +47,12 @@ Given /^I'm logged in as user with the role "(.*?)"$/ do |arg1|
   log_in(user)
 end
 
-Given /^There exists are user with cwis "(.*?)" and name "(.*?)"$/ do |arg1, arg2|
+Given /^user with (\w+) "(.*?)" has role "(.*?)"$/ do |key, value, role_name|
+  user = find_user key, value
+  user.roles << Role.find_by_name(role_name)
+end
+
+Given /^there exists a user with cwis "(.*?)" and name "(.*?)"$/ do |arg1, arg2|
   names = arg2.split(' ')
   user = User.create(identifier: arg1, username: arg1+"_test_username", firstname: names[0], lastname: names[1..-1].join(' '), provider: 'cas')   
   account = Dtubase::Account.new

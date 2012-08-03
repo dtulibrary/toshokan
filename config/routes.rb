@@ -14,6 +14,7 @@ Toshokan::Application.routes.draw do
     resources :tags
   end
   resources :tags, only: [:show, :index]
+  resources :users, :only => [:index, :update, :destroy]
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

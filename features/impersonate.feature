@@ -1,7 +1,7 @@
 Feature: Impersonate another user
 
 Background: Existing users
-  Given The following users exist:
+  Given the following users exist:
     | cwis | username | name           | roles          |
     | 1234 | support1 | Support User 1 | "User Support" |
     | 2345 | support2 | Support User 2 | "User Support" |

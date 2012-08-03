@@ -6,5 +6,11 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Role.create([{name: 'Administrator', code: 'ADM'},{name: 'Cataloger', code: 'CAT'},
-  {name: 'User Support', code: 'SUP'}, {name: 'Metadata Access', code: 'DAT'}])
+{ 
+  ADM: 'Administrator',
+  CAT: 'Cataloger',
+  SUP: 'User Support',
+  DAT: 'Metadata Access'
+}.each do |code, name|
+  Role.create :code => code.to_s, :name => name unless Role.exists? :code => code.to_s
+end

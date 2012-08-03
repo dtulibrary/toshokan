@@ -14,3 +14,15 @@ en:
       add_tag: "Add tag"
       tag: "Tag"
       manage_your_tags: "Manage your tags"
+    users:
+      username: "Username"
+      cwis: "CWIS"
+      email: "email"
+    roles:
+      ADM: "Administrator"
+      SUP: "User supporter"
+      CAT: "Cataloger"
+      DAT: "Metadata access"
+    manage_users:
+      title: "Manage Users"
+      save: "Save"
