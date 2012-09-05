@@ -5,8 +5,15 @@ class TagsController < ApplicationController
 
   def create
     @document = SolrDocumentPointer.find_or_create_by_solr_id(params[:document_id])
-    current_user.tag(@document, with: params[:tag_name], :on => :tags)
-    redirect_to catalog_index_path
+    current_user.tag(@document, with: @document.tags_from(current_user) + [params[:tag_name]], :on => :tags)
+    redirect_to params[:return_url], :only_path => true
+  end
+
+  def destroy
+    @document = SolrDocumentPointer.find_or_create_by_solr_id(params[:document_id])
+    tag = ActsAsTaggableOn::Tag.find(params[:id])
+    current_user.tag(@document, with: @document.tags_from(current_user) - [tag.name], :on => :tags)
+    redirect_to params[:return_url], :only_path => true
   end
 
   def index
@@ -14,8 +21,8 @@ class TagsController < ApplicationController
   end
 
   def show
-    pointer_ids = current_user.owned_taggings.where(tag_id: params[:id]).map(&:taggable_id)
-    @solr_ids = SolrDocumentPointer.find(pointer_ids).map(&:solr_id)
+    @tag = ActsAsTaggableOn::Tag.find(params[:id])
+    @taggings = current_user.owned_taggings.where(tag_id: params[:id])
   end
 
 end

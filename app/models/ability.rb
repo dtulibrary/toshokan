@@ -26,6 +26,7 @@ class Ability
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
     can :switch, User if user.roles.include?(Role.find_by_code('SUP')) && !user.impersonating?
     can :switch_back, User if user.impersonating?
+    can :manage, User if user.roles.include? Role.find_by_code('ADM')
     
   end
 end

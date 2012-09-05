@@ -14,6 +14,7 @@ Toshokan::Application.routes.draw do
     resources :tags
   end
   resources :tags, only: [:show, :index]
+  resources :users, :only => [:index, :update, :destroy]
   
   resources :solr_group, :only => [:show,:update], :controller => "catalog" 
   

@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   def authenticate
     unless session[:user_id]
       session['return_url'] = request.url
+      # Recreate user abilities on each login
+      @current_ability = nil
       redirect_to polymorphic_url(:new_user_session)
     end
   end
@@ -18,4 +20,8 @@ class ApplicationController < ActionController::Base
     return user
   end
 
+  # Render 401
+  def deny_access
+    render(:file => 'public/401', :format => :html, :status => :unauthorized, :layout => nil)
+  end
 end

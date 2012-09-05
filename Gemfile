@@ -16,7 +16,6 @@ gem 'httparty'
 gem 'hashie'
 gem 'omniauth'
 gem 'omniauth-cas'
-gem 'rails_config'
 gem 'cancan'
 gem 'acts-as-taggable-on'
 
@@ -58,11 +57,8 @@ group :development do
   gem 'guard-cucumber'
   gem 'guard-brakeman'
   gem 'guard-livereload'
-  gem 'guard-migrate'
   gem 'guard-rails'
-  gem 'guard-bundler'
   gem 'guard-rails_best_practices'
-  gem 'guard-spork'
   gem 'highline'
   # eventmachine 0.12.10 does not compile on windows
   gem 'eventmachine', '~> 1.0.0.rc4', :platforms => :mswin

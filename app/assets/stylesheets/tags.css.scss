@@ -1,0 +1,42 @@
+/*
+ *= require 'blacklight_themes/standard'
+ */
+
+@import "compass";
+
+@mixin link_like_button {
+  border: 0;
+  color:#2e4f81;
+  text-decoration:none;
+  padding: 0;
+  background: none;
+  font-family: inherit;
+  font-size: 1.0em;
+  cursor: pointer;
+}
+
+.tag {
+  padding-left: 2px;
+  padding-right: 2px;
+  border:1px solid #C4DAFE;
+  background: #E2EDFE;
+  @include border-radius(5px 5px 5px 5px);
+}
+
+.tag.unselected {
+  border:1px solid #F2F2F2;
+  background: #F2F2F2;
+  color:#DADADA;
+}
+
+.tag input {
+  @include link_like_button;
+}
+
+.tag form {
+  display: inline;
+}
+
+.tag form div {
+  display: inline;
+}

@@ -62,6 +62,8 @@ module Toshokan
     config.assets.version = '1.0'
 
     # Config to be overriden by local settings
+    config.stub_authentication = false;
+
     config.cas = {}
     config.cas[:host] = ''
 
