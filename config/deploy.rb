@@ -12,7 +12,7 @@ require 'bundler/capistrano'
 set :rails_env, ENV['RAILS_ENV'] || "unstable"
 set :application, ENV['HOST']
 
-set :deploy_to, "/var/www/#{rails_env}"
+set :deploy_to, "/var/www/#{application}"
 role :web, "#{application}"
 role :app, "#{application}"
 role :db, "#{application}", :primary => true
