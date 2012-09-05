@@ -9,21 +9,13 @@ set :rvm_type, :system
 # bundler bootstrap
 require 'bundler/capistrano'
 
-set :stages, %w(unstable staging production)
-set :default_stage, "unstable"
-require 'capistrano/ext/multistage'
+set :rails_env, ENV['RAILS_ENV'] || "unstable"
+set :application, ENV['HOST']
 
-def configure_stage(conf = {})
-  set :conf, conf
-  set :application, "#{conf[:host]}"
-  set :env, conf[:env]
-  set :rails_env, "#{conf[:env]}"
-  set :deploy_to, "/var/www/#{conf[:host]}"
-
-  role :web, "#{conf[:host]}"
-  role :app, "#{conf[:host]}"
-  role :db, "#{conf[:host]}", :primary => true
-end
+set :deploy_to, "/var/www/#{rails_env}"
+role :web, "#{application}"
+role :app, "#{application}"
+role :db, "#{application}", :primary => true
 
 # server details
 default_run_options[:pty] = true
@@ -53,7 +45,7 @@ namespace :config do
   desc "update configuration from separate repository"
   task :update do
     run "mkdir -p #{deploy_to}/shared/config"
-    run "cd ~/toshokan-config-#{env} && git pull && cp database.yml solr.yml application.local.rb #{deploy_to}/shared/config"
+    run "cd ~/toshokan-config-#{rails_env} && git pull && cp database.yml solr.yml application.local.rb #{deploy_to}/shared/config"
   end
   
   desc "linking configuration to current release"
