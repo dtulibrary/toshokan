@@ -16,7 +16,7 @@ class CoverImages
   end
 
   def self.url_for document
-    id = document['issn_t'] || document['isbn_t'] || ['00000000']
+    id = document['issn_t'] || document['isbn_t'] || ['XXXXXXXX']
     "#{@@config.url}/#{@@config.api_key}/#{id.first}/native.png"
   end
 

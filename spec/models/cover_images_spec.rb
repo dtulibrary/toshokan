@@ -38,8 +38,8 @@ describe CoverImages do
     end
 
     context 'when document has neither issn_t nor isbn_t fields' do
-      it 'should return an url pointing to fake id: 00000000' do
-        CoverImages.url_for({}).should match /\/00000000\/native.png/
+      it 'should return an url pointing to fake id: XXXXXXXX' do
+        CoverImages.url_for({}).should match /\/XXXXXXXX\/native.png/
       end
     end
 
