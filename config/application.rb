@@ -72,5 +72,10 @@ module Toshokan
     config.dtubase[:url]      = ''
     config.dtubase[:password] = ''
     
+    config.cover_images = {
+      :url => '',
+      :api_key => ''
+    }
+
   end
 end
