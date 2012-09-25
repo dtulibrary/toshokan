@@ -41,45 +41,39 @@
         <lst name="defaults">
             <str name="echoParams">explicit</str>
             <str name="fl">*,score</str>
-            <str name="q.alt">*:*</str>
-            <!-- Minimum 'should' match: If less than 2 optional clauses, 1 must match etc. -->
-            <str name="mm">2&lt;-1 5&lt;-2 6&lt;90%</str>
-            <str name="qf">text</str>
-            <str name="pf">text^10</str>
-            <int name="ps">3</int>
-            <float name="tie">0.01</float>
+
             <str name="facet">true</str>
             <str name="facet.mincount">1</str>
             <str name="facet.limit">10</str>
-            <str name="facet.field">format</str>
         </lst>
-
-        <arr name="last-components">
-            <str>spellcheck</str>
-        </arr>
     </requestHandler>
 
     <requestHandler name="/ds" class="solr.SearchHandler" default="false">
         <lst name="defaults">
             <xi:include href="ds.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
             <str name="echoParams">explicit</str>
+
             <str name="fl">*,score</str>
-            <str name="q.alt">*:*</str>
-            <!-- Minimum 'should' match: If less than 2 optional clauses, 1 must match etc. -->
-            <str name="mm">2&lt;-1 5&lt;-2 6&lt;90%</str>
-            <str name="qf">text</str>
-            <str name="pf">text^10</str>
-            <int name="ps">3</int>
-            <float name="tie">0.01</float>
+
             <str name="facet">true</str>
             <str name="facet.mincount">1</str>
             <str name="facet.limit">10</str>
-            <str name="facet.field">format</str>
         </lst>
+    </requestHandler>
 
-        <arr name="last-components">
-            <str>spellcheck</str>
-        </arr>
+    <requestHandler name="plain" class="solr.SearchHandler" default="false">
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+        </lst>
+    </requestHandler>
+
+    <requestHandler name="/ds_plain" class="solr.SearchHandler" default="false">
+        <lst name="defaults">
+            <xi:include href="ds.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+            <str name="echoParams">explicit</str>
+            <str name="shards.qt">plain</str>
+            <str name="shards.info">true</str>
+        </lst>
     </requestHandler>
 
     <requestHandler name="/ds_group" class="solr.SearchHandler" default="false">
@@ -116,13 +110,21 @@
         </lst>
     </requestHandler>
 
-    <requestHandler name="/ds_title" class="solr.SearchHandler" >
+    <requestHandler name="/ds_journal_title" class="solr.SearchHandler" >
         <lst name="defaults">
             <xi:include href="ds.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-            <str name="echoParams">all</str>
-            <str name="fl">journal_title_t</str>
+            <str name="fl">title:journal_title_t</str>
             <str name="rows">1</str>
             <str name="q">{!raw f=issn_t v=$q}</str>
+        </lst>
+    </requestHandler>
+
+    <requestHandler name="/ds_book_title" class="solr.SearchHandler" >
+        <lst name="defaults">
+            <xi:include href="ds.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+            <str name="fl">title:title_t</str>
+            <str name="rows">1</str>
+            <str name="q">{!raw f=isbn_t v=$q}</str>
         </lst>
     </requestHandler>
 
