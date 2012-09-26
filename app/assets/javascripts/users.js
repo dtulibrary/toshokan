@@ -1,4 +1,65 @@
 (function ($) {
+
+  // Switch user functionality
+  $(function () {
+    var data = [];
+    var form = $('#switch_user_form.ajax');
+
+    /* Pull switch user form out into body to avoid other 
+     * elements with position: absolute to interfere with positioning.
+     */
+    form.remove();
+    $('body').append(form);
+
+    $('#switch_user').click(function () {
+      var center = {
+        x : $(window).width() / 2,
+        y : $(window).height() / 2
+      };
+
+      // Position dialog
+      form.css({
+        top : '4em',
+        left : (center.x - form.width() / 2) + 'px'
+      });
+
+      // Display dialog
+      $('#overlay').toggle();
+      form.toggle();
+
+      if (form.is(':visible')) {
+        form.focus();
+      }
+
+      return false;
+    });
+
+    $('#switch_user_form .cancel').click(function () {
+      $('#overlay').toggle();
+      form.toggle();
+
+      return false;
+    });
+
+    $('#switch_user_form').submit(function () {
+      var identifier = $('#user_identifier').val();
+
+      $.ajax({
+        url : 'user/session',
+        type : 'put',
+        data : 'ajax=true&user[identifier]=' + identifier,
+        success : function () {
+          window.location.reload(true);
+        },
+        error : function () {
+          alert('There was an error switching user.');
+        }
+      });
+      return false;
+    });
+  });
+
+  // User role management
   $(function () {
     $('.save-user').hide();
 

@@ -41,8 +41,12 @@ class Users::SessionsController < ApplicationController
       new_user_id = params[:user][:identifier]
       account = Dtubase::Account.find_by_cwis(new_user_id) || Dtubase::Account.find_by_username(new_user_id)
       if account == nil
-        redirect_to switch_user_path, flash: {:error => 'User not found'}
-        return
+        if params[:ajax]
+          head :not_found and return
+        else
+          redirect_to switch_user_path, flash: {:error => 'User not found'}
+          return
+        end
       end
       new_user = User.create_or_update_with_account('cas', account)
       session[:user_id] = new_user.id
@@ -62,9 +66,17 @@ class Users::SessionsController < ApplicationController
       
       @current_ability = nil
     else
-      flash[:error] = 'Not allowed'
+      if params[:ajax]
+        head :forbidden and return
+      else
+        flash[:error] = 'Not allowed'
+      end
     end
-    redirect_to root_path
+    if params[:ajax]
+      head :ok
+    else
+      redirect_to root_path
+    end
   end
 
 
