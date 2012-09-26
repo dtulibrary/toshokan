@@ -194,7 +194,7 @@ class CatalogController < ApplicationController
   end
   
   def get_solr_response_for_doc_id
-    id = params["id"].gsub("group-", "") 
+    id = params["id"]
     solr_response = find_with_groups({:q => "cluster_id:#{id}"})  
     document = SolrGroup.new(solr_response["grouped"].last["groups"].first, solr_response) 
     return [solr_response, document]

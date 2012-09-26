@@ -1,18 +1,18 @@
 # -*- encoding : utf-8 -*-
 class SolrGroup 
   extend ActiveModel::Naming
-  
+
   def initialize(group_values, solr_response)
     
     @group_values = group_values
     @solr_response = solr_response
-        
+
   end  
   
   def id
-    "group-" + @group_values["groupValue"]    
-  end  
-  
+    @group_values["groupValue"]
+  end
+
   def [] key
     @group_values["doclist"]["docs"].first[key]
   end    

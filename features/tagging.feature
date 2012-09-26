@@ -5,13 +5,14 @@ Scenario: Tagging a document in a search result
     And I search for "A cohomology theory for colored tangles" in the title
     And I add a tag "some tag" to the first document
     And I filter by tag "some tag"
-    And I click the link "group-228107057"
+    And I click the link "228107057"
     Then I should see "A cohomology theory for colored tangles"
 
 Scenario: Tagging a document in document view
   Given I'm logged in
     And I search for "A cohomology theory for colored tangles" in the title
-    And I click "A cohomology theory for colored tangles"
+    And I click the link "228107057"
+    #And I click "A cohomology theory for colored tangles"
     And I add a tag "some tag" to the document
     Then I should see "some tag"
 
