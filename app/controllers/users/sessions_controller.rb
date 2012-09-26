@@ -36,18 +36,28 @@ class Users::SessionsController < ApplicationController
   end
 
   def update
+    @is_ajax = params[:ajax]
+
     if can? :switch, User
       session[:original_user_id] = current_user.id
-      new_user_id = params[:user][:identifier]
-      account = Dtubase::Account.find_by_cwis(new_user_id) || Dtubase::Account.find_by_username(new_user_id)
+      # new_user_id is made available for switch user form to be able
+      # to populate the form with submitted data when there is an error
+      @new_user_id = params[:user][:identifier]
+      account = Dtubase::Account.find_by_cwis(@new_user_id) || Dtubase::Account.find_by_username(@new_user_id)
+
       if account == nil
-        if params[:ajax]
-          head :not_found and return
+        flash[:error] = 'User not found'
+        if @is_ajax
+          # Render switch user form so javascript can replace the existing one 
+          # with the new one potentially showing error notice. Use status 404 to allow
+          # javascript to recognize that it was an error.
+          render :partial => 'switch_user_form', :status => 404 and return
         else
-          redirect_to switch_user_path, flash: {:error => 'User not found'}
+          redirect_to switch_user_path, flash: flash
           return
         end
       end
+
       new_user = User.create_or_update_with_account('cas', account)
       session[:user_id] = new_user.id
 
@@ -66,13 +76,14 @@ class Users::SessionsController < ApplicationController
       
       @current_ability = nil
     else
-      if params[:ajax]
+      if @is_ajax
         head :forbidden and return
       else
         flash[:error] = 'Not allowed'
       end
     end
-    if params[:ajax]
+
+    if @is_ajax
       head :ok
     else
       redirect_to root_path

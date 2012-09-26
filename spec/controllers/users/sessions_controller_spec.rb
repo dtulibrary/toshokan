@@ -146,23 +146,23 @@ describe Users::SessionsController do
         Dtubase::Account.should_receive(:find_by_username).with('test user name').and_return(nil)
       end
 
+      it 'should flash an error message' do
+        put :update, @params
+        flash[:error].should == 'User not found'
+      end
+
       context 'when request is ajax' do
         before do
           @params[:ajax] = true
         end
 
-        it 'should return status 404' do
+        it 'should render switch user form' do
           put :update, @params
-          response.response_code.should == 404
+          should render_template(:partial => '_switch_user_form')
         end
       end
 
       context 'when request is not ajax' do
-        it 'should flash an error message' do
-          put :update, @params
-          flash[:error].should == 'User not found'
-        end
-
         it 'should redirect to root path' do
           put :update, @params
           response.should redirect_to switch_user_path

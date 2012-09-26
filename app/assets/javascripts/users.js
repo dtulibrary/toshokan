@@ -28,7 +28,7 @@
       form.toggle();
 
       if (form.is(':visible')) {
-        form.focus();
+        $('#user_identifier').focus();
       }
 
       return false;
@@ -48,12 +48,14 @@
         url : 'user/session',
         type : 'put',
         data : 'ajax=true&user[identifier]=' + identifier,
+        statusCode : {
+          404 : function (response, statusText, statusCode) {
+            $('#switch_user_form form').replaceWith(response.responseText);
+          }
+        },
         success : function () {
           window.location.reload(true);
         },
-        error : function () {
-          alert('There was an error switching user.');
-        }
       });
       return false;
     });
