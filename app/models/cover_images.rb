@@ -1,7 +1,7 @@
 require 'httparty'
 
 class CoverImages
-  
+
   class Configuration
     attr_accessor :url, :api_key
     
@@ -16,8 +16,9 @@ class CoverImages
   end
 
   def self.url_for document
+    config = self.config
     id = document['issn_t'] || document['isbn_t'] || ['XXXXXXXX']
-    "#{@@config.url}/#{@@config.api_key}/#{id.first}/native.png"
+    "#{config.url}/#{config.api_key}/#{id.first}/native.png"
   end
 
 end
