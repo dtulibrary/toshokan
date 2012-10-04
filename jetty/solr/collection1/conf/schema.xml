@@ -447,13 +447,14 @@ any data added to them will be ignored outright.  -->
 
         <!-- 'administration' fields -->
         <field name="id" type="string" indexed="true" stored="true" required="true" />
-        <field name="source" type="string" indexed="true" stored="false" required="true"/>
+        <field name="source" type="string" indexed="true" stored="true" required="true"/>
         <field name="source_type" type="string" indexed="true" stored="true" required="true"/>
         <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
         <field name="access" type="string" indexed="true" stored="true" multiValued="true" required="true"/>
         <field name="cluster_id" type="string" indexed="true" stored="true" required="true"/>
         <field name="bfi_level" type="string" indexed="true" stored="true" required="true"/>
         <field name="fulltext" type="string" indexed="false" stored="true" required="true"/>
+        <field name="data_error" type="string" indexed="true" stored="true" />
 
         <!-- Alert timestamp will only be set on first encounter within a cluster, and will remain the same value
          for all cluster members hereafter -->
@@ -514,7 +515,6 @@ any data added to them will be ignored outright.  -->
     <copyField source="doi_t" dest="text" />
 
     <!-- sort and facet fields -->
-    <copyField source="pub_date" dest="pub_date_sort"/>
     <copyField source="author_name_t" dest="author_name_facet" />
     <copyField source="journal_title_t" dest="journal_title_facet" />
     <copyField source="keywords_t" dest="keywords_facet" />

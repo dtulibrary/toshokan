@@ -80,18 +80,12 @@
         <lst name="defaults">
             <xi:include href="ds.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
             <str name="echoParams">explicit</str>
+
             <str name="fl">*,score</str>
-            <str name="q.alt">*:*</str>
-            <!-- Minimum 'should' match: If less than 2 optional clauses, 1 must match etc. -->
-            <str name="mm">2&lt;-1 5&lt;-2 6&lt;90%</str>
-            <str name="qf">text</str>
-            <str name="pf">text^10</str>
-            <int name="ps">3</int>
-            <float name="tie">0.01</float>
+
             <str name="facet">true</str>
             <str name="facet.mincount">1</str>
             <str name="facet.limit">10</str>
-            <str name="facet.field">format</str>
 
             <str name="group">true</str>
             <str name="group.field">cluster_id</str>

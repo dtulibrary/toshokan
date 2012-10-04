@@ -59,7 +59,7 @@ class CatalogController < ApplicationController
     # :show may be set to false if you don't want the facet to be drawn in the 
     # facet bar
     config.add_facet_field 'format', :label => 'Format' 
-    config.add_facet_field 'pub_date', :label => 'Publication Year', :range => true 
+    config.add_facet_field 'pub_date_sort', :label => 'Publication Year', :range => true 
     config.add_facet_field 'author_name_facet', :label => 'Authors', :limit => 20
     config.add_facet_field 'journal_title_facet', :label => 'Journals', :limit => 20  
 
