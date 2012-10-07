@@ -31,9 +31,8 @@
 
     </indexConfig>
 
-    <updateHandler class="solr.DirectUpdateHandler2"/>
-    <requestHandler name="/update" class="solr.XmlUpdateRequestHandler"/>
-    <requestHandler name="/update/javabin" class="solr.BinaryUpdateRequestHandler"/>
+    <updateHandler class="solr.DirectUpdateHandler2" />
+    <requestHandler name="/update" class="solr.UpdateRequestHandler"/>
 
     <!-- FIXME element used as xpointer scheme not supported, possibly use id instead -->
     <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/1)"/>
@@ -46,6 +45,10 @@
     <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/8)"/>
     <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/9)"/>
     <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/10)"/>
+    <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/11)"/>
+    <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/12)"/>
+    <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/13)"/>
+    <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/14)"/>
 
     <requestHandler name="/replication" class="solr.ReplicationHandler">
         <lst name="master">
