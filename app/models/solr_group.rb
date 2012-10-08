@@ -45,6 +45,10 @@ class SolrGroup
     {}
   end
 
+  def to_partial_path
+    'catalog/document'
+  end
+
   private
 
   def primary_member
