@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.6'
+gem 'rails', '3.2.8'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -8,7 +8,7 @@ gem 'rails', '3.2.6'
 gem 'sqlite3'
 
 gem 'jquery-rails'
-gem 'blacklight'
+gem 'blacklight', '3.7'
 gem "blacklight_range_limit"
 gem 'pg'
 gem 'unhappymapper', :require => 'happymapper'
@@ -22,7 +22,7 @@ gem 'acts-as-taggable-on'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',    '~> 3.2.3'
+  gem 'sass-rails'
   gem 'compass-rails', '~> 1.0.0'
   gem "compass-susy-plugin", "~> 0.9.0"
   gem 'coffee-rails',  '~> 3.2.1'
@@ -48,6 +48,7 @@ group :test, :development do
 end
 
 group :development do
+  gem 'sass'
   gem 'brakeman'
   gem 'rails_best_practices'
 
