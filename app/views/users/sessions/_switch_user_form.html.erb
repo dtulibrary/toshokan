@@ -1,0 +1,6 @@
+<%= form_for User.new(:identifier => @new_user_id), url: user_session_path, method: :put do |f| %>
+  <%= render '/flash_msg' if @is_ajax %>
+  <%= f.label :identifier, t('toshokan.header_links.cwis') %>
+  <%= f.text_field :identifier %>
+  <%= f.submit t('toshokan.header_links.switch_user') %>
+<% end %>

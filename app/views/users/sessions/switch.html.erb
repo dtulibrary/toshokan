@@ -1,5 +1,1 @@
-<%= form_for User.new, url: user_session_path, method: :put do |f| %>
-  <%= f.label :identifier, t('toshokan.header_links.cwis') %>
-  <%= f.text_field :identifier %>
-  <%= f.submit t('toshokan.header_links.switch_user') %>
-<% end %>
+<%= render 'switch_user_form' %>

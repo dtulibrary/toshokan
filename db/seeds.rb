@@ -12,5 +12,8 @@
   SUP: 'User Support',
   DAT: 'Metadata Access'
 }.each do |code, name|
-  Role.create :code => code.to_s, :name => name unless Role.exists? :code => code.to_s
+  unless Role.exists? :code => code.to_s
+    puts "Creating role #{code}: '#{name}'"
+    Role.create :code => code.to_s, :name => name
+  end
 end
