@@ -3,11 +3,9 @@
 class GroupedSolrResponse < RSolr::Ext::Response::Base
   
   def initialize hash, handler, request_params
-    #super hash
-    @original_hash = hash
+    @original_hash = hash.with_indifferent_access
     @request_path, @request_params = request_path, request_params
-    #extend RSolr::Ext::Response
-    #extend Docs
+
     extend RSolr::Ext::Response::Facets
     extend RSolr::Ext::Response::Spelling  
   end
@@ -20,13 +18,12 @@ class GroupedSolrResponse < RSolr::Ext::Response::Base
     self["grouped"].last
   end
 
-  # short cut to response['numFound']
   def total
     response["ngroups"].to_s.to_i
   end
 
   def start
-    response[:start].to_s.to_i
+    params["start"].to_i
   end
 
   def rows

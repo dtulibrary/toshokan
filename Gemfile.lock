@@ -44,6 +44,10 @@ GEM
       rsolr-ext (~> 1.0.3)
       sass-rails
       unicode
+    blacklight_range_limit (1.2.2)
+      blacklight (~> 3.2)
+      jquery-rails
+      rails (~> 3.0)
     brakeman (1.7.0)
       activesupport
       erubis (~> 2.6)
@@ -315,6 +319,7 @@ PLATFORMS
 DEPENDENCIES
   acts-as-taggable-on
   blacklight
+  blacklight_range_limit
   brakeman
   cancan
   capistrano

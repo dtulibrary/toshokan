@@ -9,7 +9,7 @@ gem 'sqlite3'
 
 gem 'jquery-rails'
 gem 'blacklight'
-#gem "blacklight_range_limit"
+gem "blacklight_range_limit"
 gem 'pg'
 gem 'unhappymapper', :require => 'happymapper'
 gem 'httparty'

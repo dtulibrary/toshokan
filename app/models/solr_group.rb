@@ -49,7 +49,6 @@ class SolrGroup
 
   def primary_member
     @members = Array.new
-    Rails.logger.debug("dedup #{@group_values[:doclist.to_s].class}")
     @group_values["doclist"]["docs"].each do |doc|
       @members.push GroupMember.new(doc, doc[:source_type])
     end
