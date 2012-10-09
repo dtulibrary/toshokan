@@ -12,7 +12,7 @@ class CatalogController < ApplicationController
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = { 
       :q => '*:*',
-      :rows => 10 
+      :rows => 10
     }
     
     config.solr_request_handler = 'ds_group'
@@ -187,7 +187,7 @@ class CatalogController < ApplicationController
     bench_start = Time.now
 
     solr_response = find_with_groups(self.solr_search_params(user_params).merge(extra_controller_params))  
-    document_list = solr_response["grouped"].last["groups"].collect {|doc| SolrGroup.new(doc, solr_response)}  
+    document_list = solr_response.response["groups"].collect {|doc| SolrGroup.new(doc, solr_response)}
     Rails.logger.debug("Solr fetch: #{self.class}#get_search_results (#{'%.1f' % ((Time.now.to_f - bench_start.to_f)*1000)}ms)")
     
     return [solr_response, document_list]
@@ -196,7 +196,7 @@ class CatalogController < ApplicationController
   def get_solr_response_for_doc_id
     id = params["id"]
     solr_response = find_with_groups({:q => "cluster_id:#{id}"})  
-    document = SolrGroup.new(solr_response["grouped"].last["groups"].first, solr_response) 
+    document = SolrGroup.new(solr_response.response["groups"].first, solr_response) 
     return [solr_response, document]
   end    
   
@@ -209,12 +209,12 @@ class CatalogController < ApplicationController
   
   def get_single_doc_via_search(index, request_params)
     solr_params = solr_search_params(request_params)
-
     solr_params[:start] = (index - 1) # start at 0 to get 1st doc, 1 to get 2nd.    
     solr_params[:rows] = 1
     solr_params[:fl] = '*'
     solr_response = find_with_groups(solr_params)
-    SolrGroup.new(solr_response["grouped"].last["groups"].first, solr_response) unless solr_response.docs.empty?
+
+    SolrGroup.new(solr_response.response["groups"].first, solr_response) unless solr_response.docs.empty?
   end
 
 end 

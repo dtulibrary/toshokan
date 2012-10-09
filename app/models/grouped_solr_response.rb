@@ -3,7 +3,7 @@
 class GroupedSolrResponse < RSolr::Ext::Response::Base
   
   def initialize hash, handler, request_params
-    @original_hash = hash.with_indifferent_access
+    @original_hash = hash.with_indifferent_access    
     @request_path, @request_params = request_path, request_params
 
     extend RSolr::Ext::Response::Facets
@@ -15,7 +15,8 @@ class GroupedSolrResponse < RSolr::Ext::Response::Base
   end  
   
   def response
-    self["grouped"].last
+    # hack to handle variations in solr response structure
+    (self["grouped"].is_a? Array) ? self["grouped"].last : self["grouped"].values.first
   end
 
   def total
