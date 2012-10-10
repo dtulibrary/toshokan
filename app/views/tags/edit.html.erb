@@ -1,0 +1,6 @@
+<%= form_for @tag, url: tag_path do |f| %>
+  <%= label_tag 'tag_name', 'Name' %>
+  <%= text_field_tag 'tag_name', @tag.name %><br/>
+  <%= f.submit t('toshokan.tags.save') %>
+<% end %>
+<%= button_to t('toshokan.tags.discard'), tags_path, :method => :get %>

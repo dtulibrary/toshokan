@@ -6,6 +6,7 @@
 
 @mixin link_like_button {
   border: 0;
+  border-bottom: 1px dotted #AAA;
   color:#2e4f81;
   text-decoration:none;
   padding: 0;
@@ -38,5 +39,17 @@
 }
 
 .tag form div {
+  display: inline;
+}
+
+.tag-manager input {
+  @include link_like_button;
+}
+
+.tag-manager form {
+  display: inline;
+}
+
+.tag-manager form div {
   display: inline;
 }

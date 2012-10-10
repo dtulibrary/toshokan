@@ -14,6 +14,10 @@ en:
       add_tag: "Add tag"
       tag: "Tag"
       manage_your_tags: "Manage your tags"
+      save: "Save"
+      discard: "Discard"
+      edit: "Edit"
+      delete: "Delete"
     users:
       username: "Username"
       cwis: "CWIS"

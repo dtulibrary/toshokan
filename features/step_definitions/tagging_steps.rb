@@ -42,7 +42,18 @@ Given /^I list my tags$/ do
   visit tags_path
 end
 
-Then /^I edit tag "(.*?)"$/ do |tag_name|
+Given /^I rename tag "(.*?)" to "(.*?)"$/ do |tag_name, new_tag_name|
   visit tags_path
-  click_link tag_name
+  within(:xpath, "//tr[td/h6/text()='#{tag_name}']") do
+    click_link 'Edit'
+  end
+  fill_in('tag_name', :with => new_tag_name)
+  click_button 'Save'
+end
+
+Given /^I delete tag "(.*?)"$/ do |tag_name|
+  visit tags_path
+  within(:xpath, "//tr[td/h6/text()='#{tag_name}']") do
+    click_button 'Delete'
+  end  
 end

@@ -11,9 +11,9 @@ Toshokan::Application.routes.draw do
   match '/user/session'                 => 'users/sessions#update',    :as => 'user_session', :via => :put
 
   resources :documents, only: [] do
-    resources :tags
+    resources :tags, except: [:index, :edit, :update]
   end
-  resources :tags, only: [:show, :index]
+  resources :tags, only: [:index, :edit, :update, :destroy]
   resources :users, :only => [:index, :update, :destroy]
   
   # The priority is based upon order of creation:

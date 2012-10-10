@@ -1,3 +1,14 @@
-<% @tags.each do |tag| %>
-  <div><%= link_to tag.name, tag_path(tag) %></div>
-<% end %>
+<table>
+  <thead>
+    <tr>
+      <th>Tag</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <% @tags.each do |tag| %>
+    <tr class='tag-manager'> 
+    <td><h6><%= tag.name %></h6><em><%= pluralize(current_user.owned_taggings.where(tag_id: tag.id).size, 'document') %></em></td> 
+  <td><%= link_to t('toshokan.tags.edit'), edit_tag_path(tag) %> <%= button_to t('toshokan.tags.delete'), tag_path(tag, :return_url => request.url), :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>

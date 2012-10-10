@@ -9,7 +9,7 @@ OmniAuth.config.add_mock(:cas, {
   }
 })
 
-def login(user = User.create!(provider: "cas", identifier: "12345"))
+def login(user = User.create!(provider: "cas", identifier: rand(99999).to_s))
   session[:user_id] = user.id
   user
 end

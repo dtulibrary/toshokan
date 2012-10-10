@@ -9,8 +9,14 @@ Scenario: Listing all tags
     And I list my tags
    Then I should see "some tag"
 
- Scenario: Editing a tag
+ Scenario: Rename a tag
   Given I'm logged in
     And I add a tag "some tag" the document with title "A cohomology theory for colored tangles"
-    And I edit tag "some tag"
-   Then I should see "1 documents"
+    And I rename tag "some tag" to "some other tag"
+   Then I should see "some other tag"
+
+ Scenario: Delete a tag
+  Given I'm logged in
+    And I add a tag "some tag" the document with title "A cohomology theory for colored tangles"
+    And I delete tag "some tag"
+   Then I should not see "some tag"
