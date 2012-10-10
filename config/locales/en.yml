@@ -26,3 +26,6 @@ en:
     manage_users:
       title: "Manage Users"
       save: "Save"
+    source_url:
+      pubmed: "PubMed"
+      isi: "Web of Science®"  

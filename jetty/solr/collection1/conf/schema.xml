@@ -455,6 +455,7 @@ any data added to them will be ignored outright.  -->
         <field name="bfi_level" type="string" indexed="true" stored="true" required="true"/>
         <field name="fulltext" type="string" indexed="false" stored="true" required="true"/>
         <field name="data_error" type="string" indexed="true" stored="true" />
+        <field name="toc_key" type="string" indexed="true" stored="true" multiValued="false"/>
 
         <!-- Alert timestamp will only be set on first encounter within a cluster, and will remain the same value
          for all cluster members hereafter -->
@@ -465,7 +466,7 @@ any data added to them will be ignored outright.  -->
         <!-- pub_date is used for facet and display so it must be indexed and stored -->
         <field name="pub_date" type="tint" indexed="true" stored="true"/>
 
-        <!-- record fields -->
+        <!-- record fields (indexed and stored) -->
         <field name="title_t" type="text" indexed="true" stored="true" multiValued="true"/>
         <field name="language_t" type="lowercase" indexed="true" stored="true" multiValued="true"/>
         <field name="isolanguage_t" type="lowercase" indexed="true" stored="true" multiValued="true"/>
@@ -482,6 +483,10 @@ any data added to them will be ignored outright.  -->
         <field name="journal_vol_t" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="journal_issue_t" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="journal_page_t" type="string" indexed="true" stored="true" multiValued="true"/>
+
+        <!-- record fields (only stored) -->
+        <field name="open_url" type="string" stored="true" indexed="false" multiValued="false" />
+        <field name="source_url" type="string" stored="true" indexed="false" multiValued="false" />
 
         <!--  sorting -->
         <field name="title_sort" type="lowercase" indexed="true" stored="false" multiValued="false" />

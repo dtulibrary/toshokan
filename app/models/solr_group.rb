@@ -45,6 +45,17 @@ class SolrGroup
     {}
   end
 
+  def source?(source)
+    @members.any? {|member| member.source == source}
+  end 
+  
+  def source_url(source)
+    if self.source?(source) 
+      member = @members.detect {|member| member.source == source}
+      return member.data.key?("source_url") ? member.data["source_url"] : ""
+    end  
+  end 
+
   def to_partial_path
     'catalog/document'
   end
@@ -54,7 +65,7 @@ class SolrGroup
   def primary_member
     @members = Array.new
     @group_values["doclist"]["docs"].each do |doc|
-      @members.push GroupMember.new(doc, doc[:source_type])
+      @members.push GroupMember.new(doc, doc["source_type"], doc["source"])
     end
     @members.sort! {|x,y| @@source_type_priority[x.source_type] <=> @@source_type_priority[y.source_type]}
     @members.first
@@ -64,10 +75,12 @@ class SolrGroup
 
     attr_reader :data
     attr_reader :source_type
+    attr_reader :source
 
-    def initialize(data, source_type)
+    def initialize(data, source_type, source)
       @data = data
       @source_type = source_type
+      @source = source
     end
 
   end  
