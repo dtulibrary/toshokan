@@ -91,6 +91,7 @@
             <str name="group.field">cluster_id</str>
             <str name="group.ngroups">true</str>
             <str name="group.limit">10</str>
+            <str name="group.facet">true</str>
         </lst>
     </requestHandler>
 

@@ -9,5 +9,5 @@ When /^I click on the title for the first of the results$/ do
 end
 
 Then /^I should see the page for a single document$/ do
-  current_path.should include('catalog')
+  page.should have_css('.blacklight-catalog-show')
 end

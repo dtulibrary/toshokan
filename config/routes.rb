@@ -16,6 +16,8 @@ Toshokan::Application.routes.draw do
   resources :tags, only: [:index, :edit, :update, :destroy]
   resources :users, :only => [:index, :update, :destroy]
   
+  resources :solr_group, :only => [:show,:update], :controller => "catalog" 
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
