@@ -3,7 +3,9 @@
     <requestDispatcher handleSelect="true">
         <requestParsers enableRemoteStreaming="false"
                         multipartUploadLimitInKB="2048000"/>
-        <httpCaching never304="true"/>
+        <httpCaching lastModFrom="openTime" etagSeed="Solr">
+            <cacheControl>max-age=86400, public, must-revalidate</cacheControl>
+        </httpCaching>
     </requestDispatcher>
 
     <query>
