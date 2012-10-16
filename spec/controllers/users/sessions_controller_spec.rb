@@ -20,7 +20,8 @@ describe Users::SessionsController do
   it "should redirect to requested url on callback from CAS with proper auth hash" do
     account = Dtubase::Account.new
     account.cwis = '12345'
-    Dtubase::Account.should_receive(:find_by_cwis).with('98765').and_return(account)
+    account.username = 'abcd'
+    Dtubase::Account.should_receive(:find_by_username).with('abcd').and_return(account)
 
     request.env["omniauth.auth"] = OmniAuth.mock_auth_for(:cas)
     return_url = "http://example.com/return_url"

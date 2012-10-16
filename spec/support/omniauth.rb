@@ -3,9 +3,7 @@ OmniAuth.config.add_mock(:cas, {
   :uid => 'abcd',
   :info => { :name => 'Firstname Lastname' },  
   :extra => {
-    :norEduPerson => [{
-      :norEduPersonLIN => '98765'
-    }]
+    :user => 'abcd'
   }
 })
 

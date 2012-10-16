@@ -59,7 +59,7 @@ Given /^there exists a user with cwis "(.*?)" and name "(.*?)"$/ do |arg1, arg2|
   account.cwis = arg1
   account.firstname = user.firstname
   account.lastname = user.lastname
-  Dtubase::Account.stub(:find_by_cwis).with(user.identifier).and_return(account)
+  Dtubase::Account.stub(:find_by_username).with(user.username).and_return(account)
 end
 
 Given /^I'm logged in(?: as user with no role)?$/ do
@@ -75,14 +75,12 @@ def log_in(user)
     :uid => user.username,
     :info => { :name => user.to_s },  
     :extra => {
-      :norEduPerson => [{
-        :norEduPersonLIN => user.identifier
-      }]
+      :user => user.username
     }
   })
 
   Dtubase.config.test_mode = true
-  Dtubase.config.add_mock(user.identifier, <<-EOF
+  Dtubase.config.add_mock(user.username, <<-EOF
 <?xml version="1.0" encoding="utf-8"?>
 <root>
   <account matrikel_id="#{user.identifier}" cprnr="XXXXXX-XXXX" last_updated="" last_updated_all="" auth_gateway="unix" fk_createdby_matrikel_id="1" username="#{user.username}" sysadm="0" firstname="#{user.firstname}" lastname="#{user.lastname}" title="" company_address="" company_address_is_primary="0" company_address_is_hidden="1" temporary_address="" temporary_address_is_primary="0" temporary_address_is_hidden="1" private_homepage_url="" official_email_address="" official_picture_url="" official_picture_hide_in_cn="1" sms_provider="" sms_phone="" library_pincode="" library_username="" primary_profile_id="" preferred_language="en" hide_private_address="0" note="" dtu_initials="" has_active_profile="1" external_Phonebook="1" external_Portalen="1" external_Biblioteket="1" nextOfKinName="" nextOfKinRelation="" nextOfKinTelephone="">

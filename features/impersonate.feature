@@ -7,9 +7,12 @@ Background: Existing users
     | 2345 | support2 | Support User 2 | "User Support" |
     | 4321 | regular  | Regular User   |                |
 
-Scenario: Switch to another user 
+Scenario: User with User Support role logs in
   Given I'm logged in as user with cwis "1234"
    Then I should see "Switch User"
+
+Scenario: Switch to another user 
+  Given I'm logged in as user with cwis "1234"
    When I switch user to user with cwis "4321"
    Then the user should be "Regular User"
     And I should see "Switch Back"

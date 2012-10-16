@@ -11,10 +11,10 @@ class Users::SessionsController < ApplicationController
     # extract authentication data
     auth = request.env["omniauth.auth"]
     provider = params['provider']
-    identifier = auth.extra.norEduPerson.first.norEduPersonLIN
+    username = auth.extra.user
 
     #  sync user data from DTUbasen
-    account = Dtubase::Account.find_by_cwis(identifier)
+    account = Dtubase::Account.find_by_username(username)
     user = User.create_or_update_with_account(provider, account)
     session[:user_id] = user.id
 
@@ -39,7 +39,6 @@ class Users::SessionsController < ApplicationController
     @is_ajax = params[:ajax]
 
     if can? :switch, User
-      session[:original_user_id] = current_user.id
       # new_user_id is made available for switch user form to be able
       # to populate the form with submitted data when there is an error
       @new_user_id = params[:user][:identifier]
@@ -59,6 +58,7 @@ class Users::SessionsController < ApplicationController
       end
 
       new_user = User.create_or_update_with_account('cas', account)
+      session[:original_user_id] = current_user.id
       session[:user_id] = new_user.id
 
       # Switching user affects abilities - in particular when switching

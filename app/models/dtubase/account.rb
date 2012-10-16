@@ -41,7 +41,7 @@ class Dtubase::Account
             "DTUbasen with request #{url}. Message: #{response.message}." unless response.success?
       xml = response.body
     end
-    account = self.parse(xml, :single => true)
+    account = self.parse(xml, :single => true) if xml
     account != [] ? account : nil
   end
 
