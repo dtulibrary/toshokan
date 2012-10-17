@@ -59,9 +59,9 @@ class CatalogController < ApplicationController
     # :show may be set to false if you don't want the facet to be drawn in the 
     # facet bar
     config.add_facet_field 'format', :label => 'Format' 
-    config.add_facet_field 'pub_date_sort', :label => 'Publication Year', :range => true 
-    config.add_facet_field 'author_name_facet', :label => 'Authors', :limit => 20
-    config.add_facet_field 'journal_title_facet', :label => 'Journals', :limit => 20  
+    #config.add_facet_field 'pub_date_sort', :label => 'Publication Year', :range => true 
+    #config.add_facet_field 'author_name_facet', :label => 'Authors', :limit => 20
+    #config.add_facet_field 'journal_title_facet', :label => 'Journals', :limit => 20  
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -120,8 +120,7 @@ class CatalogController < ApplicationController
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise. 
     
-    config.add_search_field 'all_fields', :label => 'All Fields'
-    
+    config.add_search_field 'all_fields', :label => 'All Fields'    
 
     # Now we see how to over-ride Solr request handler defaults, in this
     # case for a BL "search field", which is really a dismax aggregate

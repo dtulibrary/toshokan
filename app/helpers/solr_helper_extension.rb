@@ -30,9 +30,23 @@ module SolrHelperExtension
   
   def find_with_groups(search_params)
     logger.info(search_params)
-    solr = RSolr.connect Blacklight.solr_config
-    solr_response = solr.get "ds_group", :params => search_params
+    begin
+      solr = RSolr.connect Blacklight.solr_config.merge({:read_timeout => 120, :open_timeout => 120})
+      cache_key = search_params.hash.to_s
+      header = Rails.cache.exist?(cache_key)? Hash["If-None-Match" => Rails.cache.read(cache_key)[:etag]] : {}  
+      solr_response = solr.get "ds_group", :params => search_params, :headers => header
+      Rails.cache.write(cache_key, {:etag => solr_response.response[:headers]["etag"].first, :response => solr_response})
+    rescue RSolr::Error::Http => e
+      if(e.response[:status]==304)
+        # not modified, get response from cache
+        solr_response = Rails.cache.read(cache_key)[:response]  
+      else
+        raise e  
+      end
+    end
+
     GroupedSolrResponse.new(solr_response, "", search_params)
+
   end  
   
   def get_single_doc_via_search(index, request_params)
