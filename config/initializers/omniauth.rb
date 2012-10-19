@@ -10,9 +10,7 @@ if Toshokan::Application.config.stub_authentication
     :uid => "username",
     :info => { :name => "Test User" },  
     :extra => {
-      :norEduPerson => [{
-        :norEduPersonLIN => "0"
-      }]
+      :user => "username",
     }
   })
 end
