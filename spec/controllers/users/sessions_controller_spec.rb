@@ -2,12 +2,36 @@ require 'spec_helper'
 
 describe Users::SessionsController do
 
-  it "should reset the session on logout" do
-    controller.session[:user_id] = 'fictional'
-    delete "destroy"
+  describe '#destroy' do
+    let :existing_user do
+      user = User.new :identifier => '1234', :provider => 'cas'
+      user.save!
+      user
+    end
 
-    controller.session[:user_id].should be_nil
-    response.should redirect_to root_path
+    context 'with user id in session' do
+      before do 
+        session[:user_id] = existing_user.id
+      end
+
+      it 'removes the user id from the session' do
+        delete 'destroy'
+        session.has_key?(:user_id).should be_false
+      end
+
+      it 'redirects to the root path' do
+        delete 'destroy'
+        response.should redirect_to root_path
+      end
+    end
+
+    context 'without user id in session' do
+      it 'redirects to login' do
+        delete 'destroy'
+        response.should redirect_to new_user_session_path
+      end
+    end
+
   end
 
   it "should redirect to CAS if user is not authenticated" do

@@ -1,15 +1,17 @@
 require 'dtubase'
 
 class Users::SessionsController < ApplicationController
-  skip_before_filter :authenticate, :only => [ :create, :new ]
+  skip_before_filter :authenticate_conditionally, :only => [ :create, :new ]
 
   def new
+    session[:return_url] ||= '/'
     redirect_to omniauth_path(:cas)
   end
 
   def create
     # extract authentication data
     auth = request.env["omniauth.auth"]
+    logger.debug auth.extra.hashie_inspect
     provider = params['provider']
     username = auth.extra.user
 
@@ -17,6 +19,9 @@ class Users::SessionsController < ApplicationController
     account = Dtubase::Account.find_by_username(username)
     user = User.create_or_update_with_account(provider, account)
     session[:user_id] = user.id
+
+    # Make CanCan re-initialize abilities based on new user id
+    @current_ability = nil
 
     # redirect user to the requested url
     redirect_to session.delete('return_url'), :notice => 'Signed in by %s' % [provider], :only_path => true

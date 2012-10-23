@@ -76,6 +76,11 @@ class User < ActiveRecord::Base
     guest_profiles.any? { |p| p.active }
   end
 
+  def anonymous?
+    # Anonymous users are not stored in the database so they don't have an ID
+    !id 
+  end
+
   def to_s
     "%s %s" % [firstname, lastname]
   end

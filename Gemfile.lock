@@ -33,7 +33,7 @@ GEM
     addressable (2.3.2)
     arel (3.0.2)
     awesome_print (1.0.2)
-    blacklight (3.7.0)
+    blacklight (3.7.1)
       compass-rails (~> 1.0.0)
       compass-susy-plugin (>= 0.9.0)
       kaminari (~> 0.13)
@@ -299,7 +299,7 @@ GEM
       libv8 (~> 3.3.10)
     thor (0.16.0)
     tilt (1.3.3)
-    treetop (1.4.10)
+    treetop (1.4.11)
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.33)
@@ -319,7 +319,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on
-  blacklight (= 3.7)
+  blacklight (= 3.7.1)
   blacklight_range_limit
   brakeman
   cancan

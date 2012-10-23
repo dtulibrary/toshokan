@@ -3,7 +3,7 @@ module TagsHelper
   def tag_control(document)
     solr_document_pointer = SolrDocumentPointer.find_by_solr_id(document.id)
     tags = []
-    tags = solr_document_pointer.tags_from(current_user).map{|name| ActsAsTaggableOn::Tag.find_by_name(name)} if solr_document_pointer
+    tags = solr_document_pointer.tags_from(current_or_guest_user).map{|name| ActsAsTaggableOn::Tag.find_by_name(name)} if solr_document_pointer
     render(:partial => 'tags/tag_control', :locals => {:document => document, :tags => tags})
   end
 
@@ -11,7 +11,7 @@ module TagsHelper
     options = options.dup
     options[:partial] = "tags/tags"
     options[:locals] ||= {}
-    options[:locals][:tags] ||= current_user.owned_tags
+    options[:locals][:tags] ||= current_or_guest_user.owned_tags
     render(options)
   end
 
@@ -99,5 +99,10 @@ module TagsHelper
   # true or false, depending on whether the tag name is in params[:t]
   def tag_in_params?(tag)
     params[:t] and params[:t][tag.name] and params[:t][tag.name] == 'true'
+  end
+
+  # True or false depending on whether the user has any tags
+  def tags_empty?
+    current_or_guest_user.owned_tags.empty?
   end
 end

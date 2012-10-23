@@ -3,6 +3,8 @@
   <h2><%= t('blacklight.search.facets.title') %></h2>
   <%= render_facet_partials %>
 
-  <h2>Tags</h2>
-  <%= render_tag_partials %>
+  <% if can? :tag, SolrDocument and !tags_empty? %>
+    <h2>Tags</h2>
+    <%= render_tag_partials %>
+  <% end %>
 </div>

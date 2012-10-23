@@ -8,7 +8,7 @@ gem 'rails', '3.2.8'
 gem 'sqlite3'
 
 gem 'jquery-rails'
-gem 'blacklight', '3.7'
+gem 'blacklight', '3.7.1'
 gem "blacklight_range_limit"
 gem 'pg'
 gem 'unhappymapper', :require => 'happymapper'

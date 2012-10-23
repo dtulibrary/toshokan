@@ -104,5 +104,6 @@ def log_in(user)
   )  
   
   visit('/')  
+  click_link 'Login' if page.has_css? '#user_util_links a', :text => 'Login'
 end  
 
