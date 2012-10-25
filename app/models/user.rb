@@ -1,5 +1,8 @@
+require 'blacklight-tag'
+
 class User < ActiveRecord::Base
   include Blacklight::User
+  #include BlacklightTag::User
 
   attr_accessible :email, :firstname, :identifier, :lastname, :provider, :username, :image_url
   attr_accessor :impersonating
@@ -8,8 +11,6 @@ class User < ActiveRecord::Base
 
   has_many :profiles
   has_and_belongs_to_many :roles
-
-  acts_as_tagger
   
   def self.create_or_update_with_account(provider, account)
     user =

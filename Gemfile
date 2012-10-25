@@ -51,6 +51,7 @@ group :test, :development do
   gem 'jettywrapper'
   gem 'debugger'
   gem 'rspec-rails'
+  gem 'acts_as_fu'
 end
 
 group :development do

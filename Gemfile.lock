@@ -30,6 +30,9 @@ GEM
       multi_json (~> 1.0)
     acts-as-taggable-on (2.3.3)
       rails (~> 3.0)
+    acts_as_fu (0.0.8)
+      activerecord
+      sqlite3
     addressable (2.3.2)
     arel (3.0.2)
     awesome_print (1.0.2)
@@ -321,6 +324,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on
+  acts_as_fu
   bibtex-ruby
   blacklight (= 4.0.1)
   blacklight_range_limit (= 2.0)

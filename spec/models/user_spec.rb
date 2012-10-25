@@ -3,7 +3,19 @@ require 'spec_helper'
 describe User do
 
   it "should be valid" do
-    User.new(provider: 'cas').should be_valid
+    subject.should be_valid
+  end
+
+  it "has tags" do
+    subject.tags.should == []
+  end
+
+  it "has subscribed tags" do
+    subject.subscribed_tags.should == []
+  end
+
+  it "can tag document" do
+    document = double("document")
   end
 
   it "should have roles" do
