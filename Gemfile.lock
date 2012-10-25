@@ -235,6 +235,7 @@ GEM
       i18n
       progressbar
       sexp_processor
+    rails_view_annotator (0.0.7)
     railties (3.2.8)
       actionpack (= 3.2.8)
       activesupport (= 3.2.8)
@@ -353,6 +354,7 @@ DEPENDENCIES
   pg
   rails (= 3.2.8)
   rails_best_practices
+  rails_view_annotator
   rspec-rails
   ruby_gntp
   rvm-capistrano
