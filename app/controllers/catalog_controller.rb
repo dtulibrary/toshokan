@@ -3,7 +3,6 @@ require 'blacklight/catalog'
 
 class CatalogController < ApplicationController  
 
-  include SolrHelperExtension
   include Blacklight::Catalog
 
   include TagsHelper
@@ -16,7 +15,8 @@ class CatalogController < ApplicationController
       :rows => 10
     }
     
-    config.solr_request_handler = 'ds_group'
+    config.solr_request_handler = 'ds'
+    config.document_solr_request_handler = 'ds_document'
 
     ## Default parameters to send on single-document requests to Solr. These 
     ## settings are the Blackligt defaults (see SolrHelper#solr_doc_params) or 

@@ -4,7 +4,7 @@ Given /^I add a tag "(.*?)" to the(?: first)? document$/ do |tag_name|
   click_button 'Add tag'
 end
 
-Given /^I add a tag "(.*?)" the document with title "(.*?)"$/ do |tag_name, query|
+Given /^I add a tag "(.*?)" to the document with title "(.*?)"$/ do |tag_name, query|
   visit(root_path)
 
   fill_in('q', :with => query)
@@ -22,7 +22,7 @@ Given /^I remove the tag "(.*?)" from the(?: first)? document$/ do |tag_name|
   end
 end
 
-Given /^I remove the tag "(.*?)" the document with title "(.*?)"$/ do |tag_name, query|
+Given /^I remove the tag "(.*?)" from the document with title "(.*?)"$/ do |tag_name, query|
   visit(root_path)
 
   fill_in('q', :with => query)

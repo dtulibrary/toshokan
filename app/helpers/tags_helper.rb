@@ -82,9 +82,9 @@ module TagsHelper
         if tag
           pointer_ids = current_user.owned_taggings.where(tag_id: tag.id).map(&:taggable_id)
           solr_ids = SolrDocumentPointer.find(pointer_ids).map(&:solr_id)
-          solr_parameters[:fq] << "cluster_id:(#{solr_ids.join(' OR ')})"
+          solr_parameters[:fq] << "id:(#{solr_ids.join(' OR ')})"
         else
-          solr_parameters[:fq] << "cluster_id:(NOT *)"
+          solr_parameters[:fq] << "id:(NOT *)"
         end
 
       end
