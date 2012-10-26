@@ -59,9 +59,9 @@ class CatalogController < ApplicationController
     # :show may be set to false if you don't want the facet to be drawn in the 
     # facet bar
     config.add_facet_field 'format', :label => 'Format' 
-    #config.add_facet_field 'pub_date_sort', :label => 'Publication Year', :range => true 
-    #config.add_facet_field 'author_name_facet', :label => 'Authors', :limit => 20
-    #config.add_facet_field 'journal_title_facet', :label => 'Journals', :limit => 20  
+    config.add_facet_field 'pub_date_sort', :label => 'Publication Year', :range => true 
+    config.add_facet_field 'author_name_facet', :label => 'Authors', :limit => 20
+    config.add_facet_field 'journal_title_facet', :label => 'Journals', :limit => 20  
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -70,37 +70,23 @@ class CatalogController < ApplicationController
     #use this instead if you don't want to query facets marked :show=>false
     #config.default_solr_params[:'facet.field'] = config.facet_fields.select{ |k, v| v[:show] != false}.keys
 
-
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display 
     config.add_index_field 'title_t', :label => 'Title:' 
-    #config.add_index_field 'title_vern_display', :label => 'Title:' 
     config.add_index_field 'author_name_t', :label => 'Author:' 
-    #config.add_index_field 'author_vern_display', :label => 'Author:' 
     config.add_index_field 'format', :label => 'Format:' 
     config.add_index_field 'language_t', :label => 'Language:'
     config.add_index_field 'journal_title_t', :label => 'Journal title:'
-    #config.add_index_field 'published_display', :label => 'Published:'
-    #config.add_index_field 'published_vern_display', :label => 'Published:'
-    #config.add_index_field 'lc_callnum_display', :label => 'Call number:'
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display 
     config.add_show_field 'title_t', :label => 'Title:' 
-    #config.add_show_field 'title_vern_display', :label => 'Title:' 
-    #config.add_show_field 'subtitle_display', :label => 'Subtitle:' 
-    #config.add_show_field 'subtitle_vern_display', :label => 'Subtitle:' 
     config.add_show_field 'author_t', :label => 'Author:' 
-    #config.add_show_field 'author_vern_display', :label => 'Author:' 
     config.add_show_field 'format', :label => 'Format:' 
-    #config.add_show_field 'url_fulltext_display', :label => 'URL:'
-    #config.add_show_field 'url_suppl_display', :label => 'More Information:'
     config.add_show_field 'language_t', :label => 'Language:'
-    #config.add_show_field 'published_display', :label => 'Published:'
-    #config.add_show_field 'published_vern_display', :label => 'Published:'
-    #config.add_show_field 'lc_callnum_display', :label => 'Call number:'
     config.add_show_field 'isbn_t', :label => 'ISBN:'
     config.add_show_field 'journal_title_t', :label => 'Journal Title:'
+    config.add_show_field 'abstract_t', :label => 'Abstract:'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
