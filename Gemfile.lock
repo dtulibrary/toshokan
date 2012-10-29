@@ -232,6 +232,8 @@ GEM
       activesupport (= 3.2.8)
       bundler (~> 1.0)
       railties (= 3.2.8)
+    rails-footnotes (3.7.9)
+      rails (>= 3.0.0)
     rails_best_practices (1.10.1)
       activesupport
       awesome_print
@@ -358,6 +360,7 @@ DEPENDENCIES
   paint
   pg
   rails (= 3.2.8)
+  rails-footnotes
   rails_best_practices
   rails_view_annotator
   rspec-rails

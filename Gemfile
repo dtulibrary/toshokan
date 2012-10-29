@@ -68,6 +68,7 @@ group :development do
   gem 'ruby_gntp'
 
   gem 'rails_view_annotator'
+  gem 'rails-footnotes'
 end
 
 # Deploy with Capistrano
