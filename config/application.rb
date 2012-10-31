@@ -64,13 +64,15 @@ module Toshokan
     # Config to be overriden by local settings
     config.stub_authentication = false;
 
-    config.cas = {}
-    config.cas[:host] = ''
+    config.cas = {
+      :host => ''
+    }
 
-    config.dtubase = {}
-    config.dtubase[:username] = ''
-    config.dtubase[:url]      = ''
-    config.dtubase[:password] = ''
+    config.dtubase = {
+      :url => '',
+      :username => '', 
+      :password => ''
+    }
     
     config.cover_images = {
       :url => '',
