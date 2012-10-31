@@ -1,15 +1,5 @@
 require 'paint'
 
-guard 'bundler' do
-  watch('Gemfile')
-  # Uncomment next line if Gemfile contain `gemspec' command
-  # watch(/^.+\.gemspec/)
-end
-
-guard 'migrate' do
-  watch(%r{^db/migrate/(\d+).+\.rb})
-end
-
 guard 'rspec', :version => 2 do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
