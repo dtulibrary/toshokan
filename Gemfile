@@ -19,6 +19,8 @@ gem 'omniauth-cas'
 gem 'cancan'
 gem 'acts-as-taggable-on'
 gem 'dalli'
+gem 'bibtex-ruby'
+gem 'citeproc-ruby'
 
 # Gems used only for assets and not required
 # in production environments by default.

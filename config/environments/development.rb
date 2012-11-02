@@ -34,7 +34,11 @@ Toshokan::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
 end
+
+ActiveSupport::Dependencies.autoload_paths << File::join( Rails.root, 'lib/document')
+ActiveSupport::Dependencies.explicitly_unloadable_constants << 'References'
 
 if File.exists? File.dirname(__FILE__) + '/../application.local.rb'
   require File.dirname(__FILE__) + '/../application.local.rb'

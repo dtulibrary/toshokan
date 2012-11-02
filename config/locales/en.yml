@@ -36,4 +36,11 @@ en:
       save: "Save"
     source_url:
       pubmed: "PubMed"
-      isi: "Web of Science®"  
+      isi: "Web of Science®" 
+    tools:
+      bibtex: "Export to BibTeX"
+      ris: "Export to RIS" 
+    citation:
+      mla: "MLA"
+      apa: "APA"  
+      'chicago-author-date': "Chicago"

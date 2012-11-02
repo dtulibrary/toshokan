@@ -81,7 +81,7 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display 
     config.add_show_field 'title_t', :label => 'Title:' 
-    config.add_show_field 'author_t', :label => 'Author:' 
+    config.add_show_field 'author_name_t', :label => 'Author:' 
     config.add_show_field 'format', :label => 'Format:' 
     config.add_show_field 'language_t', :label => 'Language:'
     config.add_show_field 'isbn_t', :label => 'ISBN:'

@@ -5,7 +5,8 @@ Mime::Type.register "application/marc", :marc
 Mime::Type.register "application/marcxml+xml", :marcxml, 
       ["application/x-marc+xml", "application/x-marcxml+xml", 
        "application/marc+xml"]
-
+Mime::Type.register "text/x-bibtex", :bib       
+Mime::Type.register "application/x-Research-Info-Systems", :ris
 
 # Add new mime types for use in respond_to blocks:
 # Mime::Type.register "text/richtext", :rtf
