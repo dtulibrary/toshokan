@@ -10,6 +10,10 @@ en:
       switch_back: "Switch Back"
       logged_in_as: "Logged in as"
       cwis: "User name or CWIS number"
+      login_cas: "Login (CAS)"
+      login_velo: "Login (Velo)"
+      logout_cas: "Logout (CAS)"
+      logout_velo: "Logout (Velo)"
     tags:
       add_tag: "Add tag"
       tag: "Tag"

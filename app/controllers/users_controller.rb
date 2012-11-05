@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   protect_from_forgery
 
   def index
-    if can? :manage, User
+    if can? :update, User
       @all_users = User.all :order => 'firstname asc, lastname asc'
       @all_roles = Role.all :order => :name
     else
@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if can? :manage, User
+    if can? :update, User
       begin
         target_user = User.find params[:id]
         if params[:ajax]
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    if can? :manage, User
+    if can? :update, User
       begin
         target_user = User.find params[:id]
         target_user.roles.delete Role.find(params[:role])

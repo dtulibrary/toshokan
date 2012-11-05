@@ -32,46 +32,29 @@ class Ability
     # XXX: These are all just imaginary examples of configurations
     case Rails.application.config.application_mode
     when :dtu
-      # Must log in when in DTU mode
       if user.anonymous?
         can :login_cas, User
       else
         can :logout_cas, User
         can :tag, SolrDocument
       end
-
     when :dtu_kiosk
-      # As an example the kiosk mode allows both anonymous users and logins
-      # The real deal would probably only allow anonymous users with credentials-on-demand
-      can :be_anonymous, User
       if user.anonymous?
+        can :be_anonymous, User
         can :login_cas, User
       else
         can :logout_cas, User
         can :tag, SolrDocument
       end
-
-=begin
-    when :i4i
-      # Information For Innovation
-      can :be_anonymous, User
-      if user.anonymous?
-        can :login_velo, User
-      else
-        can :tag, SolrDocument
-        can :logout_velo, User
-      end
-=end
-
     end
 
     # Abilities that work regardless of application mode
-    if user.anonymous?
-    else 
+    unless user.anonymous?
       can :logout, User
+
+      can :update, User if user.roles.include? Role.find_by_code('ADM')
       can :switch, User if user.roles.include?(Role.find_by_code('SUP')) && !user.impersonating?
       can :switch_back, User if user.impersonating?
-      can :manage, User if user.roles.include? Role.find_by_code('ADM')
     end
   end
 

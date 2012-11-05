@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   include Blacklight::Controller
 
+  rescue_from ActionController::RoutingError, :with => :render_not_found
+
   protect_from_forgery
 
   before_filter :authenticate_conditionally
@@ -39,12 +41,20 @@ class ApplicationController < ActionController::Base
     current_user || guest_user
   end
 
+  # Call this to bail out quickly and easily when something is not found.
+  # It will be rescued and rendered as a 404
+  def not_found
+    raise ActionController::RoutingError.new 'Not found'
+  end
+
   # Render 401
   def deny_access
     render(:file => 'public/401', :format => :html, :status => :unauthorized, :layout => nil)
   end
 
-  def not_found
+  # Render a 404 response. This should not be called directly. Instead you should call #not_found
+  # which will raise exception, rescue it and call this render method
+  def render_not_found
     render :file => 'public/404', :format => :html, :status => :not_found, :layout => nil
   end
 end
