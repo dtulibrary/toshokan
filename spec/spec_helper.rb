@@ -17,12 +17,17 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'yaml'
+require 'rsolr'
 
 RSpec.configure do |config|
   
   config.before(:suite) do
     require File.dirname(__FILE__) + '/../db/seeds.rb'    
   end
+
+  # Do not run relevance test by default
+  config.filter_run_excluding :relevance => true
   
   # ## Mock Framework
   #
@@ -44,6 +49,17 @@ RSpec.configure do |config|
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
+
+  # Used for relevance tests
+  solr_url = ENV["SOLR_URL"]
+  if solr_url
+    solr_config = {:url => solr_url}
+  else
+    yml_group = ENV["YML_GROUP"] ||= 'test'
+    solr_config = {:url => YAML::load_file('config/solr.yml')[yml_group]['url']}
+  end
+  @@solr = RSolr.connect(solr_config)
+  puts "Solr URL: #{@@solr.uri}"
 end
 
 # Requires supporting ruby files with custom matchers and macros, etc,
