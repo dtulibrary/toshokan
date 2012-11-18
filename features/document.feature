@@ -23,8 +23,8 @@ Scenario: Export record in RIS format
 
 Scenario: Do not export a record for a journal
 	Given I'm logged in
-	  And I have searched for "Nordplan"
+	  And I have searched for "Photochemistry and photobiology"
 	  And I have the limited the "Format" facet to "journal"
-	  And I click the link "Nordplan. Årsrapport"
+	  And I click the link "Photochemistry and photobiology"
 	 Then I should not see the "Export to BibTeX" link
 	  And I should not see the "Export to RIS" link
