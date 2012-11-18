@@ -43,58 +43,131 @@
         <lst name="defaults">
             <str name="echoParams">explicit</str>
             <str name="fl">*,score</str>
-
-            <str name="facet">true</str>
-            <str name="facet.mincount">1</str>
-            <str name="facet.limit">10</str>
         </lst>
     </requestHandler>
 
     <requestHandler name="/ds" class="solr.SearchHandler" default="false">
         <lst name="defaults">
             <xi:include href="ds.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+            <str name="defType">edismax</str>
             <str name="echoParams">explicit</str>
+
+            <str name="q.alt">*:*</str>
+            <str name="mm">100%</str>
+            <str name="qf">
+                title_t
+                subtitle_t
+                abstract_t
+                author_t
+                editor_t
+                affiliation_t
+                keywords_t
+                issn_s
+                isbn_s
+                journal_title_s
+                publisher_s
+                pub_date_ti
+                doi_s
+            </str>
+            <!--
+            <str name="pf"></str>
+            -->
+            <str name="author_qf">
+                author_t
+                editor_t
+            </str>
+            <!--
+            <str name="author_pf"></str>
+            -->
+            <str name="title_qf">
+                title_t
+                subtitle_t
+                journal_title_s
+            </str>
+            <!--
+            <str name="title_pf"></str>
+            -->
+            <str name="subject_qf">
+                keywords_t
+            </str>
+            <!--
+            <str name="subject_pf"></str>
+            -->
+
+            <str name="fl">*,score</str>
+        </lst>
+    </requestHandler>
+
+    <requestHandler name="/ds_dtu" class="solr.SearchHandler" default="false">
+        <lst name="defaults">
+            <xi:include href="ds.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+            <str name="defType">edismax</str>
+            <str name="echoParams">explicit</str>
+
+            <str name="q.alt">*:*</str>
+            <str name="mm">100%</str>
+            <str name="qf">
+                title_t
+                subtitle_t
+                abstract_t
+                author_t
+                editor_t
+                affiliation_t
+                keywords_t
+                issn_s
+                isbn_s
+                journal_title_s
+                publisher_s
+                pub_date_ti
+                doi_s
+            </str>
+            <!--
+            <str name="pf"></str>
+            -->
+            <str name="author_qf">
+                author_t
+                editor_t
+            </str>
+            <!--
+            <str name="author_pf"></str>
+            -->
+            <str name="title_qf">
+                title_t
+                subtitle_t
+                journal_title_s
+            </str>
+            <!--
+            <str name="title_pf"></str>
+            -->
+            <str name="subject_qf">
+                keywords_t
+            </str>
+            <!--
+            <str name="subject_pf"></str>
+            -->
 
             <str name="fl">*,score</str>
 
+            <str name="fq">access:dtu</str>
             <str name="facet">true</str>
             <str name="facet.mincount">1</str>
             <str name="facet.limit">10</str>
+            <str name="facet.field">format</str>
+            <str name="facet.field">pub_date_sort</str>
+            <str name="facet.field">author_facet</str>
+            <str name="facet.field">journal_title_facet</str>
+
+            <str name="spellcheck">true</str>
+            <str name="spellcheck.dictionary">default</str>
+            <str name="spellcheck.onlyMorePopular">true</str>
+            <str name="spellcheck.extendedResults">true</str>
+            <str name="spellcheck.collate">false</str>
+            <str name="spellcheck.count">5</str>
         </lst>
-    </requestHandler>
 
-    <requestHandler name="plain" class="solr.SearchHandler" default="false">
-        <lst name="defaults">
-            <str name="echoParams">explicit</str>
-        </lst>
-    </requestHandler>
-
-    <requestHandler name="/ds_plain" class="solr.SearchHandler" default="false">
-        <lst name="defaults">
-            <xi:include href="ds.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-            <str name="echoParams">explicit</str>
-            <str name="shards.qt">plain</str>
-            <str name="shards.info">true</str>
-        </lst>
-    </requestHandler>
-
-    <requestHandler name="/ds_group" class="solr.SearchHandler" default="false">
-        <lst name="defaults">
-            <xi:include href="ds.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-            <str name="echoParams">explicit</str>
-
-            <str name="fl">*,score</str>
-
-            <str name="facet">true</str>
-            <str name="facet.mincount">1</str>
-            <str name="facet.limit">10</str>
-
-            <str name="group">true</str>
-            <str name="group.field">cluster_id</str>
-            <str name="group.ngroups">true</str>
-            <str name="group.limit">10</str>
-            <str name="group.facet">true</str>
-        </lst>
+        <arr name="last-components">
+            <str>spellcheck</str>
+        </arr>
     </requestHandler>
 
     <requestHandler name="/ds_document" class="solr.SearchHandler" >
@@ -110,7 +183,7 @@
     <requestHandler name="/ds_journal_title" class="solr.SearchHandler" >
         <lst name="defaults">
             <xi:include href="ds.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-            <str name="fl">title:journal_title_t</str>
+            <str name="fl">title:journal_title_s</str>
             <str name="rows">1</str>
             <str name="q">{!raw f=issn_t v=$q}</str>
         </lst>
@@ -172,7 +245,7 @@
         <!-- a spellchecker built from a field of the main index -->
         <lst name="spellchecker">
             <str name="name">default</str>
-            <str name="field">textSpell</str>
+            <str name="field">spell</str>
             <str name="classname">solr.DirectSolrSpellChecker</str>
             <!-- the spellcheck distance measure used, the default is the internal
            levenshtein -->
@@ -200,7 +273,7 @@
      qualified class name -->
         <lst name="spellchecker">
             <str name="name">freq</str>
-            <str name="field">textSpell</str>
+            <str name="field">spell</str>
             <str name="classname">solr.DirectSolrSpellChecker</str>
             <!-- the spellcheck distance measure used, the default is the internal
            levenshtein -->
@@ -228,7 +301,7 @@
         <!-- a spellchecker that uses a different distance measure -->
         <lst name="spellchecker">
             <str name="name">jarowinkler</str>
-            <str name="field">textSpell</str>
+            <str name="field">spell</str>
             <str name="classname">solr.DirectSolrSpellChecker</str>
             <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
             <float name="maxQueryFrequency">0.01</float>
@@ -237,7 +310,7 @@
         <!-- a spellchecker that uses a different distance measure -->
         <lst name="spellchecker">
             <str name="name">jarowinkler_freq</str>
-            <str name="field">textSpell</str>
+            <str name="field">spell</str>
             <str name="classname">solr.DirectSolrSpellChecker</str>
             <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
             <str name="comparatorClass">freq</str>
@@ -247,7 +320,7 @@
         <!-- a spellchecker that uses a different distance measure -->
         <lst name="spellchecker">
             <str name="name">levenstein</str>
-            <str name="field">textSpell</str>
+            <str name="field">spell</str>
             <str name="classname">solr.DirectSolrSpellChecker</str>
             <str name="distanceMeasure">org.apache.lucene.search.spell.LevensteinDistance</str>
             <float name="maxQueryFrequency">0.01</float>
@@ -256,7 +329,7 @@
         <!-- a spellchecker that uses a different distance measure -->
         <lst name="spellchecker">
             <str name="name">levenstein_freq</str>
-            <str name="field">textSpell</str>
+            <str name="field">spell</str>
             <str name="classname">solr.DirectSolrSpellChecker</str>
             <str name="distanceMeasure">org.apache.lucene.search.spell.LevensteinDistance</str>
             <str name="comparatorClass">freq</str>

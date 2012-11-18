@@ -15,7 +15,7 @@ class CatalogController < ApplicationController
       :rows => 10
     }
     
-    config.solr_request_handler = 'ds'
+    config.solr_request_handler = 'ds_dtu'
     config.document_solr_request_handler = 'ds_document'
 
     ## Default parameters to send on single-document requests to Solr. These 
@@ -60,7 +60,7 @@ class CatalogController < ApplicationController
     # facet bar
     config.add_facet_field 'format', :label => 'Format' 
     config.add_facet_field 'pub_date_sort', :label => 'Publication Year', :range => true 
-    config.add_facet_field 'author_name_facet', :label => 'Authors', :limit => 20
+    config.add_facet_field 'author_facet', :label => 'Authors', :limit => 20
     config.add_facet_field 'journal_title_facet', :label => 'Journals', :limit => 20  
 
     # Have BL send all facet field names to Solr, which has been the default
@@ -73,19 +73,20 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display 
     config.add_index_field 'title_t', :label => 'Title:' 
-    config.add_index_field 'author_name_t', :label => 'Author:' 
+    config.add_index_field 'author_t', :label => 'Author:' 
     config.add_index_field 'format', :label => 'Format:' 
-    config.add_index_field 'language_t', :label => 'Language:'
-    config.add_index_field 'journal_title_t', :label => 'Journal title:'
+    config.add_index_field 'language_s', :label => 'Language:'
+    config.add_index_field 'journal_title_s', :label => 'Journal title:'
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display 
     config.add_show_field 'title_t', :label => 'Title:' 
-    config.add_show_field 'author_name_t', :label => 'Author:' 
+    config.add_show_field 'author_t', :label => 'Author:' 
     config.add_show_field 'format', :label => 'Format:' 
-    config.add_show_field 'language_t', :label => 'Language:'
-    config.add_show_field 'isbn_t', :label => 'ISBN:'
-    config.add_show_field 'journal_title_t', :label => 'Journal Title:'
+    config.add_show_field 'language_s', :label => 'Language:'
+    config.add_show_field 'isbn_s', :label => 'ISBN:'
+    config.add_show_field 'issn_s', :label => 'ISSN:'
+    config.add_show_field 'journal_title_s', :label => 'Journal Title:'
     config.add_show_field 'abstract_t', :label => 'Abstract:'
 
     # "fielded" search configuration. Used by pulldown among other places.
@@ -105,16 +106,14 @@ class CatalogController < ApplicationController
     # This one uses all the defaults set by the solr request handler. Which
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise. 
-    
     config.add_search_field 'all_fields', :label => 'All Fields'    
 
     # Now we see how to over-ride Solr request handler defaults, in this
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields. 
-    
     config.add_search_field('title') do |field|
       # solr_parameters hash are sent to Solr as ordinary url query params. 
-      field.solr_parameters = { :'spellcheck.dictionary' => 'title' }
+      #field.solr_parameters = { :'spellcheck.dictionary' => 'title' }
 
       # :solr_local_parameters will be sent using Solr LocalParams
       # syntax, as eg {! qf=$title_qf }. This is neccesary to use
@@ -122,15 +121,15 @@ class CatalogController < ApplicationController
       # See: http://wiki.apache.org/solr/LocalParams
       field.solr_local_parameters = { 
         :qf => '$title_qf',
-        :pf => '$title_pf'
+        #:pf => '$title_pf'
       }
     end
     
     config.add_search_field('author') do |field|
-      field.solr_parameters = { :'spellcheck.dictionary' => 'author' }
+      #field.solr_parameters = { :'spellcheck.dictionary' => 'author' }
       field.solr_local_parameters = { 
         :qf => '$author_qf',
-        :pf => '$author_pf'
+        #:pf => '$author_pf'
       }
     end
     
@@ -138,11 +137,11 @@ class CatalogController < ApplicationController
     # tests can test it. In this case it's the same as 
     # config[:default_solr_parameters][:qt], so isn't actually neccesary. 
     config.add_search_field('subject') do |field|
-      field.solr_parameters = { :'spellcheck.dictionary' => 'subject' }
+      #field.solr_parameters = { :'spellcheck.dictionary' => 'subject' }
       field.qt = 'search'
       field.solr_local_parameters = { 
         :qf => '$subject_qf',
-        :pf => '$subject_pf'
+        #:pf => '$subject_pf'
       }
     end
 

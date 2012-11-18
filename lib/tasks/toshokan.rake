@@ -20,7 +20,8 @@ namespace :tosho do
       puts "Indexing"
       solr = RSolr.connect :url => $solr_config["url"]
       solr.delete_by_query '*:*'
-      solr.update :data => File.open("spec/fixtures/solr_data.xml", "r").read
+      xml = File.open("spec/fixtures/solr_data.xml", "r").read
+      solr.update :data => xml
       solr.commit
     end  
   
@@ -85,8 +86,8 @@ namespace :tosho do
     FileUtils.mkdir_p(jetty_conf)
 
     puts "Copying solr configuration files"
-    Dir["#{tmp_conf_path}/*.{html,txt}"].each do |f|
-      FileUtils.cp(f, jetty_conf)
+    Dir["#{tmp_conf_path}/*.{html,txt}","#{tmp_conf_path}/*/"].each do |f|
+      FileUtils.cp_r(f, jetty_conf)
     end
     FileUtils.cp("#{tmp_conf_path}/solrconfig-master-test.xml", "#{jetty_conf}/solrconfig.xml")
     FileUtils.cp(%W(#{tmp_conf_path}/schema.xml #{tmp_conf_path}/ds.xml #{tmp_conf_path}/search_handlers.xml #{tmp_conf_path}/warming_queries.xml), "#{jetty_conf}")
