@@ -13,7 +13,7 @@ Feature: Paginate search results
 
   Scenario: A result set that fits within the inner window of the pagination
     When I search for "technology"
-    Then I should see 4 page links
+    Then I should see 5 page links
     And  I should see the next page link
     But  I should not see the previous page link
     And  I should not see any page gaps
@@ -29,7 +29,7 @@ Feature: Paginate search results
   Scenario: Moving into a result set that fits within the inner window of the pagination
     When I search for "technology"
     And  I go to the next page of the result set
-    Then I should see 4 page links
+    Then I should see 5 page links
     And  I should see the previous page link
     And  I should see the next page link
     But  I should not see any page gaps

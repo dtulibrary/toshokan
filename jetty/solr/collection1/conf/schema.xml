@@ -58,7 +58,7 @@
         <field name="journal_issue_s" type="string" indexed="false" stored="true" multiValued="true"/>
         <field name="journal_page_s"  type="string" indexed="false" stored="true" multiValued="true"/>
         <field name="open_url"        type="string" indexed="false" stored="true" multiValued="false" />
-        <field name="source_url"      type="string" indexed="false" stored="true" multiValued="false" />
+        <field name="source_url"      type="string" indexed="false" stored="true" multiValued="true" />
 
         <!--  sorting -->
         <field name="title_sort"    type="lowercase" indexed="true" stored="false" multiValued="false" />
