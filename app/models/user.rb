@@ -1,17 +1,18 @@
-require 'blacklight-tag'
-
-class User < ActiveRecord::Base
+  class User < ActiveRecord::Base
   include Blacklight::User
-  #include BlacklightTag::User
 
   attr_accessible :email, :firstname, :identifier, :lastname, :provider, :username, :image_url
   attr_accessor :impersonating
   alias :impersonating? :impersonating
-  validates :provider, presence: true 
 
   has_many :profiles
   has_and_belongs_to_many :roles
-  
+
+  has_many :subscriptions, :dependent => :destroy
+  has_many :tags, :dependent => :destroy
+  has_many :taggings, :through => :tags
+
+
   def self.create_or_update_with_account(provider, account)
     user =
       find_by_provider_and_identifier(provider, account.cwis) ||
@@ -22,7 +23,7 @@ class User < ActiveRecord::Base
     user.email = account.email
     user.image_url = account.image_url
     logger.debug "image url is #{account.image_url}"
-    
+
     user.profiles.clear
     account.profiles.each do |dtubase_profile|
       user.profiles.build(:active => dtubase_profile.active,
@@ -30,6 +31,9 @@ class User < ActiveRecord::Base
                           :email => dtubase_profile.email,
                           :identifier => dtubase_profile.id,
                           :org_id => dtubase_profile.org_id)
+
+
+
     end
     user.save
     user
@@ -68,11 +72,11 @@ class User < ActiveRecord::Base
   end
 
   def employee?
-    employee_profiles.any? { |p| p.active }    
+    employee_profiles.any? { |p| p.active }
   end
 
   def student?
-    student_profiles.any? { |p| p.active }    
+    student_profiles.any? { |p| p.active }
   end
 
   def guest?
@@ -81,7 +85,55 @@ class User < ActiveRecord::Base
 
   def anonymous?
     # Anonymous users are not stored in the database so they don't have an ID
-    !id 
+    !id
+  end
+
+  def tag(document, tag_name)
+    tag = tags.find_or_create_by_name(tag_name)
+    taggings.build(:solr_id => document.id, :tag => tag).save
+    tag
+  end
+
+  def subscribe(tag)
+    subscriptions.find_or_create_by_tag_id(tag.id)
+  end
+
+  def tags_for(documents)
+    if (documents.respond_to?(:map))
+      ids = documents.map(&:id)
+      r = Hash.new([])
+      tags.includes(:taggings).where('taggings.solr_id' => ids)
+	.each{|tag| tag.taggings.each{|tagging| r[tagging.solr_id] += [tag]}}
+      r
+    else
+      ids = documents.id
+      tags.includes(:taggings).where('taggings.solr_id' => ids)
+    end
+  end
+
+  def subscribed_tags_for(documents)
+    if (documents.respond_to?(:map))
+      ids = documents.map(&:id)
+      r = Hash.new([])
+      subscriptions.includes(:tag => [:taggings]).where('tags.shared' => true).where('taggings.solr_id' => ids)
+	.each{|subscription| subscription.tag.taggings.each{|tagging| r[tagging.solr_id] += [subscription.tag]}}
+      r
+    else
+      ids = documents.id
+      subscriptions.includes(:tag => [:taggings]).where('tags.shared' => true).where('taggings.solr_id' => ids).collect{|s| s.tag}
+    end
+  end
+
+  def shared_tags
+    tags.where(:shared => true)
+  end
+
+  def subscribed_tags
+    subscriptions.includes(:tag).where('tags.shared' => true).collect{|s| s.tag}
+  end
+
+  def subscribed_taggings
+    subscriptions.includes(:tag => [:taggings]).where('tags.shared' => true).collect{|s| s.tag.taggings}.flatten
   end
 
   def to_s

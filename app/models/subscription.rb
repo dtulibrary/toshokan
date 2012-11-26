@@ -1,4 +1,4 @@
 class Subscription < ActiveRecord::Base
   belongs_to :user
-  has_one :tags
+  belongs_to :tag
 end
