@@ -18,7 +18,7 @@ end
 
 Given /^I remove the tag "(.*?)" from the(?: first)? document$/ do |tag_name|
   within(".document .documentFunctions .tag", :text => tag_name) do
-    click_button 'x'
+    click_link 'Remove'
   end
 end
 
@@ -44,7 +44,7 @@ end
 
 Given /^I rename tag "(.*?)" to "(.*?)"$/ do |tag_name, new_tag_name|
   visit tags_path
-  within(:xpath, "//tr[td/h6/text()='#{tag_name}']") do
+  within(:xpath, "//tr[td/span/text()='#{tag_name}']") do
     click_link 'Edit'
   end
   fill_in('tag_name', :with => new_tag_name)
@@ -53,7 +53,7 @@ end
 
 Given /^I delete tag "(.*?)"$/ do |tag_name|
   visit tags_path
-  within(:xpath, "//tr[td/h6/text()='#{tag_name}']") do
-    click_button 'Delete'
-  end  
+  within(:xpath, "//tr[td/span/text()='#{tag_name}']") do
+    click_link 'Delete'
+  end
 end

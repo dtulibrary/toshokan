@@ -3,9 +3,9 @@ module BlacklightHelper
 
   # Override blacklight document actions to exclude 'Folder' and 'Bookmarks'
   # and instead render 'Tagging' functionality
-  def render_index_doc_actions (document, options={})   
+  def render_index_doc_actions (document, options={})
     content = []
-    content << tag_control(document) if has_user_authentication_provider? && current_user
+    content << render_tag_control(document) if has_user_authentication_provider? && current_user
     content_tag("div", content.join("\n").html_safe, :class=>"documentFunctions")
   end
 

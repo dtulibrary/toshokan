@@ -10,14 +10,17 @@ en:
       switch_back: "Switch Back"
       logged_in_as: "Logged in as"
       cwis: "User name or CWIS number"
-      login_cas: "Login (CAS)"
-      login_velo: "Login (Velo)"
-      logout_cas: "Logout (CAS)"
-      logout_velo: "Logout (Velo)"
+      login_cas: "Login"
+      login_velo: "Login"
+      logout_cas: "Logout"
+      logout_velo: "Logout"
+    mylibrary:
+      title: "MyLibrary"
     tags:
+      title: "Tags"
       add_tag: "Add tag"
       tag: "Tag"
-      manage_your_tags: "Manage your tags"
+      manage: "Manage your tags"
       save: "Save"
       discard: "Discard"
       edit: "Edit"
@@ -36,11 +39,12 @@ en:
       save: "Save"
     source_url:
       pubmed: "PubMed"
-      isi: "Web of Science®" 
+      isi: "Web of Science®"
     tools:
+      cite_and_export: "Cite and export"
       bibtex: "Export to BibTeX"
-      ris: "Export to RIS" 
+      ris: "Export to RIS"
     citation:
       mla: "MLA"
-      apa: "APA"  
+      apa: "APA"
       'chicago-author-date': "Chicago"

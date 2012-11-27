@@ -1,20 +1,18 @@
-<ul>
-  <% tags.each do |tag| %>
-    <li>
-      <% if any_tag_in_params? %>
-        <% if tag_in_params? tag  %>
-          <span class="tag selected"><%= render_tag_value tag %></span>
+<div class="facet_limit blacklight-format">
+  <h5 class="twiddle">Tags <i class="icon-chevron"></i></h5>
+  <ul>
+    <% tags.each do |tag| %>
+      <li>
+        <% if any_tag_in_params? %>
+          <% if tag_in_params? tag  %>
+            <%= render_selected_tag_value tag %>
+          <% else %>
+            <%= render_tag_value tag %>
+          <% end %>
         <% else %>
-          <span class="tag unselected"><%= render_tag_value tag %></span>
+          <%= render_tag_value tag %>
         <% end %>
-      <% else %>
-        <span class="tag"><%= render_tag_value tag %></span>
-      <% end %>
-    </li>
-  <% end %>
-  <li>
-    <% if !tags.empty? %>
-      <%= link_to t('toshokan.tag.manage_your_tags'), tags_path %>
+      </li>
     <% end %>
-  </li>
-</ul>
+  </ul>
+</div>

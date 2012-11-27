@@ -8,8 +8,11 @@ gem 'rails', '3.2.8'
 gem 'sqlite3'
 
 gem 'jquery-rails'
-gem 'blacklight', '3.7.1'
-gem "blacklight_range_limit", :git => "git://github.com/rikke/blacklight_range_limit.git"
+gem 'blacklight', '4.0.0.pre7'
+gem 'unicode'
+gem 'bootstrap-sass'
+
+#gem "blacklight_range_limit", :git => "git://github.com/rikke/blacklight_range_limit.git"
 gem 'pg'
 gem 'unhappymapper', :require => 'happymapper'
 gem 'httparty'
@@ -26,8 +29,6 @@ gem 'citeproc-ruby'
 # in production environments by default.
 group :assets do
   gem 'sass-rails'
-  gem 'compass-rails', '~> 1.0.0'
-  gem "compass-susy-plugin", "~> 0.9.0"
   gem 'coffee-rails',  '~> 3.2.1'
 
   gem 'therubyracer', :platforms => :ruby
@@ -49,7 +50,7 @@ end
 group :test, :development do
   gem 'jettywrapper'
   gem 'debugger'
-  gem 'rspec-rails'  
+  gem 'rspec-rails'
 end
 
 group :development do

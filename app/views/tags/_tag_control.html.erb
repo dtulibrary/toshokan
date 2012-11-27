@@ -1,5 +1,14 @@
-<% tags.each do |tag| %>
-  <span class="tag"><%= render_tag_value(tag) %> | <%= button_to 'x', document_tag_path(document, tag, :return_url => request.url), :method => :delete %></span>
-<% end %>
+<div class="tags">
+  <% tags.each do |tag| %>
+    <span class="tag btn-group">
+      <span class="btn btn-mini btn-info dropdown-toggle" data-toggle="dropdown">
+        <%= render_tag_value(tag, {:suppress_link => true}) %><span class="caret"></span>
+      </span>
+      <ul class="dropdown-menu">
+        <li><%= link_to 'Remove', document_tag_path(document, tag, :return_url => request.url), :method => :delete %></li>
+      </ul>
+    </span>
+  <% end %>
+</div>
 
 <%= link_to t('toshokan.tags.add_tag'), new_document_tag_path(document, :return_url => request.url) %>

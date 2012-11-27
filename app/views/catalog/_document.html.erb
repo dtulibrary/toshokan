@@ -1,23 +1,17 @@
     <% # container for a single doc -%>
     <div class="document <%= render_document_class document %>">
-      
-      <% # header bar for doc items in index view -%>
-      <div class="documentHeader">
-        
-        <% # bookmark/folder functions for items/docs -%>
-        <%= render_index_doc_actions document %>
-        
-        <% # main title container for doc partial view -%>
-        <div class="yui-u">
-          <h3 class="index_title"><%= t('blacklight.search.documents.counter', :counter => (document_counter + 1 + @response.params[:start].to_i)) %><%= link_to_document document, :label=>document_show_link_field, :counter => (document_counter + 1 + @response.params[:start].to_i) %></h3>
+
+      <%= render :partial => 'document_header', :locals => { :document => document, :document_counter => document_counter } %>
+
+     <div class="media">
+        <span class="pull-right hidden-phone">
+          <% # Cover image %>
+          <%= render_cover_image document %>
+        </span>
+        <div class="media-body">
+          <% # main container for doc partial view -%>
+          <%= render_document_partial document, :index %>
         </div>
       </div>
-      
-      <% # Cover image %>
-      <%= render_cover_image document %>
 
-      <% # main container for doc partial view -%>
-      <%= render_document_partial document, :index %>
-
-      <div class="clear-both"></div>
     </div>

@@ -1,3 +1,4 @@
+@wip
 Feature: Paginate search results
 
   In order to browse through the entire search result

@@ -7,21 +7,30 @@
   # functions by default only on detail.
 -%>
   <ul class="tools">
-  
+    <h5><%= t('toshokan.tools.cite_and_export') %></h5>
+
     <% if (!@document.citation_styles.empty?) %>
-      <%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :name => 'citation', :class => 'lightboxLink'} %>      
+      <li class="cite">
+      <%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :name => 'citation', :class => 'lightboxLink'} %>
+      </li>
     <% end %>
-        
+
     <% if @document.export_formats.keys.include?( :bib ) && @document[:format] != "journal" %>
-      <li class="endnote">
+      <li class="bibtex">
       <%= link_to t('toshokan.tools.bibtex'), catalog_path(@document, :format => 'bib') %>
       </li>
     <% end %>
-    
+
     <% if @document.export_formats.keys.include?( :ris ) && @document[:format] != "journal" %>
       <li class="endnote">
       <%= link_to t('toshokan.tools.ris'), catalog_path(@document, :format => 'ris') %>
       </li>
     <% end %>
+
+    <li class="tags">
+      <h5><%= t('toshokan.tags.title') %></h5>
+      <%= render_tag_control @document %>
+    </li>
+
 
   </ul>

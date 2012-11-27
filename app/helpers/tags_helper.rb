@@ -1,6 +1,6 @@
 module TagsHelper
 
-  def tag_control(document)
+  def render_tag_control(document)
     solr_document_pointer = SolrDocumentPointer.find_by_solr_id(document.id)
     tags = []
     tags = solr_document_pointer.tags_from(current_or_guest_user).map{|name| ActsAsTaggableOn::Tag.find_by_name(name)} if solr_document_pointer
@@ -16,7 +16,20 @@ module TagsHelper
   end
 
   def render_tag_value(tag, options ={})
-    (link_to_unless(options[:suppress_link], tag.name, add_tag_params_and_redirect(tag.name), :class=>"tag_select label")).html_safe
+    link_to_unless(options[:suppress_link], tag.name,
+                   add_tag_params_and_redirect(tag.name),
+                   :class=>"facet_select").html_safe
+  end
+
+  def render_selected_tag_value(tag)
+    #Updated class for Bootstrap Blacklight
+    content_tag(:span,
+                render_tag_value(tag, :suppress_link => true),
+                :class => "selected") +
+      link_to(content_tag(:i, '', :class => "icon-remove") +
+      content_tag(:span, '[remove]', :class => 'hide-text'),
+                  remove_tag_params(tag.name, params),
+                  :class=>"remove")
   end
 
   # Adds the tag to params[:t]

@@ -6,9 +6,9 @@
     </tr>
   </thead>
   <% @tags.each do |tag| %>
-    <tr class='tag-manager'> 
-    <td><h6><%= tag.name %></h6><em><%= pluralize(current_user.owned_taggings.where(tag_id: tag.id).size, 'document') %></em></td> 
-  <td><%= link_to t('toshokan.tags.edit'), edit_tag_path(tag) %> <%= button_to t('toshokan.tags.delete'), tag_path(tag, :return_url => request.url), :method => :delete %></td>
+    <tr class='tag-manager'>
+    <td><span class="btn btn-mini btn-info"><%= tag.name %></span></td>
+  <td><%= link_to t('toshokan.tags.edit'), edit_tag_path(tag) %> <%= link_to t('toshokan.tags.delete'), tag_path(tag, :return_url => request.url), :method => :delete %></td>
     </tr>
   <% end %>
 </table>
