@@ -11,6 +11,7 @@ require 'bundler/capistrano'
 
 set :rails_env, ENV['RAILS_ENV'] || "unstable"
 set :application, ENV['HOST']
+set :toshokan_config, ENV['TOSHOKAN_CONFIG'] || "#{rails_env}"
 
 set :deploy_to, "/var/www/#{application}"
 role :web, "#{application}"
@@ -45,7 +46,7 @@ namespace :config do
   desc "update configuration from separate repository"
   task :update do
     run "mkdir -p #{deploy_to}/shared/config"
-    run "cd ~/toshokan-config-#{rails_env} && git pull && cp database.yml solr.yml application.local.rb #{deploy_to}/shared/config"
+    run "cd ~/toshokan-config-#{toshokan_config} && git pull && cp database.yml solr.yml application.local.rb #{deploy_to}/shared/config"
   end
   
   desc "linking configuration to current release"
