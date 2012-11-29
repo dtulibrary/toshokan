@@ -1,17 +1,15 @@
-<h2><%= raw t 'toshokan.manage_users.title' %></h2>
-<% @all_users.each do |user| %>
-  <%= form_tag user_path(user.id), 
-      :method => :put, 
-      :action => :update, 
-      'data-cwis' => user.identifier do %>
-    <h4><%= user.to_s %> (<%= t 'toshokan.users.cwis' %>: <%= user.identifier %>, <%= t 'toshokan.users.email' %>: <%= user.email %>)</h4>
-    <% @all_roles.each do |role| %>
-      <%= check_box_tag "#{role.id}", 1, user.roles.include?(role), 
-          :class => 'ajax update-role', 
-          'data-role_id' => role.id, 
-          :id => "#{user.id}_#{role.id}" %>
-      <%= label_tag "#{user.id}_#{role.id}", t('toshokan.roles.' + role.code) %>
-    <% end %>
-    <%= submit_tag t('toshokan.manage_users.save'), :class => 'save-user' %>
-  <% end %>
-<% end %>
+<div id="sidebar" class="span3">
+  <div class="sidenav">
+    <h4>Administration</h4>
+    <div>
+      <h5 data-toggle="collapse" data-target="#myul">Users <i class="icon-chevron"></i></h5>
+      <ul id="myul" style="display:none">
+        <li>Manage Users</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div id="content" class="span9">
+  <!-- The partial to be rendered should come from a request parameter -->
+  <%= render 'manage_users' %>
+</div>

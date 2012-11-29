@@ -1,0 +1,19 @@
+<% @all_users.each do |user| %>
+  <%= form_tag user_path(user.id), 
+      :method => :put, 
+      :action => :update, 
+      :class => 'manage-users',
+      'data-cwis' => user.identifier do %>
+    <h4><%= user.to_s %></h4>
+    <small><%= t 'toshokan.users.cwis' %>: <%= user.identifier %>, <%= t 'toshokan.users.email' %>: <%= user.email %></small></h4>
+    <h5>Roles</h5>
+    <% @all_roles.each do |role| %>
+      <%= check_box_tag "#{role.id}", 1, user.roles.include?(role), 
+          :class => 'ajax update-role', 
+          'data-role_id' => role.id, 
+          :id => "#{user.id}_#{role.id}" %>
+      <%= label_tag "#{user.id}_#{role.id}", t('toshokan.roles.' + role.code) %>
+    <% end %>
+    <%= submit_tag t('toshokan.manage_users.save'), :class => 'save-user' %>
+  <% end %>
+<% end %>

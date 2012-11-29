@@ -1,0 +1,23 @@
+.manage-users {
+  margin-bottom: 3em;
+
+  small {
+    color: #555;
+  }
+  
+  h4, h5 {
+    margin-bottom: 0.2em;
+  }
+
+  label {
+    display: inline;
+    vertical-align: baseline;
+    line-height: 1em;
+    margin-right: 2em;
+  }
+
+  input {
+    line-height: 1em;
+    vertical-align: baseline;
+  }
+}
