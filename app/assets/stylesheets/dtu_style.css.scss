@@ -1,0 +1,49 @@
+.btn-primary {
+  background-color: #900;
+  background-image: -moz-linear-gradient(top, #900, #700);
+  background-image: -webkit-linear-gradient(top, #900, #700);
+  background-position: top left;
+  border-color: #500;
+
+  &:hover, &:active {
+    background-color: #b00;
+    background-image: -moz-linear-gradient(top, #b00, #900);
+    background-image: -webkit-linear-gradient(top, #a00, #900);
+    background-position: top left;
+    border-color: #500;
+  }
+}
+
+a {
+  color: #900;
+
+  &:hover, &:active {
+    color: #900;
+  }
+}
+
+input {
+  &[type = 'text']:focus {
+    border-color: #900;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075), 0px 0px 8px rgba(128,0,0,0.6);
+  }
+}
+
+.navbar {
+  a.logo {
+    &:hover, &:active {
+      text-decoration: none;
+    }
+
+    img {
+      float: left;
+      margin-right: 0.5em;
+    }
+
+    h3 {
+      color: #555;
+      margin: 0px;
+      font-size: 1.4em;
+    }
+  }
+}
