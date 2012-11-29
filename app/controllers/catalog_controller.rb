@@ -7,11 +7,12 @@ class CatalogController < ApplicationController
 
   include TagsHelper
   self.solr_search_params_logic += [:add_tag_fq_to_solr]
+  self.solr_search_params_logic += [:add_access_filter]
 
   configure_blacklight do |config|
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
-      :qt => '/ds_dtu',
+      :qt => '/ds',
       :q => '*:*',
       :rows => 10
     }
@@ -155,6 +156,19 @@ class CatalogController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+  end
+
+  def add_access_filter solr_parameters, user_parameters
+
+    solr_parameters[:fq] ||= []
+    case Rails.application.config.application_mode
+    when :dtu
+      solr_parameters[:fq] << 'access:dtu'
+    when :dtu_kiosk        
+      solr_parameters[:fq] << 'access:dtu'
+    when :i4i
+      solr_parameters[:fq] << 'access:dtupub'
+    end
   end
 
 end

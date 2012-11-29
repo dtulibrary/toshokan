@@ -95,79 +95,10 @@
             -->
 
             <str name="fl">*,score</str>
-        </lst>
-    </requestHandler>
 
-    <requestHandler name="/ds_dtu" class="solr.SearchHandler" default="false">
-        <lst name="defaults">
-            <xi:include href="ds.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-            <str name="defType">edismax</str>
-            <str name="echoParams">explicit</str>
-
-            <str name="q.alt">*:*</str>
-            <str name="mm">100%</str>
-            <str name="qf">
-                title_t
-                subtitle_t
-                abstract_t
-                author_t
-                editor_t
-                affiliation_t
-                keywords_t
-                issn_s
-                isbn_s
-                journal_title_s
-                publisher_s
-                pub_date_ti
-                doi_s
-            </str>
-            <!--
-            <str name="pf"></str>
-            -->
-            <str name="author_qf">
-                author_t
-                editor_t
-            </str>
-            <!--
-            <str name="author_pf"></str>
-            -->
-            <str name="title_qf">
-                title_t
-                subtitle_t
-                journal_title_s
-            </str>
-            <!--
-            <str name="title_pf"></str>
-            -->
-            <str name="subject_qf">
-                keywords_t
-            </str>
-            <!--
-            <str name="subject_pf"></str>
-            -->
-
-            <str name="fl">*,score</str>
-
-            <str name="fq">access:dtu</str>
             <str name="facet">true</str>
             <str name="facet.mincount">1</str>
-            <str name="facet.limit">10</str>
-            <str name="facet.field">format</str>
-            <str name="facet.field">pub_date_sort</str>
-            <str name="facet.field">author_facet</str>
-            <str name="facet.field">journal_title_facet</str>
-
-            <str name="spellcheck">true</str>
-            <str name="spellcheck.dictionary">default</str>
-            <str name="spellcheck.onlyMorePopular">true</str>
-            <str name="spellcheck.extendedResults">true</str>
-            <str name="spellcheck.collate">false</str>
-            <str name="spellcheck.count">5</str>
         </lst>
-
-        <arr name="last-components">
-            <str>spellcheck</str>
-        </arr>
     </requestHandler>
 
     <requestHandler name="/ds_document" class="solr.SearchHandler" >

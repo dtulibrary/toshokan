@@ -46,7 +46,6 @@
     <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/9)"/>
     <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/10)"/>
     <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/11)"/>
-    <xi:include href="search_handlers.xml" xmlns:xi="http://www.w3.org/2001/XInclude" xpointer="element(/1/12)"/>
 
     <requestHandler name="/replication" class="solr.ReplicationHandler">
         <lst name="master">
