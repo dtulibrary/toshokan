@@ -15,7 +15,7 @@
     var form = $('#switch_user_modal form');
 
     form.submit(function () {
-      var identifier = form.find('#user_identifier').val();
+      var identifier = form.find('#identifier').val();
       var errors = form.find('.alert.alert-error');
 
       errors.hide();
