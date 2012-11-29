@@ -52,10 +52,7 @@ class Users::SessionsController < ApplicationController
       if account == nil
         flash[:error] = 'User not found'
         if @is_ajax
-          # Render switch user form so javascript can replace the existing one 
-          # with the new one potentially showing error notice. Use status 404 to allow
-          # javascript to recognize that it was an error.
-          render :partial => 'switch_user_form', :status => 404 and return
+          render :text => flash[:error], :status => 404 and return
         else
           redirect_to switch_user_path, flash: flash
           return

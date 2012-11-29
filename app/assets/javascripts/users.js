@@ -1,48 +1,24 @@
 (function ($) {
 
-  // Switch user functionality
+  // Enable modal display when clicking on "Switch User"
   $(function () {
-    var data = [];
-    var form = $('#switch_user_form.ajax');
-
-    /* Pull switch user form out into body to avoid other 
-     * elements with position: absolute to interfere with positioning.
-     */
-    form.remove();
-    $('body').append(form);
-
     $('#switch_user').click(function () {
-      var center = {
-        x : $(window).width() / 2,
-        y : $(window).height() / 2
-      };
-
-      // Position dialog
-      form.css({
-        top : '4em',
-        left : (center.x - form.width() / 2) + 'px'
+      $('#switch_user_modal').modal({
+        backdrop: false
       });
-
-      // Display dialog
-      $('#overlay').toggle();
-      form.toggle();
-
-      if (form.is(':visible')) {
-        $('#user_identifier').focus();
-      }
-
       return false;
     });
+  });
 
-    $('#switch_user_form .cancel').click(function () {
-      $('#overlay').toggle();
-      form.toggle();
+  // Intercept switch user form submission
+  $(function () {
+    var form = $('#switch_user_modal form');
 
-      return false;
-    });
+    form.submit(function () {
+      var identifier = form.find('#user_identifier').val();
+      var errors = form.find('.alert.alert-error');
 
-    $('#switch_user_form').submit(function () {
-      var identifier = $('#user_identifier').val();
+      errors.hide();
 
       $.ajax({
         url : 'user/session',
@@ -50,7 +26,8 @@
         data : 'ajax=true&user[identifier]=' + identifier,
         statusCode : {
           404 : function (response, statusText, statusCode) {
-            $('#switch_user_form form').replaceWith(response.responseText);
+            errors.text(response.responseText);
+            errors.show();
           }
         },
         success : function () {

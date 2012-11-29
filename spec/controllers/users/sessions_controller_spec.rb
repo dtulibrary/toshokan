@@ -181,9 +181,14 @@ describe Users::SessionsController do
           @params[:ajax] = true
         end
 
-        it 'should render switch user form' do
+        it 'should return status 404' do
           put :update, @params
-          should render_template(:partial => '_switch_user_form')
+          response.response_code.should == 404
+        end
+
+        it 'should render text containing flash message' do
+          put :update, @params
+          response.body.should == 'User not found'
         end
       end
 

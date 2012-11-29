@@ -48,3 +48,6 @@ en:
       mla: "MLA"
       apa: "APA"
       'chicago-author-date': "Chicago"
+    modals:
+      switch_user:
+        title: "Switch User"

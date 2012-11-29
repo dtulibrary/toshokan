@@ -12,19 +12,6 @@
       <% if can? :logout, User %>
           <!-- Username -->
           <%= t('toshokan.header_links.logged_in_as') %> <%= link_to current_user, edit_user_registration_path %>
-
-          <!-- Switch user -->
-          <% if can? :switch, User %>
-            [ <%= link_to t('toshokan.header_links.switch_user'), switch_user_path, :id => 'switch_user' %> ]
-            <div id="switch_user_form" class="ajax" style="display:none">
-              <% # This is the thing the ajaxified 'switch user' will show %>
-              <a class="cancel" href="">Cancel</a>
-              <h4><%= t 'toshokan.header_links.switch_user' %></h4>
-              <%= render '/users/sessions/switch_user_form' %>
-            </div>
-          <% elsif can? :switch_back, User %>
-            [ <%= link_to t('toshokan.header_links.switch_back'), user_session_path, :method => :put, :id => 'switch_back' %> ]
-          <% end %>
           |
           <% if can? :logout_cas, User %>
             <%= link_to t('toshokan.header_links.logout_cas'), destroy_user_session_path %>
@@ -32,11 +19,26 @@
           <% if can? :logout_velo, User %>
             <%= link_to t('toshokan.header_links.logout_velo'), destroy_user_session_path %>
           <% end %>
-
       <% end %>
     </div>
 
     <div class="util-links-other">
+      <!-- Switch user -->
+      <% if can? :switch, User %>
+        <%= link_to t('toshokan.header_links.switch_user'), switch_user_path, :id => 'switch_user' %>
+        <div class="modal hide fade" id="switch_user_modal">
+          <div class="modal-header">
+            <h3><%= t 'toshokan.modals.switch_user.title' %></h3>
+          </div>
+          <div class="modal-body">
+            <%= render '/users/sessions/switch_user_form' %>
+          </div>
+        </div>
+        |
+      <% elsif can? :switch_back, User %>
+        <%= link_to t('toshokan.header_links.switch_back'), user_session_path, :method => :put, :id => 'switch_back' %>
+        |
+      <% end %>
       <% if can? :update, User %>
         <%= link_to t('toshokan.header_links.admin'), users_path %>
         |
