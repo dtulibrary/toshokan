@@ -4,15 +4,20 @@
       :action => :update, 
       :class => 'manage-users',
       'data-cwis' => user.identifier do %>
+    <% if user.image_url %>
+      <img src="<%= user.image_url %>" class="mugshot pull-right" alt="<%= t 'toshokan.users.profile_picture_for' %> <%= user.to_s %>">
+    <% end %>
     <h4><%= user.to_s %></h4>
     <small><%= t 'toshokan.users.cwis' %>: <%= user.identifier %>, <%= t 'toshokan.users.email' %>: <%= user.email %></small></h4>
-    <h5>Roles</h5>
+    <h5><%= t 'toshokan.manage_users.roles' %></h5>
     <% @all_roles.each do |role| %>
-      <%= check_box_tag "#{role.id}", 1, user.roles.include?(role), 
-          :class => 'ajax update-role', 
-          'data-role_id' => role.id, 
-          :id => "#{user.id}_#{role.id}" %>
-      <%= label_tag "#{user.id}_#{role.id}", t('toshokan.roles.' + role.code) %>
+      <div class="role-option">
+        <%= check_box_tag "#{role.id}", 1, user.roles.include?(role), 
+            :class => 'ajax update-role', 
+            'data-role_id' => role.id, 
+            :id => "#{user.id}_#{role.id}" %>
+        <%= label_tag "#{user.id}_#{role.id}", t('toshokan.roles.' + role.code) %>
+      </div>
     <% end %>
     <%= submit_tag t('toshokan.manage_users.save'), :class => 'save-user' %>
   <% end %>

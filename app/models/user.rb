@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   include Blacklight::User
 
-  attr_accessible :email, :firstname, :identifier, :lastname, :provider, :username
+  attr_accessible :email, :firstname, :identifier, :lastname, :provider, :username, :image_url
   attr_accessor :impersonating
   alias :impersonating? :impersonating
   validates :provider, presence: true 
@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
     user.firstname = account.firstname
     user.lastname = account.lastname
     user.email = account.email
+    user.image_url = account.image_url
+    logger.debug "image url is #{account.image_url}"
     
     user.profiles.clear
     account.profiles.each do |dtubase_profile|

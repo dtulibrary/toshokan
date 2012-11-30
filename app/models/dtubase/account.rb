@@ -9,6 +9,7 @@ class Dtubase::Account
   attribute :lastname, String, :tag => 'lastname'
   attribute :primary_profile_id, String
   attribute :active, Boolean, :tag => 'has_active_profile'
+  attribute :image_url, String, :tag => 'official_picture_url'
   has_many :employee_profiles, EmployeeProfile, :tag => 'profile_employee'
   has_many :student_profiles, StudentProfile, :tag => 'profile_student'
   has_many :guest_profiles, GuestProfile, :tag => 'profile_guest'
