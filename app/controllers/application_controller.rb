@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   include Blacklight::Controller
 
+  layout 'blacklight'
+
   rescue_from ActionController::RoutingError, :with => :render_not_found
 
   protect_from_forgery
