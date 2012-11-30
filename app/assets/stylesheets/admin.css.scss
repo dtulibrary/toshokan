@@ -1,8 +1,8 @@
 .manage-users {
   clear: right;
-  margin-top: 2em;
-  padding-top: 2em;
-  border-top: 1px solid #ccc;
+  margin-top: 1em;
+  padding-top: 1em;
+  border-top: 1px dotted #ccc;
 
   &:first-child {
     margin-top: 0em;
@@ -53,7 +53,7 @@
       box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
       width: 90px;
       height: 120px;
-      margin-bottom: 2em;
+      margin-bottom: 1em;
       margin-left: 2em;
     }
   }
