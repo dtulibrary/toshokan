@@ -1,5 +1,5 @@
 <small>
-  <% if has_user_authentication_provider? and current_user %>
+  <% if current_or_guest_user %>
     <div class="util-links-login">
       <!-- Login -->
       <% if can? :login_cas, User %>
@@ -9,7 +9,7 @@
         <%= link_to t('toshokan.header_links.login_velo'), new_user_session_path(:return_url => u(request.url)) %>
       <% end %>
 
-      <% if can? :logout, User %>
+      <% if current_user %>
           <!-- Username -->
           <%= t('toshokan.header_links.logged_in_as') %> <%= link_to current_user, edit_user_registration_path %>
           |
@@ -23,26 +23,28 @@
     </div>
 
     <div class="util-links-other">
-      <!-- Switch user -->
-      <% if can? :switch, User %>
-        <%= link_to t('toshokan.header_links.switch_user'), switch_user_path, :id => 'switch_user' %>
-        <div class="modal hide fade" id="switch_user_modal">
-          <div class="modal-header">
-            <button style="display:inherit" class="close" data-dismiss="modal" type="button">&times;</button>
-            <h3><%= t 'toshokan.modals.switch_user.title' %></h3>
+      <% if current_user %>
+        <!-- Switch user -->
+        <% if can? :switch, User %>
+          <%= link_to t('toshokan.header_links.switch_user'), switch_user_path, :id => 'switch_user' %>
+          <div class="modal hide fade" id="switch_user_modal">
+            <div class="modal-header">
+              <button style="display:inherit" class="close" data-dismiss="modal" type="button">&times;</button>
+              <h3><%= t 'toshokan.modals.switch_user.title' %></h3>
+            </div>
+            <div class="modal-body">
+              <%= render '/users/sessions/switch_user_form' %>
+            </div>
           </div>
-          <div class="modal-body">
-            <%= render '/users/sessions/switch_user_form' %>
-          </div>
-        </div>
-        |
-      <% elsif can? :switch_back, User %>
-        <%= link_to t('toshokan.header_links.switch_back'), user_session_path, :method => :put, :id => 'switch_back' %>
-        |
-      <% end %>
-      <% if can? :update, User %>
-        <%= link_to t('toshokan.header_links.admin'), users_path %>
-        |
+          |
+        <% elsif can? :switch_back, User %>
+          <%= link_to t('toshokan.header_links.switch_back'), user_session_path, :method => :put, :id => 'switch_back' %>
+          |
+        <% end %>
+        <% if can? :update, User %>
+          <%= link_to t('toshokan.header_links.admin'), users_path %>
+          |
+        <% end %>
       <% end %>
       <%= link_to t('blacklight.header_links.search_history'), search_history_path %>
     </div>

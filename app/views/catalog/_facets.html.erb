@@ -13,20 +13,24 @@
   </h4>
   <div class="facets-collapse">
   <%= render_facet_partials %>
-  <%= render_tag_partials %>
+  <% if can? :logout, User %>
+    <%= render_tag_partials %>
+  <% end %>
   </div>
 </div>
 
 
-<div id="mylibrary" class="mylibrary sidenav">
+<% if can? :logout, User %>
+  <div id="mylibrary" class="mylibrary sidenav">
 
-  <h4 data-toggle="collapse" data-target=".mylibrary-collapse">
-        <%= t('toshokan.mylibrary.title') %>
-  </h4>
-  <div class="mylibrary-collapse">
-    <ul>
-      <li><%= link_to t('toshokan.tags.manage'), :controller => "tags" %></li>
-    </ul>
+    <h4 data-toggle="collapse" data-target=".mylibrary-collapse">
+          <%= t('toshokan.mylibrary.title') %>
+    </h4>
+    <div class="mylibrary-collapse">
+      <ul>
+        <li><%= link_to t('toshokan.tags.manage'), :controller => "tags" %></li>
+      </ul>
+    </div>
   </div>
-</div>
+<% end %>
 
