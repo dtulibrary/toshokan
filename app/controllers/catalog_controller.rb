@@ -76,6 +76,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'format', :label => 'Format:'
     config.add_index_field 'language_s', :label => 'Language:'
     config.add_index_field 'journal_title_s', :label => 'Journal title:'
+    config.add_index_field 'pub_date_ti', :label => 'Year:'
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display

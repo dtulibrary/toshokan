@@ -14,7 +14,10 @@ namespace :tosho do
   
   $solr_config = YAML.load_file(Rails.root + 'config/solr.yml')[Rails.env]  
   namespace :test do
-    
+
+    desc "Fetch from local repository and index"
+    task :setup_index => ['jetty:stop', :setup, 'jetty:start', :index]
+
     desc "Index fixtures"
     task :index => :environment do
       puts "Indexing"

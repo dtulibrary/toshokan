@@ -294,10 +294,10 @@
         </fieldType>
 
         <!-- A text field with defaults appropriate for English: it
-   tokenizes with StandardTokenizer, removes English stop words
-   (lang/stopwords_en.txt), down cases, protects words from protwords.txt, and
-   finally applies Porter's stemming.  The query time analyzer
-   also applies synonyms from synonyms.txt. -->
+            tokenizes with StandardTokenizer, removes English stop words
+            (lang/stopwords_en.txt), down cases, protects words from protwords.txt, and
+            finally applies Porter's stemming.  The query time analyzer
+            also applies synonyms from synonyms.txt. -->
         <fieldType name="text_en" class="solr.TextField" positionIncrementGap="100">
             <analyzer type="index">
                 <tokenizer class="solr.StandardTokenizerFactory"/>
@@ -317,8 +317,8 @@
                 <filter class="solr.EnglishPossessiveFilterFactory"/>
                 <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
                 <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
-            <filter class="solr.EnglishMinimalStemFilterFactory"/>
-        -->
+                <filter class="solr.EnglishMinimalStemFilterFactory"/>
+                -->
                 <filter class="solr.PorterStemFilterFactory"/>
             </analyzer>
             <analyzer type="query">
@@ -333,20 +333,20 @@
                 <filter class="solr.EnglishPossessiveFilterFactory"/>
                 <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
                 <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
-            <filter class="solr.EnglishMinimalStemFilterFactory"/>
-        -->
+                <filter class="solr.EnglishMinimalStemFilterFactory"/>
+                -->
                 <filter class="solr.PorterStemFilterFactory"/>
             </analyzer>
         </fieldType>
 
         <!-- A text field with defaults appropriate for English, plus
-     aggressive word-splitting and autophrase features enabled.
-     This field is just like text_en, except it adds
-     WordDelimiterFilter to enable splitting and matching of
-     words on case-change, alpha numeric boundaries, and
-     non-alphanumeric chars.  This means certain compound word
-     cases will work, for example query "wi fi" will match
-     document "WiFi" or "wi-fi".
+             aggressive word-splitting and autophrase features enabled.
+             This field is just like text_en, except it adds
+             WordDelimiterFilter to enable splitting and matching of
+             words on case-change, alpha numeric boundaries, and
+             non-alphanumeric chars.  This means certain compound word
+             cases will work, for example query "wi fi" will match
+             document "WiFi" or "wi-fi".
         -->
         <fieldType name="text_en_splitting" class="solr.TextField" positionIncrementGap="100" autoGeneratePhraseQueries="true">
             <analyzer type="index">
@@ -384,7 +384,7 @@
         </fieldType>
 
         <!-- Less flexible matching, but less false matches.  Probably not ideal for product names,
-but may be good for SKUs.  Can insert dashes in the wrong place and still match. -->
+            but may be good for SKUs.  Can insert dashes in the wrong place and still match. -->
         <fieldType name="text_en_splitting_tight" class="solr.TextField" positionIncrementGap="100" autoGeneratePhraseQueries="true">
             <analyzer>
                 <tokenizer class="solr.WhitespaceTokenizerFactory"/>
@@ -395,7 +395,7 @@ but may be good for SKUs.  Can insert dashes in the wrong place and still match.
                 <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
                 <filter class="solr.EnglishMinimalStemFilterFactory"/>
                 <!-- this filter can remove any duplicate tokens that appear at the same position - sometimes
-         possible with WordDelimiterFilter in conjuncton with stemming. -->
+                 possible with WordDelimiterFilter in conjuncton with stemming. -->
                 <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
             </analyzer>
         </fieldType>
@@ -487,7 +487,7 @@ but may be good for SKUs.  Can insert dashes in the wrong place and still match.
         </fieldtype>
 
         <!-- lowercases the entire field value, keeping it as a single token.  -->
-        <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
+        <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100" sortMissingLast="true">
             <analyzer>
                 <tokenizer class="solr.KeywordTokenizerFactory"/>
                 <filter class="solr.LowerCaseFilterFactory" />
