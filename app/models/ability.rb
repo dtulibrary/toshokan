@@ -46,12 +46,21 @@ class Ability
         can :logout_cas, User
         can :tag, SolrDocument
       end
+    when :i4i
+      if user.anonymous?
+        can :be_anonymous, User
+        can :login_velo, User
+      else
+        can :logout_velo, User
+        can :tag, SolrDocument
+      end
     end
 
     # Abilities that work regardless of application mode
     unless user.anonymous?
       can :logout, User
 
+      can :view_raw, SolrDocument if user.roles.include? Role.find_by_code('DAT')
       can :update, User if user.roles.include? Role.find_by_code('ADM')
       can :switch, User if user.roles.include?(Role.find_by_code('SUP')) && !user.impersonating?
       can :switch_back, User if user.impersonating?
