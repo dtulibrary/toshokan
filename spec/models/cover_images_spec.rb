@@ -16,28 +16,28 @@ describe CoverImages do
 
   describe '.url_for' do
 
-    context 'when document has both issn_t and isbn_t fields' do
-      it 'should return an url pointing to issn_t field' do
-        document = { 'issn_t' => ['12345678'], 'isbn_t' => ['123456789abcd'] }
+    context 'when document has both issn_s and isbn_s fields' do
+      it 'should return an url pointing to issn_s field' do
+        document = { 'issn_s' => ['12345678'], 'isbn_s' => ['123456789abcd'] }
         CoverImages.url_for(document).should match /\/12345678\/native.png/
       end
     end
 
-    context 'when document only has issn_t field' do
-      it 'should return an url pointing to isbn_t field' do
-        document = { 'issn_t' => ['12345678'] }
+    context 'when document only has issn_s field' do
+      it 'should return an url pointing to isbn_s field' do
+        document = { 'issn_s' => ['12345678'] }
         CoverImages.url_for(document).should match /\/12345678\/native.png/
       end
     end
 
-    context 'when document only has isbn_t field' do
-      it 'should return an url pointing to isbn_t field' do
-        document = { 'isbn_t' => ['123456789abcd'] }
+    context 'when document only has isbn_s field' do
+      it 'should return an url pointing to isbn_s field' do
+        document = { 'isbn_s' => ['123456789abcd'] }
         CoverImages.url_for(document).should match /\/123456789abcd\/native.png/
       end
     end
 
-    context 'when document has neither issn_t nor isbn_t fields' do
+    context 'when document has neither issn_s nor isbn_s fields' do
       it 'should return an url pointing to fake id: XXXXXXXX' do
         CoverImages.url_for({}).should match /\/XXXXXXXX\/native.png/
       end
