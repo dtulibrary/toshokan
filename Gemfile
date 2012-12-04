@@ -74,6 +74,7 @@ group :development do
 
   gem 'rails_view_annotator'
   gem 'rails-footnotes'
+  gem 'rsolr-footnotes'
 end
 
 # Deploy with Capistrano

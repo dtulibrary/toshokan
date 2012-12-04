@@ -243,6 +243,11 @@ GEM
       json (~> 1.4)
     rsolr (1.0.8)
       builder (>= 2.1.2)
+    rsolr-footnotes (0.0.2)
+      activesupport
+      rails
+      rails-footnotes
+      rsolr
     rspec (2.11.0)
       rspec-core (~> 2.11.0)
       rspec-expectations (~> 2.11.0)
@@ -352,6 +357,7 @@ DEPENDENCIES
   rails_best_practices
   rails_view_annotator
   rb-fsevent
+  rsolr-footnotes
   rspec
   rspec-rails
   rspec-solr
