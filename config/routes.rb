@@ -9,6 +9,7 @@ Toshokan::Application.routes.draw do
   match '/mylibrary/profile',       :to => 'users/sessions#edit',      :as => 'edit_user_registration'
   match '/user/switch',             :to => 'users/sessions#switch',    :as => 'switch_user'
   match '/user/session'                 => 'users/sessions#update',    :as => 'user_session', :via => :put
+  match '/cover_images/:id',        :to => 'cover_images#show',        :as => 'cover_images'
 
   resources :documents, only: [] do
     resources :tags, except: [:index, :edit, :update]

@@ -15,10 +15,17 @@ class CoverImages
     yield self.config
   end
 
-  def self.url_for document
+  def self.extract_identifiers document
+    document['issn_s'] || document['isbn_s'] || ['XXXXXXXX']
+  end
+
+  def self.url_for id 
     config = self.config
-    id = document['issn_s'] || document['isbn_s'] || ['XXXXXXXX']
-    "#{config.url}/#{config.api_key}/#{id.first}/native.png"
+    "#{config.url}/#{config.api_key}/#{id}/native.png"
+  end
+
+  def self.get id
+    HTTParty.get self.url_for(id)
   end
 
 end
