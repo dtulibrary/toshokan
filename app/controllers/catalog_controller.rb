@@ -172,4 +172,14 @@ class CatalogController < ApplicationController
     end
   end
 
+  def index
+    @display_format = params[:display] || 'standard'
+    super
+  end
+
+  def show
+    @display_format = params[:display] || 'standard'
+    super
+  end
+
 end

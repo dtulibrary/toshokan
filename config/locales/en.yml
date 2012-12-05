@@ -53,3 +53,9 @@ en:
     modals:
       switch_user:
         title: "Switch User"
+    catalog:
+      display_formats:
+        compact: 'Compact'
+        standard: 'Standard'
+        librarian: 'Librarian'
+        indexed: 'Indexed'

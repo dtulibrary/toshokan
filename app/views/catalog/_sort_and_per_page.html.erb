@@ -1,0 +1,13 @@
+<div id="sortAndPerPage">
+   <div class="page_links">
+     <%= render :partial => "paginate_compact" %>
+   </div>
+    <%= render :partial => 'sort_widget' %>
+
+    <%= render :partial => 'per_page_widget' %>
+
+    <% if can? :view_format, 'librarian' %>
+      <%= render :partial => 'display_format_widget' %>
+    <% end %>
+
+</div>

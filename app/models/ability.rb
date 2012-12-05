@@ -60,6 +60,12 @@ class Ability
     unless user.anonymous?
       can :logout, User
 
+      if user.roles.include? Role.find_by_code('DAT')
+        can :view_format, ['compact', 'standard', 'librarian']
+      else
+        can :view_format, ['compact', 'standard']
+      end
+
       can :view_raw, SolrDocument if user.roles.include? Role.find_by_code('DAT')
       can :update, User if user.roles.include? Role.find_by_code('ADM')
       can :switch, User if user.roles.include?(Role.find_by_code('SUP')) && !user.impersonating?
