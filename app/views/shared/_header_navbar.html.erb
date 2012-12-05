@@ -1,25 +1,40 @@
 <div id="header-navbar-fixed-top" class="navbar navbar-fixed-top">
-     <div class="navbar-inner">
-            <div class="container">
-              <div class="row">
-                      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </a>
-<div class="span3">
-                    <%= link_to image_tag('dtu-logo-red.png') + content_tag('h3', 'DTU Library'), root_path, :class => 'logo' %>
-                  </div>
-                  <div class="span6 clearfix" id="searchbar">         
-                                    <%= render_search_bar  %>
-                  </div>
-
-                  <div class="span3 nav-collapse">
-                    <%= render :partial=>'/user_util_links' %>
-                  
-                  </div>
-
+  <div class="navbar-inner level1-navbar">
+    <div class="container">
+      <div class="row">
+        <div class="span6">
+          <div class="pull-left">
+            <h4>Technical University of Denmark</h4>
+          </div>
         </div>
+        <div class="span6">
+          <div class="pull-right">
+            <%= render :partial=>'/user_util_links' %>
+          </div>
         </div>
-   </div>
+      </div>
+    </div>
+  </div>
+  <div class="navbar-inner level2-navbar">
+    <div class="container">
+      <div class="row">
+        <div class="span6">
+          <%= link_to image_tag('dtu-logo-red.png'), root_path, :class => 'logo' %>
+        </div>
+        <div class="span6">
+          <%= link_to image_tag('dtu-logo-red.png'), root_path, :class => 'logo pull-right' %>
+        </div>
+      </div>
+      <div class="row">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <div class="span12 clearfix" id="searchbar">         
+          <%= render_search_bar %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

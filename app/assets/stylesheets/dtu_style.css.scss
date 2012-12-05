@@ -1,3 +1,27 @@
+body {
+  padding-top: 14em;
+}
+
+#searchbar {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.level1-navbar {
+  background-color: #900;
+  background-image: none;
+  color: #fff;
+
+  a {
+    color: #fff;
+
+    &:hover, &:active {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+}
+
 .btn-primary {
   background-color: #900;
   background-image: -moz-linear-gradient(top, #900, #700);
@@ -29,21 +53,3 @@ input {
   }
 }
 
-.navbar {
-  a.logo {
-    &:hover, &:active {
-      text-decoration: none;
-    }
-
-    img {
-      float: left;
-      margin-right: 0.5em;
-    }
-
-    h3 {
-      color: #555;
-      margin: 0px;
-      font-size: 1.4em;
-    }
-  }
-}
