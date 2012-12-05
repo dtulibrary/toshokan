@@ -172,13 +172,21 @@ class CatalogController < ApplicationController
     end
   end
 
+  def current_display_format
+    display_format = params[:display] || 'standard'
+
+    # Revert to standard format if user can't view requested format
+    display_format = 'standard' unless can? :view_format, display_format
+    display_format
+  end
+
   def index
-    @display_format = params[:display] || 'standard'
+    @display_format = current_display_format
     super
   end
 
   def show
-    @display_format = params[:display] || 'standard'
+    @display_format = current_display_format
     super
   end
 

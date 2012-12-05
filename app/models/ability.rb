@@ -61,9 +61,9 @@ class Ability
       can :logout, User
 
       if user.roles.include? Role.find_by_code('DAT')
-        can :view_format, ['compact', 'standard', 'librarian']
+        can :view_format, ['standard', 'librarian']
       else
-        can :view_format, ['compact', 'standard']
+        can :view_format, 'standard'
       end
 
       can :view_raw, SolrDocument if user.roles.include? Role.find_by_code('DAT')
