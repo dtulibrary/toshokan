@@ -18,22 +18,17 @@
   <div class="navbar-inner level2-navbar">
     <div class="container">
       <div class="row">
-        <div class="span6">
+        <div class="span3">
           <h4 class="dtulibrary-search"><%= t 'toshokan.header.dtulibrary' %> <span class="dtu-red"><%= t 'toshokan.header.search' %></span></h4>
-          <div class="clearfix" id="searchbar">         
+        </div>
+        <div class="span6">
+          <div id="searchbar">         
             <%= render_search_bar %>
           </div>
         </div>
-        <div class="span6">
-          <%= link_to image_tag('dtu_with_text.png'), 'http://www.dtu.dk', :class => 'logo pull-right' %>
+        <div class="span3">
+          <%= link_to image_tag('dtu.png'), 'http://www.dtu.dk', :class => 'logo pull-right' %>
         </div>
-      </div>
-      <div class="row">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </a>
       </div>
     </div>
   </div>
