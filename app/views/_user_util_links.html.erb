@@ -10,7 +10,7 @@
 
     <% if current_user %>
       <!-- Username -->
-      <%= t('toshokan.header_links.logged_in_as') %> <%= link_to current_user, edit_user_registration_path %>
+      <%= t("toshokan.header_links.#{current_user.impersonating ? 'acting_as' : 'logged_in_as'}") %> <%= link_to current_user, edit_user_registration_path %>
       |
       <!-- Switch user -->
       <% if can? :switch, User %>

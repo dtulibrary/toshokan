@@ -13,6 +13,7 @@ en:
       switch_user: "Switch User"
       switch_back: "Switch Back"
       logged_in_as: "Logged in as"
+      acting_as: "Acting as"
       cwis: "User name or CWIS number"
       login_cas: "Login"
       login_velo: "Login"
