@@ -8,7 +8,7 @@ en:
     header:
       dtu: 'Technical University of Denmark'
       dtulibrary: 'DTU Library'
-      search: 'search'
+      search: 'Search'
     header_links:
       switch_user: "Switch User"
       switch_back: "Switch Back"
