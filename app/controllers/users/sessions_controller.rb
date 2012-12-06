@@ -70,6 +70,8 @@ class Users::SessionsController < ApplicationController
       # switched into in order to get the proper "switch back" functionality
       # and that behaviour just seems silly.
       @current_ability = nil
+      flash[:notice] = "You succesfully switched user."
+      flash.keep :notice
 
     elsif can? :switch_back, User
       # Restore original user and his cancan abilities
@@ -77,6 +79,9 @@ class Users::SessionsController < ApplicationController
       session.delete :original_user_id
       
       @current_ability = nil
+      flash[:notice] = "You succesfully switched user."
+      flash.keep :notice
+
     else
       if @is_ajax
         head :forbidden and return

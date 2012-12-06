@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 Then /^the user should be "(.*?)"$/ do |username|
-  page.should have_selector '.util-links-login a', :text => username
+  page.should have_selector '#util-links a', :text => username
 end
 
 Given /^the following users? exists?:$/ do |table|
@@ -104,6 +104,6 @@ def log_in(user)
   )  
   
   visit('/')  
-  click_link 'Login' if page.has_css? '.util-links-login a', :text => 'Login'
+  click_link 'Login' if page.has_css? '#util-links a', :text => 'Login'
 end  
 

@@ -5,6 +5,10 @@ en:
   hello: "Hello world"
 
   toshokan:
+    header:
+      dtu: 'Technical University of Denmark'
+      dtulibrary: 'DTU Library'
+      search: 'search'
     header_links:
       switch_user: "Switch User"
       switch_back: "Switch Back"

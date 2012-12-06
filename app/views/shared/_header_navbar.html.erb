@@ -4,7 +4,7 @@
       <div class="row">
         <div class="span6">
           <div class="pull-left">
-            <h4>Technical University of Denmark</h4>
+            <h5><%= t 'toshokan.header.dtu' %> &bull; <%= t 'toshokan.header.dtulibrary' %></h5>
           </div>
         </div>
         <div class="span6">
@@ -19,11 +19,13 @@
     <div class="container">
       <div class="row">
         <div class="span6">
-          <% # TODO: Replace with image when available %>
-          <h4 style="border-left: 5px solid #900;padding-left: 0.5em; margin: 0px">DTU Library</h4>
+          <h4 class="dtulibrary-search"><%= t 'toshokan.header.dtulibrary' %> <span class="dtu-red"><%= t 'toshokan.header.search' %></span></h4>
+          <div class="clearfix" id="searchbar">         
+            <%= render_search_bar %>
+          </div>
         </div>
         <div class="span6">
-          <%= link_to image_tag('dtulogo.png'), root_path, :class => 'logo pull-right' %>
+          <%= link_to image_tag('dtu_with_text.png'), 'http://www.dtu.dk', :class => 'logo pull-right' %>
         </div>
       </div>
       <div class="row">
@@ -32,9 +34,6 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <div class="span12 clearfix" id="searchbar">         
-          <%= render_search_bar %>
-        </div>
       </div>
     </div>
   </div>
