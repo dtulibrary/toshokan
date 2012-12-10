@@ -1,0 +1,17 @@
+@import 'toshokan_defaults';
+
+#sidebar {
+  .sidenav {
+    margin-bottom: 1.5em;
+
+    h4 {
+      color: #fff;
+      background: $dtu_grey;
+
+      &:first-child {
+        border-radius: 5px 5px 0px 0px;
+      }
+    }
+  }
+}
+
