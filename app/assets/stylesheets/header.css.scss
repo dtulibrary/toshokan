@@ -37,11 +37,21 @@
       background-position: top right;
       background-repeat: no-repeat;
 
-      .row:first-child h4 {
-        margin-top: 1em;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        text-align: right;
+      .row:first-child { 
+        h4 {
+          margin-top: 1em;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          text-align: right;
+        }
+      }
+
+      .dtu-logo {
+        height: 66px;
+        width: 45px;
+        background-image: image_url('dtu.png');
+        background-position: top left;
+        background-repeat: no-repeat;
       }
     }   
   }

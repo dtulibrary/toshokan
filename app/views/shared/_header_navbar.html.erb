@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="span3">
-          <%= link_to image_tag('dtu.png'), 'http://www.dtu.dk', :class => 'logo pull-right' %>
+          <%= link_to content_tag('div', '', :class => 'dtu-logo').html_safe, 'http://www.dtu.dk', :class => 'logo pull-right' %>
         </div>
       </div>
     </div>
