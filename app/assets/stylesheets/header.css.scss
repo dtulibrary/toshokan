@@ -1,0 +1,48 @@
+@import 'toshokan_defaults';
+
+.level1-navbar {
+  background-color: $dtu_red;
+  background-image: none;
+  filter: none;
+  color: #fff;
+
+  a { 
+    color: #fff;
+
+    &:hover, &:active {
+      color: #fff;
+      text-decoration: underline;
+    }   
+  }
+
+  h5 {
+    margin: 0px;
+  }
+
+}
+
+#header-navbar-fixed-top {
+  .navbar-inner {
+    min-height: 0px;
+  }
+
+  .level2-navbar {
+    padding-top: 0em;
+    padding-bottom: 0em;
+    
+    .container {
+      padding-top: 1em;
+      padding-bottom: 1em;
+      background-image: image-url('pageheaderoverlay1.png');
+      background-position: top right;
+      background-repeat: no-repeat;
+
+      .row:first-child h4 {
+        margin-top: 1em;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        text-align: right;
+      }
+    }   
+  }
+}

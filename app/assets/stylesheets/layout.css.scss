@@ -1,0 +1,10 @@
+body {
+  padding-top: 12em;
+}
+
+@media (max-width: 979px) {
+  body {
+    padding-top: 0em;
+  }
+}
+

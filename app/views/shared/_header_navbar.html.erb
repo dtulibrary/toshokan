@@ -4,7 +4,7 @@
       <div class="row">
         <div class="span6">
           <div class="pull-left">
-            <h5><%= t 'toshokan.header.dtu' %> &bull; <%= t 'toshokan.header.dtulibrary' %></h5>
+            <h5><%= link_to t('toshokan.header.dtu'), 'http://www.dtu.dk' %> &bull; <%= link_to t('toshokan.header.dtulibrary'), root_path %></h5>
           </div>
         </div>
         <div class="span6">
@@ -19,7 +19,7 @@
     <div class="container">
       <div class="row">
         <div class="span3">
-          <h4 class="dtulibrary-search"><%= t 'toshokan.header.dtulibrary' %> | <span class="dtu-red"><%= t 'toshokan.header.search' %></span></h4>
+          <h4 class="dtu-grey"><%= t 'toshokan.header.dtulibrary' %> | <span class="dtu-red"><%= t 'toshokan.header.search' %></span></h4>
         </div>
         <div class="span6">
           <div id="searchbar">         
