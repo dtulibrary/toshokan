@@ -8,9 +8,9 @@ gem 'rails', '3.2.8'
 gem 'sqlite3'
 
 gem 'jquery-rails'
-gem 'blacklight', '4.0.0'
+gem 'blacklight', '4.0.1'
 gem 'unicode'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '~> 2.2.0'
 
 gem "blacklight_range_limit", '2.0'
 gem 'pg'
