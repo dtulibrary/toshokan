@@ -60,7 +60,9 @@ en:
         title: "Switch User"
     catalog:
       display_formats:
-        compact: 'Compact'
-        standard: 'Standard'
-        librarian: 'Librarian'
-        indexed: 'Indexed'
+        standard_index: 'Standard'
+        standard_show: 'Standard'
+        librarian_index: 'Librarian'
+        librarian_show: 'Librarian'
+        reference_index: 'Reference'
+        reference_show: 'Reference'

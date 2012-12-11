@@ -72,11 +72,14 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field 'title_t', :label => 'Title:'
-    config.add_index_field 'author_t', :label => 'Author:'
-    config.add_index_field 'format', :label => 'Format:'
-    config.add_index_field 'language_s', :label => 'Language:'
-    config.add_index_field 'journal_title_s', :label => 'Journal title:'
+    config.add_index_field 'author_t', :label => 'Author:', :helper_method => :render_author_links
+    config.add_index_field 'journal_title_s', :label => 'Journal:', :helper_method => :journal_info
     config.add_index_field 'pub_date_ti', :label => 'Year:'
+    config.add_index_field 'doi_s', :label => 'DOI:', :helper_method => :render_doi_link
+    config.add_index_field 'abstract_t', :label => 'Abstract:', :helper_method => :snip_abstract
+
+    #config.add_index_field 'format', :label => 'Format:'
+    #config.add_index_field 'language_s', :label => 'Language:'
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
@@ -181,12 +184,12 @@ class CatalogController < ApplicationController
   end
 
   def index
-    @display_format = current_display_format
+    @display_format = current_display_format + '_index'
     super
   end
 
   def show
-    @display_format = current_display_format
+    @display_format = current_display_format + '_show'
     super
   end
 

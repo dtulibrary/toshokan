@@ -3,6 +3,8 @@
 
   <%= render :partial => 'document_header', :locals => { :document => document, :document_counter => document_counter } %>
 
-  <% # @display_format defaults to 'standard' - see CatalogController#index and CatalogController#show %>
-  <%= render :partial => "document_format_#{@display_format}", :locals => { :document => document, :document_counter => document_counter } %>
+  <% # @display_format defaults to 'standard_index' or 'standard_show' depending on 
+     # whether request comes from CatalogController#index or CatalogCotroller#show %>
+  <%= render :partial => "catalog/document_formats/#{@display_format}", 
+    :locals => { :document => document, :document_counter => document_counter } %>
 </div>
