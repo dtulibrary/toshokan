@@ -1,32 +1,16 @@
 @import 'toshokan_defaults';
 
+// Index view
 #documents {
   .index_title {
     max-width: 750px;
   }
+}
 
-  .journal_information {
-    font-size: $font_size_small;
+// Show view
+#document {
+}
 
-    .journal_title {
-      font-style: italic;
-      text-transform: uppercase;
-      display: inline;
-    }
-  }
-
-  .authors {
-    font-size: $font_size_small;
-  }
-
-  .abstract {
-    font-size: $font_size_small;
-    margin-top: 0.5em;
-    text-align: justify;
-    line-height: 1.5em;
-  }
-
-  .doi {
-    font-size: $font_size_small;
-  }
+.document {
+  text-align: justify;
 }

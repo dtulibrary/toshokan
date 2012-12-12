@@ -72,8 +72,8 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_index_field 'title_t', :label => 'Title:'
-    config.add_index_field 'author_t', :label => 'Author:', :helper_method => :render_author_links
-    config.add_index_field 'journal_title_s', :label => 'Journal:', :helper_method => :journal_info
+    config.add_index_field 'author_t', :label => 'Authors:', :helper_method => :render_author_links
+    config.add_index_field 'journal_title_s', :label => 'Journal:', :helper_method => :render_journal_info_index
     config.add_index_field 'pub_date_ti', :label => 'Year:'
     config.add_index_field 'doi_s', :label => 'DOI:', :helper_method => :render_doi_link
     config.add_index_field 'abstract_t', :label => 'Abstract:', :helper_method => :snip_abstract
@@ -84,13 +84,16 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_show_field 'title_t', :label => 'Title:'
-    config.add_show_field 'author_t', :label => 'Author:'
-    config.add_show_field 'format', :label => 'Format:'
-    config.add_show_field 'language_s', :label => 'Language:'
+    config.add_show_field 'author_t', :label => 'Authors:', :helper_method => :render_author_links
+    config.add_show_field 'affiliation_t', :label => 'Affiliations:', :helper_method => :render_affiliations
+    config.add_show_field 'journal_title_s', :label => 'Journal:', :helper_method => :render_journal_info_show
     config.add_show_field 'isbn_s', :label => 'ISBN:'
     config.add_show_field 'issn_s', :label => 'ISSN:'
-    config.add_show_field 'journal_title_s', :label => 'Journal Title:'
+    config.add_show_field 'doi_s', :label => 'DOI:', :helper_method => :render_doi_link
+    config.add_show_field 'format', :label => 'Format:'
+    config.add_show_field 'keywords_t', :label => 'Subjects:', :helper_method => :render_keyword_links
     config.add_show_field 'abstract_t', :label => 'Abstract:'
+    # TODO: Add fulltext links
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -141,7 +144,7 @@ class CatalogController < ApplicationController
     # config[:default_solr_parameters][:qt], so isn't actually neccesary.
     config.add_search_field('subject') do |field|
       #field.solr_parameters = { :'spellcheck.dictionary' => 'subject' }
-      field.qt = 'search'
+      #field.qt = 'search'
       field.solr_local_parameters = {
         :qf => '$subject_qf',
         #:pf => '$subject_pf'
