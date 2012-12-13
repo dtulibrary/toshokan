@@ -80,6 +80,10 @@ module Toshokan
       :api_key => ''
     }
 
+    config.umlaut = {
+        :url => ''
+    }
+
     # Relevant initializers will act on this setting. Can be one of [:dtu, :dtu_kiosk, :i4i, :i4i_kiosk]
     config.application_mode = :dtu
 

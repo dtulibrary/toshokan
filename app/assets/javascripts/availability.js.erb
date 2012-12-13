@@ -1,0 +1,19 @@
+(function ($) {
+
+  $(function () {
+
+  	var openurl_link = $(".Z3988").attr("title");
+  	var umlaut_base = '<%= Toshokan::Application.config.umlaut[:url] %>';
+  	var updater = new Umlaut.HtmlUpdater(umlaut_base , openurl_link);
+
+    updater.add_section_target({
+      umlaut_section_id: "fulltext",
+      selector:".fulltext",
+      before_update: function(html, count) {
+        $(html).html($(html).find(".response_item"));
+        return (count != 0);
+      }
+    });
+    updater.update();
+	});
+})(jQuery);

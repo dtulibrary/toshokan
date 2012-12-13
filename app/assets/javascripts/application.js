@@ -22,3 +22,7 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 //= require_tree .
+
+// Umlaut
+//= require umlaut
+
