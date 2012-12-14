@@ -52,6 +52,7 @@ en:
       bibtex: "Export to BibTeX"
       ris: "Export to RIS"
       availability: "Availability"
+      not_available: "Not available"
     citation:
       mla: "MLA"
       apa: "APA"

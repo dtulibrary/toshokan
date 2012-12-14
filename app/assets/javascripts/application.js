@@ -26,3 +26,6 @@
 // Umlaut
 //= require umlaut
 
+// Spin.js
+//= require spin.min.js
+
