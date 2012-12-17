@@ -1,10 +1,10 @@
 <% @documents.each do |document| %>
 
-<h1><%= citation_title(document) %></h1>
+<h4><%= citation_title(document) %></h4>
 
 	<% document.citation_styles.each do |style| %>
 
-		<h4><%= t("toshokan.citation.#{style}") %></h4>
+		<h5><%= t("toshokan.citation.#{style}") %></h5>
 	  <%= document.send(:export_as_citation_txt, style).html_safe %>
 
 	<% end %>
