@@ -35,34 +35,13 @@
     vertical-align: baseline;
   }
 
-  @media (min-width: 481px) {
-    .role-option {
-      display: inline;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .role-option {
-      display: block;
-    }
-  }
-
-  @media (min-width: 769px) {
-    .mugshot {
-      border: 1px solid #aaa;
-      border-radius: 5px;
-      box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-      width: 90px;
-      height: 120px;
-      margin-bottom: 1em;
-      margin-left: 2em;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .mugshot {
-      display: none;
-    }
+  .mugshot {
+    width: 90px;
+    height: 120px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    margin: 0em 0em 1em 1em;
   }
 }
 

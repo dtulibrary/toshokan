@@ -1,0 +1,19 @@
+.manage-users {
+  @media (max-width: 480px) {
+    .role-option {
+      display: block;
+    }
+  }
+
+  @media (min-width: 481px) {
+    .role-option {
+      display: inline;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mugshot {
+      display: none;
+    }
+  }
+}
