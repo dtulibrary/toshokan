@@ -83,3 +83,11 @@ end
 Then /^I should not see "(.*?)" on the document$/ do |tag_name|
   page.should_not have_css('.tags_as_labels .tag', :text => tag_name)
 end
+
+Then /^I should see "(.*?)" on the first document$/ do |tag_name|
+  find('.tags_as_labels .tag', :text => tag_name).should be_visible
+end
+
+Then /^I should not see "(.*?)" on the first ocument$/ do |tag_name|
+  page.should_not have_css('.tags_as_labels .tag', :text => tag_name)
+end

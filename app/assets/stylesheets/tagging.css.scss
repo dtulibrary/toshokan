@@ -1,0 +1,18 @@
+
+// make tagging buttons line up side-by-side
+.tag_control {
+  .button_to {
+    display: inline-block;
+    margin: 0px;
+  }
+}
+
+// hide tag labels in index view
+.documentFunctions .tag_control .tags_as_labels {
+  display: none;
+}
+
+// wrap tag labels in show view
+.tools .tag_control {
+    max-width: 200px;
+}

@@ -7,6 +7,8 @@ Scenario: Tagging a document in a search result
     And I add a tag "some tag" to the first document
     And I filter by tag "some tag"
     Then I should see "A cohomology theory for colored tangles"
+     And I should see the first document as bookmarked
+     And I should see "some tag" on the first document
 
 Scenario: Tagging a document in document view
   Given I'm logged in
