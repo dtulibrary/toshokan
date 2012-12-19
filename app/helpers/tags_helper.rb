@@ -1,45 +1,71 @@
+# -*- encoding : utf-8 -*-
+
 module TagsHelper
 
   def render_tag_control(document)
-    solr_document_pointer = SolrDocumentPointer.find_by_solr_id(document.id)
-    tags = []
-    tags = solr_document_pointer.tags_from(current_or_guest_user).map{|name| ActsAsTaggableOn::Tag.find_by_name(name)} if solr_document_pointer
-    render(:partial => 'tags/tag_control', :locals => {:document => document, :tags => tags})
+    bookmark = current_user.bookmarks.find_by_document_id(document.id)
+    tags = bookmark ? bookmark.tags.order(:name) : []
+    tags = current_user.tags.order(:name)
+
+    return_url = request.url
+    if params && params[:return_url]
+      return_url = params[:return_url]
+    end
+
+    render 'tags/tag_control',
+	   {:document_id => document.id, :bookmark => bookmark, :tags => tags, :return_url => return_url}
   end
 
   def render_tag_partials options={}
     options = options.dup
     options[:partial] = "tags/tags"
     options[:locals] ||= {}
-    options[:locals][:tags] ||= current_or_guest_user.owned_tags
+    options[:locals][:tags] ||= current_or_guest_user.tags.order(:name)
     render(options)
   end
 
-  def render_tag_value(tag, options ={})
-    link_to_unless(options[:suppress_link], tag.name,
-                   add_tag_params_and_redirect(tag.name),
+  def render_tag_list options={}
+    options = options.dup
+    options[:partial] = "tags/tags_list"
+    options[:locals] ||= {}
+    options[:locals][:tags] ||= current_or_guest_user.tags.order(:name)
+
+    if request.xhr? and controller.params and controller.params[:return_url]
+      # if this is an ajax call, we are given a return_url that represents the original request
+      # we replace the params hash with the one from the original url to generate correct links
+      # for tag facets in the ajax-rendered tags_list
+      return_url = controller.params[:return_url]
+      params_from_return_url = Rack::Utils.parse_nested_query(URI::parse(return_url).query)
+      params = controller.params = params_from_return_url.with_indifferent_access
+    end
+    render(options)
+  end
+
+  def render_tag_value(tag_name, options ={})
+    link_to_unless(options[:suppress_link], Tag.reserved?(tag_name) ? tag_name[1..-1] : tag_name,
+		   add_tag_params_and_redirect(tag_name),
                    :class=>"facet_select").html_safe
   end
 
-  def render_selected_tag_value(tag)
+  def render_selected_tag_value(tag_name, options ={})
     #Updated class for Bootstrap Blacklight
     content_tag(:span,
-                render_tag_value(tag, :suppress_link => true),
+		render_tag_value(tag_name, :suppress_link => true),
                 :class => "selected") +
       link_to(content_tag(:i, '', :class => "icon-remove") +
       content_tag(:span, '[remove]', :class => 'hide-text'),
-                  remove_tag_params(tag.name, params),
+		  remove_tag_params(tag_name, params),
                   :class=>"remove")
   end
 
   # Adds the tag to params[:t]
   # Does NOT remove request keys and otherwise ensure that the hash
   # is suitable for a redirect. See
-  # add_facet_params_and_redirect
+  # add_tag_params_and_redirect
   def add_tag_params(tag)
-    p = params.dup
-    p[:t] = {tag => 'true'}
-    p
+    new_params = params.dup
+    new_params[:t] = {tag => '✓'}
+    new_params
   end
 
   # Add on the tag params to existing
@@ -60,6 +86,7 @@ module TagsHelper
     new_params.delete(:id)
 
     # Force action to be index.
+    new_params[:controller] = "catalog"
     new_params[:action] = "index"
     new_params
   end
@@ -68,17 +95,22 @@ module TagsHelper
   # removes the tag name from params[:t]
   # removes additional params (page, id, etc..)
   def remove_tag_params(tag, source_params=params)
-    p = source_params.dup
+    new_params = source_params.dup
+
     # need to dup the facet values too,
     # if the values aren't dup'd, then the values
     # from the session will get remove in the show view...
-    p[:t] = (p[:t] || {}).dup
-    p.delete :page
-    p.delete :id
-    p.delete :counter
-    p.delete :commit
-    p[:t].delete(tag)
-    p
+    new_params[:t] = (new_params[:t] || {}).dup
+    new_params.delete :page
+    new_params.delete :id
+    new_params.delete :counter
+    new_params.delete :commit
+    new_params[:t].delete(tag)
+
+    # Force action to be index.
+    new_params[:controller] = "catalog"
+    new_params[:action] = "index"
+    new_params
   end
 
   ##
@@ -88,19 +120,30 @@ module TagsHelper
     # :fq, map from :t.
     if ( user_params[:t])
       t_request_params = user_params[:t]
+      document_ids = []
 
       solr_parameters[:fq] ||= []
       t_request_params.each_pair do |t|
-        tag = current_user.owned_tags.where(name: t).first
-        if tag
-          pointer_ids = current_user.owned_taggings.where(tag_id: tag.id).map(&:taggable_id)
-          solr_ids = SolrDocumentPointer.find(pointer_ids).map(&:solr_id)
-          solr_parameters[:fq] << "id:(#{solr_ids.join(' OR ')})"
+	tag_name = t.first
+	if tag_name == Tag.reserved_tag_all
+	  document_ids = current_user.bookmarks.map(&:document_id);
+	elsif tag_name == Tag.reserved_tag_untagged
+	  document_ids = current_user.bookmarks.find_all{|b| b.taggings.empty?}.map(&:document_id);
         else
-          solr_parameters[:fq] << "id:(NOT *)"
+	  tag = current_user.tags.find_by_name(tag_name)
+	  if tag
+	    document_ids = tag.bookmarks.map(&:document_id)
+	  end
         end
 
       end
+
+      if not document_ids.empty?
+	solr_parameters[:fq] << "id:(#{document_ids.join(' OR ')})"
+      else
+	solr_parameters[:fq] << "id:(NOT *)"
+      end
+
     end
   end
 
@@ -110,8 +153,8 @@ module TagsHelper
   end
 
   # true or false, depending on whether the tag name is in params[:t]
-  def tag_in_params?(tag)
-    params[:t] and params[:t][tag.name] and params[:t][tag.name] == 'true'
+  def tag_in_params?(tag_name)
+    params[:t] and params[:t][tag_name] and params[:t][tag_name] == '✓'
   end
 
   # True or false depending on whether the user has any tags

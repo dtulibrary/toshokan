@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
 
   # Render a 404 response. This should not be called directly. Instead you should call #not_found
   # which will raise exception, rescue it and call this render method
-  def render_not_found
+  def render_not_found(exception)
     render :file => 'public/404', :format => :html, :status => :not_found, :layout => nil
   end
 end

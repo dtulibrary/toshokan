@@ -1,0 +1,26 @@
+<% remote = true if local_assigns[:remote].nil? %>
+<ul class="<%= list_class %> existing_tags">
+  <li>
+    <%= form_tag(document_tags_path(document_id), :remote => true, :class => 'form-inline') do %>
+      <%= text_field_tag :tag_name %>
+      <%= hidden_field_tag :return_url, return_url %>
+      <%= submit_tag t('toshokan.tags.add'), :class => 'btn' %>
+    <% end %>
+  </li>
+  <li class="divider"></li>
+  <% (tags).each do |tag| %>
+    <li class="tag">
+    <% if bookmark && bookmark.tags.include?(tag) %>
+      <%= link_to content_tag(:em, tag.name) + content_tag(:i, '', :class=>'icon-remove'),
+		  {:controller => 'tags', :action => 'destroy', :id => tag.id,
+		   :document_id => document_id, :return_url => return_url},
+		  :method => :delete, :remote => remote, :title => "#{t('toshokan.tags.remove')} #{tag.name}" %>
+    <% else %>
+      <%= link_to tag.name,
+		  {:controller => 'tags', :action => 'create', :tag_name => tag.name,
+		   :document_id => document_id, :return_url => return_url},
+		  :method => :post, :remote => remote, :title => "#{t('toshokan.tags.add')} #{tag.name}" %>
+    <% end %>
+  </li>
+  <% end %>
+</ul>

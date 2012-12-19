@@ -78,12 +78,13 @@ ActiveRecord::Schema.define(:version => 20121130090034) do
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
-    t.string   "solr_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "bookmark_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
-  add_index "taggings", ["tag_id", "solr_id"], :name => "index_taggings_on_tag_id_and_solr_id", :unique => true
+  add_index "taggings", ["bookmark_id"], :name => "index_taggings_on_bookmark_id"
+  add_index "taggings", ["tag_id", "bookmark_id"], :name => "index_taggings_on_tag_id_and_bookmark_id", :unique => true
   add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
 
   create_table "tags", :force => true do |t|

@@ -1,14 +1,9 @@
-<table>
-  <thead>
-    <tr>
-      <th>Tag</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <% @tags.each do |tag| %>
-    <tr class='tag-manager'>
-    <td><span class="btn btn-mini btn-info"><%= tag.name %></span></td>
-  <td><%= link_to t('toshokan.tags.edit'), edit_tag_path(tag) %> <%= link_to t('toshokan.tags.delete'), tag_path(tag, :return_url => request.url), :method => :delete %></td>
-    </tr>
-  <% end %>
-</table>
+<div class="span9 offset3 tag_control" id="<%= @document.id %>-tag_control">
+  <%= render 'tags/bookmark_button',
+	       {:document_id => @document.id, :bookmark => @bookmark, :tags => @tags, :return_url => @return_url,
+		:remote => false} %>
+
+  <%= render 'tags/add_remove_tags_menu',
+	       {:document_id => @document.id, :bookmark => @bookmark, :tags => @tags, :return_url => @return_url,
+		:list_class => 'unstyled', :remote => false} %>
+</div>

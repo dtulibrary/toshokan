@@ -11,7 +11,7 @@ describe User do
 
   let(:document) {
     d = double("document")
-    d.stub(:id).and_return(1)
+    d.stub(:id).and_return("1")
     d
   }
 
@@ -27,63 +27,38 @@ describe User do
   end
 
   it "has own tags" do
-    subject.tags.should == []
-  end
-
-  it "has shared tags" do
-    subject.shared_tags.should == []
+    subject.tags.should eq []
   end
 
   it "has own taggings" do
-    subject.taggings.should == []
-  end
-
-  it "has subscribed tags" do
-    subject.subscribed_tags.should == []
-  end
-
-  it "has subscribed taggings" do
-    subject.subscribed_taggings.should == []
+    subject.taggings.should eq []
   end
 
   it "can tag a document" do
     subject.tag(document, 'a tag')
   end
 
-  it "can share a tag" do
-    tag = subject.tag(document, 'a tag')
-    tag.share
-
-    subject.shared_tags.map(&:name).should == ['a tag']
-  end
-
   it "can list owned tags for document" do
     subject.tag(document, 'a tag')
 
-    subject.tags.map(&:name).should == ['a tag']
-    subject.tags_for(document).map(&:name).should == ['a tag']
+    subject.tags.map(&:name).should eq ['a tag']
+    subject.tags_for(document).map(&:name).should eq ['a tag']
   end
 
-  it "can list subscribed tags for document" do
-    tag = subject.tag(document, 'a tag')
-    tag.share
-    another_user.subscribe(tag)
+  it "can list owned tags for document id" do
+    subject.tag(document, 'a tag')
 
-    another_user.subscribed_tags.map(&:name).should == ['a tag']
-    another_user.subscribed_tags_for(document).map(&:name).should == ['a tag']
-    subject.subscribed_tags_for(document).map(&:name).should == []
+    subject.tags.map(&:name).should eq ['a tag']
+    subject.tags_for(document.id).map(&:name).should eq ['a tag']
   end
 
-  it "does not list tags that have been unshared" do
-    tag = subject.tag(document, 'a tag')
-    tag.share
-    another_tag = subject.tag(document, 'another tag')
-    another_tag.share
-    another_user.subscribe(tag)
-    another_user.subscribe(another_tag)
-    tag.unshare
+  it "can list owned tags for bookmark" do
+    subject.tag(document, 'a tag')
+    bookmark = subject.tags.find_by_name('a tag').bookmarks.first
+    bookmark.document_id.should == document.id
 
-    another_user.subscribed_tags_for(document).map(&:name).should == ['another tag']
+    subject.tags.map(&:name).should eq ['a tag']
+    subject.tags_for(bookmark).map(&:name).should eq ['a tag']
   end
 
   describe 'from Account' do

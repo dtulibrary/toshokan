@@ -89,51 +89,23 @@
   end
 
   def tag(document, tag_name)
+    bookmark = bookmarks.find_or_create_by_document_id(document.id)
     tag = tags.find_or_create_by_name(tag_name)
-    taggings.build(:solr_id => document.id, :tag => tag).save
+    bookmark.tags << tag unless bookmark.tags.exists?(tag)
+    bookmark.save
     tag
   end
 
-  def subscribe(tag)
-    subscriptions.find_or_create_by_tag_id(tag.id)
-  end
-
-  def tags_for(documents)
-    if (documents.respond_to?(:map))
-      ids = documents.map(&:id)
-      r = Hash.new([])
-      tags.includes(:taggings).where('taggings.solr_id' => ids)
-	.each{|tag| tag.taggings.each{|tagging| r[tagging.solr_id] += [tag]}}
-      r
+  def tags_for(bookmark_document_or_document_id)
+    if bookmark_document_or_document_id.is_a?(String)
+      document_id = bookmark_document_or_document_id
+    elsif bookmark_document_or_document_id.respond_to?(:document_id)
+      document_id = bookmark_document_or_document_id.document_id
     else
-      ids = documents.id
-      tags.includes(:taggings).where('taggings.solr_id' => ids)
+      document_id = bookmark_document_or_document_id.id
     end
-  end
 
-  def subscribed_tags_for(documents)
-    if (documents.respond_to?(:map))
-      ids = documents.map(&:id)
-      r = Hash.new([])
-      subscriptions.includes(:tag => [:taggings]).where('tags.shared' => true).where('taggings.solr_id' => ids)
-	.each{|subscription| subscription.tag.taggings.each{|tagging| r[tagging.solr_id] += [subscription.tag]}}
-      r
-    else
-      ids = documents.id
-      subscriptions.includes(:tag => [:taggings]).where('tags.shared' => true).where('taggings.solr_id' => ids).collect{|s| s.tag}
-    end
-  end
-
-  def shared_tags
-    tags.where(:shared => true)
-  end
-
-  def subscribed_tags
-    subscriptions.includes(:tag).where('tags.shared' => true).collect{|s| s.tag}
-  end
-
-  def subscribed_taggings
-    subscriptions.includes(:tag => [:taggings]).where('tags.shared' => true).collect{|s| s.tag.taggings}.flatten
+    bookmarks.includes(:tags).find_by_document_id(document_id).tags.order(:name)
   end
 
   def to_s

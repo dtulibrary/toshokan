@@ -16,11 +16,12 @@ class RefactorTaggings < ActiveRecord::Migration
 
     create_table :taggings do |t|
       t.references :tag
-      t.string :solr_id
+      t.references :bookmark
       t.timestamps
     end
     add_index :taggings, :tag_id
-    add_index :taggings, [:tag_id,:solr_id], :unique=>true
+    add_index :taggings, :bookmark_id
+    add_index :taggings, [:tag_id,:bookmark_id], :unique=>true
 
     create_table :subscriptions do |t|
       t.references :user

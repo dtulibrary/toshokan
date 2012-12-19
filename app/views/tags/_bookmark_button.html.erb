@@ -1,0 +1,19 @@
+<% remote = true if local_assigns[:remote].nil? %>
+<% if bookmark %>
+  <span class="label label-important tag">
+    <%= t('toshokan.tags.bookmarked') %>
+    <%= form_tag({:controller => 'bookmarks', :action => 'destroy', :id => document_id},
+		 {:method => :delete, :remote => remote}) do %>
+      <%= button_tag :data => { :confirm => bookmark.tags.empty? ? nil : t('toshokan.tags.remove_all') },
+		     :title => bookmark.tags.empty? ? t('toshokan.tags.remove') : t('toshokan.tags.remove_all') do %>
+	<%= content_tag(:i, '', :class=>'icon-remove') %>
+      <% end %>
+      <%= hidden_field_tag :return_url, return_url %>
+    <% end %>
+  </span>
+<% else %>
+  <%= button_to t('toshokan.tags.bookmark'),
+	      {:controller => 'bookmarks', :action => 'update', :id => document_id, :return_url => return_url},
+	      :method => :put,
+	      :remote => remote, :class => 'btn btn-mini' %>
+<% end %>

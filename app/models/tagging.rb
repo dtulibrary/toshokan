@@ -1,5 +1,6 @@
 class Tagging < ActiveRecord::Base
   belongs_to :tag
+  belongs_to :bookmark
 
-  attr_accessible :solr_id, :tag
+  attr_accessible :bookmark, :tag
 end

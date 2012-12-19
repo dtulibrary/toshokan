@@ -1,108 +1,76 @@
 class TagsController < ApplicationController
+  before_filter :require_tag_ability
 
   # Tag management actions
 
-  def index
-    if can? :tag, SolrDocument
-      @tags = current_user.owned_tags.all(:order => 'name')
-    else 
-      not_found
-    end
+  def manage
+    @tags = current_user.tags.all(:order => 'name')
   end
 
   # Document tagging actions
 
+  def index
+    @document = Hashie::Mash.new({:id => params[:document_id]})
+    @bookmark = current_user.bookmarks.find_or_create_by_document_id(@document.id)
+    @tags = current_user.tags.all(:order => 'name')
+    @return_url = request.url
+    if params && params[:return_url]
+      @return_url = params[:return_url]
+    end
+  end
+
   def new
-    not_found unless can? :tag, SolrDocument
   end
 
   def create
-    if can? :tag, SolrDocument
-      document = SolrDocumentPointer.find_or_create_by_solr_id(params[:document_id])
-      add_tag(current_user, document, params[:tag_name])
-      redirect_to params[:return_url], :only_path => true
-    else
-      not_found
-    end
+    @document = Hashie::Mash.new({:id => params[:document_id]})
+    current_user.tag(@document, params[:tag_name])
+
+    redirect_to params[:return_url], :only_path => true unless request.xhr?
+    render :partial => 'tags/tag_refresh' and return if request.xhr?
   end
 
 
   # Tag management and document tagging actions
 
   def destroy
-    if can? :tag, SolrDocument
-      if ActsAsTaggableOn::Tag.exists? :id => params[:id]
-        tag = ActsAsTaggableOn::Tag.find(params[:id])
-        if (params[:document_id])
-          document = SolrDocumentPointer.find_or_create_by_solr_id(params[:document_id])
-          remove_tag(current_user, document, tag.name)
-        else
-          pointer_ids = taggings_for_id(params[:id]).map(&:taggable_id)
-          if pointer_ids.size > 0
-            pointer_ids.each do |pointer_id|
-              document = SolrDocumentPointer.find(pointer_id)
-              remove_tag(current_user, document, tag.name)
-            end
-          else
-            not_found
-          end
-        end
-        redirect_to params[:return_url], :only_path => true
-      else
-        not_found
-      end
+    tag = current_user.tags.find_by_id(params[:id])
+    not_found unless tag
+
+    if (params[:document_id])
+      @document = Hashie::Mash.new({:id => params[:document_id]})
+      bookmark = current_user.bookmarks.find_by_document_id(@document.id)
+      bookmark.tags.delete(tag) if bookmark
     else
-      not_found
+      tag.delete
     end
+
+    redirect_to params[:return_url], :only_path => true unless request.xhr?
+    render :partial => 'tags/tag_refresh' and return if request.xhr?
   end
 
   def edit
-    if can? :tag, SolrDocument
-      if ActsAsTaggableOn::Tag.exists? :id => params[:id]
-        @tag = ActsAsTaggableOn::Tag.find(params[:id])
-      else
-        not_found
-      end
-    else
-      not_found
-    end
+    @tag = current_user.tags.find_by_id params[:id]
+    not_found unless @tag
   end
 
   def update
-    if can? :tag, SolrDocument
-      if ActsAsTaggableOn::Tag.exists? :id => params[:id]
-        tag = ActsAsTaggableOn::Tag.find params[:id]
-        logger.debug "Tag is nil? #{tag.nil?}"
-        new_tag_name = params[:tag_name]
+    tag = current_user.tags.find_by_id params[:id]
+    new_tag_name = params[:tag_name]
+    not_found unless tag and new_tag_name
 
-        if new_tag_name
-          taggings_for_id(tag.id).map(&:taggable_id).each do |pointer_id|
-            document = SolrDocumentPointer.find(pointer_id)
-            remove_tag(current_user, document, tag.name)
-            add_tag(current_user, document, new_tag_name)
-          end
-          redirect_to tags_path
-        else
-          not_found
-        end
-      else
-        not_found
-      end
-    else
-      not_found
+    unless params[:cancel]
+      tag.name = new_tag_name
+      tag.save
     end
+
+    redirect_to manage_tags_path
   end
 
-  def add_tag(user, document, tag_name) 
-    user.tag(document, with: document.tags_from(user) + [tag_name], :on => :tags)
-  end
+  private
 
-  def remove_tag(user, document, tag_name) 
-    user.tag(document, with: document.tags_from(user) - [tag_name], :on => :tags)
-  end
-
-  def taggings_for_id(id)
-    current_user.owned_taggings.where(tag_id: id)
+  def require_tag_ability
+    not_found unless can? :tag, Bookmark
   end
 
 end

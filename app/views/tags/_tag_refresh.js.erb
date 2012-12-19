@@ -1,0 +1,2 @@
+$('#<%= @document.id %>-tag_control').replaceWith("<%= escape_javascript(render_tag_control(@document)) %>");
+$('.facet_limit.toshokan-bookmarks .tag_list').html("<%= escape_javascript(render_tag_list) %>");

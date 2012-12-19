@@ -18,15 +18,27 @@ Then /^I should((?:n't| not))? see the "(.*?)" link$/ do |negate, value|
   page.has_css?('a', :text => value).should (negate ? be_false : be_true)
 end
 
+Then /^render the page$/ do
+  page.driver.render('/tmp/render.png', :full => true)
+end
+
+Then /^render the page as (.*)$/ do |name|
+  page.driver.render("/tmp/#{name}.png", :full => true)
+end
+
 Then /^show me the page$/ do 
   save_and_open_page 
+end
+
+When /^I reload the page$/ do
+  visit(current_path)
 end
 
 When /^I click "(.*?)"$/ do |name|
   click_link_or_button name
 end
 
-Given /^I click the link "(.*?)"$/ do |link|
+When /^I click the link "(.*?)"$/ do |link|
   click_link link
 end
 

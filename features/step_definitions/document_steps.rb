@@ -30,5 +30,5 @@ Given /^I go to the record page for "(.*?)"$/ do |title|
 end
 
 Then /^I should see the citations$/ do
-  current_path.should match 'citation'  
+  current_path.should match 'citation'
 end
