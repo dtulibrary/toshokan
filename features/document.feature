@@ -2,22 +2,22 @@ Feature: Show a single document
 
 Scenario: User wants to see the details for a single record
 	Given I'm logged in
-	  And I have searched for "Spin transistor action from Onsager reciprocity and SU(2) gauge theory"
-	  And I click the link "Spin transistor action from Onsager reciprocity and SU(2) gauge theory"
+	  And I have searched for "A Codebook Design Method for Robust VQ-Based Face Recognition Algorithm"
+	  And I click the link "A Codebook Design Method for Robust VQ-Based Face Recognition Algorithm"
    Then I should see the page for a single document
 
 Scenario: Export record in BibTex format
-	Given I go to the record page for "Spin transistor action from Onsager reciprocity and SU(2) gauge theory"
+	Given I go to the record page for "A Codebook Design Method for Robust VQ-Based Face Recognition Algorithm"
 	  And I click "Export to BibTeX"
 	 Then I should get a "bib" file
 
 Scenario: Export record in RIS format
-	Given I go to the record page for "Spin transistor action from Onsager reciprocity and SU(2) gauge theory"
+	Given I go to the record page for "A Codebook Design Method for Robust VQ-Based Face Recognition Algorithm"
 	Given I click "Export to RIS"
 	Then I should get a "ris" file
 
  Scenario: View citations
- 	Given I go to the record page for "Spin transistor action from Onsager reciprocity and SU(2) gauge theory"
+ 	Given I go to the record page for "A Codebook Design Method for Robust VQ-Based Face Recognition Algorithm"
  	Given I click "Cite"
  	Then I should see the citations
 
