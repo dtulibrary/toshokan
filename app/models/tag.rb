@@ -12,29 +12,12 @@ class Tag < ActiveRecord::Base
 		   :length => { :in => 1..255 }
   validate :name_not_reserved
 
-  # TODO validate that :name does not start with '✩'
-  # TODO validate that :name is not empty and not unreasonably long (we don't want users to store their thesis in a tag name ;-)
-
-  def share
-    update_attributes(:shared => true)
-  end
-
-  def unshare
-    update_attributes(:shared => false)
-  end
-
-  def name_not_reserved
-    if Tag.reserved?(name)
-      errors.add :name, "Name can not start with #{Tag.reserved_tag_prefix}"
-    end
-  end
-
   def self.reserved_tag_prefix
     '✩'
   end
 
   def self.reserved_tag_all
-    reserved_tag_prefix + I18n.t('toshokan.tags.all')
+    reserved_tag_prefix + I18n.t('toshokan.tags.bookmarked')
   end
 
   def self.reserved_tag_untagged
@@ -48,6 +31,16 @@ class Tag < ActiveRecord::Base
   def self.reserved?(tag_name)
     tag_name && tag_name.starts_with?('✩')
   end
+
+
+  private
+
+  def name_not_reserved
+    if Tag.reserved?(name)
+      errors.add :name, "Name can not start with #{Tag.reserved_tag_prefix}"
+    end
+  end
+
 
 
 end

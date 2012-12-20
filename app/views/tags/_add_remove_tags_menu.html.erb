@@ -1,7 +1,7 @@
 <% remote = true if local_assigns[:remote].nil? %>
 <ul class="<%= list_class %> existing_tags">
   <li>
-    <%= form_tag(document_tags_path(document_id), :remote => true, :class => 'form-inline') do %>
+    <%= form_tag(document_tags_path(document_id), :remote => true, :class => 'new_tag form-inline') do %>
       <%= text_field_tag :tag_name %>
       <%= hidden_field_tag :return_url, return_url %>
       <%= submit_tag t('toshokan.tags.add'), :class => 'btn' %>

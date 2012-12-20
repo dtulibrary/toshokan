@@ -10,8 +10,17 @@ module SearchHistoryConstraintsHelper
     return "".html_safe unless params[:t]
 
     params[:t].collect do |tag_name, value_list|
-      render_search_to_s_element(reserved?(tag_name) ? I18n.t('toshokan.tags.saved') : I18n.t('toshokan.tags.tagged'),
-	render_filter_value(reserved?(tag_name) ? tag_name[1..-1] : tag_name)).html_safe
+      if Tag.reserved?(tag_name)
+	render_search_to_s_element(I18n.t('toshokan.tags.bookmarks'),
+				  case tag_name when Tag.reserved_tag_all
+						  I18n.t('toshokan.tags.all')
+						when Tag.reserved_tag_untagged
+						  I18n.t('toshokan.tags.untagged')
+				  end)
+      else
+	render_search_to_s_element(I18n.t('toshokan.tags.tagged'),
+				  tag_name)
+      end
     end.join(" \n ").html_safe
   end
 
