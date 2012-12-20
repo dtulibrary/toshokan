@@ -17,4 +17,9 @@ module BlacklightHelper
     content_tag("div", content.join("\n").html_safe, :class=>"documentFunctions")
   end
 
+  # Override blacklight citation_title since it doesn't handle multi-valued title field
+  def citation_title document
+    title = document[blacklight_config.show.html_title]
+    (title.kind_of? Array) ? title.first : title
+  end
 end

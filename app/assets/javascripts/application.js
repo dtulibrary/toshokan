@@ -22,3 +22,10 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 //= require_tree .
+
+// Umlaut
+//= require umlaut
+
+// Spin.js
+//= require spin.min.js
+

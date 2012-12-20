@@ -1,5 +1,6 @@
 @import 'blacklight';
 @import 'blacklight_range_limit';
+@import 'blacklight_range_limit/blacklight_range_limit';
 
 @import 'layout';
 @import 'header';
@@ -18,5 +19,6 @@
 @import 'util_links';
 @import 'sidebar';
 @import 'media';
+@import 'facets';
 
 @import 'responsive';
