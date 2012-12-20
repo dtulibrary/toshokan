@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'blacklight/catalog'
+require 'i18n'
 
 class CatalogController < ApplicationController
 
@@ -9,7 +10,26 @@ class CatalogController < ApplicationController
   self.solr_search_params_logic += [:add_tag_fq_to_solr]
   self.solr_search_params_logic += [:add_access_filter]
 
+
   configure_blacklight do |config|
+    class << config
+      # Wrapper on top of blacklight's config.add_*_field that simplifies I18n support for toshokan
+      # - field_type is the type of field (:index, :show, :search, :facet, :sort)
+      # - field_name is the name of the field which is used for i18n lookup 
+      #   (using a key like "toshokan.catalog.<field_type>_field_labels.<args[:field_name] || field_name>")
+      # - args is options passed on to the config.add_*_field method - except for args[:field_name]
+      #   which is used to override the i18n lookup otherwise based on the field_name argument.
+      #   If args[:label] is present then no i18n will be performed.
+      # - any block given is passed on to the config.add_*_field method
+      def add_labeled_field(field_type, field_name, args = {}, &block)
+        effective_field_name = args[:field_name] || field_name
+        args[:label] ||= I18n.translate("toshokan.catalog.#{field_type.to_s}_field_labels.#{effective_field_name}")
+        args.delete :field_name
+        send "add_#{field_type.to_s}_field".to_sym, field_name.to_s, args, &block
+      end
+    end
+    
+    
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       :qt => '/ds',
@@ -57,10 +77,10 @@ class CatalogController < ApplicationController
     #
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
-    config.add_facet_field 'format', :label => 'Format'
-    config.add_facet_field 'pub_date_sort', :label => 'Publication Year', :range => true
-    config.add_facet_field 'author_facet', :label => 'Authors', :limit => 20
-    config.add_facet_field 'journal_title_facet', :label => 'Journals', :limit => 20
+    config.add_labeled_field :facet, 'format'
+    config.add_labeled_field :facet, 'pub_date_sort', :range => true
+    config.add_labeled_field :facet, 'author_facet', :limit => 20
+    config.add_labeled_field :facet, 'journal_title_facet', :limit => 20
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -71,29 +91,25 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
-    config.add_index_field 'title_t', :label => 'Title:'
-    config.add_index_field 'author_t', :label => 'Authors:', :helper_method => :render_author_links
-    config.add_index_field 'journal_title_s', :label => 'Journal:', :helper_method => :render_journal_info_index
-    config.add_index_field 'pub_date_ti', :label => 'Year:'
-    config.add_index_field 'doi_s', :label => 'DOI:', :helper_method => :render_doi_link
-    config.add_index_field 'abstract_t', :label => 'Abstract:', :helper_method => :snip_abstract
-
-    #config.add_index_field 'format', :label => 'Format:'
-    #config.add_index_field 'language_s', :label => 'Language:'
+    config.add_labeled_field :index, 'title_t'
+    config.add_labeled_field :index, 'author_t', :helper_method => :render_author_links
+    config.add_labeled_field :index, 'journal_title_s', :helper_method => :render_journal_info_index
+    config.add_labeled_field :index, 'pub_date_ti'
+    config.add_labeled_field :index, 'doi_s', :helper_method => :render_doi_link
+    config.add_labeled_field :index, 'abstract_t', :helper_method => :snip_abstract
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
-    config.add_show_field 'title_t', :label => 'Title:'
-    config.add_show_field 'author_t', :label => 'Authors:', :helper_method => :render_author_links
-    config.add_show_field 'affiliation_t', :label => 'Affiliations:', :helper_method => :render_affiliations
-    config.add_show_field 'journal_title_s', :label => 'Journal:', :helper_method => :render_journal_info_show
-    config.add_show_field 'isbn_s', :label => 'ISBN:'
-    config.add_show_field 'issn_s', :label => 'ISSN:'
-    config.add_show_field 'doi_s', :label => 'DOI:', :helper_method => :render_doi_link
-    config.add_show_field 'format', :label => 'Format:'
-    config.add_show_field 'keywords_t', :label => 'Subjects:', :helper_method => :render_keyword_links
-    config.add_show_field 'abstract_t', :label => 'Abstract:'
-    # TODO: Add fulltext links
+    config.add_labeled_field :show, 'title_t'
+    config.add_labeled_field :show, 'author_t', :helper_method => :render_author_links
+    config.add_labeled_field :show, 'affiliation_t', :helper_method => :render_affiliations
+    config.add_labeled_field :show, 'journal_title_s', :helper_method => :render_journal_info_show
+    config.add_labeled_field :show, 'isbn_s'
+    config.add_labeled_field :show, 'issn_s'
+    config.add_labeled_field :show, 'doi_s', :helper_method => :render_doi_link
+    config.add_labeled_field :show, 'format'
+    config.add_labeled_field :show, 'keywords_t', :helper_method => :render_keyword_links
+    config.add_labeled_field :show, 'abstract_t'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -112,12 +128,12 @@ class CatalogController < ApplicationController
     # This one uses all the defaults set by the solr request handler. Which
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise.
-    config.add_search_field 'all_fields', :label => 'All Fields'
+    config.add_labeled_field :search, 'all_fields'
 
     # Now we see how to over-ride Solr request handler defaults, in this
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields.
-    config.add_search_field('title') do |field|
+    config.add_labeled_field :search, 'title' do |field|
       # solr_parameters hash are sent to Solr as ordinary url query params.
       #field.solr_parameters = { :'spellcheck.dictionary' => 'title' }
 
@@ -131,7 +147,7 @@ class CatalogController < ApplicationController
       }
     end
 
-    config.add_search_field('author') do |field|
+    config.add_labeled_field :search, 'author' do |field|
       #field.solr_parameters = { :'spellcheck.dictionary' => 'author' }
       field.solr_local_parameters = {
         :qf => '$author_qf',
@@ -142,7 +158,7 @@ class CatalogController < ApplicationController
     # Specifying a :qt only to show it's possible, and so our internal automated
     # tests can test it. In this case it's the same as
     # config[:default_solr_parameters][:qt], so isn't actually neccesary.
-    config.add_search_field('subject') do |field|
+    config.add_labeled_field :search, 'subject' do |field|
       #field.solr_parameters = { :'spellcheck.dictionary' => 'subject' }
       #field.qt = 'search'
       field.solr_local_parameters = {
@@ -155,10 +171,10 @@ class CatalogController < ApplicationController
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
-    config.add_sort_field 'score desc, pub_date_sort desc, title_sort asc', :label => 'relevance'
-    config.add_sort_field 'pub_date_sort desc, title_sort asc', :label => 'year'
-    config.add_sort_field 'author_sort asc, title_sort asc', :label => 'author'
-    config.add_sort_field 'title_sort asc, pub_date_sort desc', :label => 'title'
+    config.add_labeled_field :sort, 'score desc, pub_date_sort desc, title_sort asc', :field_name => 'relevance'
+    config.add_labeled_field :sort, 'pub_date_sort desc, title_sort asc', :field_name => 'year'
+    config.add_labeled_field :sort, 'author_sort asc, title_sort asc', :field_name => 'author'
+    config.add_labeled_field :sort, 'title_sort asc, pub_date_sort desc', :field_name => 'title'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
