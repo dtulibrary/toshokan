@@ -1,0 +1,16 @@
+<% remote = true if local_assigns[:remote].nil? %>
+<% if bookmark %>
+  <% bookmark.tags.each do |tag| %>
+    <span class="label label-important tag">
+      <%= render_tag_value(tag.name, {:suppress_link => true}) %>
+      <%= form_tag({:controller => 'tags', :action => 'destroy', :id => tag.id, :document_id => bookmark.document_id},
+		   {:method => :delete, :remote => remote}) do %>
+	<%= button_tag :title => 'Remove' do %>
+	  <%= content_tag(:i, '', :class=>'icon-remove').html_safe %>
+	<% end %>
+	<%= hidden_field_tag :return_url, return_url %>
+      <% end %>
+
+    </span>
+  <% end %>
+<% end %>

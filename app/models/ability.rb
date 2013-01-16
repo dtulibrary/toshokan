@@ -36,7 +36,9 @@ class Ability
         can :login_cas, User
       else
         can :logout_cas, User
-        can :tag, SolrDocument
+	can :tag, Bookmark
+	can :tag, Search
+	can :share, Tag
       end
     when :dtu_kiosk
       if user.anonymous?
@@ -44,7 +46,8 @@ class Ability
         can :login_cas, User
       else
         can :logout_cas, User
-        can :tag, SolrDocument
+	can :tag, Bookmark
+	can :tag, Search
       end
     when :i4i
       if user.anonymous?
@@ -52,7 +55,8 @@ class Ability
         can :login_velo, User
       else
         can :logout_velo, User
-        can :tag, SolrDocument
+	can :tag, Bookmark
+	can :tag, Search
       end
     end
 

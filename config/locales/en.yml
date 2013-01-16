@@ -9,6 +9,8 @@ en:
       dtu: 'Technical University of Denmark'
       dtulibrary: 'DTU Library'
       search: 'Search'
+    save: "Save"
+    cancel: "Cancel"
     header_links:
       switch_user: "Switch User"
       switch_back: "Switch Back"
@@ -21,15 +23,24 @@ en:
       logout_velo: "Logout"
     mylibrary:
       title: "MyLibrary"
+      bookmarks_and_tags: "Bookmarks and tags"
+      more: "More..."
     tags:
-      title: "Tags"
+      all: "All"
+      untagged: "Untagged"
+      title: "Bookmarks"
+      tags: "Tags"
+      add: "Add"
+      remove: "Remove"
+      remove_all: "Remove all tags and un-bookmark?"
       add_tag: "Add tag"
       tag: "Tag"
-      manage: "Manage your tags"
-      save: "Save"
-      discard: "Discard"
-      edit: "Edit"
-      delete: "Delete"
+      tagged: "Tagged"
+      bookmark: "Bookmark"
+      bookmarks: "Bookmarks"
+      bookmarked: "Bookmarked"
+      removed: "Removed"
+      failure: "Failure"
     users:
       username: "Username"
       cwis: "CWIS"

@@ -1,18 +1,6 @@
-<div class="facet_limit blacklight-format">
-  <h5 class="twiddle">Tags <i class="icon-chevron"></i></h5>
-  <ul>
-    <% tags.each do |tag| %>
-      <li>
-        <% if any_tag_in_params? %>
-          <% if tag_in_params? tag  %>
-            <%= render_selected_tag_value tag %>
-          <% else %>
-            <%= render_tag_value tag %>
-          <% end %>
-        <% else %>
-          <%= render_tag_value tag %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
+<div class="facet_limit toshokan-bookmarks">
+  <h5 class="twiddle"><%= t('toshokan.tags.title') %><i class="icon-chevron"></i></h5>
+  <div class="tag_list">
+    <%= render_tag_list %>
+  </div>
 </div>

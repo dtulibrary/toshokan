@@ -1,0 +1,29 @@
+.tag,.bookmark {
+  &.btn, &.btn-group, &.button_to, &.label {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  // make tag labels and buttons same height and properly aligned
+  &.btn {
+    margin-bottom: 2px;
+  }
+
+  &.label {
+    padding: 2px 6px 0px 6px;
+    margin-bottom: 1px;
+    vertical-align: middle;
+    font-weight: normal;
+
+    // format remove button with icon inside label
+    form {
+      display: inline;
+
+      button {
+	border: 0px;
+	padding: 0px;
+	background: none;
+      }
+    }
+  }
+}

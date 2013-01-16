@@ -24,7 +24,7 @@ describe Ability do
       end
 
       it 'can tag Solr documents' do
-        @ability.can?(:tag, SolrDocument).should be_true
+	@ability.can?(:tag, Bookmark).should be_true
       end
 
       it 'can log out from DTU CAS' do
@@ -127,8 +127,8 @@ describe Ability do
         @ability = Ability.new @user
       end
 
-      it 'can tag Solr documents' do
-        @ability.can?(:tag, SolrDocument).should be_true
+      it 'can tag bookmarked documents' do
+	@ability.can?(:tag, Bookmark).should be_true
       end
 
       it 'can log out from DTU CAS' do
@@ -153,8 +153,8 @@ describe Ability do
           @ability = Ability.new @user
         end
 
-        it 'can tag Solr documents' do
-          @ability.can?(:tag, SolrDocument).should be_true
+	it 'can tag bookmarked documents' do
+	  @ability.can?(:tag, Bookmark).should be_true
         end
 
         it 'can update users' do
@@ -225,8 +225,8 @@ describe Ability do
         @ability.can?(:login_velo, User).should be_true
       end
 
-      it 'cannot tag Solr documents' do
-        @ability.can?(:tag, SolrDocument).should be_false
+      it 'cannot tag documents' do
+	@ability.can?(:tag, Bookmark).should be_false
       end
 
       it 'cannot login to DTU CAS' do
@@ -256,8 +256,8 @@ describe Ability do
         @ability = Ability.new @user
       end
       
-      it 'can tag Solr documents' do
-        @ability.can?(:tag, SolrDocument).should be_true
+      it 'can tag bookmarked documents' do
+	@ability.can?(:tag, Bookmark).should be_true
       end
 
       it 'can logout from Velo' do

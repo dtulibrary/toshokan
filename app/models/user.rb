@@ -1,16 +1,18 @@
-class User < ActiveRecord::Base
+  class User < ActiveRecord::Base
   include Blacklight::User
 
   attr_accessible :email, :firstname, :identifier, :lastname, :provider, :username, :image_url
   attr_accessor :impersonating
   alias :impersonating? :impersonating
-  validates :provider, presence: true 
 
   has_many :profiles
   has_and_belongs_to_many :roles
 
-  acts_as_tagger
-  
+  has_many :subscriptions, :dependent => :destroy
+  has_many :tags, :dependent => :destroy
+  has_many :taggings, :through => :tags
+
+
   def self.create_or_update_with_account(provider, account)
     user =
       find_by_provider_and_identifier(provider, account.cwis) ||
@@ -21,7 +23,7 @@ class User < ActiveRecord::Base
     user.email = account.email
     user.image_url = account.image_url
     logger.debug "image url is #{account.image_url}"
-    
+
     user.profiles.clear
     account.profiles.each do |dtubase_profile|
       user.profiles.build(:active => dtubase_profile.active,
@@ -29,6 +31,9 @@ class User < ActiveRecord::Base
                           :email => dtubase_profile.email,
                           :identifier => dtubase_profile.id,
                           :org_id => dtubase_profile.org_id)
+
+
+
     end
     user.save
     user
@@ -67,11 +72,11 @@ class User < ActiveRecord::Base
   end
 
   def employee?
-    employee_profiles.any? { |p| p.active }    
+    employee_profiles.any? { |p| p.active }
   end
 
   def student?
-    student_profiles.any? { |p| p.active }    
+    student_profiles.any? { |p| p.active }
   end
 
   def guest?
@@ -80,7 +85,27 @@ class User < ActiveRecord::Base
 
   def anonymous?
     # Anonymous users are not stored in the database so they don't have an ID
-    !id 
+    !id
+  end
+
+  def tag(document, tag_name)
+    bookmark = bookmarks.find_or_create_by_document_id(document.id)
+    tag = tags.find_or_create_by_name(tag_name)
+    bookmark.tags << tag unless bookmark.tags.exists?(tag)
+    bookmark.save
+    tag
+  end
+
+  def tags_for(bookmark_document_or_document_id)
+    if bookmark_document_or_document_id.is_a?(String)
+      document_id = bookmark_document_or_document_id
+    elsif bookmark_document_or_document_id.respond_to?(:document_id)
+      document_id = bookmark_document_or_document_id.document_id
+    else
+      document_id = bookmark_document_or_document_id.id
+    end
+
+    bookmarks.includes(:tags).find_by_document_id(document_id).tags.order(:name)
   end
 
   def to_s

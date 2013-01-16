@@ -1,6 +1,14 @@
-<%= form_for @tag, url: tag_path do |f| %>
-  <%= label_tag 'tag_name', 'Name' %>
-  <%= text_field_tag 'tag_name', @tag.name %><br/>
-  <%= f.submit t('toshokan.tags.save') %>
+<%= form_for @tag, url: tag_path, :html=>{:class=>"form-horizontal"} do |f| %>
+  <div class="control-group">
+    <%= label_tag 'tag_name', 'Name', :class=>"control-label" %>
+    <div class="controls">
+      <%= text_field_tag 'tag_name', @tag.name %>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit t('toshokan.save') %>
+      <%= submit_tag t('toshokan.cancel'), :name => "cancel" %>
+    </div>
+  </div>
 <% end %>
-<%= button_to t('toshokan.tags.discard'), tags_path, :method => :get %>

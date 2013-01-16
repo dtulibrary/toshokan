@@ -23,12 +23,11 @@ end
 
 Given /^I go to the record page for "(.*?)"$/ do |title|
   steps %{
-    And I'm logged in
     And I have searched for "#{title}"
     And I click the link "#{title}"
   }
 end
 
 Then /^I should see the citations$/ do
-  current_path.should match 'citation'  
+  current_path.should match 'citation'
 end

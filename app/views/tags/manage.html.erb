@@ -1,0 +1,27 @@
+<div id="sidebar" class="span3">
+  <div class="sidenav">
+    <h4>MyLibrary</h4>
+    <div>
+      <h5 data-toggle="collapse" data-target="#myul">Bookmarks and Tags <i class="icon-chevron"></i></h5>
+      <ul id="myul" style="display:none">
+	<li>Bookmarks and tags</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div id="content" class="span9">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+	<th>Tag</th>
+	<th>Actions</th>
+      </tr>
+    </thead>
+    <% @tags.each do |tag| %>
+      <tr class='tag-manager'>
+      <td><span class="label label-important"><%= tag.name %></span></td>
+    <td><%= link_to t('toshokan.tags.edit'), edit_tag_path(tag) %> | <%= link_to t('toshokan.tags.delete'), tag_path(tag, :return_url => request.url), :method => :delete %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

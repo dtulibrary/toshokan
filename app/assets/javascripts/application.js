@@ -21,6 +21,7 @@
 //
 // Required by Blacklight
 //= require blacklight/blacklight
+//= require bootstrap-dropdown
 //= require_tree .
 
 // Umlaut

@@ -68,28 +68,36 @@ ActiveRecord::Schema.define(:version => 20121130090034) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
-  create_table "solr_document_pointers", :force => true do |t|
-    t.string   "solr_id"
+  create_table "subscriptions", :force => true do |t|
+    t.integer "user_id"
+    t.integer "tag_id"
+  end
+
+  add_index "subscriptions", ["user_id", "tag_id"], :name => "index_subscriptions_on_user_id_and_tag_id", :unique => true
+  add_index "subscriptions", ["user_id"], :name => "index_subscriptions_on_user_id"
+
+  create_table "taggings", :force => true do |t|
+    t.integer  "tag_id"
+    t.integer  "bookmark_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "taggings", ["bookmark_id"], :name => "index_taggings_on_bookmark_id"
+  add_index "taggings", ["tag_id", "bookmark_id"], :name => "index_taggings_on_tag_id_and_bookmark_id", :unique => true
+  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+
+  create_table "tags", :force => true do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.boolean  "shared"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  create_table "taggings", :force => true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.string   "taggable_type"
-    t.integer  "tagger_id"
-    t.string   "tagger_type"
-    t.string   "context",       :limit => 128
-    t.datetime "created_at"
-  end
-
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
-
-  create_table "tags", :force => true do |t|
-    t.string "name"
-  end
+  add_index "tags", ["name", "user_id"], :name => "index_tags_on_name_and_user_id", :unique => true
+  add_index "tags", ["shared"], :name => "index_tags_on_shared"
+  add_index "tags", ["user_id"], :name => "index_tags_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "provider"

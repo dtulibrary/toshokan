@@ -28,12 +28,14 @@
       </li>
     <% end %>
 
-    <li class="nav-header"><%= t('toshokan.tags.title') %></li>          
-    <li class="tags">
+    <% if can? :tag, Bookmark %>
+      <li class="nav-header"><%= t('toshokan.tags.title') %></li>
+      <li class="tags">
       <%= render_tag_control @document %>
-    </li>
+      </li>
+    <% end %>
 
-    <li class="nav-header fulltext-header"><%= t('toshokan.tools.availability') %></li>   
+    <li class="nav-header fulltext-header"><%= t('toshokan.tools.availability') %></li>
     <li class="fulltext"></li>
 
   </ul>

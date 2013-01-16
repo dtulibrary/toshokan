@@ -1,16 +1,64 @@
 require 'spec_helper'
 
 describe User do
-
-  it "should be valid" do
-    User.new(provider: 'cas').should be_valid
+  subject do
+    User.create
   end
 
-  it "should have roles" do
+  let(:another_user) {
+    User.create
+  }
+
+  let(:document) {
+    d = double("document")
+    d.stub(:id).and_return("1")
+    d
+  }
+
+  it "is valid" do
+    subject.should be_valid
+  end
+
+  it "has roles" do
     sup_role = Role.find_by_code('SUP')
     adm_role = Role.find_by_code('ADM')
     subject.roles << sup_role << adm_role
     subject.roles.should include(sup_role, adm_role)
+  end
+
+  it "has own tags" do
+    subject.tags.should eq []
+  end
+
+  it "has own taggings" do
+    subject.taggings.should eq []
+  end
+
+  it "can tag a document" do
+    subject.tag(document, 'a tag')
+  end
+
+  it "can list owned tags for document" do
+    subject.tag(document, 'a tag')
+
+    subject.tags.map(&:name).should eq ['a tag']
+    subject.tags_for(document).map(&:name).should eq ['a tag']
+  end
+
+  it "can list owned tags for document id" do
+    subject.tag(document, 'a tag')
+
+    subject.tags.map(&:name).should eq ['a tag']
+    subject.tags_for(document.id).map(&:name).should eq ['a tag']
+  end
+
+  it "can list owned tags for bookmark" do
+    subject.tag(document, 'a tag')
+    bookmark = subject.tags.find_by_name('a tag').bookmarks.first
+    bookmark.document_id.should == document.id
+
+    subject.tags.map(&:name).should eq ['a tag']
+    subject.tags_for(bookmark).map(&:name).should eq ['a tag']
   end
 
   describe 'from Account' do
@@ -87,6 +135,5 @@ describe User do
         user.profiles.size.should == 1
       end
     end
-
   end
 end

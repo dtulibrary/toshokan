@@ -11,13 +11,13 @@ Toshokan::Application.routes.draw do
   match '/user/session'                 => 'users/sessions#update',    :as => 'user_session', :via => :put
   match '/cover_images/:id',        :to => 'cover_images#show',        :as => 'cover_images'
 
-  resources :documents, only: [] do
-    resources :tags, except: [:index, :edit, :update]
+  resources :documents, :only => [] do
+    resources :tags, :except => [:edit, :update]
   end
-  resources :tags, only: [:index, :edit, :update, :destroy]
+  resources :tags, :only => [:edit, :update, :destroy]
+  match 'tags'                          => 'tags#manage',              :as => 'manage_tags'
+
   resources :users, :only => [:index, :update, :destroy]
-  
-  resources :solr_group, :only => [:show,:update], :controller => "catalog" 
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
