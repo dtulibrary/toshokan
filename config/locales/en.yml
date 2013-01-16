@@ -71,34 +71,36 @@ en:
       index_field_labels:
         abstract_t: 'Abstract'
         author_t: 'Authors'
+        doi_s: 'DOI'
         journal_title_s: 'Journal'
         pub_date_ti: 'Year'
-        doi_s: 'DOI'
         title_t: 'Title'
       show_field_labels:
         abstract_t: 'Abstract'
         affiliation_t: 'Affiliations'
         author_t: 'Authors'
+        doi_s: 'DOI'
         format: 'Format'
+        isbn_s: 'ISBN'
+        issn_s: 'ISSN'
         journal_title_s: 'Journal'
         keywords_t: 'Keywords'
         pub_date_ti: 'Year'
-        doi_s: 'DOI'
         title_t: 'Title'
       facet_field_labels:
-        format: 'Format'
-        pub_date_sort: 'Publication Year'
         author_facet: 'Author'
+        format: 'Format'
         journal_title_facet: 'Journal Title'
+        pub_date_sort: 'Publication Year'
       search_field_labels:
         all_fields: 'All fields'
-        title: 'Title'
         author: 'Author'
         subject: 'Keyword'
+        title: 'Title'
       sort_field_labels:
-        relevance: 'relevance'
-        year: 'year'
         author: 'author'
+        relevance: 'relevance'
         title: 'title'
+        year: 'year'
 
 

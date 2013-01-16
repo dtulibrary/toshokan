@@ -7,11 +7,18 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
 
   include TagsHelper
+
   self.solr_search_params_logic += [:add_tag_fq_to_solr]
   self.solr_search_params_logic += [:add_access_filter]
 
-
   configure_blacklight do |config|
+    # It seems the I18n path is not set by Rails prior to running this block.
+    # (other stuff like the Rails logger has not been initialized here either)
+    # TODO: Would really be nice not to have this kind of thing. Possible fixes:
+    #   - Go back to configuring BL in an initializer
+    #   - Push translation lookup into BL and hope that pull request would get accepted
+    Dir[Rails.root + 'config/locales/*.yml'].each { |path| I18n.load_path << path }
+
     class << config
       # Wrapper on top of blacklight's config.add_*_field that simplifies I18n support for toshokan
       # - field_type is the type of field (:index, :show, :search, :facet, :sort)
