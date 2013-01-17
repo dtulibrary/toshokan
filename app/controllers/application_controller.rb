@@ -7,21 +7,27 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_filter :authenticate_conditionally
+  before_filter :authenticate
 
-  # Will only do authentication if the user is not allowed to act anonymously
-  def authenticate_conditionally
-    authenticate unless can? :be_anonymous, User
-  end
-
-  # Will always do authentication
+  # Authenticate users if certain criteria are met.
+  # - No authentication will be done if user is already logged in.
+  # - No authentication will be done if an authentication provider 
+  #   has not been chosen. This will also check for sticky choice
+  #   from :auth_provider cookie.
   def authenticate
+    # Use sticky auth provider if it isn't already set in session
+    session[:auth_provider] ||= cookies[:auth_provider]
+
+    # No authentication if user is already logged in
     unless session[:user_id]
-      session['return_url'] = request.url
-      logger.debug request.url
-      # Recreate user abilities on each login
-      @current_ability = nil
-      redirect_to polymorphic_url(:new_user_session)
+      # Only do authentication if an auth provider has been chosen
+      if session[:auth_provider]
+        # Return URL could be set by the authentication provider selection page
+        session[:return_url] ||= request.url
+        # Recreate user abilities on each login
+        @current_ability = nil
+        redirect_to polymorphic_url(:new_user_session)
+      end
     end
   end
 
@@ -31,6 +37,11 @@ class ApplicationController < ActionController::Base
     if session[:user_id]
       user = User.find(session[:user_id])
       user.impersonating = session.has_key? :original_user_id if user
+      return user
+    elsif ["127.0.0.1"].include? request.env['REMOTE_ADDR']
+      # This is a bogus walk-in user test
+      user = User.new
+      user.provider = 'walkin'
       return user
     end
   end

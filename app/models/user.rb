@@ -22,7 +22,6 @@
     user.lastname = account.lastname
     user.email = account.email
     user.image_url = account.image_url
-    logger.debug "image url is #{account.image_url}"
 
     user.profiles.clear
     account.profiles.each do |dtubase_profile|

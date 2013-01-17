@@ -28,39 +28,29 @@ class Ability
     # Create guest user if necessary
     user ||= User.new
 
-    # Abilities that are specific to application mode
-    # XXX: These are all just imaginary examples of configurations
-    case Rails.application.config.application_mode
-    when :dtu
-      if user.anonymous?
-        can :login_cas, User
-      else
-        can :logout_cas, User
-	can :tag, Bookmark
-	can :tag, Search
-	can :share, Tag
-      end
-    when :dtu_kiosk
-      if user.anonymous?
-        can :be_anonymous, User
-        can :login_cas, User
-      else
-        can :logout_cas, User
-	can :tag, Bookmark
-	can :tag, Search
-      end
-    when :i4i
-      if user.anonymous?
-        can :be_anonymous, User
-        can :login_velo, User
-      else
-        can :logout_velo, User
-	can :tag, Bookmark
-	can :tag, Search
-      end
+    # Set abilities based on which authentication provider the user used.
+    case user.provider
+    when 'cas'
+      # Logged in using DTU CAS
+      can :tag, [Bookmark, Search]
+      can :share, Tag
+      can :search, :dtu
+    when 'walkin'
+      # Using a walk-in PC on DTU campus
+      can :login, User
+      can :search, :dtu
+      logger.debug 'Walk-in user'
+    when 'public'
+      # Logged in from outside DTU Campus
+      can :tag, [Bookmark, Search]
+      can :share, Tag
+      can :search, :public
+    else
+      # Not authenticated
+      can :login, User
+      can :search, :public
     end
 
-    # Abilities that work regardless of application mode
     unless user.anonymous?
       can :logout, User
 

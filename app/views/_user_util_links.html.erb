@@ -1,14 +1,11 @@
 <div id="util-links" class="util-links pull-right">
   <% if current_or_guest_user %>
     <!-- Login -->
-    <% if can? :login_cas, User %>
-      <%= link_to t('toshokan.header_links.login_cas'), new_user_session_path(:return_url => u(request.url)) %>
-    <% end %>
-    <% if can? :login_velo, User %>
-      <%= link_to t('toshokan.header_links.login_velo'), new_user_session_path(:return_url => u(request.url)) %>
+    <% if can? :login, User %>
+      <%= link_to t('toshokan.header_links.login_cas'), select_auth_provider_path(:return_url => u(request.url)) %>
     <% end %>
 
-    <% if current_user %>
+    <% if current_user and !current_user.anonymous? %>
       <!-- Username -->
       <%= t("toshokan.header_links.#{current_user.impersonating ? 'acting_as' : 'logged_in_as'}") %> <%= link_to current_user, edit_user_registration_path %>
       <!-- Switch user -->
@@ -35,14 +32,10 @@
     <% end %>
     |
     <%= link_to t('blacklight.header_links.search_history'), search_history_path %>
-    <% if current_user %>
-      <% if can? :logout_cas, User %>
+    <% if current_user and !current_user.anonymous? %>
+      <% if can? :logout, User %>
         |
         <%= link_to t('toshokan.header_links.logout_cas'), destroy_user_session_path %>
-      <% end %>
-      <% if can? :logout_velo, User %>
-        |
-        <%= link_to t('toshokan.header_links.logout_velo'), destroy_user_session_path %>
       <% end %>
     <% end %>
   <% end %>

@@ -189,16 +189,9 @@ class CatalogController < ApplicationController
   end
 
   def add_access_filter solr_parameters, user_parameters
-
     solr_parameters[:fq] ||= []
-    case Rails.application.config.application_mode
-    when :dtu
-      solr_parameters[:fq] << 'access:dtu'
-    when :dtu_kiosk        
-      solr_parameters[:fq] << 'access:dtu'
-    when :i4i
-      solr_parameters[:fq] << 'access:dtupub'
-    end
+    solr_parameters[:fq] << 'access:dtu' if can? :search, :dtu
+    solr_parameters[:fq] << 'access:dtupub' if can? :search, :public
   end
 
   def current_display_format

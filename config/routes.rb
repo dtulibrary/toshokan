@@ -10,6 +10,8 @@ Toshokan::Application.routes.draw do
   match '/user/switch',             :to => 'users/sessions#switch',    :as => 'switch_user'
   match '/user/session'                 => 'users/sessions#update',    :as => 'user_session', :via => :put
   match '/cover_images/:id',        :to => 'cover_images#show',        :as => 'cover_images'
+  match '/auth',                    :to => 'auth_provider#index',      :as => 'select_auth_provider', :via => :get
+  match '/auth',                    :to => 'auth_provider#create',     :as => 'set_auth_provider',    :via => :post
 
   resources :documents, :only => [] do
     resources :tags, :except => [:edit, :update]

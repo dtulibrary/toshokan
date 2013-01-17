@@ -1,0 +1,22 @@
+<h4>More Than One Way In</h4>
+<p>
+  You can log into DTU Library in more than one way depending on your affiliations,
+  and you will see a difference in the number of publications to search within and
+  a difference in how many of those you find, that you can get free access to the 
+  full text across the different ways of logging in.
+</p>
+
+<%= form_tag set_auth_provider_path do %>
+  <div style="margin: 1em 0em; padding: 1em 0em; border-top: 1px solid #aaa; border-bottom: 1px solid #aaa">
+    <div>
+      <%= radio_button_tag 'auth_provider', 'cas' %> DTU Campus Login
+    </div>
+    <div>
+      <%= radio_button_tag 'auth_provider', 'public' %> Public Login
+    </div>
+  </div>
+  <div>
+    <%= check_box_tag 'sticky' %> Remember my choice
+    <%= submit_tag 'Login' %>
+  </div>
+<% end %>

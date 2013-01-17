@@ -1,11 +1,15 @@
 require 'dtubase'
 
 class Users::SessionsController < ApplicationController
-  skip_before_filter :authenticate_conditionally, :only => [ :create, :new ]
+  skip_before_filter :authenticate, :only => [ :create, :new ]
 
   def new
     session[:return_url] ||= '/'
-    redirect_to omniauth_path(:cas)
+    if session[:auth_provider]
+      redirect_to omniauth_path(session[:auth_provider].to_sym)
+    else 
+      redirect_to select_auth_provider_path
+    end
   end
 
   def create
@@ -24,15 +28,18 @@ class Users::SessionsController < ApplicationController
     @current_ability = nil
 
     # redirect user to the requested url
-    redirect_to session.delete('return_url'), :notice => 'Signed in by %s' % [provider], :only_path => true
+    redirect_to session.delete(:return_url), :notice => 'Signed in by %s' % [provider], :only_path => true
   end
 
   def destroy
     reset_session
+    cookies.delete :auth_provider
     redirect_to root_path
   end
 
   def omniauth_path(provider)
+    map = { :dtu_cas => :cas }
+    provider = map[provider] if map.has_key? provider
     "/auth/#{provider.to_s}"
   end
 
