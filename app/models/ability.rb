@@ -49,6 +49,7 @@ class Ability
       # Not authenticated
       can :login, User
       can :search, :public
+      can :remember, :auth_provider
     end
 
     unless user.anonymous?

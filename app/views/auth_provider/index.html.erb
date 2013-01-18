@@ -16,7 +16,9 @@
     </div>
   </div>
   <div>
-    <%= check_box_tag 'sticky' %> Remember my choice
+    <% if can? :remember, :auth_provider %>
+      <%= check_box_tag 'sticky' %> Remember my choice
+    <% end %>
     <%= submit_tag 'Login' %>
   </div>
 <% end %>
