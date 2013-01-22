@@ -4,7 +4,7 @@
     <%= link_to t('toshokan.header_links.login_cas'), select_auth_provider_path(:return_url => u(request.url)) %>
   <% end %>
 
-  <% if !current_user.anonymous? %>
+  <% if current_user.authenticated? %>
     <!-- Username -->
     <%= t("toshokan.header_links.#{can?(:switch_back, User) ? 'acting_as' : 'logged_in_as'}") %> <%= link_to current_user, edit_user_registration_path %>
     <!-- Switch user -->

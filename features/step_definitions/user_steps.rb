@@ -12,7 +12,7 @@ Given /^the following users? exists?:$/ do |table|
     user = User.new(
       :identifier => hash['cwis'],
       :username => hash['username'] || 'john_doe',
-      :provider => hash['provider'] || 'cas',
+      :provider => hash['provider'] || 'dtu_cas',
       :firstname => given_names.join(' '),
       :lastname => birth_name,
       :email => hash['email'] || 'john_doe@example.com'
@@ -41,7 +41,7 @@ end
 Given /^I'm logged in as user with the role "(.*?)"$/ do |arg1|
   role = Role.find_by_name(arg1)
   raise "Role doesn't exist for name #{arg1}" unless role
-  user = User.new(identifier: arg1+'_test_id', username: arg1+'_test_username', provider: 'cas') 
+  user = User.new(identifier: arg1+'_test_id', username: arg1+'_test_username', provider: 'dtu_cas') 
   user.roles = [role]
   user.save!
   log_in(user)
@@ -54,7 +54,7 @@ end
 
 Given /^there exists a user with cwis "(.*?)" and name "(.*?)"$/ do |arg1, arg2|
   names = arg2.split(' ')
-  user = User.create(identifier: arg1, username: arg1+"_test_username", firstname: names[0], lastname: names[1..-1].join(' '), provider: 'cas')   
+  user = User.create(identifier: arg1, username: arg1+"_test_username", firstname: names[0], lastname: names[1..-1].join(' '), provider: 'dtu_cas')   
   account = Dtubase::Account.new
   account.cwis = arg1
   account.firstname = user.firstname
@@ -65,13 +65,54 @@ end
 Given /^I'm logged in(?: as user with no role)?$/ do
   arg1 = "No name user"
   names = arg1.split(' ')
-  user = User.create(identifier: arg1, username: arg1+"_test_username", firstname: names[0], lastname: names[1..-1].join(' '), provider: 'cas')   
+  user = User.create(identifier: arg1, username: arg1+"_test_username", firstname: names[0], lastname: names[1..-1].join(' '), provider: 'dtu_cas')   
   log_in(user)  
+end
+
+Given /^I(?:'m| am) logged in by (DTU CAS|Public CAS)$/ do |auth_name|
+  map = { 
+    'DTU CAS' => 'dtu_cas', 
+    'Public CAS' => 'public_cas' 
+  }
+
+  if map.has_key? auth_name
+    user = User.create(
+      :identifier => '1234', 
+      :username => 'johndoe', 
+      :provider => map[auth_name], 
+      :firstname => 'John', 
+      :lastname => 'Doe', 
+      :email => 'john_doe@example.com'
+    )
+    log_in user
+  end
+end
+
+Given /^I(?:'m| am) a walk-in user$/ do
+  ApplicationController.stub(:walk_in_request?).and_return(true)
 end
 
 def log_in(user)
   OmniAuth.config.test_mode = true
-  OmniAuth.config.add_mock(:cas, {
+
+  visit('/')  
+
+  # Click the login link that will take user to auth provider selection
+  click_link 'Login' if page.has_css? '#util-links a', :text => 'Login'
+
+  # Select auth provider by clicking radio buttn and do necessary stuff for each auth provider
+  case user.provider
+  when 'dtu_cas'
+    mock_dtu_cas user
+    choose 'DTU Campus Login'
+  end
+  
+  # Click final login button
+  click_button 'Login'
+end
+
+def mock_dtu_cas user
+  OmniAuth.config.add_mock(:dtu_cas, {
     :uid => user.username,
     :info => { :name => user.to_s },  
     :extra => {
@@ -103,7 +144,5 @@ def log_in(user)
   EOF
   )  
   
-  visit('/')  
-  click_link 'Login' if page.has_css? '#util-links a', :text => 'Login'
 end  
 

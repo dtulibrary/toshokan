@@ -32,9 +32,10 @@ class Users::SessionsController < ApplicationController
   end
 
   def destroy
+    return_url = session[:return_url] || root_path
     reset_session
     cookies.delete :auth_provider
-    redirect_to root_path
+    redirect_to return_url, :notice => 'You are now logged out', :only_path => true
   end
 
   def omniauth_path(provider)

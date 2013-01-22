@@ -2,10 +2,10 @@ Feature: Impersonate another user
 
 Background: Existing users
   Given the following users exist:
-    | cwis | username | name           | roles          |
-    | 1234 | support1 | Support User 1 | "User Support" |
-    | 2345 | support2 | Support User 2 | "User Support" |
-    | 4321 | regular  | Regular User   |                |
+    | cwis | username | name           | roles          | provider |
+    | 1234 | support1 | Support User 1 | "User Support" | dtu_cas  |
+    | 2345 | support2 | Support User 2 | "User Support" | dtu_cas  |
+    | 4321 | regular  | Regular User   |                | dtu_cas  |
 
 Scenario: User with User Support role logs in
   Given I'm logged in as user with cwis "1234"

@@ -34,19 +34,31 @@ class ApplicationController < ActionController::Base
   helper_method :guest_user, :current_or_guest_user
 
   def current_user
+    logged_in_user || walk_in_user || guest_user
+  end
+
+  def logged_in_user
     if session[:user_id]
-      user = User.find(session[:user_id])
+      user = User.find session[:user_id]
       user.impersonating = session.has_key? :original_user_id if user
       return user
-    elsif ["127.0.0.1"].include? request.env['REMOTE_ADDR']
-      # Use Net::ADDR
-      # This is a bogus walk-in user test
+    end
+  end
+
+  def walk_in_user
+    if walk_in_request?
       user = User.new
       user.walk_in = true
       return user
-    else 
-      User.new
     end
+  end
+
+  def walk_in_request?
+    # TODO: This is quick and dirty solution. Use NetAddr module for doing IP checks
+    #       against IP's defined in config file
+    [
+      # Hard coded IP's here
+    ].include? (request.env['X-Forwarded-For'] || request.env['REMOTE_ADDR'])
   end
 
   def guest_user
@@ -54,7 +66,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_or_guest_user
-    current_user || guest_user
+    current_user
   end
 
   # Call this to bail out quickly and easily when something is not found.

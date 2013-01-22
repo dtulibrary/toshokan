@@ -83,9 +83,9 @@
     guest_profiles.any? { |p| p.active }
   end
 
-  def anonymous?
-    # Anonymous users are not stored in the database so they don't have an ID
-    !id
+  def authenticated?
+    # Only authenticated users are stored in the database
+    id
   end
 
   def tag(document, tag_name)

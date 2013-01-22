@@ -9,10 +9,10 @@
 <%= form_tag set_auth_provider_path do %>
   <div style="margin: 1em 0em; padding: 1em 0em; border-top: 1px solid #aaa; border-bottom: 1px solid #aaa">
     <div>
-      <%= radio_button_tag 'auth_provider', 'dtu_cas' %> DTU Campus Login
+      <%= radio_button_tag 'auth_provider', 'dtu_cas' %> <%= label_tag 'auth_provider_dtu_cas', 'DTU Campus Login' %>
     </div>
     <div>
-      <%= radio_button_tag 'auth_provider', 'public' %> Public Login
+      <%= radio_button_tag 'auth_provider', 'public' %> <%= label_tag 'auth_provider_provider', 'Public Login' %>
     </div>
   </div>
   <div>

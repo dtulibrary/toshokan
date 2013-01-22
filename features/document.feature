@@ -1,7 +1,7 @@
 Feature: Show a single document
 
 Background:
-	Given I'm logged in
+	Given I'm logged in by DTU CAS
 
 Scenario: User wants to see the details for a single record
 	 When I have searched for "A Codebook Design Method for Robust VQ-Based Face Recognition Algorithm"

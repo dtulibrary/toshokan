@@ -25,9 +25,27 @@ describe Users::SessionsController do
     end
 
     context 'without user id in session' do
-      it 'redirects to login' do
+      it 'sets flash notice' do
         delete 'destroy'
-        response.should redirect_to new_user_session_path
+        flash[:notice].should == 'You are now logged out'
+      end
+
+      context 'with return_url in session' do
+        before do
+          session[:return_url] = '/return_url'
+        end
+
+        it 'redirects to return_url from session' do
+          delete :destroy
+          response.should redirect_to '/return_url'
+        end
+      end
+
+      context 'without return_url in session' do
+        it 'redirects to root_path' do
+          delete :destroy
+          response.should redirect_to root_path
+        end
       end
     end
   end
