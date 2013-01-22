@@ -1,7 +1,8 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :cas,
     :host => Toshokan::Application.config.cas[:host],
-    :ssl => true
+    :ssl => true,
+    :name => :dtu_cas
 end
 
 if Toshokan::Application.config.stub_authentication

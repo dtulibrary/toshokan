@@ -38,8 +38,6 @@ class Users::SessionsController < ApplicationController
   end
 
   def omniauth_path(provider)
-    map = { :dtu_cas => :cas }
-    provider = map[provider] if map.has_key? provider
     "/auth/#{provider.to_s}"
   end
 

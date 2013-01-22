@@ -2,8 +2,9 @@
   include Blacklight::User
 
   attr_accessible :email, :firstname, :identifier, :lastname, :provider, :username, :image_url
-  attr_accessor :impersonating
+  attr_accessor :impersonating, :walk_in
   alias :impersonating? :impersonating
+  alias :walk_in? :walk_in
 
   has_many :profiles
   has_and_belongs_to_many :roles

@@ -28,33 +28,15 @@ class Ability
     # Create guest user if necessary
     user ||= User.new
 
-    # Set abilities based on which authentication provider the user used.
-    case user.provider
-    when 'cas'
-      # Logged in using DTU CAS
-      can :tag, [Bookmark, Search]
-      can :share, Tag
-      can :search, :dtu
-    when 'walkin'
-      # Using a walk-in PC on DTU campus
+    # Apply abilities based on whether user is logged in or not
+    if user.anonymous?
       can :login, User
-      can :search, :dtu
-      logger.debug 'Walk-in user'
-    when 'public'
-      # Logged in from outside DTU Campus
-      can :tag, [Bookmark, Search]
-      can :share, Tag
-      can :search, :public
     else
-      # Not authenticated
-      can :login, User
-      can :search, :public
-      can :remember, :auth_provider
+      can :logout, User
     end
 
-    unless user.anonymous?
-      can :logout, User
-
+    # Apply abilities based on user roles
+    unless user.roles.empty?
       if user.roles.include? Role.find_by_code('DAT')
         can :view_format, ['standard', 'librarian']
       else
@@ -64,7 +46,33 @@ class Ability
       can :view_raw, SolrDocument if user.roles.include? Role.find_by_code('DAT')
       can :update, User if user.roles.include? Role.find_by_code('ADM')
       can :switch, User if user.roles.include?(Role.find_by_code('SUP')) && !user.impersonating?
-      can :switch_back, User if user.impersonating?
+    end
+    
+    # User can switch back if he is impersonating another user
+    can :switch_back, User if user.impersonating?
+
+    # Apply abilities based on which authentication provider the user used for login
+    case user.provider
+    when 'dtu_cas'
+      # Logged in using DTU CAS
+      can :tag, [Bookmark, Search]
+      can :share, Tag
+      can :search, :dtu
+    when 'public'
+      # Logged in from outside DTU Campus
+      can :tag, [Bookmark, Search]
+      can :share, Tag
+      can :search, :public
+    else
+      # Not authenticated
+      can :search, :public
+      can :remember, :auth_provider
+    end
+
+    # Apply abilities for users on walk-in PC's
+    if user.walk_in?
+      cannot :login, User
+      can :search, :dtu
     end
   end
 

@@ -39,10 +39,13 @@ class ApplicationController < ActionController::Base
       user.impersonating = session.has_key? :original_user_id if user
       return user
     elsif ["127.0.0.1"].include? request.env['REMOTE_ADDR']
+      # Use Net::ADDR
       # This is a bogus walk-in user test
       user = User.new
-      user.provider = 'walkin'
+      user.walk_in = true
       return user
+    else 
+      User.new
     end
   end
 
