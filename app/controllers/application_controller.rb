@@ -1,3 +1,5 @@
+require 'netaddr'
+
 class ApplicationController < ActionController::Base
   include Blacklight::Controller
 
@@ -34,7 +36,9 @@ class ApplicationController < ActionController::Base
   helper_method :guest_user, :current_or_guest_user
 
   def current_user
-    logged_in_user || walk_in_user || guest_user
+    user = logged_in_user || guest_user
+    user.walk_in = walk_in_request?
+    return user
   end
 
   def logged_in_user
@@ -45,20 +49,24 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def walk_in_user
-    if walk_in_request?
-      user = User.new
-      user.walk_in = true
-      return user
-    end
-  end
-
   def walk_in_request?
-    # TODO: This is quick and dirty solution. Use NetAddr module for doing IP checks
-    #       against IP's defined in config file
-    [
-      # Hard coded IP's here
-    ].include? (request.env['X-Forwarded-For'] || request.env['REMOTE_ADDR'])
+    result = false
+    Rails.application.config.walk_in[:ips].each do |ip|
+      lower = upper = nil
+      if ip.include? '-'
+        # Range 
+        lower, upper = NetAddr::CIDR.create($1), NetAddr::CIDR.create($2) if ip =~ /^(\S*)\s*-\s*(\S*)$/
+      elsif ip.include? '*'
+        # Wildcard
+        lower = upper = NetAddr.wildcard(ip)
+      else 
+        # Standard
+        lower = upper = NetAddr::CIDR.create(ip)
+      end
+      remote = NetAddr::CIDR.create request.remote_ip
+      result ||= (lower..upper).include? remote
+    end
+    return result
   end
 
   def guest_user

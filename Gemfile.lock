@@ -191,6 +191,7 @@ GEM
     net-ssh (2.5.2)
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
+    netaddr (1.5.0)
     nokogiri (1.5.5)
     nokogiri (1.5.5-x86-mingw32)
     omniauth (1.1.0)
@@ -348,6 +349,7 @@ DEPENDENCIES
   jettywrapper
   jquery-rails
   launchy
+  netaddr
   omniauth
   omniauth-cas
   paint

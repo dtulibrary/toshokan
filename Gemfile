@@ -24,6 +24,7 @@ gem 'acts-as-taggable-on'
 gem 'dalli'
 gem 'bibtex-ruby'
 gem 'citeproc-ruby'
+gem 'netaddr'
 
 # Gems used only for assets and not required
 # in production environments by default.
