@@ -62,8 +62,9 @@ en:
       cite_and_export: "Cite and export"
       bibtex: "Export to BibTeX"
       ris: "Export to RIS"
-      availability: "Availability"
+      fulltext: "Full Text"
       not_available: "Not available"
+      nal: "On-site use at other libraries"
     citation:
       mla: "MLA"
       apa: "APA"

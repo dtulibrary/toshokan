@@ -1,5 +1,10 @@
 .tools {
-  .source_url_icon {
-    vertical-align: top;
+  li.nav-list-collapse {
+    cursor: pointer;
   }
+
+  .twiddle-open .icon-chevron {
+    opacity: 0.5;
+  }
+
 }

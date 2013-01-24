@@ -1,5 +1,17 @@
 (function ($) {
 
+
+  $(function () {
+ 
+    $('#nal-content').on('show', function () {
+      $('#nal-header').addClass('twiddle-open');
+    })
+    $('#nal-content').on('hide', function () {
+      $('#nal-header').removeClass('twiddle-open');
+    })
+
+  });
+
   $(function () {
 
   	var openurl_link = $(".Z3988").attr("title");
@@ -8,6 +20,8 @@
     
     var fulltext_header = ".fulltext-header";
     var fulltext_selector = ".fulltext";
+    var nal_header = "#nal-header";
+    var nal_selector = "#nal-content";
 
     var spin_opts = {
       length: 5,
@@ -16,6 +30,8 @@
     };
     
     $(fulltext_header).append().spin(spin_opts);
+
+    // fulltext links
     updater.add_section_target({
       umlaut_section_id: "fulltext",
       selector: fulltext_selector,
@@ -28,6 +44,20 @@
         $(fulltext_header).spin(false);
       }
     });
+
+    // other libraries
+    updater.add_section_target({
+      umlaut_section_id: "nal",
+      selector: nal_selector,
+      before_update: function(html, count) {
+        $(html).html($(html).find(".response_item"));
+        $(html).find(".response_notes").remove();
+        if(count > 0) {
+          $(nal_header).show();
+        }        
+      }
+    });
+
     updater.update();
 	});
 })(jQuery);

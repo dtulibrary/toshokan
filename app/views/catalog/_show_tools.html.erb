@@ -6,6 +6,7 @@
   # item view. While "document tools" contains external export type
   # functions by default only on detail.
 -%>
+
   <ul class="nav nav-list">
 
     <li class="nav-header"><%= t('toshokan.tools.cite_and_export') %></li>
@@ -34,8 +35,5 @@
       <%= render_tag_control @document %>
       </li>
     <% end %>
-
-    <li class="nav-header fulltext-header"><%= t('toshokan.tools.availability') %></li>
-    <li class="fulltext"></li>
 
   </ul>
