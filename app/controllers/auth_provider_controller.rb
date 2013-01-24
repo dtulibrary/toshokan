@@ -2,6 +2,7 @@ class AuthProviderController < ApplicationController
   skip_before_filter :authenticate
 
   def index
+    session[:return_url] ||= params[:return_url]
     @auth_providers = [:dtu_cas, :dtu_walkin, :public]
   end
 

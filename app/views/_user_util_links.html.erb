@@ -1,7 +1,7 @@
 <div id="util-links" class="util-links pull-right">
   <!-- Login -->
   <% if can? :login, User %>
-    <%= link_to t('toshokan.header_links.login_cas'), select_auth_provider_path(:return_url => u(request.url)) %>
+    <%= link_to t('toshokan.header_links.login_cas'), select_auth_provider_path(:return_url => request.fullpath) %>
   <% end %>
 
   <% if current_user.authenticated? %>
@@ -35,6 +35,6 @@
   <% end %>
   <% if can? :logout, User %>
     |
-    <%= link_to t('toshokan.header_links.logout_cas'), destroy_user_session_path %>
+    <%= link_to t('toshokan.header_links.logout_cas'), destroy_user_session_path(:return_url => request.fullpath) %>
   <% end %>
 </div>

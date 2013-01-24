@@ -28,11 +28,11 @@ class Users::SessionsController < ApplicationController
     @current_ability = nil
 
     # redirect user to the requested url
-    redirect_to session.delete(:return_url), :notice => 'Signed in by %s' % [provider], :only_path => true
+    redirect_to session.delete(:return_url), :notice => 'You are now logged in', :only_path => true
   end
 
   def destroy
-    return_url = session[:return_url] || root_path
+    return_url = params[:return_url] || root_path
     reset_session
     cookies.delete :auth_provider
     redirect_to return_url, :notice => 'You are now logged out', :only_path => true

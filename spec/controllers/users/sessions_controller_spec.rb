@@ -30,18 +30,14 @@ describe Users::SessionsController do
         flash[:notice].should == 'You are now logged out'
       end
 
-      context 'with return_url in session' do
-        before do
-          session[:return_url] = '/return_url'
-        end
-
-        it 'redirects to return_url from session' do
-          delete :destroy
+      context 'with return_url in params' do
+        it 'redirects to return_url from params' do
+          delete :destroy, { :return_url => '/return_url' }
           response.should redirect_to '/return_url'
         end
       end
 
-      context 'without return_url in session' do
+      context 'without return_url in params' do
         it 'redirects to root_path' do
           delete :destroy
           response.should redirect_to root_path
