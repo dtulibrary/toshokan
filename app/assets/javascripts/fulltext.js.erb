@@ -14,50 +14,51 @@
 
   $(function () {
 
-  	var openurl_link = $(".Z3988").attr("title");
-  	var umlaut_base = '<%= Toshokan::Application.config.umlaut[:url] %>';
-  	var updater = new Umlaut.HtmlUpdater(umlaut_base , openurl_link);
-    
-    var fulltext_header = ".fulltext-header";
-    var fulltext_selector = ".fulltext";
-    var nal_header = "#nal-header";
-    var nal_selector = "#nal-content";
+    if($('.show-document').length) {
+      var openurl_link = $(".Z3988").attr("title");
+      var umlaut_base = '<%= Toshokan::Application.config.umlaut[:url] %>';
+      var updater = new Umlaut.HtmlUpdater(umlaut_base , openurl_link);
+      
+      var fulltext_header = ".fulltext-header";
+      var fulltext_selector = ".fulltext";
+      var nal_header = "#nal-header";
+      var nal_selector = "#nal-content";
 
-    var spin_opts = {
-      length: 5,
-      width: 3,
-      radius: 6,
-    };
-    
-    $(fulltext_header).append().spin(spin_opts);
+      var spin_opts = {
+        length: 5,
+        width: 3,
+        radius: 6,
+      };
+      
+      $(fulltext_header).append().spin(spin_opts);
 
-    // fulltext links
-    updater.add_section_target({
-      umlaut_section_id: "fulltext",
-      selector: fulltext_selector,
-      before_update: function(html, count) {
-        $(html).html($(html).find(".response_item"));
-        $(html).find(".response_notes").remove();
-        if(count==0) {
-          $(html).html("<%= I18n.t('toshokan.tools.not_available') %>");
-        }        
-        $(fulltext_header).spin(false);
-      }
-    });
+      // fulltext links
+      updater.add_section_target({
+        umlaut_section_id: "fulltext",
+        selector: fulltext_selector,
+        before_update: function(html, count) {
+          $(html).html($(html).find(".response_item"));
+          $(html).find(".response_notes").remove();
+          if(count==0) {
+            $(html).html("<%= I18n.t('toshokan.tools.not_available') %>");
+          }        
+          $(fulltext_header).spin(false);
+        }
+      });
 
-    // other libraries
-    updater.add_section_target({
-      umlaut_section_id: "nal",
-      selector: nal_selector,
-      before_update: function(html, count) {
-        $(html).html($(html).find(".response_item"));
-        $(html).find(".response_notes").remove();
-        if(count > 0) {
-          $(nal_header).show();
-        }        
-      }
-    });
-
-    updater.update();
+      // other libraries
+      updater.add_section_target({
+        umlaut_section_id: "nal",
+        selector: nal_selector,
+        before_update: function(html, count) {
+          $(html).html($(html).find(".response_item"));
+          $(html).find(".response_notes").remove();
+          if(count > 0) {
+            $(nal_header).show();
+          }        
+        }
+      });
+      updater.update();
+    }
 	});
 })(jQuery);
