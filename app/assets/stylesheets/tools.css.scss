@@ -1,10 +1,24 @@
 .tools {
   li.nav-list-collapse {
     cursor: pointer;
-  }
 
-  .twiddle-open .icon-chevron {
-    opacity: 0.5;
-  }
+    .icon-chevron {
+      @extend .icon-chevron-right;
+      opacity: .5;
+    }
 
+    &.twiddle-open .icon-chevron {
+      @extend .icon-chevron-down;
+      opacity: 1;
+    }
+
+    /* hide the chevron when js isn't supported */
+    .no-js & .icon-chevron {
+      @extend .icon-chevron-down;
+    }
+
+    &:hover .icon-chevron {
+      opacity: 1;
+    }
+  }
 }
