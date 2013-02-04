@@ -51,20 +51,19 @@ class ApplicationController < ActionController::Base
 
   def walk_in_request?
     result = false
+    remote = NetAddr::CIDR.create request.remote_ip
     Rails.application.config.walk_in[:ips].each do |ip|
-      lower = upper = nil
       if ip.include? '-'
         # Range 
         lower, upper = NetAddr::CIDR.create($1), NetAddr::CIDR.create($2) if ip =~ /^(\S*)\s*-\s*(\S*)$/
+        result ||= (lower..upper).include? remote
       elsif ip.include? '*'
         # Wildcard
-        lower = upper = NetAddr.wildcard(ip)
+        result ||= NetAddr.wildcard(ip).matches? remote
       else 
         # Standard
-        lower = upper = NetAddr::CIDR.create(ip)
+        result ||= NetAddr::CIDR.create(ip).matches? remote
       end
-      remote = NetAddr::CIDR.create request.remote_ip
-      result ||= (lower..upper).include? remote
     end
     return result
   end
