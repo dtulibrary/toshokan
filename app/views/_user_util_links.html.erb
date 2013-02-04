@@ -1,3 +1,8 @@
+
+<%= javascript_tag do %>
+  window.userType = '<%= current_user.type %>'
+<% end %>
+
 <div id="util-links" class="util-links pull-right">
   <!-- Login -->
   <% if can? :login, User %>

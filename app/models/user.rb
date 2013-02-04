@@ -112,4 +112,18 @@
     "%s %s" % [firstname, lastname]
   end
 
+  def type
+    if student?
+      return "dtu_student"
+    elsif employee?
+      return "dtu_staff"
+    elsif walk_in?
+      return "walkin"
+    elsif authenticated?
+      return "public"
+    else
+      return "anonymous"
+    end
+  end
+
 end

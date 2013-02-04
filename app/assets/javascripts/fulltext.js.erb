@@ -1,6 +1,5 @@
 (function ($) {
 
-
   $(function () {
 
     $('#nal-content').on('show', function () {
@@ -12,10 +11,19 @@
 
   });
 
+  function openurl_add_metadata (openurl){
+    rft_dat = {"user_type": userType};
+    return openurl + "&rft_dat=" + encodeURIComponent(JSON.stringify(rft_dat));
+  }
+
   $(function () {
 
     if($('.show-document').length) {
-      var openurl_link = $(".Z3988").attr("title");
+      var openurl_link = openurl_add_metadata($(".Z3988").attr("title"));
+      <% if Rails.env.development? %>
+        openurl_link += "&umlaut.force_new_request=true"
+      <% end %>
+
       var umlaut_base = '<%= Toshokan::Application.config.umlaut[:url] %>';
       var updater = new Umlaut.HtmlUpdater(umlaut_base , openurl_link);
 
