@@ -12,7 +12,7 @@ gem 'blacklight', '4.0.1'
 gem 'unicode'
 gem 'bootstrap-sass', '~> 2.2.0'
 
-gem "blacklight_range_limit", '2.0'
+gem "blacklight_range_limit", '2.0.1'
 gem 'pg'
 gem 'unhappymapper', :require => 'happymapper'
 gem 'httparty'
