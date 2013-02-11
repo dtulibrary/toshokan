@@ -8,17 +8,17 @@
     // For an author list the dom could be
     //   <a>author1</a><span>, </span><a>author2</a>
     // And the "elements" parameter should be [<a>author1</a>, <a>author2</a>]
-    function shorten_list(elements, N, suffix) {
+    var shorten_list = function(elements, N, suffix) {
       if (elements.length > N) {
-        hide_last = $('<span> (<a href="#"><%= I18n.t("toshokan.catalog.shortened_list.hide_last") %> ' + (elements.length-N) + '</a>)</span>').insertAfter(elements.last());
+        var hide_last = $('<span> (<a href="#"><%= I18n.t("toshokan.catalog.shortened_list.hide_last") %> ' + (elements.length-N) + '</a>)</span>').insertAfter(elements.last());
         hide_last.click(function() {
           $(elements[N-1]).nextAll().toggleClass('hidden');
           return false;
         });
         hide_last.click();
 
-        et_al = $('<span>' + suffix + '</span>').insertAfter(elements[N-1]).last();
-        show_all = $('<span> (<a href="#"><%= I18n.t("toshokan.catalog.shortened_list.show_all") %> ' + elements.length + '</a>)</span>').insertAfter(et_al).find('a').last();
+        var et_al = $('<span>' + suffix + '</span>').insertAfter(elements[N-1]).last();
+        var show_all = $('<span> (<a href="#"><%= I18n.t("toshokan.catalog.shortened_list.show_all") %> ' + elements.length + '</a>)</span>').insertAfter(et_al).find('a').last();
         show_all.click(function() {
           $(elements[N-1]).nextAll().toggleClass('hidden');
           return false;

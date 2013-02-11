@@ -2,7 +2,7 @@
 
 
   $(function () {
- 
+
     $('#nal-content').on('show', function () {
       $('#nal-header').addClass('twiddle-open');
     })
@@ -18,7 +18,7 @@
       var openurl_link = $(".Z3988").attr("title");
       var umlaut_base = '<%= Toshokan::Application.config.umlaut[:url] %>';
       var updater = new Umlaut.HtmlUpdater(umlaut_base , openurl_link);
-      
+
       var fulltext_header = ".fulltext-header";
       var fulltext_selector = ".fulltext";
       var nal_header = "#nal-header";
@@ -29,7 +29,7 @@
         width: 3,
         radius: 6,
       };
-      
+
       $(fulltext_header).append().spin(spin_opts);
 
       // fulltext links
@@ -41,7 +41,7 @@
           $(html).find(".response_notes").remove();
           if(count==0) {
             $(html).html("<%= I18n.t('toshokan.tools.not_available') %>");
-          }        
+          }
           $(fulltext_header).spin(false);
         }
       });
@@ -55,10 +55,10 @@
           $(html).find(".response_notes").remove();
           if(count > 0) {
             $(nal_header).show();
-          }        
+          }
         }
       });
       updater.update();
     }
-	});
+  });
 })(jQuery);
