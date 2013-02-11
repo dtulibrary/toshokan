@@ -22,7 +22,7 @@ class CatalogController < ApplicationController
     class << config
       # Wrapper on top of blacklight's config.add_*_field that simplifies I18n support for toshokan
       # - field_type is the type of field (:index, :show, :search, :facet, :sort)
-      # - field_name is the name of the field which is used for i18n lookup 
+      # - field_name is the name of the field which is used for i18n lookup
       #   (using a key like "toshokan.catalog.<field_type>_field_labels.<args[:field_name] || field_name>")
       # - args is options passed on to the config.add_*_field method - except for args[:field_name]
       #   which is used to override the i18n lookup otherwise based on the field_name argument.
@@ -35,8 +35,8 @@ class CatalogController < ApplicationController
         send "add_#{field_type.to_s}_field".to_sym, field_name.to_s, args, &block
       end
     end
-    
-    
+
+
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       :qt => '/ds',
@@ -99,7 +99,7 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_labeled_field :index, 'title_t'
-    config.add_labeled_field :index, 'author_t', :helper_method => :render_author_links
+    config.add_labeled_field :index, 'author_t', :helper_method => :render_shortened_author_links
     config.add_labeled_field :index, 'journal_title_s', :helper_method => :render_journal_info_index
     config.add_labeled_field :index, 'pub_date_ti'
     config.add_labeled_field :index, 'doi_s', :helper_method => :render_doi_link

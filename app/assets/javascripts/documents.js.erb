@@ -1,0 +1,33 @@
+(function ($) {
+
+  $(function () {
+    // this function will shorten a list of e.g. author or affiliation links
+    // down to an expandable list of at most N elements. It expects to be passed
+    // an array of elements (excluding the separators) and expects the separators
+    // in the dom to be elements (not text nodes). Example:
+    // For an author list the dom could be
+    //   <a>author1</a><span>, </span><a>author2</a>
+    // And the "elements" parameter should be [<a>author1</a>, <a>author2</a>]
+    function shorten_list(elements, N, suffix) {
+      if (elements.length > N) {
+        hide_last = $('<span> (<a href="#"><%= I18n.t("toshokan.catalog.shortened_list.hide_last") %> ' + (elements.length-N) + '</a>)</span>').insertAfter(elements.last());
+        hide_last.click(function() {
+          $(elements[N-1]).nextAll().toggleClass('hidden');
+          return false;
+        });
+        hide_last.click();
+
+        et_al = $('<span>' + suffix + '</span>').insertAfter(elements[N-1]).last();
+        show_all = $('<span> (<a href="#"><%= I18n.t("toshokan.catalog.shortened_list.show_all") %> ' + elements.length + '</a>)</span>').insertAfter(et_al).find('a').last();
+        show_all.click(function() {
+          $(elements[N-1]).nextAll().toggleClass('hidden');
+          return false;
+        });
+      }
+    }
+
+    // shorten author and affiliation lists to at most 3 items in catalog#show
+    shorten_list($('#document dd.blacklight-author_t > a'), 3, ', <%= I18n.t("toshokan.catalog.shortened_list.et_al") %>');
+    shorten_list($('#document dd.blacklight-affiliation_t > span'), 3, '');
+  });
+})(jQuery);

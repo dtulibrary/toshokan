@@ -1,3 +1,4 @@
+# encoding: utf-8
 module CatalogHelper
   include Blacklight::CatalogHelperBehavior
 
@@ -14,7 +15,7 @@ module CatalogHelper
     return snippet.size > 300 ? snippet.slice(0, 300) + '...' : snippet
   end
 
-  def render_journal_info_show args 
+  def render_journal_info_show args
     render_journal_info_index args, :show
   end
 
@@ -42,7 +43,16 @@ module CatalogHelper
 
   def render_author_links args
     authors = args[:document][args[:field]]
-    authors.collect { |author| link_to author, root_path(:q => author, :search_field => :author) }.join(', ').html_safe
+    authors.collect { |author| link_to author, root_path(:q => author, :search_field => :author) }.join(content_tag(:span, ', ')).html_safe
+  end
+
+  def render_shortened_author_links args
+    authors = args[:document][args[:field]]
+    if authors.length <= 3
+      render_author_links args
+    else
+      authors[0,3].collect { |author| link_to author, root_path(:q => author, :search_field => :author) }.push(I18n.t('toshokan.catalog.shortened_list.et_al')).join(content_tag(:span, ', ')).html_safe
+    end
   end
 
   def render_keyword_links args
@@ -52,6 +62,6 @@ module CatalogHelper
 
   def render_affiliations args
     affiliations = args[:document][args[:field]]
-    affiliations.join('<br>').html_safe
+    affiliations.collect { |affiliation| content_tag(:span, affiliation)}.join('<br>').html_safe
   end
 end

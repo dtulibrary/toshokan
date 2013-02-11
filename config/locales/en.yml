@@ -114,5 +114,7 @@ en:
         relevance: 'relevance'
         title: 'title'
         year: 'year'
-
-
+      shortened_list:
+        show_all: 'Show all'
+        hide_last: 'Hide last'
+        et_al: 'et al.'
