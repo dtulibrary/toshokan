@@ -7,9 +7,9 @@ end
 
 if Toshokan::Application.config.stub_authentication
   OmniAuth.config.test_mode = true
-  OmniAuth.config.add_mock(:cas, {
+  OmniAuth.config.add_mock(:dtu_cas, {
     :uid => "username",
-    :info => { :name => "Test User" },  
+    :info => { :name => "Test User" },
     :extra => {
       :user => "username",
     }
