@@ -22,6 +22,7 @@ role :db, "#{application}", :primary => true
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = false
 set :deploy_via, :remote_cache
+set :copy_exclude, %w(.git jetty feature spec)
 set :user, "passenger"
 set :use_sudo, false
 
@@ -33,22 +34,22 @@ if variables.include?(:branch_name)
   set :branch, "#{branch_name}"
 else
   set :branch, "master"
-end  
+end
 set :git_enable_submodules, 1
 
 # tasks
 
 before "deploy:assets:precompile", "config:update", "config:symlink"
+after "deploy:update", "deploy:cleanup"
 
 # install configuration files not included in main scm
 namespace :config do
-        
   desc "update configuration from separate repository"
   task :update do
     run "mkdir -p #{deploy_to}/shared/config"
     run "cd ~/toshokan-config-#{toshokan_config} && git pull && cp database.yml solr.yml application.local.rb #{deploy_to}/shared/config"
   end
-  
+
   desc "linking configuration to current release"
   task :symlink do
     run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
@@ -58,7 +59,7 @@ namespace :config do
 end
 
 # load deploy:seed task
-load 'lib/deploy/seed' 
+load 'lib/deploy/seed'
 
 namespace :deploy do
   task :start, :roles => :app do
