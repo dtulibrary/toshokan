@@ -204,7 +204,22 @@ class CatalogController < ApplicationController
 
   def index
     @display_format = current_display_format + '_index'
+    logger.debug 'Empty q'
+    orig_q = params[:q];
+    # Check for advanced search parameters
+    nested_queries = []
+    nested_queries << orig_q if orig_q && !orig_q.blank?
+    blacklight_config.search_fields.collect { |f| f unless (f[0] == 'all_fields') || (f[1].solr_local_parameters[:qf].nil?) }.compact.each do |field_name, field|
+      if params[field_name] && !params[field_name].empty?
+        logger.debug "Adding field #{field_name}"
+        nested_queries << "_query_:\"{!edismax qf=#{field.solr_local_parameters[:qf]}}#{params[field_name]}\""
+      end
+    end
+    unless nested_queries.empty?
+      params[:q] = nested_queries.join(' AND ')
+    end
     super
+    params[:q] = orig_q
   end
 
   def show

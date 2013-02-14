@@ -4,11 +4,19 @@ module RenderConstraintsHelper
   include Blacklight::RenderConstraintsHelperBehavior
 
   def query_has_constraints?(localized_params = params)
-    super or !(localized_params[:t].blank?)
+    super or !(localized_params[:t].blank?) or query_has_advanced_search_constraints?(localized_params)
+  end
+
+  def query_has_advanced_search_constraints? localized_params = params
+    result = false
+    blacklight_config.search_fields.collect { |f| f unless f[0] == 'all_fields' }.compact.each do |field_name, field|
+      result ||= !(localized_params[field_name].blank?)
+    end
+    result
   end
 
   def render_constraints(localized_params = params)
-    (super + render_constraints_tags(localized_params)).html_safe
+    (super + render_constraints_tags(localized_params) + render_advanced_search_constraints(localized_params)).html_safe
   end
 
   def render_constraints_tags(localized_params = params)
@@ -19,6 +27,24 @@ module RenderConstraintsHelper
     end
 
     return content.flatten.join("\n").html_safe
+  end
+
+  def render_advanced_search_constraints localized_params = params
+    content = []
+    blacklight_config.search_fields.collect { |f| f unless f[0] == 'all_fields' }.compact.each do |field_name, field|
+      unless localized_params[field_name].blank?
+        content << render_advanced_search_constraint(field_name, params)
+      end
+    end
+    content.flatten.join("\n").html_safe
+  end
+
+  def render_advanced_search_constraint field_name, localized_params = params
+    render_constraint_element(I18n.t("toshokan.catalog.search_field_labels.#{field_name}"), 
+      localized_params[field_name],
+      :remove => url_for(:controller => 'catalog', :action => 'index', :params => localized_params.reject { |k,v| k == field_name }),
+      :classes => ['filter']
+    )
   end
 
   def render_tag_element(tag_name, localized_params)

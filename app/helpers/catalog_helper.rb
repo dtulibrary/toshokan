@@ -3,7 +3,11 @@ module CatalogHelper
   include Blacklight::CatalogHelperBehavior
 
   def has_search_parameters?
-    super or !params[:t].blank?
+    result = super || !params[:t].blank?
+    blacklight_config.search_fields.collect { |f| f unless f[0] == 'all_fields' }.compact.each do |field_name, field|
+      result ||= !params[field_name].blank?
+    end
+    result
   end
 
   def snip_abstract args
@@ -63,5 +67,9 @@ module CatalogHelper
   def render_affiliations args
     affiliations = args[:document][args[:field]]
     affiliations.collect { |affiliation| content_tag(:span, affiliation)}.join('<br>').html_safe
+  end
+
+  def render_advanced_search_link label = 'More options'
+    link_to(label, advanced_path(params.reject { |k,v| k == 'button'}), :class => 'btn')
   end
 end
