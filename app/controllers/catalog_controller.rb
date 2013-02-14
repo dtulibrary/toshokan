@@ -212,7 +212,7 @@ class CatalogController < ApplicationController
     blacklight_config.search_fields.collect { |f| f unless (f[0] == 'all_fields') || (f[1].solr_local_parameters[:qf].nil?) }.compact.each do |field_name, field|
       if params[field_name] && !params[field_name].empty?
         logger.debug "Adding field #{field_name}"
-        nested_queries << "_query_:\"{!edismax qf=#{field.solr_local_parameters[:qf]}}#{params[field_name]}\""
+        nested_queries << "_query_:\"{!dismax qf=#{field.solr_local_parameters[:qf]}}#{params[field_name]}\""
       end
     end
     unless nested_queries.empty?
