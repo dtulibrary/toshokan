@@ -70,6 +70,6 @@ module CatalogHelper
   end
 
   def render_advanced_search_link label = 'More options'
-    link_to(label, advanced_path(params.reject { |k,v| k == 'button'}), :class => 'btn')
+    button_tag(label, :id => 'more_options_toggle', :class => 'btn', 'data-toggle' => '#more_options')
   end
 end

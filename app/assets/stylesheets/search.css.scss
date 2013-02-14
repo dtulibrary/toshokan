@@ -16,3 +16,46 @@
   }
 }
 
+#more_options {
+  z-index: 500;
+  background-color: #fff;
+  background-image: -moz-linear-gradient(top, #ddd, #fff);
+  background-size: 16px 16px;
+  background-repeat: repeat-x;
+  background-position: top left;
+  position: absolute;
+  border-width: 0px 1px 1px 1px;
+  border-style: solid;
+  border-color: #ccc;
+  border-radius: 0px 0px 5px 5px;
+  box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
+  padding: 20px 0px 10px 0px;
+
+  .info {
+    padding: 0px 10px;
+
+    h4 {
+      margin-top: 0px;
+    }
+
+    label {
+      display: inline;
+    }
+
+    input[type='radio'] {
+      display: inline;
+      margin: 0px 0.5em 0px 0px;
+    }
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input {
+    display: block;
+    width: 30em;
+  }
+}
+

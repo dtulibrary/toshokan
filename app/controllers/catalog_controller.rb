@@ -216,7 +216,9 @@ class CatalogController < ApplicationController
       end
     end
     unless nested_queries.empty?
-      params[:q] = nested_queries.join(' AND ')
+      match_mode = params[:match_mode] || 'all'
+      joiner = (match_mode == 'all') ? ' AND ' : ' OR '
+      params[:q] = nested_queries.join(joiner)
     end
     super
     params[:q] = orig_q

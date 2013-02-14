@@ -1,21 +1,47 @@
-  <%= form_tag search_action_url, :method => :get, :class => 'search-query-form form-inline clearfix' do %>
-    <%= search_as_hidden_fields(:omit_keys => [:q, :search_field, :qt, :page]).html_safe %> 
+<%= form_tag search_action_url, :method => :get, :class => 'search-query-form form-inline clearfix' do %>
+  <%= search_as_hidden_fields(:omit_keys => [:q, :search_field, :qt, :page]).html_safe %> 
 
-    <% unless search_fields.empty? %>
-      <div class="pull-left">
-        <label for="search_field" class="hide-text"><%= t('blacklight.search.form.search_field.label') %></label>
-        <%= select_tag(:search_field, options_for_select(search_fields, h(params[:search_field])), :title => t('blacklight.search.form.search_field.title'), :class=>"search_field input-small") %>
-        <span class="hide-text"><%= t('blacklight.search.form.search_field.post_label') %></span>
-      </div>
-      <% end %>
-       <div class="input-append pull-left">
-        <label for="q" class="hide-text"><%= t('blacklight.search.form.q') %></label>
-         <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :class => "search_q q", :id => "q"%>
-        <button type="submit" class="btn btn-primary search-btn" id="search">
-          <span class="submit-search-text"><%=t('blacklight.search.form.submit')%></span>
-          <i class="icon-search icon-white"></i>
-        </button>
-        <%= render_advanced_search_link 'More options' %>
-       </div>
-
+  <% unless search_fields.empty? %>
+    <div class="pull-left">
+      <label for="search_field" class="hide-text"><%= t('blacklight.search.form.search_field.label') %></label>
+      <%= select_tag(:search_field, options_for_select(search_fields, h(params[:search_field])), :title => t('blacklight.search.form.search_field.title'), :class=>"search_field input-small") %>
+      <span class="hide-text"><%= t('blacklight.search.form.search_field.post_label') %></span>
+    </div>
   <% end %>
+  <div class="input-append pull-left">
+    <label for="q" class="hide-text"><%= t('blacklight.search.form.q') %></label>
+    <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :class => "search_q q", :id => "q"%>
+    <button type="submit" class="btn btn-primary search-btn" id="search">
+      <span class="submit-search-text"><%=t('blacklight.search.form.submit')%></span>
+      <i class="icon-search icon-white"></i>
+    </button>
+    <%= render_advanced_search_link 'More options' %>
+  </div>
+  <div id="more_options" class="hide container">
+    <div class="row">
+      <div class="span3">
+        <div class="info">
+          <h4>More Search Options</h4>
+          <p>
+            Use the fields on the right to search in multiple fields at once.
+          </p>
+          <p>
+            Match 
+            <div>
+              <%= radio_button_tag 'match_mode', 'all', params['match_mode'].nil? || params['match_mode'] == 'all' %><%= label_tag 'match_mode', 'All fields' %>
+            </div>
+            <div>
+              <%= radio_button_tag 'match_mode', 'any', params['match_mode'] == 'any' %><%= label_tag 'match_mode', 'Any field' %>
+            </div>
+          </p>
+        </div>
+      </div>
+      <div class="span9">
+        <% blacklight_config.search_fields.reject { |k,v| k == 'all_fields' }.each do |field_name, field| %>
+          <%= label_tag field_name, field.label %>
+          <%= text_field_tag field_name, params[field_name] %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
