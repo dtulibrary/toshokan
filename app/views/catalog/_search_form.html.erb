@@ -17,21 +17,23 @@
     </button>
     <%= render_advanced_search_link 'More options' %>
   </div>
-  <div id="more_options" class="hide container">
+  <div id="more_options" class="container">
     <div class="row">
       <div class="span3">
         <div class="info">
+          <!--
           <h4>More Search Options</h4>
           <p>
             Use the fields on the right to search in multiple fields at once.
           </p>
+          -->
+          <h5>Results should match</h5>
           <p>
-            Match 
             <div>
-              <%= radio_button_tag 'match_mode', 'all', params['match_mode'].nil? || params['match_mode'] == 'all' %><%= label_tag 'match_mode', 'All fields' %>
+              <%= label_tag 'match_mode', 'All fields' %><%= radio_button_tag 'match_mode', 'all', params['match_mode'].nil? || params['match_mode'] == 'all' %>
             </div>
             <div>
-              <%= radio_button_tag 'match_mode', 'any', params['match_mode'] == 'any' %><%= label_tag 'match_mode', 'Any field' %>
+              <%= label_tag 'match_mode', 'Any field' %><%= radio_button_tag 'match_mode', 'any', params['match_mode'] == 'any' %>
             </div>
           </p>
         </div>

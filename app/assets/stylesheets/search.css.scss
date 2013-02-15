@@ -18,23 +18,27 @@
 
 #more_options {
   z-index: 500;
-  background-color: #fff;
-  background-image: -moz-linear-gradient(top, #ddd, #fff);
+  background-color: whitesmoke;
+  background-image: -moz-linear-gradient(top, #ddd, whitesmoke);
   background-size: 16px 16px;
   background-repeat: repeat-x;
   background-position: top left;
-  position: absolute;
+  position: fixed;
   border-width: 0px 1px 1px 1px;
   border-style: solid;
   border-color: #ccc;
   border-radius: 0px 0px 5px 5px;
   box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
   padding: 20px 0px 10px 0px;
+  -moz-transition: top 0.5s;
+  transition: top 0.5s;
+  top: -100%;
 
   .info {
-    padding: 0px 10px;
+    text-align: right;
+    padding: 0px 0px 0px 10px;
 
-    h4 {
+    h4, h5 {
       margin-top: 0px;
     }
 
@@ -44,7 +48,7 @@
 
     input[type='radio'] {
       display: inline;
-      margin: 0px 0.5em 0px 0px;
+      margin: 0px 0px 0px 0.5em;
     }
   }
 

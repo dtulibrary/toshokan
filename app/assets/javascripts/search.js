@@ -19,10 +19,10 @@
         if (hidden) {
           // Position "more options" form - don't know how to do it in CSS since it's an absolutely positioned element
           // This breaks the responsive design when actively transitioning to another css media query (ie by resizing window).
-          moreOptions.css('top', headerHeight).removeClass('hide');
+          moreOptions.css('top', headerHeight);
           moreOptions.css('left', mainContainer.offset().left + 'px');
         } else {
-          moreOptions.css('top', '-100%').addClass('hide');
+          moreOptions.css('top', '-100%');
         }
         hidden = !hidden;
         return false;
