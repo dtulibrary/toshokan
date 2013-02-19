@@ -11,15 +11,20 @@
 
   });
 
-  function openurl_add_metadata (openurl){
-    rft_dat = {"user_type": userType};
-    return openurl + "&rft_dat=" + encodeURIComponent(JSON.stringify(rft_dat));
+  function openurl_add_metadata (openUrl, urlList){
+    var urls;
+    try {
+      urls = [JSON.parse(urlList)]; 
+    } catch(e) {
+      urls = [];
+    }
+    return openUrl + "&rft_dat=" + encodeURIComponent(JSON.stringify({"user_type" : userType, "urls" : urls}));
   }
 
   $(function () {
 
     if($('.show-document').length) {
-      var openurl_link = openurl_add_metadata($(".Z3988").attr("title"));
+      var openurl_link = openurl_add_metadata($(".Z3988").attr("title"), $('#url_list').data('urls'));
       <% if Rails.env.development? %>
         openurl_link += "&umlaut.force_new_request=true"
       <% end %>

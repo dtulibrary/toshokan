@@ -30,3 +30,5 @@
 // Spin.js
 //= require spin.min.js
 
+//= require json2.js
+

@@ -1,4 +1,7 @@
 <div id="content" class="span9 show-document">
+  
+  <%= content_tag "div", id: "url_list", data: {urls: @document['fulltext_list'].to_json} do %>
+  <% end %>
 
   <%= render 'previous_next_doc' %>
 
