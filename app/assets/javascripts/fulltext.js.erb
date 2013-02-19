@@ -24,7 +24,7 @@
   $(function () {
 
     if($('.show-document').length) {
-      var openurl_link = openurl_add_metadata($(".Z3988").attr("title"), $('#url_list').data('urls'));
+      var openurl_link = openurl_add_metadata($(".Z3988").attr("title"), $('#url_list').data('urls') || []);
       <% if Rails.env.development? %>
         openurl_link += "&umlaut.force_new_request=true"
       <% end %>
