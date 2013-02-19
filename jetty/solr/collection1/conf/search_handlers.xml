@@ -55,7 +55,7 @@
             <str name="q.alt">*:*</str>
             <str name="mm">100%</str>
             <str name="qf">
-                title_t
+                title_t^10
                 subtitle_t
                 abstract_t
                 author_t
@@ -69,9 +69,21 @@
                 pub_date_ti
                 doi_s
             </str>
-            <!--
-            <str name="pf"></str>
-            -->
+            <str name="pf">
+                title_t^5
+                subtitle_t
+                abstract_t
+                author_t
+                editor_t
+                affiliation_t
+                keywords_t
+                issn_s
+                isbn_s
+                journal_title_s
+                publisher_s
+                pub_date_ti
+                doi_s
+            </str>
             <str name="author_qf">
                 author_t
                 editor_t
