@@ -7,7 +7,7 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
 
   include TagsHelper
-
+  include AdvancedSearchHelper
 
   self.solr_search_params_logic += [:add_tag_fq_to_solr]
   self.solr_search_params_logic += [:add_access_filter]
@@ -242,14 +242,6 @@ class CatalogController < ApplicationController
   def show
     @display_format = current_display_format + '_show'
     super
-  end
-
-  helper_method :advanced_search_fields
-
-  def advanced_search_fields
-    blacklight_config.search_fields.reject do |field_name, field|
-      (field_name == 'all_fields') || !field.solr_local_parameters[:qf]
-    end
   end
 
   def solr_search_params local_params = params || {}
