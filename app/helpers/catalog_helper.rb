@@ -4,7 +4,7 @@ module CatalogHelper
 
   def has_search_parameters?
     result = super || !params[:t].blank?
-    blacklight_config.search_fields.collect { |f| f unless f[0] == 'all_fields' }.compact.each do |field_name, field|
+    advanced_search_fields.each do |field_name, field|
       result ||= !params[field_name].blank?
     end
     result
@@ -70,6 +70,12 @@ module CatalogHelper
   end
 
   def render_advanced_search_link label = 'More options'
-    button_tag(label, :id => 'more_options_toggle', :class => 'btn', 'data-toggle' => '#more_options')
+    local_params = {}
+    advanced_search_fields.each do |field_name, field|
+      if params[field_name] && !params[field_name].blank?
+        local_params[field_name] = params[field_name]
+      end
+    end
+    link_to label, advanced_path(local_params), :id => 'more_options_toggle'
   end
 end

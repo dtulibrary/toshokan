@@ -15,35 +15,8 @@
       <span class="submit-search-text"><%=t('blacklight.search.form.submit')%></span>
       <i class="icon-search icon-white"></i>
     </button>
-    <%= render_advanced_search_link 'More options' %>
   </div>
-  <div id="more_options" class="container">
-    <div class="row">
-      <div class="span3">
-        <div class="info">
-          <!--
-          <h4>More Search Options</h4>
-          <p>
-            Use the fields on the right to search in multiple fields at once.
-          </p>
-          -->
-          <h5>Results should match</h5>
-          <p>
-            <div>
-              <%= label_tag 'match_mode', 'All fields' %><%= radio_button_tag 'match_mode', 'all', params['match_mode'].nil? || params['match_mode'] == 'all' %>
-            </div>
-            <div>
-              <%= label_tag 'match_mode', 'Any field' %><%= radio_button_tag 'match_mode', 'any', params['match_mode'] == 'any' %>
-            </div>
-          </p>
-        </div>
-      </div>
-      <div class="span9">
-        <% blacklight_config.search_fields.reject { |k,v| k == 'all_fields' }.each do |field_name, field| %>
-          <%= label_tag field_name, field.label %>
-          <%= text_field_tag field_name, params[field_name] %>
-        <% end %>
-      </div>
-    </div>
+  <div class="advanced-search-link pull-left">
+    <%= render_advanced_search_link t('toshokan.catalog.more_options') %>
   </div>
 <% end %>

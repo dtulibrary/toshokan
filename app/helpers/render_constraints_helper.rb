@@ -31,7 +31,7 @@ module RenderConstraintsHelper
 
   def render_advanced_search_constraints localized_params = params
     content = []
-    blacklight_config.search_fields.collect { |f| f unless f[0] == 'all_fields' }.compact.each do |field_name, field|
+    advanced_search_fields.each do |field_name, field|
       unless localized_params[field_name].blank?
         content << render_advanced_search_constraint(field_name, params)
       end

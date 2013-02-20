@@ -14,5 +14,15 @@
     background-position: top left;
     border-color: $dtu_red_darker;
   }
+
+  &.disabled, &[disabled] {
+    background-color: $dtu_grey;
+    border-color: $dtu_grey;
+
+    &:hover, &:active {
+      background: $dtu_grey;
+      border-color: $dtu_grey;
+    }
+  }
 }
 

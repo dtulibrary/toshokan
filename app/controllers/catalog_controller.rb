@@ -8,6 +8,7 @@ class CatalogController < ApplicationController
 
   include TagsHelper
 
+
   self.solr_search_params_logic += [:add_tag_fq_to_solr]
   self.solr_search_params_logic += [:add_access_filter]
 
@@ -204,29 +205,62 @@ class CatalogController < ApplicationController
 
   def index
     @display_format = current_display_format + '_index'
-    logger.debug 'Empty q'
     orig_q = params[:q];
-    # Check for advanced search parameters
+
     nested_queries = []
-    nested_queries << orig_q if orig_q && !orig_q.blank?
-    blacklight_config.search_fields.collect { |f| f unless (f[0] == 'all_fields') || (f[1].solr_local_parameters[:qf].nil?) }.compact.each do |field_name, field|
+    user_queries = {}
+    
+    # For each non-empty configured field != 'all_fields' that has a configured
+    # query field, build a nested query
+    advanced_search_fields.each do |field_name, field|
       if params[field_name] && !params[field_name].empty?
-        logger.debug "Adding field #{field_name}"
-        nested_queries << "_query_:{!edismax qf=#{field.solr_local_parameters[:qf]}}#{params[field_name]}"
+        qf = field.solr_local_parameters[:qf]
+        pf = field.solr_local_parameters[:pf] || field.solr_local_parameters[:qf]
+        user_queries[field_name] = params[field_name]
+        nested_queries << "_query_:\"{!edismax qf=#{qf} pf=#{pf} v=$#{field_name}}\""
       end
     end
+
+    # Modify params to include extra fields
     unless nested_queries.empty?
       match_mode = params[:match_mode] || 'all'
       joiner = (match_mode == 'all') ? ' AND ' : ' OR '
-      params[:q] = nested_queries.join(joiner)
+      q = (orig_q && !orig_q.blank?) ? orig_q : '*:*'
+      params[:q] = "#{q} AND (#{nested_queries.join joiner})"
+
+      user_queries.each do |name, value|
+        params[name] = value
+      end
     end
+
     super
+
+    # Restore params
     params[:q] = orig_q
   end
 
   def show
     @display_format = current_display_format + '_show'
     super
+  end
+
+  helper_method :advanced_search_fields
+
+  def advanced_search_fields
+    blacklight_config.search_fields.reject do |field_name, field|
+      (field_name == 'all_fields') || !field.solr_local_parameters[:qf]
+    end
+  end
+
+  def solr_search_params local_params = params || {}
+    result = super
+    user_queries = {}
+    advanced_search_fields.each do |field_name, field|
+      if local_params[field_name] && !local_params[field_name].blank?
+        user_queries[field_name] = local_params[field_name]
+      end
+    end
+    result.merge user_queries
   end
 
 end
