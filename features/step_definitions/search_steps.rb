@@ -2,6 +2,10 @@ Given /^I am on the front page$/ do
   visit(root_path)
 end
 
+Given /^I(?: a|')m on the advanced search page$/ do
+  visit(advanced_path)
+end
+
 When /^I search for "(.*?)"$/ do |query|
   fill_in('q', :with => query) 
   click_button('search')
@@ -12,9 +16,9 @@ Given /^I search for "(.*?)" in the title$/ do |query|
 end
 
 Given /^I search for "(.*?)" in the "(.*?)" field$/ do |query, field|
-  fill_in('q', :with => query) 
-  select field, :from => 'in' 
-  click_button('search')
+  visit(advanced_path)
+  fill_in(field, :with => query) 
+  click_button('advanced_search')
 end
 
 Given /^I have the limited the "(.*?)" facet to "(.*?)"$/ do |facet_name, facet_value|

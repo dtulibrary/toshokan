@@ -5,7 +5,7 @@
         <%= label_tag field_name, field.label %>
         <%= text_field_tag field_name, params[field_name] %>
       <% end %>
-      <%= button_tag ('Search ' + content_tag('i', '', :class => 'icon-search icon-white')).html_safe, :value => 'advanced_search', :class => 'btn btn-primary' %>
+      <%= button_tag ('Search ' + content_tag('i', '', :class => 'icon-search icon-white')).html_safe, :id => 'advanced_search', :value => 'advanced_search', :class => 'btn btn-primary' %>
     <% end %>
   </div>
 </div>

@@ -2,7 +2,8 @@
   margin-top: 3em;
   
   .nav-header {
-    background-image: -moz-linear-gradient(top, #f9f9f9, #ddd);
+    background-color: whitesmoke; 
+    background-image: -moz-linear-gradient(top, whitesmoke, #ddd);
     border-radius: 5px 5px 0px 0px;
     line-height: 2em;
   }
@@ -10,6 +11,7 @@
   .nav-list a {
     border-top: 1px solid #ddd;
     color: #000;
+    font-size: 0.8em;
 
     .icon-chevron {
       background-position: -456px -72px;

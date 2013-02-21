@@ -32,11 +32,10 @@ Given /^I add a tag "(.*?)" to the document$/ do |tag_name|
 end
 
 Given /^I add a tag "(.*?)" to the document with title "(.*?)"$/ do |tag_name, query|
-  visit(root_path)
+  visit(advanced_path)
 
-  fill_in('q', :with => query)
-  select 'Title', :from => 'in'
-  click_button('search')
+  fill_in('Title', :with => query)
+  click_button('advanced_search')
 
   click_on 'Tags'
   fill_in 'tag_name', with: tag_name
@@ -57,11 +56,10 @@ Given /^I remove the tag "(.*?)" from the document$/ do |tag_name|
 end
 
 Given /^I remove the tag "(.*?)" from the document with title "(.*?)"$/ do |tag_name, query|
-  visit(root_path)
+  visit(advanced_path)
 
-  fill_in('q', :with => query)
-  select 'Title', :from => 'in'
-  click_button('search')
+  fill_in('Title', :with => query)
+  click_button('advanced_search')
 
   within(".document .documentFunctions .tag", :text => tag_name) do
     click_link 'Remove'

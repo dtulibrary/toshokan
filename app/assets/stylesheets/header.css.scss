@@ -1,29 +1,35 @@
 @import 'toshokan_defaults';
 
-.level1-navbar {
-  background-color: $dtu_red;
-  background-image: none;
-  filter: none;
-  color: #fff;
-
-  a { 
-    color: #fff;
-
-    &:hover, &:active {
-      color: #fff;
-      text-decoration: underline;
-    }   
-  }
-
-  h5 {
-    margin: 0px;
-  }
-
-}
 
 #header-navbar-fixed-top {
   .navbar-inner {
     min-height: 0px;
+  }
+
+  .level1-navbar {
+    background-color: $dtu_red;
+    background-image: none;
+    filter: none;
+    color: #fff;
+    height: 25px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    line-height: 25px;
+
+    a { 
+      color: #fff;
+
+      &:hover, &:active {
+        color: #fff;
+        text-decoration: underline;
+      }   
+    }
+
+    h5 {
+      margin: 0px;
+      line-height: 25px;
+      padding: 0px;
+    }
   }
 
   .level2-navbar {
@@ -31,18 +37,23 @@
     padding-bottom: 0em;
     
     .container {
-      padding-top: 1em;
-      padding-bottom: 1em;
+      height: 109px;
+      padding-top: 30px;
+      padding-bottom: 10px;
       background-image: image-url('pageheaderoverlay1.png');
       background-position: top right;
       background-repeat: no-repeat;
 
-      .row:first-child { 
+      .logos {
+        height: 79px;
+      }
+
+      .row { 
         h4 {
-          margin-top: 1em;
           padding-top: 5px;
           padding-bottom: 5px;
           text-align: right;
+          margin: 0px;
         }
       }
 
@@ -50,6 +61,14 @@
         height: 66px;
         width: 45px;
         background-image: image_url('dtu.png');
+        background-position: top left;
+        background-repeat: no-repeat;
+      }
+
+      .dtu-library-logo {
+        height: 32px;
+        width: 357px;
+        background-image: image_url('dtu_library_logo.png');
         background-position: top left;
         background-repeat: no-repeat;
       }

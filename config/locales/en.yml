@@ -5,6 +5,7 @@ en:
   blacklight:
     application_name: 'DTU Library'
   toshokan:
+    feedback: 'Feedback'
     header:
       dtu: 'Technical University of Denmark'
       dtulibrary: 'DTU Library'

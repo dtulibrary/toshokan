@@ -1,6 +1,11 @@
 #searchbar {
-  margin-top: 1em;
+  margin-top: 0em;
   margin-bottom: 0em;
+  padding: 0px;
+
+  #q {
+    width: 25em;
+  }
 }
 
 .advanced-search-link {

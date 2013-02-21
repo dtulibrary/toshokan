@@ -17,19 +17,24 @@
   </div>
   <div class="navbar-inner level2-navbar">
     <div class="container">
-      <div class="row">
-        <div class="span3">
-          <h4 class="dtu-grey"><%= t 'toshokan.header.dtulibrary' %> | <span class="dtu-red"><%= t 'toshokan.header.search' %></span></h4>
+      <div class="row logos">
+        <div class="span6">
+          <%= link_to content_tag('div', '', :class => 'dtu-library-logo').html_safe, root_path, :class => 'logo pull-left' %>
         </div>
         <div class="span6">
+          <%= link_to content_tag('div', '', :class => 'dtu-logo').html_safe, 'http://www.dtu.dk', :class => 'logo pull-right' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span9 offset3">
           <div id="searchbar">         
             <%= render_search_bar %>
           </div>
         </div>
-        <div class="span3">
-          <%= link_to content_tag('div', '', :class => 'dtu-logo').html_safe, 'http://www.dtu.dk', :class => 'logo pull-right' %>
-        </div>
       </div>
     </div>
   </div>
+</div>
+<div class="feedback">
+  <a href=""><%= t 'toshokan.feedback' %></a>
 </div>
