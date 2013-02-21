@@ -5,6 +5,7 @@ Toshokan is a search interface application based on Ruby on Rails and Blacklight
 Toshokan means library in japanese.
 
 {<img src="https://travis-ci.org/dtulibrary/toshokan.png" />}[https://travis-ci.org/dtulibrary/toshokan]
+{<img src="https://gemnasium.com/dtulibrary/toshokan.png" />}[https://gemnasium.com/dtulibrary/toshokan]
 
 == Install
 
