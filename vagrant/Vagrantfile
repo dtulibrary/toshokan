@@ -1,0 +1,18 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+  config.vm.box = "wheezy"
+  config.vm.box_url = "http://vagrant.cvt.dk/vagrant-wheezy.box"
+
+  config.vm.network :hostonly, "192.168.207.10"
+  config.vm.host_name = "toshokan.vagrant.vm"
+
+  config.vm.provision :shell, :inline => "apt-get update"
+
+  config.vm.provision :puppet do |puppet|
+    puppet.manifests_path = "manifests"
+    puppet.manifest_file  = "init.pp"
+    puppet.module_path = ['puppet-applications/vagrant-modules', 'puppet-applications/modules']
+  end
+end

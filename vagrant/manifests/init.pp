@@ -1,0 +1,3 @@
+class {'toshokan': 
+  toshokanenvironment => 'unstable',
+}
