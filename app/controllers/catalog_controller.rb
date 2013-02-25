@@ -166,12 +166,21 @@ class CatalogController < ApplicationController
     # Specifying a :qt only to show it's possible, and so our internal automated
     # tests can test it. In this case it's the same as
     # config[:default_solr_parameters][:qt], so isn't actually neccesary.
-    config.add_labeled_field :search, 'subject' do |field|
-      #field.solr_parameters = { :'spellcheck.dictionary' => 'subject' }
-      #field.qt = 'search'
+    #config.add_labeled_field :search, 'subject' do |field|
+    #  field.solr_local_parameters = {
+    #    :qf => '$subject_qf',
+    #  }
+    #end
+
+    config.add_labeled_field :search, 'numbers' do |field|
       field.solr_local_parameters = {
-        :qf => '$subject_qf',
-        #:pf => '$subject_pf'
+        :qf => '$numbers_qf'
+      }
+    end
+
+    config.add_labeled_field :search, 'journal_title' do |field|
+      field.solr_local_parameters = {
+        :qf => '$journal_title_qf'
       }
     end
 
@@ -203,6 +212,10 @@ class CatalogController < ApplicationController
     display_format
   end
 
+  def advanced
+    index
+  end
+
   def index
     @display_format = current_display_format + '_index'
     orig_q = params[:q];
@@ -214,10 +227,15 @@ class CatalogController < ApplicationController
     # query field, build a nested query
     advanced_search_fields.each do |field_name, field|
       if params[field_name] && !params[field_name].empty?
-        qf = field.solr_local_parameters[:qf]
-        pf = field.solr_local_parameters[:pf] || field.solr_local_parameters[:qf]
         user_queries[field_name] = params[field_name]
-        nested_queries << "_query_:\"{!edismax qf=#{qf} pf=#{pf} v=$#{field_name}}\""
+        if field.solr_local_parameters
+          qf = field.solr_local_parameters[:qf]
+          pf = field.solr_local_parameters[:pf] || field.solr_local_parameters[:qf]
+          nested_queries << "_query_:\"{!edismax qf=#{qf} pf=#{pf} v=$#{field_name}}\""
+        else
+          # Using default qf and pf
+          nested_queries << "_query_:\"{!edismax v=$#{field_name}}\""
+        end
       end
     end
 
@@ -244,6 +262,17 @@ class CatalogController < ApplicationController
     super
   end
 
+  # Definition of solr local parameter references that are not
+  # defined in the solr search handler used for searching.
+  # NOTE: These should NOT be prefixed by '$' here.
+  # TODO: As these go into solr config they should be removed from here
+  def solr_referenced_parameters
+    { 
+      'numbers_qf' => 'issn_s isbn_s doi_s',
+      'journal_title_qf' => 'journal_title_s'
+    }
+  end
+
   def solr_search_params local_params = params || {}
     result = super
     user_queries = {}
@@ -252,7 +281,7 @@ class CatalogController < ApplicationController
         user_queries[field_name] = local_params[field_name]
       end
     end
-    result.merge user_queries
+    result.merge(user_queries).merge solr_referenced_parameters
   end
 
 end

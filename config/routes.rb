@@ -12,7 +12,7 @@ Toshokan::Application.routes.draw do
   match '/cover_images/:id',        :to => 'cover_images#show',        :as => 'cover_images'
   match '/auth',                    :to => 'auth_provider#index',      :as => 'select_auth_provider', :via => :get
   match '/auth',                    :to => 'auth_provider#create',     :as => 'set_auth_provider',    :via => :post
-  match '/advanced',                :to => 'advanced_catalog#index',   :as => 'advanced'             
+  match '/advanced',                :to => 'catalog#advanced',          :as => 'advanced'             
 
   resources :documents, :only => [] do
     resources :tags, :except => [:edit, :update]

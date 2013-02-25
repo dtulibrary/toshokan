@@ -3,7 +3,6 @@
   
   .nav-header {
     background-color: whitesmoke; 
-    background-image: -moz-linear-gradient(top, whitesmoke, #ddd);
     border-radius: 5px 5px 0px 0px;
     line-height: 2em;
   }
@@ -12,18 +11,6 @@
     border-top: 1px solid #ddd;
     color: #000;
     font-size: 0.8em;
-
-    .icon-chevron {
-      background-position: -456px -72px;
-      margin-left: -16px;
-      opacity: 0.5;
-    }
-
-    &:hover {
-      .icon-chevron {
-        opacity: 1;
-      }
-    }
   }
 
 

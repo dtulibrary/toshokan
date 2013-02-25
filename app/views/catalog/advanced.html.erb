@@ -1,4 +1,7 @@
-<div class="span9 offset3">
+<div id="sidebar" class="span3">
+  <%= render 'facets' %>
+</div>
+<div class="span9">
   <div class="advanced-search">
     <%= form_tag '/catalog', :method => :get do %>
       <% advanced_search_fields.each do |field_name, field| %>

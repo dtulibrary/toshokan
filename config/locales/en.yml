@@ -102,12 +102,14 @@ en:
         title_t: 'Title'
       facet_field_labels:
         author_facet: 'Author'
-        format: 'Format'
+        format: 'Document Type'
         journal_title_facet: 'Journal Title'
         pub_date_sort: 'Publication Year'
       search_field_labels:
         all_fields: 'All fields'
         author: 'Author'
+        journal_title: 'Journal title'
+        numbers: 'ISSN, ISBN or other numbers'
         subject: 'Keyword'
         title: 'Title'
       sort_field_labels:

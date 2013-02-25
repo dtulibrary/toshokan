@@ -13,6 +13,14 @@
   margin-left: 0.5em;
 }
 
+#more_options_toggle {
+  &.disabled {
+    color: #999;
+    cursor: default;
+    text-decoration: none;
+  }
+}
+
 .advanced-search {
 
   input {
