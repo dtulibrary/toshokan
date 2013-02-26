@@ -9,7 +9,7 @@
       background: $dtu_grey;
 
       &:first-child {
-        border-radius: 5px 5px 0px 0px;
+        @include border-radius(5px 5px 0px 0px);
       }
     }
   }

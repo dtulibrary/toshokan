@@ -3,14 +3,14 @@
 .modal-header {
   background: $dtu_red;
   color: #fff;
-  border-radius: 5px 5px 0px 0px;
+  @include border-radius(5px 5px 0px 0px);
 
   .close {
     color: #fff;
-    opacity: 0.7;
+    @include opacity(70);
 
     &:hover {
-      opacity: 1;
+      @include opacity(100);
     }
   }
 }

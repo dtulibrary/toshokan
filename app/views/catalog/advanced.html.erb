@@ -1,14 +1,15 @@
-<div id="sidebar" class="span3">
-  <%= render 'facets' %>
-</div>
-<div class="span9">
+<div class="span6 offset3">
   <div class="advanced-search">
+    <%= link_to t('blacklight.search.start_over'), root_path, :class => 'start-over-link pull-right' %>
     <%= form_tag '/catalog', :method => :get do %>
       <% advanced_search_fields.each do |field_name, field| %>
         <%= label_tag field_name, field.label %>
         <%= text_field_tag field_name, params[field_name] %>
       <% end %>
-      <%= button_tag ('Search ' + content_tag('i', '', :class => 'icon-search icon-white')).html_safe, :id => 'advanced_search', :value => 'advanced_search', :class => 'btn btn-primary' %>
+      <div class="btn-group pull-right">
+        <%= link_to 'Clear form', advanced_path, :class => 'btn' %>
+        <%= button_tag ('Search ' + content_tag('i', '', :class => 'icon-search icon-white')).html_safe, :id => 'advanced_search', :value => 'advanced_search', :class => 'btn btn-primary' %>
+      </div>
     <% end %>
   </div>
 </div>

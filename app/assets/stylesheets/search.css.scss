@@ -24,12 +24,15 @@
 .advanced-search {
 
   input {
+    @include input-block-level;
     margin: 0px 0px 5px 0px;
-    width: 30em;
   }
 
-  button {
-    display: inline-block;
-    margin-bottom: 5px;
+  .btn-group {
+    margin-top: 5px;
   }
+}
+
+.start-over-link {
+  margin-left: 0.5em;
 }

@@ -9,7 +9,7 @@ module RenderConstraintsHelper
 
   def query_has_advanced_search_constraints? localized_params = params
     result = false
-    blacklight_config.search_fields.collect { |f| f unless f[0] == 'all_fields' }.compact.each do |field_name, field|
+    advanced_search_fields.each do |field_name, field|
       result ||= !(localized_params[field_name].blank?)
     end
     result

@@ -2,15 +2,13 @@
 
 .btn-primary {
   background-color: $dtu_red;
-  background-image: -moz-linear-gradient(top, $dtu_red, $dtu_red_dark);
-  background-image: -webkit-linear-gradient(top, $dtu_red, $dtu_red_dark);
+  @include gradient-vertical($dtu_red, $dtu_red_dark);
   background-position: top left;
   border-color: $dtu_red_darker;
 
   &:hover, &:active {
     background-color: $dtu_red_light;
-    background-image: -moz-linear-gradient(top, $dtu_red_light, $dtu_red);
-    background-image: -webkit-linear-gradient(top, $dtu_red_light, $dtu_red);
+    @include gradient-vertical($dtu_red_light, $dtu_red);
     background-position: top left;
     border-color: $dtu_red_darker;
   }
