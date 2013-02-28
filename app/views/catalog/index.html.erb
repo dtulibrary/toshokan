@@ -1,0 +1,60 @@
+<div id="sidebar" class="span3">
+ <%= render :partial=>'facets' %>
+</div><!--/well -->
+
+<div id="content" class="span9">
+
+    <% unless has_search_parameters? %>
+	    <%# if there are no input/search related params, display the "home" partial -%>
+	    <%= render 'home' %>
+    <% else %>
+
+      <h2 class="hide-text top-content-title"><%= t('blacklight.search.search_results_header') %></h2>
+
+      <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
+
+
+      <% extra_head_content << render_opensearch_response_metadata.html_safe %>
+
+      <% if session[:advanced_search] %>
+        <%= render 'advanced_search_actions' if session[:advanced_search] %>
+        <div id="advanced_search_form" class="row hidden">
+          <div class="span3">
+            <div class="well">
+              <p>
+                TODO: Either add stuff here or make the form wider.
+              </p>
+              <p>
+                Some of the more controllable facets could be displayed
+                here along with a checkbox for each term (like SearchWorks),
+                and for each facet, the terms that have been checked in
+                that facet would
+                then be OR'ed together (ie. choosing both format 'article'
+                and 'book') and in the end the OR-queries for each facet
+                would be AND'ed together by the usual way of having one
+                fq parameter per facet.
+              </p>
+            </div>
+          </div>
+          <div class="advanced-search span6">
+            <%= render 'advanced_search_form' %>
+          </div>
+        </div>
+      <% end %>
+
+	    <%= render :partial => 'did_you_mean' %>
+
+      <%= render :partial => 'constraints' %>
+
+	    <%= render 'sort_and_per_page' %>
+
+      <h2 class="hide-text"><%= t('blacklight.search.search_results') %></h2>
+	    <%= render_document_index %>
+
+
+	    <%= render 'results_pagination' %>
+
+
+    <% end %>
+
+</div>

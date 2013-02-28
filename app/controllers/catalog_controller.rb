@@ -8,6 +8,9 @@ class CatalogController < ApplicationController
 
   include TagsHelper
   include AdvancedSearchHelper
+  include CatalogHelper
+
+  before_filter :detect_search_mode
 
   self.solr_search_params_logic += [:add_tag_fq_to_solr]
   self.solr_search_params_logic += [:add_access_filter]
@@ -213,53 +216,41 @@ class CatalogController < ApplicationController
   end
 
   def advanced
+    session[:advanced_search] = true
     index
+  end
+
+  def detect_search_mode
+    session[:advanced_search] ||= params[:advanced_search]
+    session.delete :advanced_search if params[:simple_search]
   end
 
   def index
     @display_format = current_display_format + '_index'
     orig_q = params[:q];
-
-    nested_queries = []
-    user_queries = {}
     
-    # For each non-empty configured field != 'all_fields' that has a configured
-    # query field, build a nested query
-    advanced_search_fields.each do |field_name, field|
-      if params[field_name] && !params[field_name].empty?
-        user_queries[field_name] = params[field_name]
-        if field.solr_local_parameters
-          qf = field.solr_local_parameters[:qf]
-          pf = field.solr_local_parameters[:pf] || field.solr_local_parameters[:qf]
-          nested_queries << "_query_:\"{!edismax qf=#{qf} pf=#{pf} v=$#{field_name}}\""
-        else
-          # Using default qf and pf
-          nested_queries << "_query_:\"{!edismax v=$#{field_name}}\""
-        end
-      end
-    end
-
-    # Modify params to include extra fields
-    unless nested_queries.empty?
-      match_mode = params[:match_mode] || 'all'
-      joiner = (match_mode == 'all') ? ' AND ' : ' OR '
-      q = (orig_q && !orig_q.blank?) ? orig_q : '*:*'
-      params[:q] = "#{q} AND (#{nested_queries.join joiner})"
-
-      user_queries.each do |name, value|
-        params[name] = value
-      end
-    end
-
+    add_advanced_query_to_request if advanced_search?
     super
 
     # Restore params
     params[:q] = orig_q
+
+    # If user is in advanced search mode then show the advanced search form
+    render 'advanced' if !has_search_parameters? && advanced_search?
   end
 
   def show
     @display_format = current_display_format + '_show'
+
+    # TODO: Fix problem with nested queries getting dropped from search
+    #       when using the next and previous links on show page
+    add_advanced_query_to_request if advanced_search?
+
     super
+  end
+
+  def advanced_search?
+    session[:advanced_search]
   end
 
   # Definition of solr local parameter references that are not

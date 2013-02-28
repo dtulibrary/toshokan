@@ -22,6 +22,7 @@
 }
 
 .advanced-search {
+  margin-bottom: 20px;
 
   input {
     @include input-block-level;
@@ -30,6 +31,19 @@
 
   .btn-group {
     margin-top: 5px;
+  }
+}
+
+.advanced-search-actions {
+  min-height: 20px;
+  padding: 19px;
+
+  h5 {
+    margin: 0px;
+  }
+
+  a {
+    margin-left: 1em;
   }
 }
 

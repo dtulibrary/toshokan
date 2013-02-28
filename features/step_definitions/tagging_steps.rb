@@ -67,7 +67,7 @@ Given /^I remove the tag "(.*?)" from the document with title "(.*?)"$/ do |tag_
 end
 
 Given /^I filter by tag "(.*?)"$/ do |tag_name|
-  visit(root_path)
+  visit(root_path(:simple_search => true))
 
   if !find('#facets a', :text => tag_name).visible?
     find("#facets .twiddle", :text => 'Bookmarks').click

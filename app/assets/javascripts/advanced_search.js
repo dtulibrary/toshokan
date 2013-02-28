@@ -14,5 +14,10 @@
       });
     });
 
+    $('#toggle_advanced_search_form').click(function () {
+      $('#advanced_search_form').toggleClass('hidden');
+      return false;
+    });
+
   });
 })(jQuery);

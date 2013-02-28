@@ -1,0 +1,10 @@
+<%= form_tag '/catalog', :method => :get do %>
+  <% advanced_search_fields.each do |field_name, field| %>
+    <%= label_tag field_name, field.label %>
+    <%= text_field_tag field_name, params[field_name] %>
+  <% end %>
+  <div class="btn-group pull-right">
+    <%= link_to 'Clear form', advanced_path, :class => 'btn' %>
+    <%= button_tag ('Search ' + content_tag('i', '', :class => 'icon-search icon-white')).html_safe, :id => 'advanced_search', :value => 'advanced_search', :class => 'btn btn-primary' %>
+  </div>
+<% end %>
