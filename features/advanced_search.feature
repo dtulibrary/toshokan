@@ -15,6 +15,5 @@ Feature: Advanced Search
     Given I'm on the advanced search page
      When I search for "water" in the "Title" field
      Then I should see the result page
-      And show me the page
       And I should see "Refine Advanced Search"
     
