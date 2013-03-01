@@ -16,9 +16,10 @@ Given /^I search for "(.*?)" in the title$/ do |query|
 end
 
 Given /^I search for "(.*?)" in the "(.*?)" field$/ do |query, field|
-  visit(advanced_path)
-  fill_in(field, :with => query) 
-  click_button('advanced_search')
+  visit(root_path)
+  select field, :from => 'in'
+  fill_in('q', :with => query) 
+  click_button('Search')
 end
 
 Given /^I have the limited the "(.*?)" facet to "(.*?)"$/ do |facet_name, facet_value|

@@ -176,12 +176,14 @@ class CatalogController < ApplicationController
     #end
 
     config.add_labeled_field :search, 'numbers' do |field|
+      field.include_in_simple_select = false
       field.solr_local_parameters = {
         :qf => '$numbers_qf'
       }
     end
 
     config.add_labeled_field :search, 'journal_title' do |field|
+      field.include_in_simple_select = false
       field.solr_local_parameters = {
         :qf => '$journal_title_qf'
       }
