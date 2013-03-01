@@ -106,7 +106,7 @@ en:
         journal_title_facet: 'Journal Title'
         pub_date_sort: 'Publication Year'
       search_field_labels:
-        all_fields: 'All fields'
+        all_fields: 'Everything'
         author: 'Author'
         journal_title: 'Journal title'
         numbers: 'ISSN, ISBN or other numbers'
