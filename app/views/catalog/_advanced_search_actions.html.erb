@@ -1,14 +1,5 @@
 <div class="advanced-search-actions well">
   <%= link_to 'Simple Search', catalog_index_path(:simple_search => true), :class => 'btn pull-right' %>
   <%= link_to 'Refine Advanced Search', advanced_path, :class => 'btn pull-right', :id => 'toggle_advanced_search_form' %>
-  <h5>Advanced Search: 
-    <em style="font-weight: normal">
-      <% if advanced_search_fields_with_content.size == 1 %>
-        1 query field is active
-      <% else %>
-        <%= advanced_search_fields_with_content.size %> query fields are active
-      <% end %>
-    </em>
-  </h5>
-  
+  <h5>Advanced Search:</h5>
 </div>

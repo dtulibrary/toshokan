@@ -251,10 +251,6 @@ class CatalogController < ApplicationController
     super
   end
 
-  def advanced_search?
-    session[:advanced_search]
-  end
-
   # Definition of solr local parameter references that are not
   # defined in the solr search handler used for searching.
   # NOTE: These should NOT be prefixed by '$' here.

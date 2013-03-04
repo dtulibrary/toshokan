@@ -12,6 +12,14 @@
         this.blur();
         return false;
       });
+
+      $('#clear_advanced_search_form').click(function () {
+        $('.advanced-search input').each(function () {
+          $(this).val('');
+        });
+
+        return false;
+      });
     });
 
     $('#toggle_advanced_search_form').click(function () {

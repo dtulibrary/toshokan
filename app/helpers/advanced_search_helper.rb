@@ -46,4 +46,7 @@ module AdvancedSearchHelper
     end 
   end 
 
+  def advanced_search?
+    session[:advanced_search]
+  end
 end

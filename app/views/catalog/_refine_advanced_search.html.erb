@@ -1,0 +1,8 @@
+<% if session[:advanced_search] %>
+  <%= render 'advanced_search_actions' if session[:advanced_search] %>
+  <div id="advanced_search_form" class="row hidden">
+    <div class="advanced-search span9">
+      <%= render 'advanced_search_form' %>
+    </div>
+  </div>
+<% end %>
