@@ -44,7 +44,14 @@
 
   a {
     margin-left: 1em;
+    margin-top: -4px;
+    color: $dtu_red;
+
+    &:hover, &:active {
+      color: $dtu_red
+    }
   }
+
 }
 
 .start-over-link {

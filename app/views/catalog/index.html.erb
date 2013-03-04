@@ -19,24 +19,7 @@
       <% if session[:advanced_search] %>
         <%= render 'advanced_search_actions' if session[:advanced_search] %>
         <div id="advanced_search_form" class="row hidden">
-          <div class="span3">
-            <div class="well">
-              <p>
-                TODO: Either add stuff here or make the form wider.
-              </p>
-              <p>
-                Some of the more controllable facets could be displayed
-                here along with a checkbox for each term (like SearchWorks),
-                and for each facet, the terms that have been checked in
-                that facet would
-                then be OR'ed together (ie. choosing both format 'article'
-                and 'book') and in the end the OR-queries for each facet
-                would be AND'ed together by the usual way of having one
-                fq parameter per facet.
-              </p>
-            </div>
-          </div>
-          <div class="advanced-search span6">
+          <div class="advanced-search span6 offset3">
             <%= render 'advanced_search_form' %>
           </div>
         </div>
