@@ -5,6 +5,16 @@
   .index_title {
     max-width: 750px;
   }
+
+  dd.fulltext {
+    ul {
+      margin-left: 0px;
+    }
+    li {
+      display: inline;
+      margin-right: 10px; 
+    }
+  }
 }
 
 // Show view

@@ -23,11 +23,12 @@
 
   function getFulltextLinks(umlautHtml) {
 
-    var links = $('<div/>');
+    var linkList = $('<ul/>');
     $(umlautHtml).find(".response_item").each( function() {
     
       var a = $(this).find("a").first();    
       if(a.length) {
+        var listElm = $("<li />");
         var type = /open access/gi.test(a.html()) ? "openaccess" : "licensed"; 
         var label = $(this).find(".response_notes").html();
         var link = $("<a/>", {
@@ -43,10 +44,11 @@
           $(link).prepend("<i class=\"icon-download\"></i> ");
         }
         $(link).tooltip(); 
-        link.appendTo(links);
+        link.appendTo(listElm);
+        listElm.appendTo(linkList);
       }
     });
-    return $(links).children();
+    return linkList;
   }
 
   $(function () {
@@ -61,13 +63,14 @@
           left: 5,
           top: 0
         };
-
-        var fulltextSelector = $(this).find(".fulltext");
-        $(fulltextSelector).append().spin(spin_opts);  
         
-        updater = getUmlautUpdater($(this).find(".Z3988").attr("title"), 
+        var updater = getUmlautUpdater($(this).find(".Z3988").attr("title"), 
                                    $(this).find('.url_list').data('urls') || [], 
                                    {"umlaut.servicelist" : "fulltext"});
+
+        var fulltextSelector = $(this).find(".fulltext");
+
+        $(fulltextSelector).append().spin(spin_opts);  
         
         // fulltext links
         updater.add_section_target({
@@ -78,8 +81,12 @@
               $(html).html("<%= I18n.t('toshokan.tools.not_available') %>");
             } else {
               $(html).html(getFulltextLinks(html));  
+              $(html).find("a").addClass("btn btn-small");
             }
             $(fulltextSelector).spin(false);
+          },
+          after_update: function(html, count) {
+            $(html).replaceWith($(html).contents());  
           }
         });
         updater.update();
@@ -96,7 +103,6 @@
       var updater = getUmlautUpdater($(".Z3988").attr("title"), $('#url_list').data('urls') || []);
 
       var fulltextHeader = ".fulltext-header";
-      var fulltextSelector = ".fulltext";
       var nalHeader = "#nal-header";
       var nalSelector = "#nal-content";
 
@@ -105,15 +111,19 @@
       // fulltext links
       updater.add_section_target({
         umlaut_section_id: "fulltext",
-        selector: fulltextSelector,
+        selector: fulltextHeader,
+        position: "after",
         before_update: function(html, count) {          
           if(count==0) {
             $(html).html("<%= I18n.t('toshokan.tools.not_available') %>");
           } else {
-            $(html).html(getFulltextLinks(html));  
+            $(html).html($(getFulltextLinks(html)).children());
           }
           $(fulltextHeader).spin(false);    
-        }    
+        },
+        after_update: function(html, count) {
+          $(html).replaceWith($(html).contents());  
+        }     
       });
 
       // other libraries
