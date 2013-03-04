@@ -4,7 +4,7 @@
     <%= text_field_tag field_name, params[field_name] %>
   <% end %>
   <div class="btn-group pull-right">
-    <%= link_to 'Clear form', advanced_path, :id => 'clear_advanced_search_form', :class => 'btn' %>
-    <%= button_tag ('Search ' + content_tag('i', '', :class => 'icon-search icon-white')).html_safe, :id => 'advanced_search', :value => 'advanced_search', :class => 'btn btn-primary' %>
+    <%= link_to t('toshokan.catalog.clear_form'), advanced_path, :id => 'clear_advanced_search_form', :class => 'btn' %>
+    <%= render_advanced_search_button %>
   </div>
 <% end %>

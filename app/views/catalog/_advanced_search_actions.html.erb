@@ -1,5 +1,5 @@
 <div class="advanced-search-actions well">
-  <%= link_to 'Simple Search', catalog_index_path(:simple_search => true), :class => 'btn pull-right' %>
-  <%= link_to 'Refine Advanced Search', advanced_path, :class => 'btn pull-right', :id => 'toggle_advanced_search_form' %>
-  <h5>Advanced Search:</h5>
+  <%= link_to t('toshokan.catalog.simple_search'), catalog_index_path(:simple_search => true), :class => 'btn pull-right' %>
+  <%= link_to t('toshokan.catalog.refine_advanced_search'), advanced_path, :class => 'btn pull-right', :id => 'toggle_advanced_search_form' %>
+  <h5><%= t 'toshokan.catalog.advanced_search' %></h5>
 </div>

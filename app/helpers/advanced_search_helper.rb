@@ -49,4 +49,13 @@ module AdvancedSearchHelper
   def advanced_search?
     session[:advanced_search]
   end
+
+  def render_advanced_search_button
+    button_tag(
+      ("%s %s" % [t('toshokan.header.search'), content_tag('i', '', :class => 'icon-search icon-white')]).html_safe,
+      :id => 'advanced_search',
+      :value => 'advanced_search',
+      :class => 'btn btn-primary'
+    )
+  end
 end

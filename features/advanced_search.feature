@@ -2,7 +2,7 @@ Feature: Advanced Search
 
   Scenario: User goes to advanced search page
     Given I go to the root page
-     When I click "Advanced search"
+     When I click "Advanced Search"
      Then I should see the advanced search form
       But I should not see the simple search form
 
