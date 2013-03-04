@@ -6,6 +6,8 @@ en:
     application_name: 'DTU Library'
     search:
       start_over: 'New Search'
+      per_page:
+        label: '%{count}<span> per page</span>'
   toshokan:
     feedback: 'Feedback'
     header:
