@@ -2,7 +2,13 @@
       <div id="appliedParams" class="constraints-container">
         <span class="constraints-label"><%= t('blacklight.search.filters.title') %></span>
   
-        <%=link_to_unless advanced_search?, t('blacklight.search.start_over'), url_for(:action=>'index'), :class => "catalog_startOverLink btn", :id=>"startOverLink" %>
+        <% unless advanced_search? %>
+          <%= link_to t('blacklight.search.start_over'), 
+            url_for(:action=>'index'), 
+            :class => "catalog_startOverLink btn", 
+            :id=>"startOverLink" 
+          %>
+        <% end %>
         <%= render_constraints(params) %>  
 
       </div>
