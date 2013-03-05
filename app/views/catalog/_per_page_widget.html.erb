@@ -10,7 +10,7 @@
             <%= 
               link_to_unless(
                 count == current_per_page, 
-                content_tag('span', "#{count} per page").html_safe, 
+                content_tag('span', count).html_safe, 
                 url_for(params_for_search.merge(:per_page => count, :page => 1))
               ) 
             %>
