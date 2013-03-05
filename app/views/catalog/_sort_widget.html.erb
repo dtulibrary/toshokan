@@ -9,7 +9,7 @@
             <%= 
               link_to_unless(
                 current_sort_field == field,
-                content_tag('span', field.label), 
+                "<span>#{field.label}</span>".html_safe,
                 url_for(params_for_search.merge(:sort => sort_key))
               ) 
             %>

@@ -10,7 +10,7 @@
             <%= 
               link_to_unless(
                 count == current_per_page, 
-                content_tag('span', count).html_safe, 
+                "<span>#{t 'blacklight.search.per_page.label', :count => count}</span>".html_safe,
                 url_for(params_for_search.merge(:per_page => count, :page => 1))
               ) 
             %>
