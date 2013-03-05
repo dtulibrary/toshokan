@@ -224,7 +224,7 @@ class CatalogController < ApplicationController
 
   def detect_search_mode
     session[:advanced_search] ||= params[:advanced_search]
-    session.delete :advanced_search if params[:simple_search]
+    session.delete :advanced_search if params[:simple_search] || request.fullpath == '/'
   end
 
   def index

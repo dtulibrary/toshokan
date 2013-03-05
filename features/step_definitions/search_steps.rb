@@ -16,7 +16,7 @@ Given /^I search for "(.*?)" in the title$/ do |query|
 end
 
 Given /^I search for "(.*?)" in the "(.*?)" field$/ do |query, field|
-  visit(root_path)
+  visit(catalog_index_path)
   if page.has_selector? '.advanced-search'
     fill_in field, :with => query
   else 
