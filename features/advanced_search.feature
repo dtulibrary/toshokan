@@ -17,3 +17,12 @@ Feature: Advanced Search
      Then I should see the result page
       And I should see "Refine Advanced Search"
     
+  Scenario: Paging on show document keeps advanced result set
+    Given I'm on the advanced search page
+     When I search for "water" in the "Everything" field
+      And I click on the first document
+     Then I should see the document titled "Photocatalysis of Naphthenic Acids in Water"
+      # TODO: remove previous line and enable the following lines when issue with no next/prev for show document has been solved
+      #And I go to the next document
+     #Then I should see the document titled "Environmental Risk Imposed by Diverted Flood Waters on Water and Soils in Emergency Retention Basins"
+

@@ -231,7 +231,7 @@ class CatalogController < ApplicationController
     @display_format = current_display_format + '_index'
     orig_q = params[:q];
     
-    add_advanced_query_to_request if advanced_search?
+    params.merge! advanced_query_params if advanced_search?
     super
 
     # Restore params
@@ -246,7 +246,7 @@ class CatalogController < ApplicationController
 
     # TODO: Fix problem with nested queries getting dropped from search
     #       when using the next and previous links on show page
-    add_advanced_query_to_request if advanced_search?
+    params.merge! advanced_query_params if advanced_search?
 
     super
   end
@@ -272,5 +272,16 @@ class CatalogController < ApplicationController
     end
     result.merge(user_queries).merge solr_referenced_parameters
   end
+
+  def setup_document_by_counter counter
+    return if counter < 1
+
+    if has_advanced_search_parameters? session[:search]
+      get_single_doc_via_search counter, session[:search].merge(advanced_query_params session[:search])
+    else
+      super
+    end
+  end
+
 
 end

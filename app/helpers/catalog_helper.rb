@@ -2,10 +2,14 @@
 module CatalogHelper
   include Blacklight::CatalogHelperBehavior
 
-  def has_search_parameters?
-    result = super || !params[:t].blank?
+  def has_search_parameters? 
+    result = super || !params[:t].blank? || has_advanced_search_parameters?
+  end
+
+  def has_advanced_search_parameters? local_params = params || {}
+    result = false
     advanced_search_fields.each do |field_name, field|
-      result ||= !params[field_name].blank?
+      result ||= !local_params[field_name.to_sym].blank?
     end
     result
   end
