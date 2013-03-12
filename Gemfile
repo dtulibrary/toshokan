@@ -25,6 +25,8 @@ gem 'dalli'
 gem 'bibtex-ruby'
 gem 'citeproc-ruby'
 gem 'netaddr'
+gem "gelf"
+gem "lograge"
 
 # Gems used only for assets and not required
 # in production environments by default.
