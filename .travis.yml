@@ -6,3 +6,8 @@ before_script:
   - "sleep 15"
   - "rake tosho:test:index"
 script: "rake spec cucumber"
+
+# whitelist
+branches:
+  only:
+    - master
