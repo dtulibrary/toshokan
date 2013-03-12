@@ -1,4 +1,0 @@
-solr/data/*
-logs/*.log
-/*.log
-.DS_Store

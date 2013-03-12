@@ -22,31 +22,31 @@ class SolrDocument
   use_extension( Blacklight::Solr::Document::DublinCore)    
   field_semantics.merge!(    
                          # DC, BibTeX, Ris 
-                         :title => "title_t",
-                         :language => "language_s",
+                         :title => "title_ts",
+                         :language => "language_ss",
                          :format => "format",
-                         :publisher => "publisher_s",
+                         :publisher => "publisher_ts",
                          # DC
-                         :subject => "keywords_t",
-                         :description => "abstract_t", 
-                         :creator => "author_t",
+                         :subject => "keywords_ts",
+                         :description => "abstract_ts", 
+                         :creator => "author_ts",
                          :date => "pub_date_ti",
                          :identifier => "doi_s",
                          # BibTeX, Ris
-                         :author => "author_t",
-                         :editor => "editor_t",
-                         :journal => "journal_title_s",
-                         :volume => "journal_vol_s",
-                         :number => "journal_issue_s",
-                         :pages => "journal_page_s",
-                         :year => "pub_date_ti",
-                         :issn => "issn_s",
-                         :isbn => "isbn_s",
-                         :abstract => "abstract_t",
+                         :author => "author_ts",
+                         :editor => "editor_ts",
+                         :journal => "journal_title_ts",
+                         :volume => "journal_vol_ssf",
+                         :number => "journal_issue_ssf",
+                         :pages => "journal_page_ssf",
+                         :year => "pub_date_tis",
+                         :issn => "issn_ss",
+                         :isbn => "isbn_ss",
+                         :abstract => "abstract_ts",
                          :doi => "doi_s",
-                         :keywords => "keywords_t",
+                         :keywords => "keywords_ts",
                          # COinS
-                         :open_url => "open_url"
+                         :open_url => "open_url_sf"
                          )
 
   def export_as_openurl_ctx_kev(format = nil)

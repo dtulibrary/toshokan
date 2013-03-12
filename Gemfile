@@ -52,6 +52,7 @@ group :test, :development do
   gem 'jettywrapper'
   gem 'debugger'
   gem 'rspec-rails'
+  gem 'metastore-test_data', :github => 'dtulibrary/metastore-test_data'
 end
 
 group :development do

@@ -7,15 +7,15 @@ describe "SolrDocument" do
 
     art_data = {
       :format  => "article", 
-      :title_t => "Are there true cosmopolitan sipunculan worms? A genetic variation study within Phascolosoma perlucens (Sipuncula, Phascolosomatidae)", 
-      :author_t => ["Kawauchi, Gisele Y.", "Giribet, Gonzalo"],
-      :pub_date_ti => "2010",
-      :language_s => "English",
-      :issn_s => ["00253162", "14321793"],
-      :journal_title_s => "Marine Biology",
-      :publisher_s => "Springer-Verlag",
-      :doi_t => "10.1007/s00227-010-1402-z",
-      :journal_page_s => "1417-1431"
+      :title_ts => "Are there true cosmopolitan sipunculan worms? A genetic variation study within Phascolosoma perlucens (Sipuncula, Phascolosomatidae)", 
+      :author_ts => ["Kawauchi, Gisele Y.", "Giribet, Gonzalo"],
+      :pub_date_tis => "2010",
+      :language_ss => "English",
+      :issn_ss => ["00253162", "14321793"],
+      :journal_title_ts => "Marine Biology",
+      :publisher_ts => "Springer-Verlag",
+      :doi_s => "10.1007/s00227-010-1402-z",
+      :journal_page_ssf => "1417-1431"
     }
     @art = SolrDocument.new(art_data)
 

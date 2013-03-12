@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
+    <luceneMatchVersion>LUCENE_41</luceneMatchVersion>
+    <dataDir>${solr.data.dir:}</dataDir>
+    <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
+
+    <indexConfig>
+        <useCompoundFile>false</useCompoundFile>
+        <!--<ramBufferSizeMB>2048</ramBufferSizeMB>-->
+        <ramBufferSizeMB>32</ramBufferSizeMB>
+        <mergeFactor>10</mergeFactor>
+        <!--<maxBufferedDocs>1073741824</maxBufferedDocs>-->
+        <maxBufferedDocs>1024</maxBufferedDocs>
+        <unlockOnStartup>false</unlockOnStartup>
+        <reopenReaders>true</reopenReaders>
+        <maxFieldLength>32768</maxFieldLength>
+        <writeLockTimeout>1000</writeLockTimeout>
+        <commitLockTimeout>10000</commitLockTimeout>
+        <lockType>native</lockType>
+
+        <mergePolicy class="org.apache.lucene.index.TieredMergePolicy">
+            <int name="maxMergeAtOnceExplicit">2</int>
+            <int name="maxMergeAtOnce">2</int>
+            <double name="segmentsPerTier">2</double>
+            <double name="maxMergedSegmentMB">20</double>
+        </mergePolicy>
+
+        <mergeScheduler class="org.apache.lucene.index.ConcurrentMergeScheduler">
+            <int name="maxMergeCount">2</int>
+            <int name="maxThreadCount">2</int>
+        </mergeScheduler>
+    </indexConfig>
+
+    <updateHandler class="solr.DirectUpdateHandler2">
+        <updateLog>
+          <str name="dir">${solr.ulog.dir:}</str>
+        </updateLog>
+        <autoCommit>
+            <maxTime>15000</maxTime>
+            <openSearcher>false</openSearcher>
+        </autoCommit>
+    </updateHandler>
+
+    <requestHandler name="/update" class="solr.UpdateRequestHandler"/>
+
+    <requestDispatcher handleSelect="true">
+        <requestParsers enableRemoteStreaming="false"
+                        multipartUploadLimitInKB="2048000"/>
+        <httpCaching lastModFrom="openTime" etagSeed="Solr">
+            <cacheControl>max-age=86400, public, must-revalidate</cacheControl>
+        </httpCaching>
+    </requestDispatcher>
+
+    <query>
+        <queryResultWindowSize>30</queryResultWindowSize>
+        <useColdSearcher>false</useColdSearcher>
+        <maxWarmingSearchers>2</maxWarmingSearchers>
+
+        <filterCache class="solr.FastLRUCache"
+                     size="204800"
+                     initialSize="102400"
+                     autowarmCount="102400"/>
+
+        <queryResultCache class="solr.LRUCache"
+                          size="20480"
+                          initialSize="10240"
+                          autowarmCount="10240"/>
+
+        <documentCache class="solr.LRUCache"
+                       size="20480"
+                       initialSize="10240"
+                       autowarmCount="10240"/>
+
+        <fieldValueCache class="solr.FastLRUCache"
+                         size="20480"
+                         autowarmCount="10240"
+                         showItems="32"/>
+    </query>
+
+    <requestHandler name="search" class="solr.SearchHandler" default="true">
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+            <str name="fl">*,score</str>
+        </lst>
+    </requestHandler>
+
+    <requestHandler name="/toshokan" class="solr.SearchHandler" default="false">
+        <lst name="defaults">
+
+            <str name="defType">edismax</str>
+            <str name="echoParams">explicit</str>
+
+            <str name="q.alt">*:*</str>
+            <str name="mm">100%</str>
+            <str name="qf">
+                title_ts^10
+                subtitle_ts
+                abstract_ts
+                author_ts
+                editor_ts
+                affiliation_ts
+                keywords_ts
+                issn_ss
+                isbn_ss
+                journal_title_ts
+                publisher_ts
+                pub_date_ti
+                doi_s
+            </str>
+            <str name="pf">
+                title_ts^5
+                subtitle_ts
+                abstract_ts
+                author_ts
+                editor_ts
+                affiliation_ts
+                keywords_ts
+                issn_ss
+                isbn_ss
+                journal_title_ts
+                publisher_ts
+                pub_date_ti
+                doi_s
+            </str>
+            <str name="author_qf">
+                author_ts
+                editor_ts
+            </str>
+            <!--
+            <str name="author_pf"></str>
+            -->
+            <str name="title_qf">
+                title_ts
+                subtitle_ts
+                journal_title_ts
+            </str>
+            <!--
+            <str name="title_pf"></str>
+            -->
+            <str name="subject_qf">
+                keywords_ts
+            </str>
+            <!--
+            <str name="subject_pf"></str>
+            -->
+
+            <str name="fl">*,score</str>
+
+            <str name="facet">true</str>
+            <str name="facet.mincount">1</str>
+        </lst>
+    </requestHandler>
+
+    <requestHandler name="/toshokan_document" class="solr.SearchHandler" >
+        <lst name="defaults">
+            <str name="echoParams">all</str>
+            <str name="fl">*</str>
+            <str name="rows">1</str>
+            <str name="q">{!raw f=id v=$id}</str> <!-- use id=666 instead of q=id:666 -->
+        </lst>
+    </requestHandler>
+
+    <requestHandler name="/toshokan_journal_title" class="solr.SearchHandler" >
+        <lst name="defaults">
+            <str name="fl">title:journal_title_ts</str>
+            <str name="rows">1</str>
+            <str name="q">{!raw f=issn_t v=$q}</str>
+        </lst>
+    </requestHandler>
+
+    <requestHandler name="/toshokan_book_title" class="solr.SearchHandler" >
+        <lst name="defaults">
+            <str name="fl">title:title_ts</str>
+            <str name="rows">1</str>
+            <str name="q">{!raw f=isbn_t v=$q}</str>
+        </lst>
+    </requestHandler>
+
+    <searchComponent class="solr.HighlightComponent" name="highlight">
+        <highlighting>
+            <!-- Configure the standard fragmenter -->
+            <!-- This could most likely be commented out in the "default" case -->
+            <fragmenter name="gap"
+                        default="true"
+                        class="solr.highlight.GapFragmenter">
+                <lst name="defaults">
+                    <int name="hl.fragsize">100</int>
+                </lst>
+            </fragmenter>
+
+            <!-- Configure the standard formatter -->
+            <formatter name="html"
+                       default="true"
+                       class="solr.highlight.HtmlFormatter">
+                <lst name="defaults">
+                    <str name="hl.simple.pre"><![CDATA[<em>]]></str>
+                    <str name="hl.simple.post"><![CDATA[</em>]]></str>
+                </lst>
+            </formatter>
+
+            <!-- Configure the standard encoder -->
+            <encoder name="html"
+                     default="true"
+                     class="solr.highlight.HtmlEncoder"/>
+
+            <!-- Configure the standard fragListBuilder -->
+            <fragListBuilder name="simple"
+                             default="true"
+                             class="solr.highlight.SimpleFragListBuilder"/>
+
+            <!-- default tag FragmentsBuilder -->
+            <fragmentsBuilder name="default"
+                              default="true"
+                              class="solr.highlight.ScoreOrderFragmentsBuilder">
+            </fragmentsBuilder>
+
+        </highlighting>
+    </searchComponent>
+
+    <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
+        <str name="queryAnalyzerFieldType">textSpell</str>
+
+        <!-- a spellchecker built from a field of the main index -->
+        <lst name="spellchecker">
+            <str name="name">default</str>
+            <str name="field">spell</str>
+            <str name="classname">solr.DirectSolrSpellChecker</str>
+            <!-- the spellcheck distance measure used, the default is the internal
+           levenshtein -->
+            <str name="distanceMeasure">internal</str>
+            <!-- minimum accuracy needed to be considered a valid spellcheck suggestion -->
+            <float name="accuracy">0.5</float>
+            <!-- the maximum #edits we consider when enumerating terms: can be 1 or
+           2 -->
+            <int name="maxEdits">2</int>
+            <!-- the minimum shared prefix when enumerating terms -->
+            <int name="minPrefix">1</int>
+            <!-- maximum number of inspections per result. -->
+            <int name="maxInspections">5</int>
+            <!-- minimum length of a query term to be considered for correction -->
+            <int name="minQueryLength">4</int>
+            <!-- maximum threshold of documents a query term can appear to be considered
+          for correction -->
+            <float name="maxQueryFrequency">0.01</float>
+            <!-- uncomment this to require suggestions to occur in 1% of the documents
+          <float name="thresholdTokenFrequency">.01</float> -->
+        </lst>
+
+        <!-- a spellchecker that use an alternate comparator comparatorClass be
+     one of: 1. score (default) 2. freq (Frequency first, then score) 3. A fully
+     qualified class name -->
+        <lst name="spellchecker">
+            <str name="name">freq</str>
+            <str name="field">spell</str>
+            <str name="classname">solr.DirectSolrSpellChecker</str>
+            <!-- the spellcheck distance measure used, the default is the internal
+           levenshtein -->
+            <str name="distanceMeasure">internal</str>
+            <!-- minimum accuracy needed to be considered a valid spellcheck suggestion -->
+            <float name="accuracy">0.5</float>
+            <!-- the maximum #edits we consider when enumerating terms: can be 1 or
+           2 -->
+            <int name="maxEdits">2</int>
+            <!-- the minimum shared prefix when enumerating terms -->
+            <int name="minPrefix">1</int>
+            <!-- maximum number of inspections per result. -->
+            <int name="maxInspections">5</int>
+            <!-- minimum length of a query term to be considered for correction -->
+            <int name="minQueryLength">4</int>
+            <!-- maximum threshold of documents a query term can appear to be considered
+          for correction -->
+            <float name="maxQueryFrequency">0.01</float>
+            <!-- uncomment this to require suggestions to occur in 1% of the documents
+          <float name="thresholdTokenFrequency">.01</float> -->
+            <str name="comparatorClass">freq</str>
+        </lst>
+
+
+        <!-- a spellchecker that uses a different distance measure -->
+        <lst name="spellchecker">
+            <str name="name">jarowinkler</str>
+            <str name="field">spell</str>
+            <str name="classname">solr.DirectSolrSpellChecker</str>
+            <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
+            <float name="maxQueryFrequency">0.01</float>
+        </lst>
+
+        <!-- a spellchecker that uses a different distance measure -->
+        <lst name="spellchecker">
+            <str name="name">jarowinkler_freq</str>
+            <str name="field">spell</str>
+            <str name="classname">solr.DirectSolrSpellChecker</str>
+            <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
+            <str name="comparatorClass">freq</str>
+            <float name="maxQueryFrequency">0.01</float>
+        </lst>
+
+        <!-- a spellchecker that uses a different distance measure -->
+        <lst name="spellchecker">
+            <str name="name">levenstein</str>
+            <str name="field">spell</str>
+            <str name="classname">solr.DirectSolrSpellChecker</str>
+            <str name="distanceMeasure">org.apache.lucene.search.spell.LevensteinDistance</str>
+            <float name="maxQueryFrequency">0.01</float>
+        </lst>
+
+        <!-- a spellchecker that uses a different distance measure -->
+        <lst name="spellchecker">
+            <str name="name">levenstein_freq</str>
+            <str name="field">spell</str>
+            <str name="classname">solr.DirectSolrSpellChecker</str>
+            <str name="distanceMeasure">org.apache.lucene.search.spell.LevensteinDistance</str>
+            <str name="comparatorClass">freq</str>
+            <float name="maxQueryFrequency">0.01</float>
+        </lst>
+
+    </searchComponent>
+
+    <searchComponent name="terms" class="solr.TermsComponent"/>
+
+    <requestHandler name="terms" class="solr.SearchHandler" startup="lazy">
+        <lst name="defaults">
+            <bool name="terms">true</bool>
+        </lst>
+        <arr name="components">
+            <str>terms</str>
+        </arr>
+    </requestHandler>
+
+    <requestHandler name="/replication" class="solr.ReplicationHandler" startup="lazy" />
+
+    <requestHandler name="/get" class="solr.RealTimeGetHandler">
+      <lst name="defaults">
+        <str name="omitHeader">true</str>
+     </lst>
+    </requestHandler>
+
+    <requestHandler name="/analysis/field" class="solr.FieldAnalysisRequestHandler" />
+
+    <requestHandler name="/admin/"
+                    class="solr.admin.AdminHandlers"/>
+
+    <!-- Legacy config for the admin interface -->
+    <admin>
+        <defaultQuery>*:*</defaultQuery>
+    </admin>
+
+</config>

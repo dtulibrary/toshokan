@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/dtulibrary/metastore-test_data.git
+  revision: a7c60c1fa2272bd817135dab60a0f1658ace0c8d
+  specs:
+    metastore-test_data (0.0.1)
+      jettywrapper (~> 1.3.0)
+      rails (~> 3.2.0)
+      rsolr (~> 1.0.8)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -356,6 +365,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   lograge
+  metastore-test_data!
   netaddr
   omniauth
   omniauth-cas

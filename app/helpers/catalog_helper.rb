@@ -19,7 +19,7 @@ module CatalogHelper
   end
 
   def render_abstract_snippet document
-    snippet = (document['abstract_t'] || ['No abstract']).first
+    snippet = (document['abstract_ts'] || ['No abstract']).first
     return snippet.size > 300 ? snippet.slice(0, 300) + '...' : snippet
   end
 
@@ -35,12 +35,12 @@ module CatalogHelper
 
   def render_journal_info document, format
     info = []
-    info << document['pub_date_ti'].first if document['pub_date_ti']
-    info << "Volume #{document['journal_vol_s'].first}" if document['journal_vol_s']
+    info << document['pub_date_tis'].first if document['pub_date_tis']
+    info << "Volume #{document['journal_vol_ssf'].first}" if document['journal_vol_ssf']
     # TODO: Enable when journal part is available in solr
-    # info << "Part #{document['journal_part_s'].first}" if format == :show && document['journal_part_s']
-    info << "Issue #{document['journal_issue_s'].first}" if document['journal_issue_s']
-    info << "pp. #{document['journal_page_s'].first}" if document['journal_page_s']
+    # info << "Part #{document['journal_part_ssf'].first}" if format == :show && document['journal_part_ssf']
+    info << "Issue #{document['journal_issue_ssf'].first}" if document['journal_issue_ssf']
+    info << "pp. #{document['journal_page_ssf'].first}" if document['journal_page_ssf']
     (info.join ', ').html_safe
   end
 

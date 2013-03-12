@@ -43,7 +43,7 @@ class CatalogController < ApplicationController
 
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
-      :qt => '/ds',
+      :qt => '/toshokan',
       :q => '*:*',
       :rows => 10
     }
@@ -53,7 +53,7 @@ class CatalogController < ApplicationController
     ## parameters included in the Blacklight-jetty document requestHandler.
     #
     config.default_document_solr_params = {
-      :qt => '/ds_document'
+      :qt => '/toshokan_document'
     #  ## These are hard-coded in the blacklight 'document' requestHandler
     #  # :fl => '*',
     #  # :rows => 1
@@ -61,12 +61,12 @@ class CatalogController < ApplicationController
     }
 
     # solr field configuration for search results/index views
-    config.index.show_link = 'title_t'
+    config.index.show_link = 'title_ts'
     config.index.record_display_type = 'format'
 
     # solr field configuration for document/show views
-    config.show.html_title = 'title_t'
-    config.show.heading = 'title_t'
+    config.show.html_title = 'title_ts'
+    config.show.heading = 'title_ts'
     config.show.display_type = 'format'
 
     # solr fields that will be treated as facets by the blacklight application
@@ -89,7 +89,7 @@ class CatalogController < ApplicationController
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
     config.add_labeled_field :facet, 'format', :always_expand => true
-    config.add_labeled_field :facet, 'pub_date_sort', :range => true
+    config.add_labeled_field :facet, 'pub_date_tsort', :range => true
     config.add_labeled_field :facet, 'author_facet', :limit => 20
     config.add_labeled_field :facet, 'journal_title_facet', :limit => 20
 
@@ -102,25 +102,24 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
-    # config.add_labeled_field :index, 'title_t'
-    config.add_labeled_field :index, 'author_t', :helper_method => :render_shortened_author_links
-    config.add_labeled_field :index, 'journal_title_s', :helper_method => :render_journal_info_index
-    config.add_labeled_field :index, 'pub_date_ti'
+    config.add_labeled_field :index, 'author_ts', :helper_method => :render_shortened_author_links
+    config.add_labeled_field :index, 'journal_title_ts', :helper_method => :render_journal_info_index
+    config.add_labeled_field :index, 'pub_date_tis'
     config.add_labeled_field :index, 'doi_s', :helper_method => :render_doi_link
-    config.add_labeled_field :index, 'abstract_t', :helper_method => :snip_abstract
+    config.add_labeled_field :index, 'abstract_ts', :helper_method => :snip_abstract
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
-    config.add_labeled_field :show, 'title_t'
-    config.add_labeled_field :show, 'author_t', :helper_method => :render_author_links
-    config.add_labeled_field :show, 'affiliation_t', :helper_method => :render_affiliations
-    config.add_labeled_field :show, 'journal_title_s', :helper_method => :render_journal_info_show
-    config.add_labeled_field :show, 'isbn_s'
-    config.add_labeled_field :show, 'issn_s'
+    config.add_labeled_field :show, 'title_ts'
+    config.add_labeled_field :show, 'author_ts', :helper_method => :render_author_links
+    config.add_labeled_field :show, 'affiliation_ts', :helper_method => :render_affiliations
+    config.add_labeled_field :show, 'journal_title_ts', :helper_method => :render_journal_info_show
+    config.add_labeled_field :show, 'isbn_ss'
+    config.add_labeled_field :show, 'issn_ss'
     config.add_labeled_field :show, 'doi_s', :helper_method => :render_doi_link
     config.add_labeled_field :show, 'format'
-    config.add_labeled_field :show, 'keywords_t', :helper_method => :render_keyword_links
-    config.add_labeled_field :show, 'abstract_t'
+    config.add_labeled_field :show, 'keywords_ts', :helper_method => :render_keyword_links
+    config.add_labeled_field :show, 'abstract_ts'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -193,10 +192,10 @@ class CatalogController < ApplicationController
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
-    config.add_labeled_field :sort, 'score desc, pub_date_sort desc, title_sort asc', :field_name => 'relevance'
-    config.add_labeled_field :sort, 'pub_date_sort desc, title_sort asc', :field_name => 'year'
+    config.add_labeled_field :sort, 'score desc, pub_date_tsort desc, title_sort asc', :field_name => 'relevance'
+    config.add_labeled_field :sort, 'pub_date_tsort desc, title_sort asc', :field_name => 'year'
     config.add_labeled_field :sort, 'author_sort asc, title_sort asc', :field_name => 'author'
-    config.add_labeled_field :sort, 'title_sort asc, pub_date_sort desc', :field_name => 'title'
+    config.add_labeled_field :sort, 'title_sort asc, pub_date_tsort desc', :field_name => 'title'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
@@ -205,8 +204,8 @@ class CatalogController < ApplicationController
 
   def add_access_filter solr_parameters, user_parameters
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << 'access:dtu' if can? :search, :dtu
-    solr_parameters[:fq] << 'access:dtupub' if can? :search, :public
+    solr_parameters[:fq] << 'access_ss:dtu' if can? :search, :dtu
+    solr_parameters[:fq] << 'access_ss:dtupub' if can? :search, :public
   end
 
   def current_display_format
@@ -257,8 +256,8 @@ class CatalogController < ApplicationController
   # TODO: As these go into solr config they should be removed from here
   def solr_referenced_parameters
     { 
-      'numbers_qf' => 'issn_s isbn_s doi_s',
-      'journal_title_qf' => 'journal_title_s'
+      'numbers_qf' => 'issn_ss isbn_ss doi_s',
+      'journal_title_qf' => 'journal_title_ts'
     }
   end
 
