@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
-    <luceneMatchVersion>LUCENE_41</luceneMatchVersion>
+    <luceneMatchVersion>LUCENE_42</luceneMatchVersion>
     <dataDir>${solr.data.dir:}</dataDir>
     <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
 
@@ -36,6 +36,7 @@
         </updateLog>
         <autoCommit>
             <maxTime>15000</maxTime>
+            <maxDocs>100000</maxDocs>
             <openSearcher>false</openSearcher>
         </autoCommit>
     </updateHandler>

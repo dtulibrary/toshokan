@@ -8,7 +8,7 @@ gem 'rails', '3.2.12'
 gem 'sqlite3'
 
 gem 'jquery-rails'
-gem 'blacklight', '4.0.1'
+gem 'blacklight', '4.1'
 gem 'unicode'
 gem 'bootstrap-sass', '~> 2.2.0'
 

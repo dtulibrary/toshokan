@@ -102,6 +102,9 @@ en:
         keywords_ts: 'Keywords'
         pub_date_tis: 'Year'
         title_ts: 'Title'
+        publisher_ts: 'Publisher'
+        udc_ss: 'UDC'
+        title_abbr_ts: 'Abbr. title'
       facet_field_labels:
         author_facet: 'Author'
         format: 'Type'

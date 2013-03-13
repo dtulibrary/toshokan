@@ -19,4 +19,12 @@ module BlacklightHelper
     value = super
     args[:field] == 'format' ? I18n.t("toshokan.catalog.formats.#{value}") : value
   end
+
+  # used in the catalog/_show/_default partial
+  def document_show_fields document=nil    
+    show_fields = blacklight_config.show_fields.select { |field_name, field| 
+      field.format.nil? || field.format.include?(document['format'])
+    }
+  end
+
 end

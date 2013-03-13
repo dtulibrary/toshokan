@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
-    <luceneMatchVersion>LUCENE_41</luceneMatchVersion>
+    <luceneMatchVersion>LUCENE_42</luceneMatchVersion>
     <dataDir>${solr.data.dir:}</dataDir>
     <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
 
     <indexConfig>
         <useCompoundFile>false</useCompoundFile>
-        <!--<ramBufferSizeMB>2048</ramBufferSizeMB>-->
-        <ramBufferSizeMB>32</ramBufferSizeMB>
+        <ramBufferSizeMB>${metastore.ram_buffer_size_mb:2048}</ramBufferSizeMB>
         <mergeFactor>10</mergeFactor>
-        <!--<maxBufferedDocs>1073741824</maxBufferedDocs>-->
-        <maxBufferedDocs>1024</maxBufferedDocs>
+        <maxBufferedDocs>${metastore.max_buffered_docs:1073741824}</maxBufferedDocs>
         <unlockOnStartup>false</unlockOnStartup>
         <reopenReaders>true</reopenReaders>
         <maxFieldLength>32768</maxFieldLength>
@@ -20,15 +18,15 @@
         <lockType>native</lockType>
 
         <mergePolicy class="org.apache.lucene.index.TieredMergePolicy">
-            <int name="maxMergeAtOnceExplicit">2</int>
-            <int name="maxMergeAtOnce">2</int>
-            <double name="segmentsPerTier">2</double>
-            <double name="maxMergedSegmentMB">20</double>
+            <int name="maxMergeAtOnceExplicit">30</int>
+            <int name="maxMergeAtOnce">10</int>
+            <double name="segmentsPerTier">20</double>
+            <double name="maxMergedSegmentMB">20000</double>
         </mergePolicy>
 
         <mergeScheduler class="org.apache.lucene.index.ConcurrentMergeScheduler">
-            <int name="maxMergeCount">2</int>
-            <int name="maxThreadCount">2</int>
+            <int name="maxMergeCount">${metastore.merge.max_merge_count:8}</int>
+            <int name="maxThreadCount">${metastore.merge.max_thread_count:8}</int>
         </mergeScheduler>
     </indexConfig>
 
@@ -37,7 +35,8 @@
           <str name="dir">${solr.ulog.dir:}</str>
         </updateLog>
         <autoCommit>
-            <maxTime>15000</maxTime>
+            <maxTime>${metastore.auto_commit.max_time:15000}</maxTime>
+            <maxDocs>${metastore.auto_commit.max_docs:100000}</maxDocs>
             <openSearcher>false</openSearcher>
         </autoCommit>
     </updateHandler>
@@ -58,24 +57,47 @@
         <maxWarmingSearchers>2</maxWarmingSearchers>
 
         <filterCache class="solr.FastLRUCache"
-                     size="204800"
-                     initialSize="102400"
-                     autowarmCount="102400"/>
+                     size="${metastore.filter_cache.size:204800}"
+                     initialSize="${metastore.filter_cache.initial_size:102400}"
+                     autowarmCount="${metastore.filter_cache.autowarm_count:102400}"/>
 
         <queryResultCache class="solr.LRUCache"
-                          size="20480"
-                          initialSize="10240"
-                          autowarmCount="10240"/>
+                          size="${metastore.query_result_cache.size:20480}"
+                          initialSize="${metastore.query_result_cache.initial_size:10240}"
+                          autowarmCount="${metastore.query_result_cache.autowarm_count:10240}"/>
 
         <documentCache class="solr.LRUCache"
-                       size="20480"
-                       initialSize="10240"
-                       autowarmCount="10240"/>
+                       size="${metastore.document_cache.size:20480}"
+                       initialSize="${metastore.document_cache.initial_size:10240}"
+                       autowarmCount="${metastore.document_cache.autowarm_count:10240}"/>
 
         <fieldValueCache class="solr.FastLRUCache"
-                         size="20480"
-                         autowarmCount="10240"
-                         showItems="32"/>
+                         size="${metastore.field_value_cache.size:20480}"
+                         autowarmCount="${metastore.field_value_cache.autowarm_count:10240}"
+                         showItems="${metastore.field_value_cache.show_items:32}"/>
+
+        <listener event="firstSearcher" class="solr.QuerySenderListener">
+            <arr name="queries">
+                <lst>
+                    <str name="q">*:*</str>
+                    <str name="facet.field">format</str>
+                    <str name="facet.field">journal_title_ts</str>
+                    <str name="facet.field">pub_date_tsort</str>
+                    <str name="facet.field">author_facet</str>
+                </lst>
+            </arr>
+        </listener>
+        <listener event="newSearcher" class="solr.QuerySenderListener">
+            <arr name="queries">
+                <lst>
+                    <str name="q">*:*</str>
+                    <str name="facet.field">format</str>
+                    <str name="facet.field">journal_title_ts</str>
+                    <str name="facet.field">pub_date_tsort</str>
+                    <str name="facet.field">author_facet</str>
+                </lst>
+            </arr>
+        </listener>
     </query>
 
     <requestHandler name="search" class="solr.SearchHandler" default="true">
@@ -161,7 +183,7 @@
         </lst>
     </requestHandler>
 
-    <requestHandler name="/toshokan_journal_title" class="solr.SearchHandler" >
+    <requestHandler name="/gazo_journal_title" class="solr.SearchHandler" >
         <lst name="defaults">
             <str name="fl">title:journal_title_ts</str>
             <str name="rows">1</str>
@@ -169,11 +191,72 @@
         </lst>
     </requestHandler>
 
-    <requestHandler name="/toshokan_book_title" class="solr.SearchHandler" >
+    <requestHandler name="/gazo_book_title" class="solr.SearchHandler" >
         <lst name="defaults">
             <str name="fl">title:title_ts</str>
             <str name="rows">1</str>
             <str name="q">{!raw f=isbn_t v=$q}</str>
+        </lst>
+    </requestHandler>
+
+    <requestHandler name="/primo" class="solr.SearchHandler" default="false">
+        <lst name="defaults">
+            <str name="defType">edismax</str>
+            <str name="echoParams">explicit</str>
+
+            <str name="fq">format:article</str>
+
+            <str name="mm">100%</str>
+            <str name="q.op">AND</str>
+
+            <str name="qf">
+                title_ts^10
+                subtitle_ts
+                abstract_ts
+                author_ts
+                editor_ts
+                affiliation_ts
+                keywords_ts
+                issn_ss
+                isbn_ss
+                journal_title_ts
+                publisher_ts
+                pub_date_ti
+                doi_s
+            </str>
+            <str name="pf">
+                title_ts^5
+                subtitle_ts
+                abstract_ts
+                author_ts
+                editor_ts
+                affiliation_ts
+                keywords_ts
+                issn_ss
+                isbn_ss
+                journal_title_ts
+                publisher_ts
+                pub_date_ti
+                doi_s
+            </str>
+
+            <str name="fl">*,score</str>
+
+            <str name="f.title.qf">title_t</str>
+            <str name="f.creatorcontrib.qf">author_ts</str>
+            <str name="f.journal_title.qf">journal_title_ts</str>
+            <str name="f.creation_date.qf">pub_date_ti</str>
+            <str name="f.isbn.qf">isbn_s</str>
+            <str name="f.issn.qf">issn_s</str>
+
+            <str name="facet">true</str>
+            <str name="facet.field">{!key=creationdate}pub_date_sort</str>
+            <str name="facet.field">{!key=creator}author_facet</str>
+            <str name="facet.field">{!key=jtitle}journal_title_facet</str>
+            <str name="facet.field">{!key=type}format</str>
+            <str name="facet.field">{!key=topic}keywords_facet</str>
+            <str name="facet.field">{!key=lang}iso_language_s</str>
+            <str name="facet.mincount">1</str>
         </lst>
     </requestHandler>
 

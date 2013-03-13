@@ -111,6 +111,7 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_labeled_field :show, 'title_ts'
+    config.add_labeled_field :show, 'title_abbr_ts'
     config.add_labeled_field :show, 'author_ts', :helper_method => :render_author_links
     config.add_labeled_field :show, 'affiliation_ts', :helper_method => :render_affiliations
     config.add_labeled_field :show, 'journal_title_ts', :helper_method => :render_journal_info_show
@@ -120,6 +121,8 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'format'
     config.add_labeled_field :show, 'keywords_ts', :helper_method => :render_keyword_links
     config.add_labeled_field :show, 'abstract_ts'
+    config.add_labeled_field :show, 'publisher_ts'
+    config.add_labeled_field :show, 'udc_ss'    
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

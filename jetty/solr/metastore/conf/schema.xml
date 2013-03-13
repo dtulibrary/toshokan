@@ -85,6 +85,7 @@
     <copyField source="keywords_ts"      dest="keywords_facet" />
 
     <!-- spelling -->
+    <copyField source="*_t" dest="spell" />
     <copyField source="*_ts" dest="spell" />
 
     <types>
