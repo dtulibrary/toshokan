@@ -5,8 +5,6 @@ gem 'rails', '3.2.12'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-
 gem 'jquery-rails'
 gem 'blacklight', '4.1'
 gem 'unicode'
@@ -53,6 +51,7 @@ group :test, :development do
   gem 'debugger'
   gem 'rspec-rails'
   gem 'metastore-test_data', :github => 'dtulibrary/metastore-test_data'
+  gem 'sqlite3'
 end
 
 group :development do

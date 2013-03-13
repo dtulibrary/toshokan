@@ -5,6 +5,10 @@ Vagrant::Config.run do |config|
   config.vm.box = "wheezy"
   config.vm.box_url = "http://vagrant.cvt.dk/vagrant-wheezy.box"
 
+  config.vm.customize ["modifyvm", :id,
+                       "--name", "toshokan.vagrant.vm",
+                      ]
+
   config.vm.network :hostonly, "192.168.207.10"
   config.vm.host_name = "toshokan.vagrant.vm"
 

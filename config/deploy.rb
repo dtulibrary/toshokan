@@ -1,16 +1,7 @@
-# RVM bootstrap
-# $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
-
-require 'rvm/capistrano'
-
-set :rvm_ruby_string, '1.9.3-p194'
-set :rvm_type, :system
-
-# bundler bootstrap
 require 'bundler/capistrano'
 
-set :rails_env, ENV['RAILS_ENV'] || "unstable"
-set :application, ENV['HOST']
+set :rails_env, ENV['RAILS_ENV'] || 'unstable'
+set :application, ENV['HOST'] || 'toshokan.vagrant.vm'
 set :toshokan_config, ENV['TOSHOKAN_CONFIG'] || "#{rails_env}"
 
 set :deploy_to, "/var/www/#{application}"
@@ -18,38 +9,39 @@ role :web, "#{application}"
 role :app, "#{application}"
 role :db, "#{application}", :primary => true
 
-# server details
 default_run_options[:pty] = true
-ssh_options[:forward_agent] = false
-set :deploy_via, :remote_cache
-set :copy_exclude, %w(.git jetty feature spec)
-set :user, "passenger"
-set :use_sudo, false
 
-# repo details
-set :scm, :git
-set :scm_username, ENV['CAP_USER']
-set :repository, ENV['SCM']
-if variables.include?(:branch_name)
-  set :branch, "#{branch_name}"
+ssh_options[:forward_agent] = false
+set :user, 'capistrano'
+set :use_sudo, false
+set :copy_exclude, %w(.git jetty feature spec)
+
+
+if fetch(:application).end_with?('vagrant.vm')
+  set :scm, :none
+  set :repository, '.'
+  set :deploy_via, :copy
+  set :copy_strategy, :export
+  ssh_options[:keys] = [ENV['IDENTITY'] || './vagrant/puppet-applications/vagrant-modules/vagrant_capistrano_id_dsa']
 else
-  set :branch, "master"
+  set :deploy_via, :remote_cache
+  set :scm, :git
+  set :scm_username, ENV['CAP_USER']
+  set :repository, ENV['SCM']
+  if variables.include?(:branch_name)
+    set :branch, "#{branch_name}"
+  else
+    set :branch, 'master'
+  end
+  set :git_enable_submodules, 1
 end
-set :git_enable_submodules, 1
 
 # tasks
 
-before "deploy:assets:precompile", "config:update", "config:symlink"
+before "deploy:assets:precompile", "config:symlink"
 after "deploy:update", "deploy:cleanup"
 
-# install configuration files not included in main scm
 namespace :config do
-  desc "update configuration from separate repository"
-  task :update do
-    run "mkdir -p #{deploy_to}/shared/config"
-    run "cd ~/toshokan-config-#{toshokan_config} && git pull && cp database.yml solr.yml application.local.rb #{deploy_to}/shared/config"
-  end
-
   desc "linking configuration to current release"
   task :symlink do
     run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
