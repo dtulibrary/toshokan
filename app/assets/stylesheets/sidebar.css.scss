@@ -2,15 +2,13 @@
 
 #sidebar {
   .sidenav {
-    margin-bottom: 1.5em;
+    margin-bottom: 3em;
+    border: 0px;
+    @include box-shadow(none);
+    @include border-radius(0px);
 
-    h4 {
-      color: #fff;
-      background: $dtu_grey;
-
-      &:first-child {
-        @include border-radius(5px 5px 0px 0px);
-      }
+    h4, h5 {
+      border-top: 1px solid #d4d4d4;
     }
   }
 }

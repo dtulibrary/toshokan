@@ -1,0 +1,24 @@
+@import 'toshokan_defaults';
+
+.search-box {
+  padding: 20px;
+  @include border-radius(5px);
+  @include box-shadow(1px 1px 3px rgba(0,0,0,0.1));
+  background-color: whitesmoke;
+  border: 1px solid #d4d4d4;
+  float: left;
+
+  .title {
+    margin-bottom: 1em;
+    font-size: 1.3em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px dotted #aaa;
+  }
+
+  .input-small {
+    width: 110px;
+  }
+
+  #q {
+  }
+}

@@ -126,4 +126,6 @@ en:
       advanced_search: 'Advanced Search'
       simple_search: 'Simple Search'
       refine_advanced_search: 'Refine Advanced Search'
+      search_box:
+        title: 'All the information you need'
 

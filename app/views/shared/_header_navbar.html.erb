@@ -25,13 +25,15 @@
           <%= link_to content_tag('div', '', :class => 'dtu-logo').html_safe, 'http://www.dtu.dk', :class => 'logo pull-right' %>
         </div>
       </div>
-      <div class="row">
-        <div class="span9 offset3">
-          <div id="searchbar">         
-            <%= render_search_bar %>
+      <% if has_search_parameters? %>
+        <div class="row">
+          <div class="span9 offset3">
+            <div id="searchbar">         
+              <%= render_search_bar %>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>

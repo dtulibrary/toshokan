@@ -1,6 +1,24 @@
 #facets {
-  
   .limit_content {
     padding: 8px 14px;
   }
+
+  .facet_limit li {
+    font-size: 0.9em;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+
+    &:first-child {
+      border-top: 0px;
+    }
+
+    &.more_facets_link {
+      border: 0px;
+    }
+  }
+  
+  .facets-collapse .facet_limit:last-child > h5 {
+      @include border-radius(0px);
+  }
 }
+
