@@ -25,7 +25,7 @@ Scenario: Export record in RIS format
 
 Scenario: Do not export a record for a journal
 	 When I have searched for "Photochemistry and photobiology"
-	  And I have the limited the "Format" facet to "journal"
+	  And I have the limited the "Type" facet to "Journal"
 	  And I click the link "Photochemistry and photobiology"
 	 Then I should not see the "Export to BibTeX" link
 	  And I should not see the "Export to RIS" link

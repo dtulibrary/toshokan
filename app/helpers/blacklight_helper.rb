@@ -14,4 +14,9 @@ module BlacklightHelper
     title = document[blacklight_config.show.html_title]
     (title.kind_of? Array) ? title.first : title
   end
+
+  def render_document_show_field_value args
+    value = super
+    args[:field] == 'format' ? I18n.t("toshokan.catalog.formats.#{value}") : value
+  end
 end

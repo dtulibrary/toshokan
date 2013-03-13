@@ -15,6 +15,22 @@
     &.more_facets_link {
       border: 0px;
     }
+
+    .selected {
+      color: #000;
+    }
+
+    .remove {
+      &:hover {
+        background: inherit;
+      }
+    }
+
+    .facet_select {
+      &:hover {
+        background: inherit;
+      }
+    }
   }
   
   .facets-collapse .facet_limit:last-child > h5 {

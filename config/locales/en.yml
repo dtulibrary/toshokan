@@ -128,4 +128,8 @@ en:
       refine_advanced_search: 'Refine Advanced Search'
       search_box:
         title: 'All the information you need'
+      formats:
+        article: 'Journal article'
+        book: 'Book'
+        journal: 'Journal'
 

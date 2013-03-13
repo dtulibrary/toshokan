@@ -7,3 +7,14 @@
     color: $dtu_red;
   }
 }
+
+.appliedFilter {
+  font-size: 0.9em;
+}
+
+#appliedParams {
+  .constraints-label {
+    margin-right: 0.5em;
+    font-weight: normal;
+  }
+}

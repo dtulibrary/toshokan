@@ -40,8 +40,9 @@ module RenderConstraintsHelper
   end
 
   def render_advanced_search_constraint field_name, localized_params = params
+    logger.debug "field name = #{field_name}"
     render_constraint_element(I18n.t("toshokan.catalog.search_field_labels.#{field_name}"), 
-      localized_params[field_name],
+      field_name == 'format' ? I18n.t("toshokan.catalog.formats.#{localized_params[field_name]}") : localized_params[field_name],
       :remove => url_for(:controller => 'catalog', :action => 'index', :params => localized_params.reject { |k,v| k == field_name }),
       :classes => ['filter']
     )

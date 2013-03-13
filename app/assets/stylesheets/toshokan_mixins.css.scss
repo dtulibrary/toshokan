@@ -1,0 +1,7 @@
+@import 'toshokan_defaults';
+
+@mixin text-shadow($shadow...) {
+  -webkit-text-shadow: $shadow;
+     -moz-text-shadow: $shadow;
+          text-shadow: $shadow;
+}
