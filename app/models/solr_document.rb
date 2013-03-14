@@ -43,7 +43,7 @@ class SolrDocument
                          :issn => "issn_ss",
                          :isbn => "isbn_ss",
                          :abstract => "abstract_ts",
-                         :doi => "doi_s",
+                         :doi => "doi_ss",
                          :keywords => "keywords_ts",
                          # COinS
                          :open_url => "open_url_sf"

@@ -22,8 +22,20 @@ module BlacklightHelper
 
   # used in the catalog/_show/_default partial
   def document_show_fields document=nil    
-    show_fields = blacklight_config.show_fields.select { |field_name, field| 
-      field.format.nil? || field.format.include?(document['format'])
+    filter_fields blacklight_config.show_fields, document
+  end
+
+  ##
+  # Index fields to display for a type of document
+  def index_fields document=nil
+    filter_fields blacklight_config.index_fields, document
+  end
+
+  def filter_fields fields, document=nil
+    doc_format = document['format'] unless document.nil?
+    doc_format ||= ""
+    fields.select { |field_name, field| 
+      field.format.nil? || field.format.include?(doc_format)
     }
   end
 

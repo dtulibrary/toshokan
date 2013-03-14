@@ -33,6 +33,14 @@ module CatalogHelper
     "#{document[field].first} &mdash; #{render_journal_info(document, format)}".html_safe
   end
 
+  def render_book_info args
+    document = args[:document]
+    field = args[:field]
+    book_info = "#{document[field].first}"
+    book_info << " &mdash; pp. #{document['journal_page_ssf'].first}" if document['journal_page_ssf']
+    book_info.html_safe
+  end
+
   def render_journal_info document, format
     info = []
     info << document['pub_date_tis'].first if document['pub_date_tis']

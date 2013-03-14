@@ -86,15 +86,17 @@ en:
       index_field_labels:
         abstract_ts: 'Abstract'
         author_ts: 'Authors'
-        doi_s: 'DOI'
+        doi_ss: 'DOI'
         journal_title_ts: 'Journal'
         pub_date_tis: 'Year'
         title_ts: 'Title'
+        format: 'Type'
+        publisher_ts: 'Publisher'
       show_field_labels:
         abstract_ts: 'Abstract'
         affiliation_ts: 'Affiliations'
         author_ts: 'Authors'
-        doi_s: 'DOI'
+        doi_ss: 'DOI'
         format: 'Format'
         isbn_ss: 'ISBN'
         issn_ss: 'ISSN'
@@ -105,6 +107,8 @@ en:
         publisher_ts: 'Publisher'
         udc_ss: 'UDC'
         title_abbr_ts: 'Abbr. title'
+        format: 'Type'
+        language_ss: 'Language'
       facet_field_labels:
         author_facet: 'Author'
         format: 'Type'

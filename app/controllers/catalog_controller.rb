@@ -104,8 +104,10 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_labeled_field :index, 'author_ts', :helper_method => :render_shortened_author_links
     config.add_labeled_field :index, 'journal_title_ts', :helper_method => :render_journal_info_index
-    config.add_labeled_field :index, 'pub_date_tis'
-    config.add_labeled_field :index, 'doi_s', :helper_method => :render_doi_link
+    config.add_labeled_field :index, 'pub_date_tis', :helper_method => :render_book_info, :format => ['book']
+    config.add_labeled_field :index, 'format'
+    config.add_labeled_field :index, 'doi_ss', :helper_method => :render_doi_link
+    config.add_labeled_field :index, 'publisher_ts', :format => ['book', 'journal']
     config.add_labeled_field :index, 'abstract_ts', :helper_method => :snip_abstract
 
     # solr fields to be displayed in the show (single result) view
@@ -114,14 +116,16 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'title_abbr_ts'
     config.add_labeled_field :show, 'author_ts', :helper_method => :render_author_links
     config.add_labeled_field :show, 'affiliation_ts', :helper_method => :render_affiliations
+    config.add_labeled_field :show, 'pub_date_tis', :helper_method => :render_book_info, :format => ['book']
     config.add_labeled_field :show, 'journal_title_ts', :helper_method => :render_journal_info_show
+    config.add_labeled_field :show, 'format'
+    config.add_labeled_field :show, 'publisher_ts'
     config.add_labeled_field :show, 'isbn_ss'
     config.add_labeled_field :show, 'issn_ss'
-    config.add_labeled_field :show, 'doi_s', :helper_method => :render_doi_link
-    config.add_labeled_field :show, 'format'
-    config.add_labeled_field :show, 'keywords_ts', :helper_method => :render_keyword_links
-    config.add_labeled_field :show, 'abstract_ts'
-    config.add_labeled_field :show, 'publisher_ts'
+    config.add_labeled_field :show, 'doi_ss', :helper_method => :render_doi_link    
+    config.add_labeled_field :show, 'language_ss'
+    config.add_labeled_field :show, 'abstract_ts'    
+    config.add_labeled_field :show, 'keywords_ts', :helper_method => :render_keyword_links    
     config.add_labeled_field :show, 'udc_ss'    
 
     # "fielded" search configuration. Used by pulldown among other places.
@@ -259,7 +263,7 @@ class CatalogController < ApplicationController
   # TODO: As these go into solr config they should be removed from here
   def solr_referenced_parameters
     { 
-      'numbers_qf' => 'issn_ss isbn_ss doi_s',
+      'numbers_qf' => 'issn_ss isbn_ss doi_ss',
       'journal_title_qf' => 'journal_title_ts'
     }
   end
