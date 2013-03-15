@@ -15,10 +15,10 @@ module BlacklightHelper
     (title.kind_of? Array) ? title.first : title
   end
 
-  def render_document_show_field_value args
-    value = super
-    args[:field] == 'format' ? I18n.t("toshokan.catalog.formats.#{value}") : value
-  end
+  #def render_document_show_field_value args
+  #  value = super
+  #  args[:field] == 'format' ? I18n.t("toshokan.catalog.formats.#{value}") : value
+  #end
 
   # used in the catalog/_show/_default partial
   def document_show_fields document=nil    
