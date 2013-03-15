@@ -8,11 +8,15 @@ Toshokan::Application.routes.draw do
   match '/logout',                  :to => 'users/sessions#destroy',   :as => 'destroy_user_session'
   match '/mylibrary/profile',       :to => 'users/sessions#edit',      :as => 'edit_user_registration'
   match '/user/switch',             :to => 'users/sessions#switch',    :as => 'switch_user'
-  match '/user/session'                 => 'users/sessions#update',    :as => 'user_session', :via => :put
+  match '/user/session'                 => 'users/sessions#update',    :as => 'user_session',         :via => :put
   match '/cover_images/:id',        :to => 'cover_images#show',        :as => 'cover_images'
   match '/auth',                    :to => 'auth_provider#index',      :as => 'select_auth_provider', :via => :get
   match '/auth',                    :to => 'auth_provider#create',     :as => 'set_auth_provider',    :via => :post
-  match '/advanced',                :to => 'catalog#advanced',          :as => 'advanced'             
+  match '/advanced',                :to => 'catalog#advanced',         :as => 'advanced'             
+
+  # Temp fix since BL 4.1 removed the POST route to feedback (but BL's code still seems to rely on it).
+  match '/feedback',                :to => 'feedback#show',            :as => 'feedback',             :via => :post
+  
 
   resources :documents, :only => [] do
     resources :tags, :except => [:edit, :update]
@@ -22,6 +26,7 @@ Toshokan::Application.routes.draw do
 
   resources :users, :only => [:index, :update, :destroy]
   
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

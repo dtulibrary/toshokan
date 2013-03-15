@@ -1,0 +1,52 @@
+@import 'toshokan_defaults';
+
+.feedback {
+  position: fixed;
+  top: 50%;
+  z-index: 500;
+  left: 0px;
+  border: 0px;
+  background-image: image_url('feedback.png');
+  width: 34px;
+  height: 97px;
+  margin-top: -48px;
+
+}
+
+#feedback-modal {
+
+  .modal-header {
+    .close {
+      margin-top: -2px;
+    }
+  }
+
+  input, label, textarea {
+    display: block;
+  }
+
+  input, label {
+    width: 50%;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }   
+  }
+
+  button {
+  }
+
+  textarea {
+    @include input_block_level;
+    height: 10em;
+    width: 100%;
+
+    &:active {
+      border-color: $dtu_red;
+    }   
+  }
+
+  form {
+    margin: 0px;
+  }
+}

@@ -1,4 +1,5 @@
 @import 'toshokan_defaults';
+@import 'toshokan_mixins';
 
 input {
   &.no-margin {
@@ -6,8 +7,13 @@ input {
   }
 
   &[type = 'text']:focus {
-    border-color: $dtu_red;
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075), 0px 0px 8px rgba(153,0,0,0.6);
+    @include focused_field;
+  }
+}
+
+textarea {
+  &:focus {
+    @include focused_field;
   }
 }
 

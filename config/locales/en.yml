@@ -7,7 +7,6 @@ en:
     search:
       start_over: 'New Search'
   toshokan:
-    feedback: 'Feedback'
     header:
       dtu: 'Technical University of Denmark'
       dtulibrary: 'DTU Library'
@@ -75,14 +74,23 @@ en:
     modals:
       switch_user:
         title: "Switch User"
+      feedback:
+        title: 'Feedback on DTU Library'
+    feedback:
+      label: 'Feedback'
+      success: 'Your feedback has been sent. Thank you for taking the time to help us improve DTU Library. <a href="#" data-dismiss="modal">Close this dialog</a>'
+      message: 'Your message'
+      name: 'Your name'
+      email: 'Your email address'
+    forms:
+      required_fields: 'Fields marked with * are required'
+      send: 'Send'
     catalog:
       display_formats:
         standard_index: 'Standard'
         standard_show: 'Standard'
         librarian_index: 'Librarian'
         librarian_show: 'Librarian'
-        reference_index: 'Reference'
-        reference_show: 'Reference'
       index_field_labels:
         abstract_ts: 'Abstract'
         author_ts: 'Authors'

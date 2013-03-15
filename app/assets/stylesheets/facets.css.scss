@@ -3,6 +3,17 @@
     padding: 8px 14px;
   }
 
+  .range_limit {
+    span.selected {
+      color: #000;
+    }
+    
+    .current {
+      margin-bottom: 0.5em;
+    }
+  }
+
+
   .facet_limit li {
     font-size: 0.9em;
     padding-top: 0.1em;

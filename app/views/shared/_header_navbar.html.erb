@@ -35,6 +35,14 @@
     </div>
   </div>
 </div>
-<div class="feedback">
-  <a href=""><%= t 'toshokan.feedback' %></a>
+<%= link_to '', feedback_path, :class => 'feedback', :'data-toggle' => 'modal', :'data-target' => '#feedback-modal' %>
+<div id="feedback-modal" class="modal fade">
+  <div class="modal-header">
+    <h4>
+      <%= t 'toshokan.modals.feedback.title' %>
+      <a class="close" class="pull-right" data-dismiss="modal" data-target="#feedback-modal">&times;</a>
+    </h4>
+  </div>
+  <div class="modal-body">
+  </div>
 </div>

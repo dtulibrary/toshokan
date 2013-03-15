@@ -3,27 +3,3 @@
 body {
   padding-top: 205px;
 }
-
-.feedback {
-  position: fixed;
-  top: 50%;
-  z-index: 500;
-  left: -30px;
-  color: #fff;
-  background-color: $dtu_red;
-  @include rotate(-90deg);
-  font-weight: bold;
-  height: 20px;
-  padding: 5px 10px;
-  @include border-radius(0px 0px 5px 5px);
-  @include box-shadow(-2px 2px 5px rgba(0,0,0,0.2), -1px 1px 2px rgba(0,0,0,0.5));
-
-  a {
-    color: #fff;
-
-    &:hover, &:active {
-      color: #fff;
-      text-decoration: none;
-    }
-  }
-}

@@ -1,0 +1,6 @@
+(function ($) {
+  $('#feedback-modal .dtu-red').remove();
+  <% @errors.each do |field| %>
+    $('#feedback-modal label[for="<%= field %>"]').append(' <span class="dtu-red">Please fill in a value</span>');
+  <% end %>
+})(jQuery);
