@@ -4,7 +4,7 @@ rvm:
 before_script:
   - "rake db:migrate jetty:start"
   - "sleep 15"
-  - "rake tosho:test:index"
+  - "rake metastore:testdata:index"
 script: "rake spec cucumber"
 
 # whitelist
