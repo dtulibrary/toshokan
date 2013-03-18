@@ -147,4 +147,10 @@ en:
         article: 'Journal article'
         book: 'Book'
         journal: 'Journal'
-
+    footer:
+      dtu_library: 'DTU LIBRARY'
+      telephone: 'Tel'
+      number_abbr: 'no.'
+      legal_notice:
+        title: 'LEGAL NOTICE'
+        text: 'Systematic downloading and storing of data (including entire books or journals) is strictly prohibited'

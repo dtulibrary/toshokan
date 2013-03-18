@@ -1,38 +1,70 @@
-<% if false %>
-  <div class="service-menu container">
-    <div class="row">
-      <div class="span3">
-        <ul class="nav nav-list">
-          <li class="nav-header dtu-red">What</li>
-          <li><a href="">DTU Digital Library</a></li>
-          <li><a href="">Databases</a></li>
-          <li><a href="">Research Database</a></li>
-        </ul>
+<div id="footer">
+  <% if false %>
+    <div class="service-menu container">
+      <div class="row">
+        <div class="span3">
+          <ul class="nav nav-list">
+            <li class="nav-header dtu-red">What</li>
+            <li><a href="">DTU Digital Library</a></li>
+            <li><a href="">Databases</a></li>
+            <li><a href="">Research Database</a></li>
+          </ul>
+        </div>
+        <div class="span3">
+          <ul class="nav nav-list">
+            <li class="nav-header dtu-red">How</li>
+            <li><a href="">User Status</a></li>
+            <li><a href="">Rules</a></li>
+            <li><a href="">Courses</a></li>
+          </ul>
+        </div>
+        <div class="span3">
+          <ul class="nav nav-list">
+            <li class="nav-header dtu-red">Where</li>
+            <li><a href="">Addresses</a></li>
+            <li><a href="">Facilities</a></li>
+            <li><a href="">Events</a></li>
+          </ul>
+        </div>
+        <div class="span3">
+          <ul class="nav nav-list">
+            <li class="nav-header dtu-red">Contact &amp; Opening Hours</li>
+            <li><a href="">Opening Hours Lyngby</a></li>
+            <li><a href="">Opening Hours Ballerup</a></li>
+            <li><a href="">Phone: 4525 7250</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="span3">
-        <ul class="nav nav-list">
-          <li class="nav-header dtu-red">How</li>
-          <li><a href="">User Status</a></li>
-          <li><a href="">Rules</a></li>
-          <li><a href="">Courses</a></li>
-        </ul>
-      </div>
-      <div class="span3">
-        <ul class="nav nav-list">
-          <li class="nav-header dtu-red">Where</li>
-          <li><a href="">Addresses</a></li>
-          <li><a href="">Facilities</a></li>
-          <li><a href="">Events</a></li>
-        </ul>
-      </div>
-      <div class="span3">
-        <ul class="nav nav-list">
-          <li class="nav-header dtu-red">Contact &amp; Opening Hours</li>
-          <li><a href="">Opening Hours Lyngby</a></li>
-          <li><a href="">Opening Hours Ballerup</a></li>
-          <li><a href="">Phone: 4525 7250</a></li>
-        </ul>
+    </div>
+  <% end %>
+
+  <div class="fat-footer">
+    <div class="container">
+      <div class="row">
+        <div class="span1">
+          <%= image_tag 'dtulogo_white.png' %>
+        </div>
+        <div class="span4">
+          <h5><%= t 'toshokan.footer.dtu_library' %></h5>
+          <p>
+            <div>Danmarks Tekniske Informationscenter</div>
+            <div>Anker Engelunds Vej 1</div>
+            <div>Bygn. 101D</div>
+            <div>2800 Kgs. Lyngby</div>
+            <div><script type="text/javascript">eval(unescape('%64%6f%63%75%6d%65%6e%74%2e%77%72%69%74%65%28%27%3c%61%20%68%72%65%66%3d%22%6d%61%69%6c%74%6f%3a%64%74%69%63%40%64%74%69%63%2e%64%74%75%2e%64%6b%22%3e%64%74%69%63%40%64%74%69%63%2e%64%74%75%2e%64%6b%3c%2f%61%3e%27%29%3b'));</script></div>
+            <div><%= t 'toshokan.footer.telephone' %>: +45-4525 7200</div>
+          </p>
+          <p>
+            <div>CVR-<%= t 'toshokan.footer.number_abbr' %> 30060946</div>
+            <div>EAN-<%= t 'toshokan.footer.number_abbr' %> 5798000430556</div>
+          </p>
+        </div>
+        <div class="span7">
+          <h5><%= t 'toshokan.footer.legal_notice.title' %></h5>
+          <p><%= t 'toshokan.footer.legal_notice.text' %></p>
+        </div>
       </div>
     </div>
   </div>
-<% end %>
+
+</div>

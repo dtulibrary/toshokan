@@ -1,0 +1,26 @@
+#footer {
+  .fat-footer {
+    color: #ccc;
+    background-color: #212121;
+    padding: 48px 0px;
+    border-bottom: 35px solid $dtu_red;
+     
+    h1,h2,h3,h4,h5,h6 {
+      color: #fff;
+    }
+
+    h5 {
+      line-height: 14px;
+      font-size: 14px;
+
+      &:first-child {
+        margin-top: 0px;
+      }
+    }
+
+    a {
+      color: #ccc;
+      text-decoration: underline;
+    }
+  }
+}
