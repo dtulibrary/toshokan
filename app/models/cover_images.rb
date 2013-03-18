@@ -16,7 +16,7 @@ class CoverImages
   end
 
   def self.extract_identifiers document
-    document['issn_s'] || document['isbn_s'] || ['XXXXXXXX']
+    document['issn_ss'] || document['isbn_ss'] || ['XXXXXXXX']
   end
 
   def self.url_for id 

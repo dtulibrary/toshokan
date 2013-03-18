@@ -16,28 +16,28 @@ describe CoverImages do
 
   describe '.extract_identifiers' do
 
-    context 'when document has both issn_s and isbn_s fields' do
-      it 'should return an url pointing to issn_s field' do
-        document = { 'issn_s' => ['12345678'], 'isbn_s' => ['123456789abcd'] }
+    context 'when document has both issn_ss and isbn_ss fields' do
+      it 'should return an url pointing to issn_ss field' do
+        document = { 'issn_ss' => ['12345678'], 'isbn_ss' => ['123456789abcd'] }
         CoverImages.extract_identifiers(document).should == ['12345678']
       end
     end
 
-    context 'when document only has issn_s field' do
-      it 'should return an url pointing to isbn_s field' do
-        document = { 'issn_s' => ['12345678'] }
+    context 'when document only has issn_ss field' do
+      it 'should return an url pointing to isbn_ss field' do
+        document = { 'issn_ss' => ['12345678'] }
         CoverImages.extract_identifiers(document).should == ['12345678']
       end
     end
 
-    context 'when document only has isbn_s field' do
-      it 'should return an url pointing to isbn_s field' do
-        document = { 'isbn_s' => ['123456789abcd'] }
+    context 'when document only has isbn_ss field' do
+      it 'should return an url pointing to isbn_ss field' do
+        document = { 'isbn_ss' => ['123456789abcd'] }
         CoverImages.extract_identifiers(document).should == ['123456789abcd']
       end
     end
 
-    context 'when document has neither issn_s nor isbn_s fields' do
+    context 'when document has neither issn_ss nor isbn_ss fields' do
       it 'should return an url pointing to fake id: XXXXXXXX' do
         CoverImages.extract_identifiers({}).should == ['XXXXXXXX']
       end
