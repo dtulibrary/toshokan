@@ -3,6 +3,10 @@ module RSolr
     alias_method :execute_without_rails_caching, :execute
 
     def execute client, request_context
+      if not [:get, :head].include? request_context[:method]
+        return execute_without_rails_caching client, request_context
+      end
+
       bench_start = Time.now
 
       # Add cache header to request params
