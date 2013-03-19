@@ -161,4 +161,5 @@ module TagsHelper
   def tags_empty?
     current_or_guest_user.owned_tags.empty?
   end
+
 end

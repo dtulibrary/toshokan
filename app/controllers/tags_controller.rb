@@ -26,7 +26,7 @@ class TagsController < ApplicationController
     @document = Hashie::Mash.new({:id => params[:document_id]})
     current_user.tag(@document, params[:tag_name])
 
-    redirect_to params[:return_url], :only_path => true unless request.xhr?
+    redirect_to only_path(params[:return_url]) unless request.xhr?
     render :partial => 'tags/tag_refresh' and return if request.xhr?
   end
 
@@ -45,7 +45,7 @@ class TagsController < ApplicationController
       tag.delete
     end
 
-    redirect_to params[:return_url], :only_path => true unless request.xhr?
+    redirect_to only_path(params[:return_url]) unless request.xhr?
     render :partial => 'tags/tag_refresh' and return if request.xhr?
   end
 

@@ -1,4 +1,5 @@
 require 'netaddr'
+require 'uri'
 
 class ApplicationController < ActionController::Base
   include Blacklight::Controller
@@ -92,4 +93,15 @@ class ApplicationController < ActionController::Base
   def render_not_found(exception)
     render :file => 'public/404', :format => :html, :status => :not_found, :layout => nil
   end
+
+  # strip scheme, host and port from url to ensure that it is
+  # safe to redirect to (even if we get it from the client)
+  def only_path(url)
+    URI.parse(url).tap {|uri|
+      uri.scheme = nil
+      uri.host = nil
+      uri.port = nil
+    }.to_s
+  end
+
 end

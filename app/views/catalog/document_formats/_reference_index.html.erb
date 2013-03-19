@@ -8,8 +8,7 @@
         <div class="journal_title">
           <%= document['journal_title_ts'].first %>
         </div>
-        <% if document['journal_vol_ssf'] || document['journal_issue_ssf'] || document['pub_date_tis'] 
-          || document['journal_page_ssf'] %>
+        <% if document['journal_vol_ssf'] || document['journal_issue_ssf'] || document['pub_date_tis'] || document['journal_page_ssf'] %>
           &mdash;
         <% end %>
         <%= render_journal_info document %>
