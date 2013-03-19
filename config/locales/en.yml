@@ -100,6 +100,8 @@ en:
         title_ts: 'Title'
         format: 'Type'
         publisher_ts: 'Publisher'
+        journal_page_ssf: 'Pages'
+        holdings_ssf: 'Holdings'
       show_field_labels:
         abstract_ts: 'Abstract'
         affiliation_ts: 'Affiliations'
@@ -114,9 +116,13 @@ en:
         title_ts: 'Title'
         publisher_ts: 'Publisher'
         udc_ss: 'UDC'
-        title_abbr_ts: 'Abbr. title'
+        title_abbr_ts: 'Alternative titles'
         format: 'Type'
-        language_ss: 'Language'
+        language_ss: 'Language'        
+        conf_title_ts: 'Conference title'
+        subtitle_ts: 'Subtitle'
+        journal_page_ssf: 'Pages'
+        holdings_ssf: 'Holdings'
       facet_field_labels:
         author_facet: 'Author'
         format: 'Type'
@@ -147,6 +153,10 @@ en:
         article: 'Journal article'
         book: 'Book'
         journal: 'Journal'
+      holdings:
+        printed: "Paper based"
+        electronic: "Electronic"    
+        alis: "view in ALIS"
       home:
         title: 'DTU Findit - one search finds it all'
     footer:

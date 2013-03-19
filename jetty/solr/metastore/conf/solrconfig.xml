@@ -167,6 +167,58 @@
             <str name="subject_pf"></str>
             -->
 
+            <str name="f.dedup.qf"        >cluster_id_ss</str>
+            <str name="f.cluster.qf"      >cluster_id_ss</str>
+            <str name="f.clusterid.qf"    >cluster_id_ss</str>
+            <str name="f.member.qf"       >member_id_ss</str>
+            <str name="f.memberid.qf"     >member_id_ss</str>
+            <str name="f.source.qf"       >source_ss</str>
+            <str name="f.sourcetype.qf"   >sourcetype_ss</str>
+
+            <str name="f.toc.qf"          >toc_key_s</str>
+            <str name="f.toc_key.qf"      >toc_key_s</str>
+
+            <str name="f.ti.qf"           >title_ts</str>
+            <str name="f.title.qf"        >title_ts</str>
+            <str name="f.au.qf"           >author_ts</str>
+            <str name="f.author.qf"       >author_ts</str>
+            <str name="f.authors.qf"      >author_ts</str>
+            <str name="f.ed.qf"           >editor_ts</str>
+            <str name="f.editor.qf"       >editor_ts</str>
+            <str name="f.editors.qf"      >editor_ts</str>
+            <str name="f.af.qf"           >affiliation_ts</str>
+            <str name="f.affiliation.qf"  >affiliation_ts</str>
+            <str name="f.ab.qf"           >abstract_ts</str>
+            <str name="f.abstract.qf"     >abstract_ts</str>
+            <str name="f.jo.qf"           >journal_title_ts</str>
+            <str name="f.journal.qf"      >journal_title_ts</str>
+            <str name="f.journaltitle.qf" >journal_title_ts</str>
+            <str name="f.journal_title.qf">journal_title_ts</str>
+            <str name="f.pu.qf"           >publisher_ts</str>
+            <str name="f.pub.qf"          >publisher_ts</str>
+            <str name="f.publisher.qf"    >publisher_ts</str>
+            <str name="f.ke.qf"           >keywords_ts</str>
+            <str name="f.kw.qf"           >keywords_ts</str>
+            <str name="f.key.qf"          >keywords_ts</str>
+            <str name="f.keyword.qf"      >keywords_ts</str>
+            <str name="f.keywords.qf"     >keywords_ts</str>
+            <str name="f.doi.qf"          >doi_ss</str>
+
+            <str name="f.isbn.qf"         >isbn_ss</str>
+            <str name="f.issn.qf"         >issn_ss</str>
+
+            <str name="f.y.qf"            >pub_date_tis</str>
+            <str name="f.year.qf"         >pub_date_tis</str>
+            <str name="f.v.qf"            >journal_vol_ssf</str>
+            <str name="f.vol.qf"          >journal_vol_ssf</str>
+            <str name="f.volume.qf"       >journal_vol_ssf</str>
+            <str name="f.i.qf"            >journal_issue_ssf</str>
+            <str name="f.iss.qf"          >journal_issue_ssf</str>
+            <str name="f.issue.qf"        >journal_issue_ssf</str>
+            <str name="f.p.qf"            >journal_page_ssf</str>
+            <str name="f.page.qf"         >journal_page_ssf</str>
+
+
             <str name="fl">*,score</str>
 
             <str name="facet">true</str>

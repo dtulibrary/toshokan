@@ -1,0 +1,23 @@
+<ul class="holdings">
+<% holdings.each do |label, holding| %>  
+  <li><%=I18n.t("toshokan.catalog.holdings.#{label}")%></li>
+  <% holding.each do |h| 
+    list = ""
+    list << h['fromyear'] if h['fromyear']
+    list << " (v. #{h['fromvolume']})" if h['fromvolume']
+    list << " &mdash;  #{h['toyear']}" if h['toyear'] 
+    list << " (v. #{h['tovolume']})" if h['tovolume']
+  
+    if label == "printed"
+      link = link_to I18n.t("toshokan.catalog.holdings.alis"), Rails.application.config.alis_url + issn 
+    end
+    link ||= ""
+    
+  %>
+
+    <li><i class="icon-ok"></i> 
+      <%= list.html_safe%> <%=link %>
+    </li>
+  <% end %>
+<% end %>
+</ul>

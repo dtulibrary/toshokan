@@ -18,6 +18,10 @@ module CatalogHelper
     render_abstract_snippet args[:document]
   end
 
+  def render_type args
+    I18n.t("toshokan.catalog.formats.#{args[:document][args[:field]]}")
+  end
+
   def render_abstract_snippet document
     snippet = (document['abstract_ts'] || ['No abstract']).first
     return snippet.size > 300 ? snippet.slice(0, 300) + '...' : snippet
@@ -31,14 +35,6 @@ module CatalogHelper
     document = args[:document]
     field = args[:field]
     "#{document[field].first} &mdash; #{render_journal_info(document, format)}".html_safe
-  end
-
-  def render_book_info args
-    document = args[:document]
-    field = args[:field]
-    book_info = "#{document[field].first}"
-    book_info << " &mdash; pp. #{document['journal_page_ssf'].first}" if document['journal_page_ssf']
-    book_info.html_safe
   end
 
   def render_journal_info document, format
@@ -79,6 +75,21 @@ module CatalogHelper
   def render_affiliations args
     affiliations = args[:document][args[:field]]
     affiliations.collect { |affiliation| content_tag(:span, affiliation)}.join('<br>').html_safe
+  end
+
+  def render_holdings args
+    holdings = {}
+    args[:document][args[:field]].each { |h|
+      holding = JSON.parse(h)
+      holdings[holding["type"]] ||= []
+      holdings[holding["type"]] << holding
+    }
+    holdings.each { |type, holding|
+      holding.sort! {|x, y| x['fromyear'] <=> y['fromyear'] }
+    }
+
+    issn = args[:document]['issn_ss'].first
+    render :partial => 'catalog/holdings', :locals => {:holdings => holdings, :issn => issn}
   end
 
   def render_advanced_search_link label = 'More options'

@@ -104,8 +104,10 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_labeled_field :index, 'author_ts', :helper_method => :render_shortened_author_links
     config.add_labeled_field :index, 'journal_title_ts', :helper_method => :render_journal_info_index
-    config.add_labeled_field :index, 'pub_date_tis', :helper_method => :render_book_info, :format => ['book']
-    config.add_labeled_field :index, 'format'
+    config.add_labeled_field :index, 'holdings_ssf', :helper_method => :render_holdings
+    config.add_labeled_field :index, 'pub_date_tis', :format => ['book']
+    config.add_labeled_field :index, 'journal_page_ssf', :format => ['book']
+    config.add_labeled_field :index, 'format', :helper_method => :render_type
     config.add_labeled_field :index, 'doi_ss', :helper_method => :render_doi_link
     config.add_labeled_field :index, 'publisher_ts', :format => ['book', 'journal']
     config.add_labeled_field :index, 'abstract_ts', :helper_method => :snip_abstract
@@ -113,12 +115,16 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
     config.add_labeled_field :show, 'title_ts'
+    config.add_labeled_field :show, 'subtitle_ts'
     config.add_labeled_field :show, 'title_abbr_ts'
+    config.add_labeled_field :show, 'holdings_ssf', :helper_method => :render_holdings
     config.add_labeled_field :show, 'author_ts', :helper_method => :render_author_links
     config.add_labeled_field :show, 'affiliation_ts', :helper_method => :render_affiliations
-    config.add_labeled_field :show, 'pub_date_tis', :helper_method => :render_book_info, :format => ['book']
+    config.add_labeled_field :show, 'pub_date_tis', :format => ['book']
+    config.add_labeled_field :show, 'journal_page_ssf', :format => ['book']
     config.add_labeled_field :show, 'journal_title_ts', :helper_method => :render_journal_info_show
-    config.add_labeled_field :show, 'format'
+    config.add_labeled_field :show, 'conf_title_ts'
+    config.add_labeled_field :show, 'format', :helper_method => :render_type
     config.add_labeled_field :show, 'publisher_ts'
     config.add_labeled_field :show, 'isbn_ss'
     config.add_labeled_field :show, 'issn_ss'
