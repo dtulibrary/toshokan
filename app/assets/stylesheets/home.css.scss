@@ -24,7 +24,11 @@
 }
 
 .welcome-title {
-  padding: 2em;
   font-weight: bold;
-  color: #333;
+  color: #ccc;
+  text-shadow: 2px 2px 1px rgba(0,0,0,0.2), 1px 1px 1px rgba(0,0,0,0.5);
+  text-align: center;
+  line-height: 5em;
+  font-size: 28px;
+  margin: 0px;
 }

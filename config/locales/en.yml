@@ -3,13 +3,13 @@
 
 en:
   blacklight:
-    application_name: 'DTU Library'
+    application_name: 'DTU Findit'
     search:
       start_over: 'New Search'
   toshokan:
     header:
       dtu: 'Technical University of Denmark'
-      dtulibrary: 'DTU Library'
+      dtulibrary: 'DTU Findit'
       search: 'Search'
     save: "Save"
     cancel: "Cancel"
@@ -75,10 +75,10 @@ en:
       switch_user:
         title: "Switch User"
       feedback:
-        title: 'Feedback on DTU Library'
+        title: 'Feedback on DTU Findit'
     feedback:
       label: 'Feedback'
-      success: 'Your feedback has been sent. Thank you for taking the time to help us improve DTU Library. <a href="#" data-dismiss="modal">Close this dialog</a>'
+      success: 'Your feedback has been sent. Thank you for taking the time to help us improve DTU Findit. <a href="#" data-dismiss="modal">Close this dialog</a>'
       message: 'Your message'
       name: 'Your name'
       email: 'Your email address'
