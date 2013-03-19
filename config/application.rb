@@ -94,5 +94,7 @@ module Toshokan
     config.action_mailer.smtp_settings = {
     }
 
+    config.alis_url = ''
+
   end
 end
