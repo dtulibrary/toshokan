@@ -3,7 +3,6 @@
     color: #ccc;
     background-color: #212121;
     padding: 48px 0px;
-    border-bottom: 35px solid $dtu_red;
      
     h1,h2,h3,h4,h5,h6 {
       color: #fff;
@@ -22,5 +21,13 @@
       color: #ccc;
       text-decoration: underline;
     }
+  }
+
+  .legal-notice {
+    height: 35px;
+    background: $dtu_red;
+    color: #faa;
+    line-height: 35px;
+    font-size: 12px;
   }
 }
