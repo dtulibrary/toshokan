@@ -147,6 +147,8 @@ en:
         article: 'Journal article'
         book: 'Book'
         journal: 'Journal'
+      home:
+        title: 'DTU Findit - one search to rule them all'
     footer:
       dtu_library: 'DTU LIBRARY'
       telephone: 'Tel'
