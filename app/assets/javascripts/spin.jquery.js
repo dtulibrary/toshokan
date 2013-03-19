@@ -10,7 +10,7 @@
         delete data.spinner;
       }
       if (opts !== false) {
-        data.spinner = new Spinner($.extend({color: $this.css('color')}, opts)).spin(this);
+        data.spinner = new Spinner($.extend({color: $this.css('color'), zIndex: 0}, opts)).spin(this);
       }
     });
     return this;
