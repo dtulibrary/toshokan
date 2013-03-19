@@ -27,7 +27,7 @@
     }
 
     // shorten author and affiliation lists to at most 3 items in catalog#show
-    shorten_list($('#document dd.blacklight-author_t > a'), 3, ', <%= I18n.t("toshokan.catalog.shortened_list.et_al") %>');
-    shorten_list($('#document dd.blacklight-affiliation_t > span'), 3, '');
+    shorten_list($('#document dd.blacklight-author_ts > a'), 3, ', <%= I18n.t("toshokan.catalog.shortened_list.et_al") %>');
+    shorten_list($('#document dd.blacklight-affiliation_ts > span'), 3, '');
   });
 })(jQuery);
