@@ -41,8 +41,7 @@ module CatalogHelper
     info = []
     info << document['pub_date_tis'].first if document['pub_date_tis']
     info << "Volume #{document['journal_vol_ssf'].first}" if document['journal_vol_ssf']
-    # TODO: Enable when journal part is available in solr
-    # info << "Part #{document['journal_part_ssf'].first}" if format == :show && document['journal_part_ssf']
+    info << "Part #{document['journal_part_ssf'].first}" if format == :show && document['journal_part_ssf']
     info << "Issue #{document['journal_issue_ssf'].first}" if document['journal_issue_ssf']
     info << "pp. #{document['journal_page_ssf'].first}" if document['journal_page_ssf']
     (info.join ', ').html_safe

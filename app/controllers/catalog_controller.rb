@@ -118,8 +118,9 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'subtitle_ts'
     config.add_labeled_field :show, 'title_abbr_ts'
     config.add_labeled_field :show, 'holdings_ssf', :helper_method => :render_holdings
-    config.add_labeled_field :show, 'author_ts', :helper_method => :render_author_links
+    config.add_labeled_field :show, 'author_ts', :helper_method => :render_author_links    
     config.add_labeled_field :show, 'affiliation_ts', :helper_method => :render_affiliations
+    config.add_labeled_field :show, 'editor_ts', :helper_method => :render_author_links
     config.add_labeled_field :show, 'pub_date_tis', :format => ['book']
     config.add_labeled_field :show, 'journal_page_ssf', :format => ['book']
     config.add_labeled_field :show, 'journal_title_ts', :helper_method => :render_journal_info_show
