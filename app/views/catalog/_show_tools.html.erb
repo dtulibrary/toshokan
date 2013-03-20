@@ -9,24 +9,26 @@
 
   <ul class="nav nav-list">
 
-    <li class="nav-header"><%= t('toshokan.tools.cite_and_export') %></li>
+    <% if @document[:format] != "journal" %>
+      <li class="nav-header"><%= t('toshokan.tools.cite_and_export') %></li>
 
-    <% if (!@document.citation_styles.empty?) %>
-      <li class="cite">
-      <%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :name => 'citation', :class => 'lightboxLink'} %>
-      </li>
-    <% end %>
+      <% if (!@document.citation_styles.empty?) %>
+        <li class="cite">
+        <%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :name => 'citation', :class => 'lightboxLink'} %>
+        </li>
+      <% end %>
 
-    <% if @document.export_formats.keys.include?( :bib ) && @document[:format] != "journal" %>
-      <li class="bibtex">
-      <%= link_to t('toshokan.tools.bibtex'), catalog_path(@document, :format => 'bib') %>
-      </li>
-    <% end %>
+      <% if @document.export_formats.keys.include?( :bib ) %>
+        <li class="bibtex">
+        <%= link_to t('toshokan.tools.bibtex'), catalog_path(@document, :format => 'bib') %>
+        </li>
+      <% end %>
 
-    <% if @document.export_formats.keys.include?( :ris ) && @document[:format] != "journal" %>
-      <li class="endnote">
-      <%= link_to t('toshokan.tools.ris'), catalog_path(@document, :format => 'ris') %>
-      </li>
+      <% if @document.export_formats.keys.include?( :ris ) %>
+        <li class="endnote">
+        <%= link_to t('toshokan.tools.ris'), catalog_path(@document, :format => 'ris') %>
+        </li>
+      <% end %>
     <% end %>
 
     <% if can? :tag, Bookmark %>
