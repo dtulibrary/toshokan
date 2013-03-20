@@ -32,7 +32,7 @@
         var type = /open access/gi.test(a.html()) ? "openaccess" : "licensed"; 
         var label = $(this).find(".response_notes").html();
         var link = $("<a/>", {
-          text: a.html(),
+          text: a.text(),
           "class" : "fulltext " + type,
           "title": label,
           "href" : a.attr("href"),

@@ -157,6 +157,7 @@ en:
         printed: "Paper based"
         electronic: "Electronic"    
         alis: "view in ALIS"
+        placeholder: "See full text options"
       home:
         title: 'DTU Findit - one search finds it all'
     footer:

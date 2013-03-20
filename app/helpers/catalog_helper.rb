@@ -81,15 +81,21 @@ module CatalogHelper
     holdings = {}
     args[:document][args[:field]].each { |h|
       holding = JSON.parse(h)
-      holdings[holding["type"]] ||= []
-      holdings[holding["type"]] << holding
+      if(holding["type"] == "printed")
+        holdings[holding["type"]] ||= []
+        holdings[holding["type"]] << holding
+      end
     }
-    holdings.each { |type, holding|
-      holding.sort! {|x, y| x['fromyear'] <=> y['fromyear'] }
-    }
+    if holdings.size > 0
+      holdings.each { |type, holding|
+        holding.sort! {|x, y| x['fromyear'] <=> y['fromyear'] }
+      }
 
-    issn = args[:document]['issn_ss'].first
-    render :partial => 'catalog/holdings', :locals => {:holdings => holdings, :issn => issn}
+      issn = args[:document]['issn_ss'].first
+      render :partial => 'catalog/holdings', :locals => {:holdings => holdings, :issn => issn}
+    else
+      I18n.t("toshokan.catalog.holdings.placeholder")
+    end
   end
 
   def render_advanced_search_link label = 'More options'
