@@ -15,8 +15,20 @@ class CoverImages
     yield self.config
   end
 
-  def self.extract_identifiers document
-    document['issn_ss'] || document['isbn_ss'] || ['XXXXXXXX']
+  def self.extract_identifier document
+    issns = document['issn_ss'] || []
+    isbns = document['isbn_ss'] || []
+
+    result = issns.first || 'XXXXXXXX'
+
+    if result == 'XXXXXXXX'
+      isbns.each do |isbn|
+        # Always use 13-digit ISBNs (which is the longest one)
+        result = isbn if isbn.length > result.length
+      end
+    end
+
+    result
   end
 
   def self.url_for id 
