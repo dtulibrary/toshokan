@@ -9,7 +9,7 @@
 
   <%= render :partial => 'fulltext' %>
 
-  <%= content_tag "div", class: "url_list", data: {urls: document['fulltext_list'].to_json} do %>
+  <%= content_tag "div", class: "url_list", data: {urls: document['fulltext_list_ssf'].to_json} do %>
   <% end %>
 
   <% if document.respond_to?(:export_as_openurl_ctx_kev) %>
