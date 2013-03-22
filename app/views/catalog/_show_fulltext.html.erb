@@ -1,8 +1,17 @@
 
   <ul class="nav nav-list">
-    <li class="nav-header fulltext-header"><%= t('toshokan.tools.fulltext') %></li>
+    <li class="nav-header fulltext-header"><%= t('toshokan.tools.fulltext') %></li>    
     <li id="nal-header" class="nav-header hide nav-list-collapse" data-toggle="collapse" data-target="#nal-content">
       <%= t('toshokan.tools.nal') %> <i class="icon-chevron pull-right"></i>
     </li>
     <li id="nal-content" class="collapse"></li>
+    <% if (@document['pubmed_url_ssf'] || @document['isi_url_ssf'] || @document['orbit_url_ssf']) %>
+      <li class="nav-header"><%= t('toshokan.tools.other') %></li>
+    <% end %>
+    <% if(@document['pubmed_url_ssf']) %>
+      <li><%=link_to "<i class='icon-pubmed'></i> #{t('toshokan.source_url.pubmed')}".html_safe, "#{@document['pubmed_url_ssf'].first}" %></li>
+    <% end %>
+    <% if(@document['isi_url_ssf']) %>
+      <li><%=link_to "<i class='icon-isi'></i> #{t('toshokan.source_url.isi')}".html_safe, "#{@document['isi_url_ssf'].first}" %></li>
+    <% end %>
   </ul>
