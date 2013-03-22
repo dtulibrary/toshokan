@@ -88,7 +88,8 @@ module Toshokan
       # List IP's for Walk-in PC's here.
       # Can be listed as '127.0.0.1', '127.0.0.1/32', '127.0.0.*', '127.0.0.1-127.0.0.127'
       # Wildcards can't be used in ranges.
-      :ips => []
+      :ips => [],
+      :only => false,
     }
 
     config.action_mailer.smtp_settings = {

@@ -9,7 +9,9 @@
         </div>
         <div class="span6">
           <div class="pull-right">
-            <%= render :partial=>'/user_util_links' %>
+            <%- unless session[:come_back_later] -%>
+              <%= render :partial=>'/user_util_links' %>
+            <%- end -%>
           </div>
         </div>
       </div>
@@ -27,7 +29,7 @@
       </div>
       <div class="row">
         <div class="span9 offset3">
-          <div id="searchbar">         
+          <div id="searchbar">
             <%= render_search_bar %>
           </div>
         </div>
@@ -35,7 +37,10 @@
     </div>
   </div>
 </div>
-<%= link_to '', feedback_path, :class => 'feedback', :'data-toggle' => 'modal', :'data-target' => '#feedback-modal' %>
+<%- unless session[:come_back_later] -%>
+  <%= link_to '', feedback_path, :class => 'feedback', :'data-toggle' => 'modal', :'data-target' => '#feedback-modal' %>
+<%- end -%>
+
 <div id="feedback-modal" class="modal fade">
   <div class="modal-header">
     <h4>

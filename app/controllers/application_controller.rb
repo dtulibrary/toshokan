@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :authenticate
+  before_filter :check_walk_in_only
 
   # Authenticate users if certain criteria are met.
   # - No authentication will be done if user is already logged in.
@@ -32,6 +33,16 @@ class ApplicationController < ActionController::Base
         redirect_to polymorphic_url(:new_user_session)
       end
     end
+  end
+
+  def check_walk_in_only
+    logger.info current_user.walk_in
+    logger.info Rails.application.config.walk_in[:only]
+
+    if Rails.application.config.walk_in[:only]
+      redirect_to come_back_later_url unless current_user.walk_in
+    end
+    session.delete :come_back_later
   end
 
   helper_method :guest_user, :current_or_guest_user
