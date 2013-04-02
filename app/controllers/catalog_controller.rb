@@ -218,10 +218,11 @@ class CatalogController < ApplicationController
     config.spell_max = 5
   end
 
-  def add_access_filter solr_parameters, user_parameters
+  def add_access_filter solr_parameters = {}, user_parameters = {}
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] << 'access_ss:dtu' if can? :search, :dtu
     solr_parameters[:fq] << 'access_ss:dtupub' if can? :search, :public
+    solr_parameters
   end
 
   def current_display_format
@@ -257,13 +258,32 @@ class CatalogController < ApplicationController
   end
 
   def show
+
     @display_format = current_display_format + '_show'
 
     # TODO: Fix problem with nested queries getting dropped from search
     #       when using the next and previous links on show page
     params.merge! advanced_query_params if advanced_search?
 
-    super
+    # override super#show to add access filters to request
+    begin
+      @response, @document = get_solr_response_for_doc_id nil, add_access_filter   
+
+      respond_to do |format|
+        format.html {setup_next_and_previous_documents}
+
+        # Add all dynamically added (such as by document extensions)
+        # export formats.
+        @document.export_formats.each_key do | format_name |
+          # It's important that the argument to send be a symbol;
+          # if it's a string, it makes Rails unhappy for unclear reasons. 
+          format.send(format_name.to_sym) { render :text => @document.export_as(format_name), :layout => false }
+        end
+        
+      end
+    rescue Blacklight::Exceptions::InvalidSolrID
+      not_found
+    end
   end
 
   # Definition of solr local parameter references that are not
