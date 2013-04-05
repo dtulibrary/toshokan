@@ -103,6 +103,7 @@ en:
         format: 'Type'
         publisher_ts: 'Publisher'
         journal_page_ssf: 'Pages'
+        alis_key_ssf: 'Holdings'
         holdings_ssf: 'Holdings'
       show_field_labels:
         abstract_ts: 'Abstract'
@@ -124,6 +125,7 @@ en:
         conf_title_ts: 'Conference title'
         subtitle_ts: 'Subtitle'
         journal_page_ssf: 'Pages'
+        alis_key_ssf: 'Holdings'
         holdings_ssf: 'Holdings'
       facet_field_labels:
         author_facet: 'Author'

@@ -105,6 +105,7 @@ class CatalogController < ApplicationController
     config.add_labeled_field :index, 'author_ts', :helper_method => :render_shortened_author_links
     config.add_labeled_field :index, 'journal_title_ts', :helper_method => :render_journal_info_index
     config.add_labeled_field :index, 'holdings_ssf', :helper_method => :render_holdings
+    config.add_labeled_field :index, 'alis_key_ssf', :helper_method => :render_alis_link
     config.add_labeled_field :index, 'pub_date_tis', :format => ['book']
     config.add_labeled_field :index, 'journal_page_ssf', :format => ['book']
     config.add_labeled_field :index, 'format', :helper_method => :render_type
@@ -118,7 +119,8 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'subtitle_ts'
     config.add_labeled_field :show, 'title_abbr_ts'
     config.add_labeled_field :show, 'holdings_ssf', :helper_method => :render_holdings
-    config.add_labeled_field :show, 'author_ts', :helper_method => :render_author_links    
+    config.add_labeled_field :show, 'alis_key_ssf', :helper_method => :render_alis_link
+    config.add_labeled_field :show, 'author_ts', :helper_method => :render_author_links
     config.add_labeled_field :show, 'affiliation_ts', :helper_method => :render_affiliations
     config.add_labeled_field :show, 'editor_ts', :helper_method => :render_author_links
     config.add_labeled_field :show, 'pub_date_tis', :format => ['book']
@@ -129,11 +131,11 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'publisher_ts'
     config.add_labeled_field :show, 'isbn_ss'
     config.add_labeled_field :show, 'issn_ss'
-    config.add_labeled_field :show, 'doi_ss', :helper_method => :render_doi_link    
+    config.add_labeled_field :show, 'doi_ss', :helper_method => :render_doi_link
     config.add_labeled_field :show, 'language_ss'
-    config.add_labeled_field :show, 'abstract_ts'    
-    config.add_labeled_field :show, 'keywords_ts', :helper_method => :render_keyword_links    
-    config.add_labeled_field :show, 'udc_ss'    
+    config.add_labeled_field :show, 'abstract_ts'
+    config.add_labeled_field :show, 'keywords_ts', :helper_method => :render_keyword_links
+    config.add_labeled_field :show, 'udc_ss'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields

@@ -97,6 +97,10 @@ module CatalogHelper
     end
   end
 
+  def render_alis_link args
+    render :partial => 'catalog/alis_link', :locals => {:alis_key => args[:document][args[:field]].first}
+  end
+
   def render_advanced_search_link label = 'More options'
     local_params = {}
     advanced_search_fields.each do |field_name, field|
@@ -106,4 +110,5 @@ module CatalogHelper
     end
     link_to label, advanced_path(local_params), :id => 'more_options_toggle'
   end
+
 end
