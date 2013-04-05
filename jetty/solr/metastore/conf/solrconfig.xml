@@ -80,8 +80,9 @@
             <arr name="queries">
                 <lst>
                     <str name="q">*:*</str>
+                    <str name="facet">true</str>
                     <str name="facet.field">format</str>
-                    <str name="facet.field">journal_title_ts</str>
+                    <str name="facet.field">journal_title_facet</str>
                     <str name="facet.field">pub_date_tsort</str>
                     <str name="facet.field">author_facet</str>
                 </lst>
@@ -91,6 +92,7 @@
             <arr name="queries">
                 <lst>
                     <str name="q">*:*</str>
+                    <str name="facet">true</str>
                     <str name="facet.field">format</str>
                     <str name="facet.field">journal_title_ts</str>
                     <str name="facet.field">pub_date_tsort</str>
@@ -237,17 +239,17 @@
 
     <requestHandler name="/gazo_journal_title" class="solr.SearchHandler" >
         <lst name="defaults">
-            <str name="fl">title:journal_title_ts</str>
+            <str name="fl">title:journal_title_ts,issn:issn_ss</str>
             <str name="rows">1</str>
-            <str name="q">{!raw f=issn_t v=$q}</str>
+            <str name="df">issn_ss</str>
         </lst>
     </requestHandler>
 
     <requestHandler name="/gazo_book_title" class="solr.SearchHandler" >
         <lst name="defaults">
-            <str name="fl">title:title_ts</str>
+            <str name="fl">title:title_ts,isbn:isbn_ss</str>
             <str name="rows">1</str>
-            <str name="q">{!raw f=isbn_t v=$q}</str>
+            <str name="df">isbn_ss</str>
         </lst>
     </requestHandler>
 
