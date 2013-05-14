@@ -24,11 +24,10 @@
 //= require bootstrap-dropdown
 //= require_tree .
 
-// Umlaut
-//= require umlaut
-
 // Spin.js
 //= require spin.min.js
 
 //= require json2.js
 
+// Server Side Events polyfill
+//= require eventsource.js

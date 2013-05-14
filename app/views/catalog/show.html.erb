@@ -1,8 +1,5 @@
 <div id="content" class="span9 show-document">
   
-  <%= content_tag "div", id: "url_list", data: {urls: @document['fulltext_list_ssf'].to_json} do %>
-  <% end %>
-
   <%= render 'previous_next_doc' %>
 
   <% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name) %>

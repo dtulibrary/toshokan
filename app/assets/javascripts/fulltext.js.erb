@@ -1,154 +1,109 @@
 (function ($) {
 
-  function getUmlautUpdater(openUrl, urlList, params) {
-      
-    var urls;
-    try {
-      urls = [JSON.parse(urlList)]; 
-    } catch(e) {
-      urls = [];
-    }
-    openUrl += "&rft_dat=" + encodeURIComponent(JSON.stringify({"user_type" : userType, "urls" : urls}));
+  $.fn.addResource = function(openUrl, id, service_list, options, manipulation_func) {
+    var base = $(this);
+    var customData = encodeURIComponent(JSON.stringify({"id" : id}));
+    var url = ['<%= Toshokan::Application.config.getit[:url] %>',
+               "/resolve?" + openUrl,                
+               "&rft.data=" + customData,
+               "&req_id=" + userType,
+               "&svc_dat=" + service_list].join("");
+        
+    manipulation_func = typeof manipulation_func !== 'undefined' ? manipulation_func : 'append';
 
-    <% if Rails.env.development? %>
-      openUrl += "&umlaut.force_new_request=true"
-    <% end %>  
-
-    if(typeof params === "object") {
-      openUrl += "&"+$.param(params);
-    }
-
-    return new Umlaut.HtmlUpdater('<%= Toshokan::Application.config.umlaut[:url] %>', openUrl);
-  }
-
-  function getFulltextLinks(umlautHtml) {
-
-    var linkList = $('<ul/>');
-    $(umlautHtml).find(".response_item").each( function() {
+    var spin_options = $.extend({
+      length: 3,
+      width: 3,
+      radius: 3
+    }, options);
     
-      var a = $(this).find("a").first();    
-      if(a.length) {
-        var listElm = $("<li />");
-        var type = /open access/gi.test(a.html()) ? "openaccess" : "licensed"; 
-        var label = $(this).find(".response_notes").html();
-        var link = $("<a/>", {
-          text: a.text(),
-          "class" : "fulltext " + type,
-          "title": label,
-          "href" : a.attr("href"),
-          "data-toggle" : "tooltip"  
-        });
-        if(type == "openaccess") {
-          $(link).prepend("<i class=\"icon-openaccess\"></i> ");
-        } else {
-          $(link).prepend("<i class=\"icon-download\"></i> ");
-        }
-        $(link).tooltip(); 
-        link.appendTo(listElm);
-        listElm.appendTo(linkList);
+    base[manipulation_func]().spin(spin_options);
+
+    var source = new EventSource(url);
+    source.onmessage = function (event) {
+      base[manipulation_func](layout(JSON.parse(event.data)));
+    }
+    source.onerror = function(event) {
+      stop();
+    }    
+    source.addEventListener("close", function(event) {      
+      stop();
+    }, false);
+
+    function stop() {
+      base.spin(false);      
+      source.close();
+    }
+
+    function layout(data) {
+      switch(data.service_type) {
+        case "fulltext":
+          if(data.subtype.match(/_scan/)) {
+            return layout_scan(data);
+          } else {
+            return layout_fulltext(data);
+          }
+          break;
       }
-    });
-    return linkList;
-  }
+    }
+
+    function layout_scan(data) {
+      //TODO replace with order functionality
+      return $("<li />").html("Order link comes here");
+    }
+
+    function layout_fulltext(data) {
+      
+      var link = $("<a/>", {
+        text: data.text,
+        "class" : "fulltext " + data.subtype,
+        "title": data.note,
+        "href" : data.url,
+        "data-toggle" : "tooltip"  
+      });
+
+      if(data.subtype == "openaccess") {
+        $(link).prepend("<i class=\"icon-openaccess\"></i> ");
+      } else if(data.subtype == "license") {
+        $(link).prepend("<i class=\"icon-download\"></i> ");
+      }
+
+      $(link).tooltip();
+      return $("<li />").html(link);
+    }
+
+    return this;
+  };
 
   $(function () {
-
     if($('body.blacklight-catalog-index').length) {
+
+      var spin_options = {
+        length: 3,
+        width: 2,
+        radius: 4,
+        left: 5,
+        top: 0
+      };
+
       $('.document').each(function() {
-
-        var spin_opts = {
-          length: 3,
-          width: 2,
-          radius: 4,
-          left: 5,
-          top: 0
-        };
-        
-        var updater = getUmlautUpdater($(this).find(".Z3988").attr("title"), 
-                                   $(this).find('.url_list').data('urls') || [], 
-                                   {"umlaut.servicelist" : "fulltext"});
-
-        var fulltextSelector = $(this).find(".fulltext");
-
-        $(fulltextSelector).append().spin(spin_opts);  
-        
-        // fulltext links
-        updater.add_section_target({
-          umlaut_section_id: "fulltext",
-          selector: fulltextSelector,
-          before_update: function(html, count) {
-            if(count==0) {
-              $(html).html("<%= I18n.t('toshokan.tools.not_available') %>");
-            } else {
-              $(html).html(getFulltextLinks(html));  
-              $(html).find("a").addClass("btn btn-small");
-            }
-            $(fulltextSelector).spin(false);
-          },
-          after_update: function(html, count) {
-            $(html).replaceWith($(html).contents());  
-          }
-        });
-        updater.update();
-      });
+        var openUrl = $(this).find(".Z3988").attr("title");
+        var id = $(this).attr("id");
+        $(this).find('.fulltext').addResource(openUrl, id, "fulltext_short", spin_options);
+      });      
     }
     else if($('body.blacklight-catalog-show').length) {
 
-      var spin_opts = {
-        length: 5,
+      var spin_options = {
+        length: 4,
         width: 3,
-        radius: 6,
+        radius: 5,
+        top: 0
       };
-
-      var updater = getUmlautUpdater($(".Z3988").attr("title"), $('#url_list').data('urls') || []);
-
-      var fulltextHeader = ".fulltext-header";
-      var nalHeader = "#nal-header";
-      var nalSelector = "#nal-content";
-
-      $(fulltextHeader).append().spin(spin_opts);
-
-      // fulltext links
-      updater.add_section_target({
-        umlaut_section_id: "fulltext",
-        selector: fulltextHeader,
-        position: "after",
-        before_update: function(html, count) {          
-          if(count==0) {
-            $(html).html("<%= I18n.t('toshokan.tools.not_available') %>");
-          } else {
-            $(html).html($(getFulltextLinks(html)).children());
-          }
-          $(fulltextHeader).spin(false);    
-        },
-        after_update: function(html, count) {
-          $(html).replaceWith($(html).contents());  
-        }     
-      });
-
-      // other libraries
-      updater.add_section_target({
-        umlaut_section_id: "nal",
-        selector: nalSelector,
-        before_update: function(html, count) {
-          $(html).html($(html).find(".response_item"));
-          $(html).find(".response_notes").remove();
-          if(count > 0) {
-            $(nalHeader).show();
-          }
-        }
-      });
-      updater.update();
+      var openUrl = $(".Z3988").attr("title");
+      var id = $("input[name=id]").val();
+      $('.fulltext-header').addResource(openUrl, id, "fulltext", spin_options, 'after');
     }
-  });
-
-  $(function () {
-    $('#nal-content').on('show', function () {
-      $('#nal-header').addClass('twiddle-open');
-    })
-    $('#nal-content').on('hide', function () {
-      $('#nal-header').removeClass('twiddle-open');
-    })
   });
 
 })(jQuery);

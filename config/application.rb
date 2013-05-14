@@ -80,7 +80,7 @@ module Toshokan
       :api_key => ''
     }
 
-    config.umlaut = {
+    config.getit = {
         :url => ''
     }
 
