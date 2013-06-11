@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
+require 'openurl'
 
 describe "SolrDocument" do
 
@@ -14,11 +15,10 @@ describe "SolrDocument" do
       :issn_ss => ["00253162", "14321793"],
       :journal_title_ts => "Marine Biology",
       :publisher_ts => "Springer-Verlag",
-      :doi_s => "10.1007/s00227-010-1402-z",
+      :doi_ss => "10.1007/s00227-010-1402-z",
       :journal_page_ssf => "1417-1431"
     }
     @art = SolrDocument.new(art_data)
-
   end
 
   it "registers its export formats" do
@@ -45,6 +45,12 @@ describe "SolrDocument" do
   it "generates a citation" do
     citation = @art.export_as_citation_txt("mla")
     citation.should match "Cosmopolitan Sipunculan Worms"
+  end
+
+  it "generates an OpenUrl" do
+    openurl = OpenURL::ContextObject.new_from_kev(@art.export_as_openurl_ctx_kev)
+    openurl.referent.metadata["genre"].should match "article"
+    openurl.referent.identifier.should match /doi/
   end
 
 end

@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'citeproc'
+require 'openurl'
 
 class SolrDocument 
 
@@ -50,7 +51,8 @@ class SolrDocument
                          )
 
   def export_as_openurl_ctx_kev(format = nil)
-    self.to_semantic_values.has_key?(:open_url) ? self.to_semantic_values[:open_url].first : ""
+    @context_object ||= create_openurl
+    @context_object.kev     
   end
 
   def export_as_citation_txt(style_name)
@@ -61,4 +63,50 @@ class SolrDocument
     @citation_styles.include? style.to_sym
   end
 
+  private
+
+  def create_openurl    
+    @context_object = OpenURL::ContextObject.new
+    format = self[:format]
+    genre  = self[:format]
+    format = "journal" if format == "article"        
+    @context_object.referent.set_format(format)
+    @context_object.referent.set_metadata('genre', genre)    
+    self.to_semantic_values.each do |field, value|
+      case field
+      when :title
+        key = "atitle"        
+        if genre == "book"
+          key = "btitle" 
+        elsif genre == "journal"
+          key = "jtitle" 
+        end
+        @context_object.referent.set_metadata(key, value.first)
+      when :journal
+        @context_object.referent.set_metadata("jtitle", value.first)
+      when :author
+        @context_object.referent.set_metadata("au", value.first)
+      when :volume
+        @context_object.referent.set_metadata("volume", value.first)
+      when :issue
+        @context_object.referent.set_metadata("issue", value.first)
+      when :pages
+        if value.first.to_s =~ /^\s*(\d+)\s*-+\s*(\d+)\s*$/
+          @context_object.referent.set_metadata("spage", "#{$1}")
+          @context_object.referent.set_metadata("epage", "#{$2}")
+        end
+      when :year 
+        @context_object.referent.set_metadata("date", value.first.to_s)        
+      when :doi
+        @context_object.referent.add_identifier("info:doi/#{value.first}")
+      end
+      if [:issn, :isbn].include?(field)
+        value.each do |v|
+          @context_object.referent.set_metadata(field.to_s, v)
+          #@context_object.referent.add_identifier("urn:#{field}:#{v}")
+        end
+      end
+    end
+    @context_object
+  end
 end

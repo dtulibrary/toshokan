@@ -25,6 +25,7 @@ gem 'citeproc-ruby'
 gem 'netaddr'
 gem "gelf"
 gem "lograge"
+gem "openurl"
 
 # Gems used only for assets and not required
 # in production environments by default.
