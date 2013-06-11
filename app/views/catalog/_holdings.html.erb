@@ -9,14 +9,18 @@
     list << " (v. #{h['tovolume']})" if h['tovolume']
   
     if label == "printed"
-      link = link_to I18n.t("toshokan.catalog.holdings.alis"), Rails.application.config.alis_url + issn 
+      if can? :search, :dtu
+        link = link_to I18n.t("toshokan.catalog.holdings.alis"), Rails.application.config.alis_url + issn 
+      else
+        link = I18n.t("toshokan.catalog.holdings.alis_public")
+      end
     end
     link ||= ""
-    
+
   %>
 
     <li><i class="icon-ok"></i> 
-      <%= list.html_safe%> <%=link %>
+      <%= list.html_safe%>  <span class="availability"><%=link %></span>
     </li>
   <% end %>
 <% end %>

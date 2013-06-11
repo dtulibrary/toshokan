@@ -160,8 +160,9 @@ en:
       holdings:
         printed: "Paper based"
         electronic: "Electronic"    
-        alis: "view in ALIS"
-        placeholder: "See full text options"
+        alis: "View in ALIS"
+        alis_public: "On-site use at DTU Library"
+        placeholder: "See full text options"        
       home:
         title: 'DTU Findit - one search finds it all'
     footer:
