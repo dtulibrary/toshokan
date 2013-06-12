@@ -161,6 +161,7 @@ en:
         printed: "Paper based"
         electronic: "Electronic"    
         alis: "View in ALIS"
+        alis_books: "View in print books collection"
         alis_public: "On-site use at DTU Library"
         placeholder: "See full text options"        
       home:

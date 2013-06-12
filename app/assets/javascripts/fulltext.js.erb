@@ -16,12 +16,15 @@
       width: 3,
       radius: 3
     }, options);
+
+    var count = 0;
     
     base[manipulation_func]().spin(spin_options);
 
     var source = new EventSource(url);
     source.onmessage = function (event) {
       base[manipulation_func](layout(JSON.parse(event.data)));
+      count++;
     }
     source.onerror = function(event) {
       stop();
@@ -31,6 +34,9 @@
     }, false);
 
     function stop() {
+      if(count == 0) {
+        base[manipulation_func]($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
+      }
       base.spin(false);      
       source.close();
     }
