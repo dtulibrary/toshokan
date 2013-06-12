@@ -97,5 +97,32 @@ module Toshokan
 
     config.alis_url = ''
 
+    config.orders = { 
+      # Prefix order id's since we use unique order id's in DIBS
+      # and development machines, unstable, staging and production all use the same DIBS
+      :order_id_prefix => 'N/A-',
+      :reply_to_email => '', 
+    }   
+
+    config.dibs = { 
+      :payment_url => 'https://payment.architrade.com/paymentweb/start.action',
+      :capture_url => 'https://payment.architrade.com/cgi-bin/capture.cgi',
+      :merchant_id => '', 
+      :md5_key1 => '', 
+      :md5_key2 => '', 
+      :paytype => 'DK,VISA,ELEC,MC,MTRO,AMEX,JCB',
+      :test => true
+    }   
+
+    config.doc_del = { 
+      :url => ''
+    }   
+
+    config.send_it = { 
+      :url => ''
+    }   
+
+    config.delay_jobs = true
+
   end
 end
