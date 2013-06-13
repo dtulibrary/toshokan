@@ -20,7 +20,6 @@ class CoverImages
   end
 
   def self.url_for id 
-    logger.debug "cover_image config: #{config}"
     "#{config.url}/#{config.api_key}/#{id}/native.png"
   end
 
