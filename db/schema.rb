@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130604081757) do
+ActiveRecord::Schema.define(:version => 20130613122424) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -49,7 +49,6 @@ ActiveRecord::Schema.define(:version => 20130604081757) do
 
   create_table "orders", :force => true do |t|
     t.string   "uuid"
-    t.string   "open_url"
     t.string   "supplier"
     t.integer  "price"
     t.integer  "vat"
@@ -65,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20130604081757) do
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
     t.integer  "user_id"
+    t.text     "open_url"
   end
 
   add_index "orders", ["user_id"], :name => "index_orders_on_user_id"
