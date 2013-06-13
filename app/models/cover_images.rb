@@ -1,19 +1,7 @@
 require 'httparty'
 
 class CoverImages
-
-  class Configuration
-    attr_accessor :url, :api_key
-    
-  end
-
-  def self.config
-    @@config ||= Configuration.new
-  end
-
-  def self.configure
-    yield self.config
-  end
+  include Configurable
 
   def self.extract_identifier document
     issns = document['issn_ss'] || []
@@ -32,7 +20,7 @@ class CoverImages
   end
 
   def self.url_for id 
-    config = self.config
+    logger.debug "cover_image config: #{config}"
     "#{config.url}/#{config.api_key}/#{id}/native.png"
   end
 

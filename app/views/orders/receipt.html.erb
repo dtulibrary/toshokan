@@ -1,0 +1,31 @@
+<div class="span6">
+  <div class="order">
+    <%= render_order_steps @order.flow %>
+    <div class="info"><%= t "toshokan.orders.text.#{@order.supplier}_html" %></div>
+    <h4><%= t 'toshokan.orders.order_placed' %></h4>
+
+    <dl class="dl-horizontal dl-invert">
+      <dt>Order ID</dt>
+      <dd><%= @order.dibs_order_id %></dd>
+      <dt>Article title</dt>
+      <dd><%= @order.document['title_ts'].first %></dd>
+      <% [:email, :mobile, :customer_ref].each do |method| %>
+        <% unless @order.send(method).blank? %>
+          <dt><%= t "toshokan.orders.summary.#{method}" %></dt>
+          <dd><%= @order.send method %></dd>
+        <% end %>
+      <% end %>
+      <dt><%= t 'toshokan.orders.subtotal' %></dt>
+      <dd><%= format_price @order.price, @order.currency %></dd>
+      <dt><%= t 'toshokan.orders.vat', :vat => 25 %></dt>
+      <dd><%= format_price @order.vat, @order.currency %></dd>
+      <dt><%= t 'toshokan.orders.total' %></dt>
+      <dd><%= format_price @order.price + @order.vat, @order.currency %></dd>
+    </dl>
+  </div>
+  <div><%= t 'toshokan.orders.status_link_html', :href => order_status_url(@order.uuid) %></div>
+  <h5><%= t 'toshokan.orders.thank_you' %></h5>
+</div>
+<div id="sidebar" class="span6">
+  <%= render 'ordered_article' %>
+</div>

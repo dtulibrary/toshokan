@@ -114,15 +114,15 @@
 
   def type
     if student?
-      return "dtu_student"
+      return :dtu_student
     elsif employee?
-      return "dtu_staff"
+      return :dtu_staff
     elsif walk_in?
-      return "walkin"
+      return :walkin
     elsif authenticated?
-      return "public"
+      return :public
     else
-      return "anonymous"
+      return :anonymous
     end
   end
 

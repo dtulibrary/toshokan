@@ -1,0 +1,10 @@
+<div class="span6 offset3">
+  <div class="well">
+    <h4><%= t 'toshokan.orders.identify.title' %></h4>
+    <p><%= t 'toshokan.orders.identify.text' %></p>
+    <%= form_tag do %>
+      <%= hidden_field_tag 'anon', true %>
+      <%= button_tag t('toshokan.orders.identify.continue_anonymously'), :class => 'btn' %>
+    <% end %>
+  </div>
+</div>

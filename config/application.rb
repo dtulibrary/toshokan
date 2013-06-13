@@ -62,6 +62,9 @@ module Toshokan
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
+    # Enable I18n fallbacks
+    config.i18n.fallbacks = true
+
     # Config to be overriden by local settings
     config.stub_authentication = false;
 
@@ -112,7 +115,7 @@ module Toshokan
       :md5_key2 => '', 
       :paytype => 'DK,VISA,ELEC,MC,MTRO,AMEX,JCB',
       :test => true
-    }   
+    }
 
     config.doc_del = { 
       :url => ''
@@ -120,7 +123,7 @@ module Toshokan
 
     config.send_it = { 
       :url => ''
-    }   
+    }
 
     config.delay_jobs = true
 

@@ -1,0 +1,56 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+da:
+  toshokan:
+    languages:
+      english_version: Vis engelsk udgave
+      danish_version: Vis dansk udgave
+    orders:
+      buy_article: Køb artikel
+      by: Af
+      delivery_information: Leveringsoplysninger
+      discount_types:
+        dtu_staff_discount: DTU medarbejderpris
+        dtu_student_discount: DTU studenterpris
+        dtu_discount: DTU-pris
+      done: Færdig
+      errors:
+        email_should_not_be_blank: Du skal indtaste en email-adresse
+        emails_dont_match: Email-adresserne er forskellige
+        you_must_accept_terms: Du skal acceptere DTU's salgsbetingelser
+      form:
+        email_html: <b>Email</b> (til artikel- og fakturalevering)
+        email_confirmation_html: <b>Email</b> (bekræft)
+        email_without_invoice_html: <b>Email</b> (til artikellevering) 
+        mobile_html: <b>Mobil</b> (til SMS-notificering)
+        customer_ref_html: <b>Din reference</b> (inkluderet på faktura)
+        terms_accepted_html: <b>Jeg har læst og accepterer %{link}</b>
+        continue: Fortsæt
+        cancel: Afbryd
+      identify:
+        continue_anonymously: Jeg vil fortsætte som anonym
+        text: Hvis du er logged på, når du bestiller en artikel, bliver din bestilling gemt af DTU FindIt, og du kan senere gå ind og se dine tidligere bestillinger.
+        title: Log på før bestilling?
+      info: 
+        remote: DTU Bibliotek bestiller artiklen på digital form til dig hos vores internationale dokumentleverandør. Udfyld venligst nedenstående formular med dine leveringsoplysninger.
+        local: 
+      not_logged_in_notice: Du har ikke logget ind. Log ind for at opnå rabat (kun for DTU-ansatte og -studerende) og for at tilføje din bestilling til din historik.
+      order_now: Bestil nu
+      order_placed: Din bestilling er gennemført.
+      pay: Betal
+      price: Pris
+      steps:
+        confirm: Bekræft
+        delivery_info: Leveringsoplysninger
+        done: Færdig
+        payment: Betaling
+      summary:
+        email: Leveres til email
+        mobile: Send SMS til
+        customer_ref: Din reference
+      terms_of_service: DTU's salgsbetingelser
+      text:
+        local_html: Blah blah
+        remote_html: Blah blah
+      thank_you: Tak for din bestilling!

@@ -1,0 +1,16 @@
+<%= form_tag dibs_payment_url do %>
+  <%= hidden_field_tag :merchant, merchant_id %>
+  <%= hidden_field_tag :orderid, dibs_order_id %>
+  <%= hidden_field_tag :amount, amount %>
+  <%= hidden_field_tag :accepturl, accept_url %>
+  <%= hidden_field_tag :callbackurl, callback_url %>
+  <%= hidden_field_tag :currency, currency %>
+  <%= hidden_field_tag :md5key, md5_key %>
+  <%= hidden_field_tag :lang, locale %>
+  <%= hidden_field_tag :uniqueoid, dibs_order_id %>
+  <%= hidden_field_tag :paytype, paytype %>
+  <% if test %>
+    <%= hidden_field_tag :test, 'yes' %>
+  <% end %>
+  <%= button_tag 'Go to payment' %>
+<% end %>

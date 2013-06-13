@@ -1,32 +1,63 @@
 Toshokan::Application.routes.draw do
-  root :to => "catalog#index"
 
-  Blacklight.add_routes(self)
+  scope "(:locale)", :locale => /en|da/ do
+    Blacklight.add_routes(self)
 
-  match '/login',                   :to => 'users/sessions#new',       :as => 'new_user_session'
-  match '/auth/:provider/callback', :to => 'users/sessions#create',    :as => 'create_user_session'
-  match '/logout',                  :to => 'users/sessions#destroy',   :as => 'destroy_user_session'
-  match '/mylibrary/profile',       :to => 'users/sessions#edit',      :as => 'edit_user_registration'
-  match '/user/switch',             :to => 'users/sessions#switch',    :as => 'switch_user'
-  match '/user/session'                 => 'users/sessions#update',    :as => 'user_session',         :via => :put
-  match '/cover_images/:id',        :to => 'cover_images#show',        :as => 'cover_images'
-  match '/auth',                    :to => 'auth_provider#index',      :as => 'select_auth_provider', :via => :get
-  match '/auth',                    :to => 'auth_provider#create',     :as => 'set_auth_provider',    :via => :post
-  match '/advanced',                :to => 'catalog#advanced',         :as => 'advanced'
-  match '/come_back_later',         :to => 'come_back_later#index',    :as => 'come_back_later'
+    match '/login',                   :to => 'users/sessions#new',       :as => 'new_user_session'
+    match '/auth/:provider/callback', :to => 'users/sessions#create',    :as => 'create_user_session'
+    match '/logout',                  :to => 'users/sessions#destroy',   :as => 'destroy_user_session'
+    match '/mylibrary/profile',       :to => 'users/sessions#edit',      :as => 'edit_user_registration'
+    match '/user/switch',             :to => 'users/sessions#switch',    :as => 'switch_user'
+    match '/user/session'                 => 'users/sessions#update',    :as => 'user_session',         :via => :put
+    match '/cover_images/:id',        :to => 'cover_images#show',        :as => 'cover_images'
+    match '/auth',                    :to => 'auth_provider#index',      :as => 'select_auth_provider', :via => :get
+    match '/auth',                    :to => 'auth_provider#create',     :as => 'set_auth_provider',    :via => :post
+    match '/advanced',                :to => 'catalog#advanced',         :as => 'advanced'
+    match '/come_back_later',         :to => 'come_back_later#index',    :as => 'come_back_later'
 
-  # Temp fix since BL 4.1 removed the POST route to feedback (but BL's code still seems to rely on it).
-  match '/feedback',                :to => 'feedback#show',            :as => 'feedback',             :via => :post
+    # Show form for order creation
+    match '/orders/',                 :to => 'orders#new',               :as => 'new_order',            :via => :get
 
+    # Create a new order
+    match '/orders/',                 :to => 'orders#create',            :as => 'create_order',         :via => :post
 
-  resources :documents, :only => [] do
-    resources :tags, :except => [:edit, :update]
+    # Update an order
+    match '/orders/',                 :to => 'orders#update',            :as => 'update_order',         :via => :put
+
+    # View order
+    
+    # For DIBS callback upon successful payment
+    match '/orders/:uuid/payment',      :to => 'orders#payment',           :as => 'order_payment'
+
+    # For DIBS callback upon cancel
+    match '/orders/:uuid/cancel',       :to => 'orders#cancel',            :as => 'order_cancel'
+
+    # For displaying receipts upon order completion
+    match '/orders/:uuid/receipt',      :to => 'orders#receipt',           :as => 'order_receipt'
+
+    # For DocDel callback about delivery status
+    match '/orders/:uuid/delivery',     :to => 'orders#delivery',          :as => 'order_delivery'
+
+    # For order status
+    match '/orders/:uuid/status',       :to => 'orders#status',            :as => 'order_status',       :via => :get
+
+    # Payment page for testing - it just redirects to its callback parameter
+    match '/test_payment',              :to => 'payment#credit_card',      :as => 'payment',            :via => :post
+
+    # Temp fix since BL 4.1 removed the POST route to feedback (but BL's code still seems to rely on it).
+    match '/feedback',                :to => 'feedback#show',            :as => 'feedback',             :via => :post
+
+    resources :documents, :only => [] do
+      resources :tags, :except => [:edit, :update]
+    end
+    resources :tags, :only => [:edit, :update, :destroy]
+    match 'tags'                          => 'tags#manage',              :as => 'manage_tags'
+
+    resources :users, :only => [:index, :update, :destroy]
   end
-  resources :tags, :only => [:edit, :update, :destroy]
-  match 'tags'                          => 'tags#manage',              :as => 'manage_tags'
 
-  resources :users, :only => [:index, :update, :destroy]
-
+  match '/:locale' => 'catalog#index'
+  root :to => "catalog#index"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

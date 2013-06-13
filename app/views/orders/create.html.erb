@@ -1,0 +1,10 @@
+<div class="span6">
+  <div class="order">
+    <%= render_order_steps @order.flow %>
+    <div class="info"><%= t "toshokan.orders.text.#{@order}_html" %></div>
+    <%= render 'order_form' %> 
+  </div>
+</div>
+<div id="sidebar" class="span6">
+  <%= render 'ordered_article' %>
+</div>

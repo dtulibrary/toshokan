@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130122155543) do
+ActiveRecord::Schema.define(:version => 20130604081757) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -21,6 +21,54 @@ ActiveRecord::Schema.define(:version => 20130122155543) do
     t.datetime "updated_at",  :null => false
     t.string   "user_type"
   end
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "order_events", :force => true do |t|
+    t.integer  "order_id"
+    t.string   "name"
+    t.string   "data"
+    t.datetime "created_at"
+  end
+
+  add_index "order_events", ["name"], :name => "index_order_events_on_name"
+
+  create_table "orders", :force => true do |t|
+    t.string   "uuid"
+    t.string   "open_url"
+    t.string   "supplier"
+    t.integer  "price"
+    t.integer  "vat"
+    t.string   "currency"
+    t.string   "email"
+    t.string   "mobile"
+    t.string   "customer_ref"
+    t.string   "dibs_transaction_id"
+    t.string   "payment_status"
+    t.string   "delivery_status"
+    t.datetime "payed_at"
+    t.datetime "delivered_at"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "user_id"
+  end
+
+  add_index "orders", ["user_id"], :name => "index_orders_on_user_id"
+  add_index "orders", ["uuid"], :name => "index_orders_on_uuid"
 
   create_table "profiles", :force => true do |t|
     t.integer  "user_id"

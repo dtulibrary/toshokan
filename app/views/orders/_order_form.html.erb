@@ -1,0 +1,23 @@
+<%= form_tag create_order_path, :class => 'order-form' do %>
+  <% if @order.flow.fields.include? :email %>
+    <%= label_tag :email, t("toshokan.orders.form.#{ @order.flow.fields.include?(:payment) ? 'email_html' : 'email_without_invoice'}_html") %>
+    <%= text_field_tag :email, params[:email] || current_user.email %>
+    <%= label_tag :email_confirmation, t('toshokan.orders.form.email_confirmation_html') %>
+    <%= text_field_tag :email_confirmation, params[:email_confirmation] || (params[:email] ? nil : current_user.email) %>
+  <% end %>
+  <% if @order.flow.fields.include? :mobile %>
+    <%= label_tag :mobile, t('toshokan.orders.form.mobile_html') %>
+    <%= text_field_tag :mobile, params[:mobile] %>
+  <% end %>
+  <% if @order.flow.fields.include? :customer_ref %>
+    <%= label_tag :customer_ref, t('toshokan.orders.form.customer_ref_html') %>
+    <%= text_field_tag :customer_ref, params[:customer_ref] %>
+  <% end %>
+  <% if @order.flow.fields.include? :terms_accepted %>
+    <%= label_tag :terms_accepted, t('toshokan.orders.form.terms_accepted_html', :link => "<a target=\"_new\" href=\"http://www.dr.dk\">#{t 'toshokan.orders.terms_of_service'}</a>".html_safe) %>
+    <%= check_box_tag :terms_accepted, params[:terms_accepted] %>
+  <% end %>
+  <%= button_tag t('toshokan.orders.form.continue'), :name => :button, :value => :continue, :class => 'btn btn-primary' %>
+  <%= button_tag t('toshokan.orders.form.cancel'), :name => :button, :value => :cancel, :class => 'btn' %>
+<% end %>
+

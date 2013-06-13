@@ -33,7 +33,10 @@ class Users::SessionsController < ApplicationController
 
   def destroy
     return_url = params[:return_url] || root_path
+    order = session[:order]
     reset_session
+    # Keep order in session and let orders_controller decide what to do with it
+    session[:order] = order if order
     cookies.delete :auth_provider
     redirect_to return_url, :notice => 'You are now logged out', :only_path => true
   end

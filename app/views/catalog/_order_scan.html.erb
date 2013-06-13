@@ -1,0 +1,8 @@
+<div><%= t "toshokan.orders.text.#{supplier}_html" %></div>
+<%= render_scan_price_tag current_user, supplier %>
+<%= form_tag new_order_path, :method => :get do %>
+  <%= hidden_field_tag :supplier, supplier %>
+  <%= hidden_field_tag :open_url, @document.export_as_openurl_ctx_kev %>
+  <%= button_tag t('toshokan.orders.order_now'), :value => 'create', :class => 'btn btn-primary btn-small' %>
+<% end %>
+

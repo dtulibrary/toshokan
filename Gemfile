@@ -26,6 +26,8 @@ gem 'netaddr'
 gem "gelf"
 gem "lograge"
 gem "openurl"
+gem 'delayed_job_active_record'
+gem 'uuidtools'
 
 # Gems used only for assets and not required
 # in production environments by default.

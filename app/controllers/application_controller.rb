@@ -10,8 +10,13 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
+  before_filter :set_locale
   before_filter :authenticate
   before_filter :check_walk_in_only
+
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
 
   # Authenticate users if certain criteria are met.
   # - No authentication will be done if user is already logged in.
@@ -33,6 +38,11 @@ class ApplicationController < ActionController::Base
         redirect_to polymorphic_url(:new_user_session)
       end
     end
+  end
+
+  # Disable rendering the searchbar in the header
+  def disable_header_searchbar
+    @disable_header_searchbar = true
   end
 
   def check_walk_in_only
@@ -115,4 +125,7 @@ class ApplicationController < ActionController::Base
     }.to_s
   end
 
+  def default_url_options options = {}
+    { :locale => I18n.locale }
+  end
 end
