@@ -31,7 +31,7 @@ Given /^I have the limited the "(.*?)" facet to "(.*?)"$/ do |facet_name, facet_
 end
 
 Then /^I should see the result page$/ do
-  current_path.should == "/"  
+  current_path.should match(/^\/(en|da)\/catalog$/)  
 end
 
 Then /^I should see (\d+) documents?$/ do |results|

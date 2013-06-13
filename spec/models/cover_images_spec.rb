@@ -2,18 +2,6 @@ require 'spec_helper'
 
 describe CoverImages do
   
-  describe '.config' do
-    it 'should return a configuration object' do
-      CoverImages.config.should be_kind_of CoverImages::Configuration
-    end
-  end
-
-  describe '.configure' do
-    it 'should return a configuration object' do
-      CoverImages.config.should be_kind_of CoverImages::Configuration
-    end
-  end
-
   describe '.extract_identifier' do
 
     context 'when document has both issn_ss and isbn_ss fields' do
