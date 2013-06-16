@@ -14,6 +14,9 @@ module PayIt
       when :capture
         digest = Digest::MD5.hexdigest "#{Dibs.md5_key1}merchant=#{Dibs.merchant_id}&orderid=#{params[:order_id]}&transact=#{params[:transaction_id]}&amount=#{params[:amount]}"
         Digest::MD5.hexdigest "#{Dibs.md5_key2}#{digest}"
+      when :auth_key
+        digest = Digest::MD5.hexdigest "#{Dibs.md5_key1}transact=#{params[:transaction_id]}&amount=#{params[:amount]}&currency=#{params[:currency]}"
+        Digest::MD5.hexdigest "#{Dibs.md5_key2}#{digest}"
       end
     end
 
@@ -34,13 +37,53 @@ module PayIt
       logger.info "Capturing payment from DIBS: params = #{params}" 
       begin
         response = HTTParty.post Dibs.capture_url, :body => params
-        logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}"
+        logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}" unless response.code == 200
       rescue
         logger.error "Error capturing payment from DIBS for DIBS order id = #{order.dibs_order_id}."
         raise
       end
     end
 
+    def self.authentic? params = {}
+      md5_params = {
+        :key_type => :auth_key,
+        :transaction_id => params[:transact],
+        :currency => params[:currency],
+        :amount => params[:amount]
+      }
+      md5_key = self.md5_key md5_params 
+      logger.debug "DIBS authkey = #{params[:authkey]}, calculated authkey = #{md5_key}. Based on params #{md5_params}"
+      md5_key == params[:authkey]
+    end
+
+    def self.status_codes
+      {
+         '0' => :transaction_inserted,
+         '1' => :declined,
+         '2' => :authorization_approved,
+         '3' => :capture_sent_to_acquirer,
+         '4' => :capture_declined_by_acquirer,
+         '5' => :capture_completed,
+         '6' => :authorization_deleted,
+         '7' => :capture_balanced,
+         '8' => :partially_refunded_and_balanced,
+         '9' => :refund_sent_to_acquirer,
+        '10' => :refund_declined,
+        '11' => :refund_completed,
+        '12' => :capture_pending,
+        '13' => :ticket_transaction,
+        '14' => :deleted_ticket_transaction,
+        '15' => :refund_pending,
+        '16' => :waiting_for_shop_approval,
+        '17' => :declined_by_dibs,
+        '18' => :multicap_transaction_open,
+        '19' => :multicap_transaction_closed
+      }
+    end
+
+    def self.status_code code
+      status_codes[code.to_s]
+    end
   end
 
   # Class for retrieving prices and calculating VAT

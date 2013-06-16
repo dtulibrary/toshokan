@@ -7,12 +7,15 @@
       <dd><%= @order.dibs_order_id %></dd>
       <dt>Article</dt>
       <dd><%= @order.document['title_ts'].first %></dd>
-      <dt>Payment status</dt>
-      <dd><%= @order.payment_status %>
-      <dt>Delivery status</dt>
-      <dd><%= @order.delivery_status %>
     </dl>
     
+    <h5>What Has Happened So Far?</h5>
+    <dl class="dl-horizontal dl-invert">
+      <%- @order.order_events.each do |event| -%>
+        <dt><%= l event.created_at %></dt>
+        <dd><%= t event.name %></dd>
+      <%- end -%>
+    </dl>
   </div>
 </div>
 <div id="sidebar" class="span6">

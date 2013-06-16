@@ -3,7 +3,9 @@
 # For a class MyModule::MyClass including this module it expects rails.application.config.my_class
 # to be a hash. It adds/overrides method_missing to the including class.
 # (note: it only uses the simple name of the including class for lookup in the Rails configuration
-# and not the names of any modules or encapsulating classes)
+# and not the names of any modules or encapsulating classes
+# A boolean accessor like 'MyModule::MyClass.testing?' will strip the '?' and look
+# for 'my_class.testing' in the Rails config.
 #
 # Example:
 # ---

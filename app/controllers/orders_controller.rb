@@ -141,6 +141,7 @@ class OrdersController < ApplicationController
 
     if !@order.payment_status
       @order.payment_status = :cancelled
+      @order.order_events << OrderEvent.new(:name => :payment_cancelled)
       @order.save!
     else
       logger.error "Order with id #{@order.id} had wrong payment status '#{@order.payment_status}' when trying to cancel it"
@@ -150,16 +151,26 @@ class OrdersController < ApplicationController
   # Render a receipt upon successful order completion
   def receipt
     @order = Order.find_by_uuid params[:uuid]
-
-    # TODO: Authenticate DIBS return parameters
-
+  
     @order.flow = OrderFlow.new current_user, @order.supplier
     @order.flow.current_step = :done
 
-    if @order.flow.steps.include? :payment && !@order.payment_status
-      @order.payment_status = :authorized
-      @order.dibs_transaction_id = params[:transact]
-      @order.save!
+
+    if @order.flow.steps.include?(:payment) && !@order.payment_status
+      case PayIt::Dibs.status_code params[:statuscode]
+      when :declined
+      when :declined_by_dibs
+      when :authorization_approved
+        if PayIt::Dibs.authentic? params.merge(:amount => (@order.price + @order.vat), :currency => @order.currency)
+          @order.payment_status = :authorized
+          @order.dibs_transaction_id = params[:transact]
+          @order.order_events << OrderEvent.new(:name => :payment_authorized)
+          @order.save!
+        else
+          head :bad_request and return
+        end
+      else
+      end
     end
     
     unless @order.delivery_status
@@ -182,6 +193,7 @@ class OrdersController < ApplicationController
         }
       }
 
+      @order.order_events << OrderEvent.new(:name => :delivery_requested)
       @order.delivery_status = :initiated
       @order.save!
     end
@@ -195,11 +207,9 @@ class OrdersController < ApplicationController
     if [:deliver, :confirm, :cancel].include? delivery_status
       case delivery_status
       when :deliver
-        # TODO: Record order event
-
+        @order.order_events << OrderEvent.new(:name => 'delivery_done')
         @order.delivery_status = delivery_status
         @order.delivered_at = Time.now
-        @order.save!
 
         # TODO: Update with correct fields and values when the template is actually created in SendIt
         SendIt.delay.send_mail 'findit_receipt', {
@@ -209,10 +219,14 @@ class OrdersController < ApplicationController
             :id => @order.dibs_order_id,
           }
         }
+
         PayIt::Dibs.delay.capture @order
-      when :confirm, :cancel
-        # TODO: Record order event
+      when :confirm
+        @order.order_events << OrderEvent.new(:name => 'delivery_confirmed')
+      when :cancel
+        @order.order_events << OrderEvent.new(:name => 'delivery_cancelled')
       end
+      @order.save!
 
       head :ok
     else
