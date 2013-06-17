@@ -38,12 +38,12 @@ module PayIt
         })
       }
 
-      logger.info "Capturing payment from DIBS: params = #{params}" 
+      Rails.logger.info "Capturing payment from DIBS: params = #{params}" 
       begin
         response = HTTParty.post Dibs.capture_url, :body => params
-        logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}" unless response.code == 200
+        Rails.logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}" unless response.code == 200
       rescue
-        logger.error "Error capturing payment from DIBS for DIBS order id = #{order.dibs_order_id}."
+        Rails.logger.error "Error capturing payment from DIBS for DIBS order id = #{order.dibs_order_id}."
         raise
       end
     end
