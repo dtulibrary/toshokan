@@ -23,8 +23,11 @@
 
     var source = new EventSource(url);
     source.onmessage = function (event) {
-      base[manipulation_func](layout(JSON.parse(event.data)));
+      layout(JSON.parse(event.data), base, manipulation_func);
       count++;
+      if(count == 1) {
+        base.spin(false);      
+      }
     }
     source.onerror = function(event) {
       stop();
@@ -37,17 +40,18 @@
       if(count == 0) {
         base[manipulation_func]($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
       }
-      base.spin(false);      
       source.close();
     }
 
-    function layout(data) {
+    function layout(data, selector, manipulation_func) {
       switch(data.service_type) {
         case "fulltext":
           if(data.subtype.match(/_scan/)) {
-            return layout_scan(data);
+            base[manipulation_func](layout_scan(data));
+          } else if(data.subtype.match(/nal/)) {
+            layout_nal(data);
           } else {
-            return layout_fulltext(data);
+            base[manipulation_func](layout_fulltext(data));
           }
           break;
       }
@@ -58,13 +62,24 @@
       return $("<li />").html("Order link comes here");
     }
 
+    function layout_nal(data) {
+      var nal_header = base.parent().find("#nal-header");      
+      var nal_element = $("<a/>", {
+        text    : data.text,
+        "class" : "nal-content collapse",
+        "href"  : data.url        
+      });
+      nal_header.show();
+      nal_header.after($("<li/>").html(nal_element));      
+    }
+
     function layout_fulltext(data) {
       
       var link = $("<a/>", {
-        text: data.text,
-        "class" : "fulltext " + data.subtype,
-        "title": data.note,
-        "href" : data.url,
+        text          : data.text,
+        "class"       : "fulltext " + data.subtype,
+        "title"       : data.note,
+        "href"        : data.url,
         "data-toggle" : "tooltip"  
       });
 
@@ -77,7 +92,6 @@
       $(link).tooltip();
       return $("<li />").html(link);
     }
-
     return this;
   };
 
@@ -99,6 +113,13 @@
       });      
     }
     else if($('body.blacklight-catalog-show').length) {
+
+      $(document).on("show", ".nal-content", function () {
+        $('#nal-header').addClass('twiddle-open');
+      });
+      $(document).on("hide", ".nal-content", function () {        
+        $('#nal-header').removeClass('twiddle-open');
+      });
 
       var spin_options = {
         length: 4,
