@@ -6,16 +6,20 @@ module PayIt
   class Dibs
     include Configured
 
+    def self.currency_code currency
+      { :DKK => 208 }[currency]
+    end
+
     def self.md5_key params = {}
       case params[:key_type]
       when :auth
-        digest = Digest::MD5.hexdigest "#{Dibs.md5_key1}merchant=#{Dibs.merchant_id}&orderid=#{params[:order_id]}&currency=#{params[:currency]}&amount=#{params[:amount]}"
+        digest = Digest::MD5.hexdigest "#{Dibs.md5_key1}merchant=#{Dibs.merchant_id}&orderid=#{params[:order_id]}&currency=#{currency_code params[:currency]}&amount=#{params[:amount]}"
         Digest::MD5.hexdigest "#{Dibs.md5_key2}#{digest}"
       when :capture
         digest = Digest::MD5.hexdigest "#{Dibs.md5_key1}merchant=#{Dibs.merchant_id}&orderid=#{params[:order_id]}&transact=#{params[:transaction_id]}&amount=#{params[:amount]}"
         Digest::MD5.hexdigest "#{Dibs.md5_key2}#{digest}"
       when :auth_key
-        digest = Digest::MD5.hexdigest "#{Dibs.md5_key1}transact=#{params[:transaction_id]}&amount=#{params[:amount]}&currency=#{params[:currency]}"
+        digest = Digest::MD5.hexdigest "#{Dibs.md5_key1}transact=#{params[:transaction_id]}&amount=#{params[:amount]}&currency=#{currency_code params[:currency]}"
         Digest::MD5.hexdigest "#{Dibs.md5_key2}#{digest}"
       end
     end

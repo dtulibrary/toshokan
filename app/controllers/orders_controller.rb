@@ -139,22 +139,25 @@ class OrdersController < ApplicationController
   def cancel
     @order = Order.find_by_uuid params[:uuid]
 
+    @order.flow = OrderFlow.new current_user, @order.supplier
+    @order.flow.current_step = :done
+
     if !@order.payment_status
       @order.payment_status = :cancelled
       @order.order_events << OrderEvent.new(:name => :payment_cancelled)
       @order.save!
+      session.delete :order
     else
       logger.error "Order with id #{@order.id} had wrong payment status '#{@order.payment_status}' when trying to cancel it"
     end
   end
 
-  # Render a receipt upon successful order completion
+  # Will be called by DIBS both as callbackurl and accepturl so this must be idempotent.
   def receipt
     @order = Order.find_by_uuid params[:uuid]
   
     @order.flow = OrderFlow.new current_user, @order.supplier
     @order.flow.current_step = :done
-
 
     if @order.flow.steps.include?(:payment) && !@order.payment_status
       case PayIt::Dibs.status_code params[:statuscode]

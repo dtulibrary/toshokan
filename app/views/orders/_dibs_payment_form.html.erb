@@ -3,8 +3,8 @@
   <%= hidden_field_tag :orderid, dibs_order_id %>
   <%= hidden_field_tag :amount, amount %>
   <%= hidden_field_tag :accepturl, accept_url %>
-  <%= hidden_field_tag :callbackurl, callback_url %>
-  <%= hidden_field_tag :currency, currency %>
+  <%= hidden_field_tag :callbackurl, accept_url %>
+  <%= hidden_field_tag :currency, PayIt::Dibs.currency_code(currency) %>
   <%= hidden_field_tag :md5key, md5_key %>
   <%= hidden_field_tag :lang, locale %>
   <%= hidden_field_tag :uniqueoid, dibs_order_id %>

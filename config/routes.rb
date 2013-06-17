@@ -26,14 +26,11 @@ Toshokan::Application.routes.draw do
 
     # View order
     
-    # For DIBS callback upon successful payment
-    match '/orders/:uuid/payment',      :to => 'orders#payment',           :as => 'order_payment'
-
     # For DIBS callback upon cancel
     match '/orders/:uuid/cancel',       :to => 'orders#cancel',            :as => 'order_cancel'
 
-    # For displaying receipts upon order completion
-    match '/orders/:uuid/receipt',      :to => 'orders#receipt',           :as => 'order_receipt'
+    # For DIBS callback upon successful authorization
+    match '/orders/:uuid/receipt',      :to => 'orders#receipt',          :as => 'order_receipt'
 
     # For DocDel callback about delivery status
     match '/orders/:uuid/delivery',     :to => 'orders#delivery',          :as => 'order_delivery'

@@ -74,4 +74,9 @@ class Order < ActiveRecord::Base
     self[:supplier].try :to_sym
   end
 
+  # Intercept and convert to symbol
+  def currency
+    self[:currency].try :to_sym
+  end
+
 end
