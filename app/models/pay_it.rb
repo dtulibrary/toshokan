@@ -56,7 +56,6 @@ module PayIt
         :amount => params[:amount]
       }
       md5_key = self.md5_key md5_params 
-      logger.debug "DIBS authkey = #{params[:authkey]}, calculated authkey = #{md5_key}. Based on params #{md5_params}"
       md5_key == params[:authkey]
     end
 
