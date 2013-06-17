@@ -7,7 +7,7 @@
   <%= render :partial => "catalog/document_formats/#{@display_format}", 
     :locals => { :document => document, :document_counter => document_counter } %>
 
-  <%= render :partial => 'fulltext' %>
+  <%= render :partial => 'fulltext', :locals => { :document => document} %>
 
   <% if document.respond_to?(:export_as_openurl_ctx_kev) %>
     <span class="Z3988" title="<%= document.export_as_openurl_ctx_kev %>"></span>

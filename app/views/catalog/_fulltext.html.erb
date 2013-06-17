@@ -1,4 +1,8 @@
 <dl class="dl-horizontal dl-invert">
   <dt>Full Text Options</dt>
-  <dd class="fulltext"></dd>
+  <dd class="fulltext">
+    <span class="order-rd-scan hide">   
+      <%= render :partial => 'order_scan_form', :locals => { :supplier => :rd, :open_url => document.export_as_openurl_ctx_kev, :index => true } %>
+    </span>
+  </dd>
 </dl>

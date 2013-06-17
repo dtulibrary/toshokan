@@ -1,9 +1,17 @@
 module OrdersHelper
-  def render_scan_price_tag user, supplier, currency = :DKK
-    html = "<div class=\"price\">#{t 'toshokan.orders.price'}: #{format_price PayIt::Prices.price_with_vat(user, supplier, currency), currency}"
+  def render_scan_price_tag user, supplier, index = :true, currency = :DKK
+    tag = index ? "span" : "div"
+
+    price = format_price(PayIt::Prices.price_with_vat(user, supplier, currency), currency)
+    if index
+      html = "<#{tag} class=\"price-index\">#{price}</#{tag}>"
+    else
+      html = "<#{tag} class=\"price\">#{t 'toshokan.orders.price'}: #{price}</#{tag}>"
+    end
+
     discount_type = PayIt::Prices.discount_type user
     if discount_type
-      html += "<div class=\"discount\">(#{t "toshokan.orders.discount_types.#{discount_type}"} applied)</div>"
+      html += "<#{tag} class=\"discount\">(#{t "toshokan.orders.discount_types.#{discount_type}"} applied)</#{tag}>"
     end
     html.html_safe
   end

@@ -47,7 +47,7 @@
       switch(data.service_type) {
         case "fulltext":
           if(data.subtype.match(/_scan/)) {
-            base[manipulation_func](layout_scan(data));
+            layout_scan(data);
           } else if(data.subtype.match(/nal/)) {
             layout_nal(data);
           } else {
@@ -58,8 +58,10 @@
     }
 
     function layout_scan(data) {
-      //TODO replace with order functionality
-      return $("<li />").html("Order link comes here");
+      if(data.subtype == "rd_scan") {
+        base.parent().find(".order-rd-scan").show(); 
+        base.parent().find("dt").html("Price");          
+      }
     }
 
     function layout_nal(data) {
