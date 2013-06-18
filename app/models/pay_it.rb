@@ -10,18 +10,13 @@ module PayIt
       { :DKK => 208 }[currency]
     end
 
+    # Calculate a DIBS MD5 key for use in various security checks.
+    # It expects an ordered hash with the keys named and ordered
+    # as the DIBS documentation prescribes it.
     def self.md5_key params = {}
-      case params[:key_type]
-      when :auth
-        digest = Digest::MD5.hexdigest "#{Dibs.md5_key1}merchant=#{Dibs.merchant_id}&orderid=#{params[:order_id]}&currency=#{currency_code params[:currency]}&amount=#{params[:amount]}"
-        Digest::MD5.hexdigest "#{Dibs.md5_key2}#{digest}"
-      when :capture
-        digest = Digest::MD5.hexdigest "#{Dibs.md5_key1}merchant=#{Dibs.merchant_id}&orderid=#{params[:order_id]}&transact=#{params[:transaction_id]}&amount=#{params[:amount]}"
-        Digest::MD5.hexdigest "#{Dibs.md5_key2}#{digest}"
-      when :auth_key
-        digest = Digest::MD5.hexdigest "#{Dibs.md5_key1}transact=#{params[:transaction_id]}&amount=#{params[:amount]}&currency=#{currency_code params[:currency]}"
-        Digest::MD5.hexdigest "#{Dibs.md5_key2}#{digest}"
-      end
+      params_string = params.to_a.collect {|a,b| "#{a}=#{b}"}.join '&'
+      Rails.logger.debug "Calculating MD5 of #{params_string}"
+      Digest::MD5.hexdigest(Dibs.md5_key2 + Digest::MD5.hexdigest(Dibs.md5_key1 + params_string))
     end
 
     def self.capture order
@@ -31,9 +26,9 @@ module PayIt
         :transact => order.dibs_transaction_id,
         :amount => (order.price + order.vat),
         :md5key => md5_key({
-          :key_type => :capture, 
-          :order_id => order.dibs_order_id, 
-          :transaction_id => order.dibs_transaction_id, 
+          :merchant => Dibs.merchant_id,
+          :orderid => order.dibs_order_id, 
+          :transact => order.dibs_transaction_id, 
           :amount => (order.price + order.vat)
         })
       }
@@ -41,7 +36,39 @@ module PayIt
       Rails.logger.info "Capturing payment from DIBS: params = #{params}" 
       begin
         response = HTTParty.post Dibs.capture_url, :body => params
-        Rails.logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}" unless response.code == 200
+        if response.code == 200
+          order.order_events << OrderEvent.new(:name => 'payment_captured')
+          order.save!
+        else
+          Rails.logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}"
+        end
+      rescue
+        Rails.logger.error "Error capturing payment from DIBS for DIBS order id = #{order.dibs_order_id}."
+        raise
+      end
+    end
+
+    def self.cancel order
+      params = {
+        :merchant => Dibs.merchant_id,
+        :transact => order.dibs_transaction_id,
+        :textreply => 'yes',
+        :md5key => md5_key({
+          :merchant => Dibs.merchant_id,
+          :orderid => order.dibs_order_id,
+          :transact => order.dibs_transaction_id
+        })
+      }
+
+      begin
+        Rails.logger.info "Cancelling order with order id = #{order.dibs_order_id} in DIBS."
+        response = HTTParty.post Dibs.capture_url, :body => params
+        if response.code == 200
+          order.order_events << OrderEvent.new(:name => 'payment_cancelled')
+          order.save!
+        else
+          Rails.logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}"
+        end
       rescue
         Rails.logger.error "Error capturing payment from DIBS for DIBS order id = #{order.dibs_order_id}."
         raise
@@ -49,14 +76,11 @@ module PayIt
     end
 
     def self.authentic? params = {}
-      md5_params = {
-        :key_type => :auth_key,
-        :transaction_id => params[:transact],
-        :currency => params[:currency],
-        :amount => params[:amount]
-      }
-      md5_key = self.md5_key md5_params 
-      md5_key == params[:authkey]
+      params[:authkey] == md5_key({
+        :transact => params[:transact],
+        :amount => params[:amount],
+        :currency => currency_code(params[:currency])
+      })
     end
 
     def self.status_codes

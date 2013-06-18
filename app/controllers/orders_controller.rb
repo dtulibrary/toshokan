@@ -147,6 +147,21 @@ class OrdersController < ApplicationController
       @order.order_events << OrderEvent.new(:name => :payment_cancelled)
       @order.save!
       session.delete :order
+
+      SendIt.delay.send_mail 'findit_cancellation',  {
+        :to => @order.email,
+        :from => Orders.reply_to_email,
+        :order => {
+          :id => @order.dibs_order_id,
+          :title => @order.document['title_ts'],
+          :journal => @order.document['journal_title_ts'],
+          :author => @order.document['author_ts'],
+          :amount => @order.price,
+          :vat => @order.vat,
+          :total => (@order.price + @order.vat),
+          :currency => @order.currency
+        }
+      }
     else
       logger.error "Order with id #{@order.id} had wrong payment status '#{@order.payment_status}' when trying to cancel it"
     end
@@ -187,7 +202,7 @@ class OrdersController < ApplicationController
           :id => @order.dibs_order_id,
           :title => @order.document['title_ts'],
           :journal => @order.document['journal_title_ts'],
-          :authors => @order.document['author_ts'],
+          :author => @order.document['author_ts'],
           :amount => @order.price,
           :vat => @order.vat,
           :total => (@order.price + @order.vat),
@@ -214,12 +229,19 @@ class OrdersController < ApplicationController
         @order.delivery_status = delivery_status
         @order.delivered_at = Time.now
 
-        # TODO: Update with correct fields and values when the template is actually created in SendIt
         SendIt.delay.send_mail 'findit_receipt', {
           :to => @order.email,
           :from => Orders.reply_to_email,
           :order => {
             :id => @order.dibs_order_id,
+            :title => @order.document['title_ts'],
+            :journal => @order.document['journal_title_ts'],
+            :author => @order.document['author_ts'],
+            :amount => @order.price,
+            :vat => @order.vat,
+            :total => (@order.price + @order.vat),
+            :currency => @order.currency,
+            :vat_pct => 25
           }
         }
 
@@ -228,6 +250,8 @@ class OrdersController < ApplicationController
         @order.order_events << OrderEvent.new(:name => 'delivery_confirmed')
       when :cancel
         @order.order_events << OrderEvent.new(:name => 'delivery_cancelled')
+        PayIt::Dibs.delay.cancel @order
+        SendIt.delay.send_cancellation_mail @order
       end
       @order.save!
 

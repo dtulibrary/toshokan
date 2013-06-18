@@ -14,7 +14,12 @@ module DibsHelper
       :paytype => PayIt::Dibs.paytype,
       :accept_url => order_receipt_url(order.uuid),
       :callback_url => order_receipt_url(order.uuid),
-      :md5_key => PayIt::Dibs.md5_key(:key_type => :auth, :order_id => order.dibs_order_id, :amount => amount, :currency => order.currency),
+      :md5_key => PayIt::Dibs.md5_key({
+        :merchant => PayIt::Dibs.merchant_id, 
+        :orderid => order.dibs_order_id, 
+        :currency => PayIt::Dibs.currency_code(order.currency),
+        :amount => amount
+      }),
       :test => PayIt::Dibs.test
     }
 
