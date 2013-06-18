@@ -25,17 +25,17 @@ class SendIt
 
   def self.send_cancellation_mail order, params = {}
     send_mail 'findit_cancellation', {
-      :to => @order.email,
+      :to => order.email,
       :from => Orders.reply_to_email,
       :order => {
-        :id => @order.id,
-        :title => @order.document['title_ts'],
-        :journal => @order.document['journal_title_ts'],
-        :author => @order.document['author_ts'],
-        :amount => @order.price,
-        :vat => @order.vat,
-        :currency => @order.currency,
-        :total => (@order.price + @order.vat)
+        :id => order.id,
+        :title => order.document['title_ts'],
+        :journal => order.document['journal_title_ts'],
+        :author => order.document['author_ts'],
+        :amount => order.price,
+        :vat => order.vat,
+        :currency => order.currency,
+        :total => (order.price + order.vat)
       }
     }.merge(params)
   end
