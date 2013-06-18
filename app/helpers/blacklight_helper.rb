@@ -27,11 +27,27 @@ module BlacklightHelper
   end
 
   def filter_fields fields, document=nil
-    doc_format = document['format'] unless document.nil?
-    doc_format ||= ""
-    fields.select { |field_name, field| 
+    filters = field_filters
+    fields.select do |field_name, field| 
+      filters.select { |filter| filter.call(field, document)}.length == filters.length      
+    end
+  end
+
+  def field_filters
+    filters = []
+    
+    # some fields are only for certain document types
+    filters << Proc.new do |field, document|
+      doc_format = document['format'] || ""      
       field.format.nil? || field.format.include?(doc_format)
-    }
+    end 
+
+    # do not show keywords from iel in public version
+    filters << Proc.new do |field, document|
+      !(field.field == "keywords_ts" && document["source_ss"].include?("iel") && (can? :search, :public))
+    end
+
+    filters
   end
 
 end
