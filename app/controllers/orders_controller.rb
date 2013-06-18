@@ -217,7 +217,7 @@ class OrdersController < ApplicationController
         # TODO: Update with correct fields and values when the template is actually created in SendIt
         SendIt.delay.send_mail 'findit_receipt', {
           :to => @order.email,
-          :from => Orders.config.reply_to_email,
+          :from => Orders.reply_to_email,
           :order => {
             :id => @order.dibs_order_id,
           }
