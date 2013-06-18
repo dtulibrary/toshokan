@@ -40,6 +40,7 @@
       if(count == 0) {
         base[manipulation_func]($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
       }
+      base.spin(false);
       source.close();
     }
 
