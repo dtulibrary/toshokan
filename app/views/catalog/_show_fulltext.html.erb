@@ -2,7 +2,7 @@
     <li class="nav-header fulltext-header"><%= t('toshokan.tools.fulltext') %></li>    
 
     <li class="nav-header order-rd-scan hide"><%= t 'toshokan.tools.order.rd_html' %></li>
-    <li class="order-rd-scan hide">
+    <li class="order-rd-scan <%= Orders.order_link_hidden? ? 'hide' : '' %>">
       <%= render :partial => 'show_order_scan', :locals => { :supplier => :rd, :document => @document } %>
     </li>
     <!--<li class="nav-header order-dtu-scan hide"><%= t 'toshokan.tools.order.dtu_html' %></li>
