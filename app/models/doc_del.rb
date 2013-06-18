@@ -4,19 +4,19 @@ class DocDel
   include Configured
 
   def self.request_delivery order, callback_url
-    encoded_open_url = URI.encode_www_form_component order.open_url
-    encoded_email = URI.encode_www_form_component order.email
-    encoded_callback_url = URI.encode_www_form_component callback_url
-
     supplier_map = {
       :rd => :reprintsdesk,
       :dtu => :dtu_print
     }
 
-    request_url = DocDel.url + "?supplier=#{supplier_map[order.supplier]}&email=#{encoded_email}&callback_url=#{encoded_callback_url}&open_url=#{encoded_open_url}"
-    
-    Rails.logger.info "Requesting document delivery with DocDel: url = #{request_url}"
-    response = HTTParty.get request_url
+    params = {
+      :open_url => order.open_url,
+      :supplier => supplier_map[order.supplier],
+      :email => order.email,
+      :callback_url => callback_url
+    }
+
+    response = HTTParty.post DocDel.url, :body => params
 
     if response.code == 200
       # Update order status
