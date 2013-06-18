@@ -62,7 +62,7 @@ module PayIt
 
       begin
         Rails.logger.info "Cancelling order with order id = #{order.dibs_order_id} in DIBS."
-        response = HTTParty.post Dibs.capture_url, :body => params
+        response = HTTParty.post Dibs.cancel_url, :body => params
         if response.code == 200
           order.order_events << OrderEvent.new(:name => 'payment_cancelled')
           order.save!
