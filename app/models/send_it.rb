@@ -41,6 +41,7 @@ class SendIt
         :vat => order.vat,
         :currency => order.currency,
         :total => (order.price + order.vat),
+        :vat_pct => 25,
         :masked_card_no => order.masked_card_number
       }
     }.merge(params)
