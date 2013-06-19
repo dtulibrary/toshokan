@@ -7,12 +7,17 @@ class SendIt
     begin
       url = "#{SendIt.url}/send/#{template}"
       Rails.logger.info "Sending mail request to SendIt: URL = #{url}, template = #{template}, params = #{params}"
+  
+      default_params = {
+        :from => 'noreply@dtic.dtu.dk'
+      }
+      default_params[:priority] = 'now' unless SendIt.delay_jobs?
+
       response = HTTParty.post url, {
-        :body => {
-          :from => 'noreply@dtic.dtu.dk'
-        }.merge(params).to_json, 
+        :body => default_params.merge(params).to_json,
         :headers => { 'Content-Type' => 'application/json' }
       }
+
       unless response.code == 200
         Rails.logger.error "SendIt responded with HTTP #{response.code}"
         raise "Error communicating with SendIt"

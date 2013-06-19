@@ -126,7 +126,8 @@ module Toshokan
     }   
 
     config.send_it = { 
-      :url => ''
+      :url => '',
+      :delay_jobs => true
     }
 
     config.delay_jobs = true
