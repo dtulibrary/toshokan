@@ -34,9 +34,9 @@ class SendIt
       :from => Orders.reply_to_email,
       :order => {
         :id => order.id,
-        :title => order.document['title_ts'],
-        :journal => order.document['journal_title_ts'],
-        :author => order.document['author_ts'],
+        :title => order.document['title_ts'].first,
+        :journal => order.document['journal_title_ts'].first,
+        :author => order.document['author_ts'].first,
         :amount => order.price,
         :vat => order.vat,
         :currency => order.currency,
