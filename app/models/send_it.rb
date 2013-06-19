@@ -23,8 +23,8 @@ class SendIt
     end
   end
 
-  def self.send_cancellation_mail order, params = {}
-    send_mail 'findit_cancellation', {
+  def self.send_order_mail template, order, params = {}
+    send_mail template, {
       :to => order.email,
       :from => Orders.reply_to_email,
       :order => {
@@ -35,9 +35,21 @@ class SendIt
         :amount => order.price,
         :vat => order.vat,
         :currency => order.currency,
-        :total => (order.price + order.vat)
+        :total => (order.price + order.vat),
+        :masked_card_no => order.masked_card_number
       }
     }.merge(params)
   end
 
+  def self.send_confirmation_mail order, params = {}
+    send_order_mail 'findit_confirmation', order, params
+  end
+
+  def self.send_cancellation_mail order, params = {}
+    send_order_mail 'findit_cancellation', order, params
+  end
+
+  def self.send_receipt_mail order, params = {}
+    send_order_mail 'findit_receipt', order, params
+  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130613122424) do
+ActiveRecord::Schema.define(:version => 20130619091134) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20130613122424) do
     t.datetime "updated_at",          :null => false
     t.integer  "user_id"
     t.text     "open_url"
+    t.string   "masked_card_number"
   end
 
   add_index "orders", ["user_id"], :name => "index_orders_on_user_id"

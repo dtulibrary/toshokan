@@ -6,6 +6,7 @@ module PayIt
   class Dibs
     include Configured
 
+    # Convert a currency symbol to a DIBS currency code
     def self.currency_code currency
       { :DKK => 208 }[currency]
     end
@@ -15,8 +16,9 @@ module PayIt
     # as the DIBS documentation prescribes it.
     def self.md5_key params = {}
       params_string = params.to_a.collect {|a,b| "#{a}=#{b}"}.join '&'
-      Rails.logger.debug "Calculating MD5 of #{params_string}"
-      Digest::MD5.hexdigest(Dibs.md5_key2 + Digest::MD5.hexdigest(Dibs.md5_key1 + params_string))
+      md5 = Digest::MD5.hexdigest(Dibs.md5_key2 + Digest::MD5.hexdigest(Dibs.md5_key1 + params_string))
+      Rails.logger.debug "MD5 of #{params_string} is #{md5}"
+      return md5
     end
 
     def self.capture order
@@ -33,17 +35,19 @@ module PayIt
         })
       }
 
-      Rails.logger.info "Capturing payment from DIBS: params = #{params}" 
+      Rails.logger.info "Capturing payment from DIBS for order id = #{order.dibs_order_id}." 
       begin
         response = HTTParty.post Dibs.capture_url, :body => params
-        if response.code == 200
+        Rails.logger.debug "DIBS responded with HTTP #{response.code}:\n#{response.body}"
+        if response.code == 200 && response.body =~ /status=ACCEPTED/
           order.order_events << OrderEvent.new(:name => 'payment_captured')
           order.save!
         else
           Rails.logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}"
+          raise 'Error capturing amount from DIBS'
         end
       rescue
-        Rails.logger.error "Error capturing payment from DIBS for DIBS order id = #{order.dibs_order_id}."
+        Rails.logger.error "Error capturing payment from DIBS for order id = #{order.dibs_order_id}."
         raise
       end
     end
@@ -51,6 +55,7 @@ module PayIt
     def self.cancel order
       params = {
         :merchant => Dibs.merchant_id,
+        :orderid => order.dibs_order_id,
         :transact => order.dibs_transaction_id,
         :textreply => 'yes',
         :md5key => md5_key({
@@ -62,12 +67,22 @@ module PayIt
 
       begin
         Rails.logger.info "Cancelling order with order id = #{order.dibs_order_id} in DIBS."
-        response = HTTParty.post Dibs.cancel_url, :body => params
-        if response.code == 200
+        
+        response = HTTParty.post Dibs.cancel_url, {
+          :body => params, 
+          :basic_auth => {
+            :username => Dibs.username, 
+            :password => Dibs.password
+          }
+        }
+
+        Rails.logger.debug "DIBS responded with HTTP #{response.code}:\n#{response.body}"
+        if response.code == 200 && response.body =~ /status=ACCEPTED/
           order.order_events << OrderEvent.new(:name => 'payment_cancelled')
           order.save!
         else
           Rails.logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}"
+          raise 'Error cancelling order in DIBS'
         end
       rescue
         Rails.logger.error "Error capturing payment from DIBS for DIBS order id = #{order.dibs_order_id}."
@@ -111,6 +126,7 @@ module PayIt
     def self.status_code code
       status_codes[code.to_s]
     end
+
   end
 
   # Class for retrieving prices and calculating VAT
@@ -137,10 +153,10 @@ module PayIt
         },  
         :public => {
           :rd => {
-            :DKK => 25000
+            :DKK => 24000
           },  
           :dtu => {
-            :DKK => 25000
+            :DKK => 24000
           }   
         }   
       }   

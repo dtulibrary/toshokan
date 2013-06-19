@@ -111,7 +111,9 @@ module Toshokan
     config.dibs = { 
       :payment_url => 'https://payment.architrade.com/paymentweb/start.action',
       :capture_url => 'https://payment.architrade.com/cgi-bin/capture.cgi',
-      :cancel_url => 'https://payment.architrade.com/cgi-bin/cancel.cgi',
+      :cancel_url => 'https://payment.architrade.com/cgi-adm/cancel.cgi',
+      :username => '',
+      :password => '',
       :merchant_id => '', 
       :md5_key1 => '', 
       :md5_key2 => '', 

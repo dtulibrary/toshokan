@@ -147,21 +147,6 @@ class OrdersController < ApplicationController
       @order.order_events << OrderEvent.new(:name => :payment_cancelled)
       @order.save!
       session.delete :order
-
-      SendIt.delay.send_mail 'findit_cancellation',  {
-        :to => @order.email,
-        :from => Orders.reply_to_email,
-        :order => {
-          :id => @order.dibs_order_id,
-          :title => @order.document['title_ts'],
-          :journal => @order.document['journal_title_ts'],
-          :author => @order.document['author_ts'],
-          :amount => @order.price,
-          :vat => @order.vat,
-          :total => (@order.price + @order.vat),
-          :currency => @order.currency
-        }
-      }
     else
       logger.error "Order with id #{@order.id} had wrong payment status '#{@order.payment_status}' when trying to cancel it"
     end
@@ -182,6 +167,7 @@ class OrdersController < ApplicationController
         if PayIt::Dibs.authentic? params.merge(:amount => (@order.price + @order.vat), :currency => @order.currency)
           @order.payment_status = :authorized
           @order.dibs_transaction_id = params[:transact]
+          @order.masked_card_number = params[:cardnomask]
           @order.order_events << OrderEvent.new(:name => :payment_authorized)
           @order.save!
         else
@@ -191,29 +177,14 @@ class OrdersController < ApplicationController
       end
     end
     
+    # Ensure idempotency
     unless @order.delivery_status
-      # Send request to DocDel in background
-      DocDel.delay.request_delivery @order, order_delivery_url(@order.uuid)
-
-      SendIt.delay.send_mail 'findit_confirmation', {
-        :to => @order.email, 
-        :from => Orders.reply_to_email,
-        :order => {
-          :id => @order.dibs_order_id,
-          :title => @order.document['title_ts'],
-          :journal => @order.document['journal_title_ts'],
-          :author => @order.document['author_ts'],
-          :amount => @order.price,
-          :vat => @order.vat,
-          :total => (@order.price + @order.vat),
-          :currency => @order.currency,
-          :vat_pct => 25
-        }
-      }
-
       @order.order_events << OrderEvent.new(:name => :delivery_requested)
       @order.delivery_status = :initiated
       @order.save!
+
+      DocDel.delay.request_delivery @order, order_delivery_url(@order.uuid)
+      SendIt.delay.send_confirmation_mail @order
     end
   end
 
@@ -228,32 +199,20 @@ class OrdersController < ApplicationController
         @order.order_events << OrderEvent.new(:name => 'delivery_done')
         @order.delivery_status = delivery_status
         @order.delivered_at = Time.now
+        @order.save!
 
-        SendIt.delay.send_mail 'findit_receipt', {
-          :to => @order.email,
-          :from => Orders.reply_to_email,
-          :order => {
-            :id => @order.dibs_order_id,
-            :title => @order.document['title_ts'],
-            :journal => @order.document['journal_title_ts'],
-            :author => @order.document['author_ts'],
-            :amount => @order.price,
-            :vat => @order.vat,
-            :total => (@order.price + @order.vat),
-            :currency => @order.currency,
-            :vat_pct => 25
-          }
-        }
-
+        SendIt.delay.send_receipt_mail @order
         PayIt::Dibs.delay.capture @order
       when :confirm
         @order.order_events << OrderEvent.new(:name => 'delivery_confirmed')
+        @order.save!
       when :cancel
         @order.order_events << OrderEvent.new(:name => 'delivery_cancelled')
+        @order.save!
+
         PayIt::Dibs.delay.cancel @order
         SendIt.delay.send_cancellation_mail @order
       end
-      @order.save!
 
       head :ok
     else
