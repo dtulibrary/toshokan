@@ -111,4 +111,11 @@ module CatalogHelper
     link_to label, advanced_path(local_params), :id => 'more_options_toggle'
   end
 
+  def render_journal_rank(document)
+    issn = document['issn_ss'].first || nil
+    unless issn.nil? || /^x/ =~ issn
+      render :partial => 'catalog/journal_rank', :locals => {:url => Rails.application.config.scopus_url % issn}       
+    end
+  end
+
 end

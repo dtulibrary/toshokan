@@ -38,4 +38,8 @@
       </li>
     <% end %>
 
+    <% if @document[:format] == "journal" %>
+      <%= render_journal_rank @document %>
+    <% end %>
+
   </ul>

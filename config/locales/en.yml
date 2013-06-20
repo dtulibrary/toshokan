@@ -132,6 +132,8 @@ en:
         rd_html: Order Scan
         dtu_html: Order Scan<br>DTU Print Collection
       other: "Other resources"
+      journal: "Journal ranks"
+      scopus: "Scopus journal rank"
     citation:
       mla: "MLA"
       apa: "APA"
