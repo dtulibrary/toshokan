@@ -1,5 +1,60 @@
 @import 'toshokan_defaults';
 
+.order {
+  & > .header {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid $dtu_red;
+  }
+}
+
+.order-summary {
+  @include border-radius(5px);
+  border: 1px solid #ccc;
+  padding: 20px;
+
+  .header {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0px;
+  }
+
+  .items {
+    .metadata {
+      color: #555;
+      font-size: 0.9em;
+      margin: 10px 0px;
+
+      .journal {
+        font-style: italic;
+      }
+    }
+  }
+
+  .price {
+    font-size: 1em;
+    margin: 0px;
+  }
+
+  .price-tag {
+    float: right;
+    font-family: monospace;
+    white-space: pre;
+  }
+
+  hr {
+    border-color: #999;
+    border-width: 1px 0px 0px 0px;
+    margin: 10px 0px;
+
+    &.heavy {
+      border-color: #000;
+      border-width: 2px 0px 0px 0px;
+      margin: 15px 0px;
+    }
+  }
+}
+
 .price {
   font-size: 1.2em;
   font-weight: bold;
@@ -15,14 +70,8 @@
 }
 
 .order {
-  .steps {
-    border-bottom: 2px solid $dtu_red;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-  }
-
   .info {
-    margin: 10px 0px;
+    margin: 0px 0px 10px 0px;
   }
 }
 

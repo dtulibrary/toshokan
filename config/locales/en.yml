@@ -14,8 +14,8 @@ en:
       dtulibrary: 'DTU Findit'
       search: 'Search'
     languages:
-      english_version: 'Show English version'
-      danish_version: 'Show Danish version'
+      english_version: English version
+      danish_version: Danish version
     orders:
       buy_article: Order article
       by: By

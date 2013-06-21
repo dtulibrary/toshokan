@@ -13,6 +13,7 @@ module DibsHelper
       :locale => locale,
       :paytype => PayIt::Dibs.paytype,
       :accept_url => order_receipt_url(order.uuid),
+      :cancel_url => order_cancel_url(order.uuid),
       :callback_url => order_receipt_url(order.uuid),
       :md5_key => PayIt::Dibs.md5_key({
         :merchant => PayIt::Dibs.merchant_id, 

@@ -1,15 +1,7 @@
-<div class="span6">
-  <div class="order">
+<div class="order">
+  <div class="span6">
     <h4>Order Status</h4>
 
-    <dl class="dl-horizontal dl-invert">
-      <dt>Order number</dt>
-      <dd><%= @order.dibs_order_id %></dd>
-      <dt>Article</dt>
-      <dd><%= @order.document['title_ts'].first %></dd>
-    </dl>
-    
-    <h5>What Has Happened So Far?</h5>
     <dl class="dl-horizontal dl-invert">
       <%- @order.order_events.each do |event| -%>
         <dt><%= l event.created_at %></dt>
@@ -17,7 +9,7 @@
       <%- end -%>
     </dl>
   </div>
-</div>
-<div id="sidebar" class="span6">
-  <%= render 'ordered_article' %>
+  <div class="span6">
+    <%= render 'order_summary' %>
+  </div>
 </div>

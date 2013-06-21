@@ -1,0 +1,33 @@
+<div class="order-summary">
+  <h5 class="header">Your Order<%= @order.persisted? ? ": #{@order.dibs_order_id}" : ''%></h5>
+  <hr>
+  <div class="items">
+    <div class="metadata">
+      <div class="title">"<%= @order.document['title_ts'].first %>"</div>
+      <div class="author">By <%= @order.document['author_ts'].first %></div>
+      <div class="journal"><%= @order.document['journal_title_ts'].first %></div>
+    </div>
+    <div>Price (excl. VAT) <%= render_formatted_price @order.price, @order.currency %></div>
+  </div>
+  <hr>
+  <% if @order.email %>
+    <div class="delivery-info">
+      <% [:email, :mobile, :customer_ref].each do |method| %>
+        <% unless @order.send(method).blank? %>
+          <div>
+            <%= t "toshokan.orders.summary.#{method}" %>:<span class="pull-right"><%= @order.send method %></span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    <hr>
+  <% end %>
+  <div class="price-details">
+    Subtotal: <%= render_formatted_price @order.price, @order.currency %><br>
+    25% VAT: <%= render_formatted_price @order.vat, @order.currency %>
+  </div>
+  <hr class="heavy">
+  <div class="price">
+    Total: <%= render_formatted_price @order.price + @order.vat, @order.currency %>
+  </div>
+</div>

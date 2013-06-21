@@ -4,8 +4,8 @@
 da:
   toshokan:
     languages:
-      english_version: Vis engelsk udgave
-      danish_version: Vis dansk udgave
+      english_version: Engelsk udgave
+      danish_version: Dansk udgave
     orders:
       buy_article: Køb artikel
       by: Af

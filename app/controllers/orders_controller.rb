@@ -46,7 +46,7 @@ class OrdersController < ApplicationController
       session[:order] = @order
 
       # Tell user about benefits of logging in
-      flash.now[:notice] = I18n.t 'toshokan.orders.not_logged_in_notice' unless current_user.authenticated?
+      # flash.now[:notice] = I18n.t 'toshokan.orders.not_logged_in_notice' unless current_user.authenticated?
     else
       head :bad_request
     end

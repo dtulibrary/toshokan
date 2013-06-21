@@ -1,8 +1,9 @@
-<%= form_tag dibs_payment_url do %>
+<%= form_tag dibs_payment_url, :style => 'display:inline' do %>
   <%= hidden_field_tag :merchant, merchant_id %>
   <%= hidden_field_tag :orderid, dibs_order_id %>
   <%= hidden_field_tag :amount, amount %>
   <%= hidden_field_tag :accepturl, accept_url %>
+  <%= hidden_field_tag :cancelurl, cancel_url %>
   <%= hidden_field_tag :callbackurl, accept_url %>
   <%= hidden_field_tag :currency, PayIt::Dibs.currency_code(currency) %>
   <%= hidden_field_tag :md5key, md5_key %>
@@ -12,5 +13,5 @@
   <% if test %>
     <%= hidden_field_tag :test, 'yes' %>
   <% end %>
-  <%= button_tag 'Go to payment' %>
+  <%= button_tag 'Go to payment', :class => 'btn btn-primary' %>
 <% end %>

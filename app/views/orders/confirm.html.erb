@@ -1,31 +1,30 @@
-<div class="span6">
+<div class="span12">
   <div class="order">
-    <%= render_order_steps @order.flow %>
-    <div class="info"><%= t "toshokan.orders.text.#{@order.supplier}_html" %></div>
-    <h4>Confirm Delivery Information</h4>
-    
-    <dl class="dl-horizontal dl-invert">
-    <% [:email, :mobile, :customer_ref].each do |method| %>
-      <% unless @order.send(method).blank? %>
-        <dt><%= t "toshokan.orders.summary.#{method}" %></dt>
-        <dd><%= @order.send method %></dd>
-      <% end %>
-    <% end %>
-    </dl>
-
-    <% if @order.flow.steps.include? :payment %>
-      <%= render_payment_form @order, I18n.locale %>
-    <% else %>
-      <%= form_tag order_receipt_path(@order.uuid), :method => :get do %>
-        <%= button_tag 'Continue' %>
-      <% end %>
-    <% end %>
-
-    <%= form_tag create_order_path do %>
-      <%= button_tag 'Back', :name => 'button', :value => 'back' %>
-    <% end %>
+    <div class="header">
+      <%= render_order_steps @order.flow %>
+    </div>
   </div>
-</div>
-<div id="sidebar" class="span6">
-  <%= render 'ordered_article' %>
+  <div class="row">
+    <div class="span6">
+      <div class="order">
+        <div class="info"><%= t "toshokan.orders.text.#{@order.supplier}_html" %></div>
+        <p>
+          <b>Please review your order to the right before continuing.</b>
+        </p>
+        <% if @order.flow.steps.include? :payment %>
+          <%= render_payment_form @order, I18n.locale %>
+        <% else %>
+          <%= form_tag order_receipt_path(@order.uuid), :method => :get, :style => 'display:inline' do %>
+            <%= button_tag 'Continue', :class => 'btn btn-primary' %>
+          <% end %>
+        <% end %>
+        <%= form_tag create_order_path, :style => 'display:inline' do %>
+          <%= button_tag 'Back', :name => 'button', :value => 'back', :class => 'btn' %>
+        <% end %>
+      </div>
+    </div>
+    <div class="span6">
+      <%= render 'order_summary' %>
+    </div>
+  </div>
 </div>

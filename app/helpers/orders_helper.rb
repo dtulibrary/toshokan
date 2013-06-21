@@ -16,6 +16,10 @@ module OrdersHelper
     html.html_safe
   end
 
+  def render_formatted_price price, currency = :DKK
+    "<span class=\"price-tag\">#{"%s %6.2f" % [currency, price.to_f/100]}</span>".html_safe
+  end
+
   def render_order_steps order_flow
     step = 0
     steps = order_flow.steps.collect do |v|
@@ -27,6 +31,16 @@ module OrdersHelper
   end
 
   def format_price price, currency = :DKK
-    number_to_currency price.to_f/100, :unit => currency.to_s, :format => '%u %n'
+    "%s %6.2f" % [currency, price.to_f/100]
+    #number_to_currency price.to_f/100, :unit => currency.to_s, :format => '%u %n'
+  end
+
+  def render_switch_locale current_locale
+    case current_locale
+    when 'da'
+      "<div class=\"pull-right\">#{link_to t('toshokan.languages.english_version', :locale => :en), new_order_path(:locale => :en)}</div>".html_safe
+    when 'en'
+      "<div class=\"pull-right\">#{link_to t('toshokan.languages.danish_version', :locale => :da), new_order_path(:locale => :da)}</div>".html_safe
+    end
   end
 end

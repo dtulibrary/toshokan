@@ -34,16 +34,16 @@ class OrderFlow
   def self.delivery_info_fields_matrix
     {
       :dtu_staff => {
-        :rd => [:email, :mobile],
-        :dtu => [:email, :mobile]
+        :rd => [:email],
+        :dtu => [:email]
       },
       :dtu_student => {
-        :rd => [:email, :mobile, :terms_accepted],
-        :dtu => [:email, :mobile]
+        :rd => [:email, :terms_accepted],
+        :dtu => [:email]
       },
       :public => {
-        :rd => [:email, :mobile, :terms_accepted, :customer_ref],
-        :dtu => [:email, :mobile, :terms_accepted, :customer_ref]
+        :rd => [:email, :terms_accepted, :customer_ref],
+        :dtu => [:email, :terms_accepted, :customer_ref]
       }
     }
   end
