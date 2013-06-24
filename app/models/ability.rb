@@ -7,7 +7,11 @@ class Ability
       can :logout, User
       can :view, :search_history
     else
-      can :login, User
+      if Rails.application.config.anonymous_only?
+        cannot :login, User
+      else
+        can :login, User
+      end
       can :search, :public
       can :remember, :auth_provider
     end
