@@ -42,8 +42,8 @@ class OrderFlow
         :dtu => [:email]
       },
       :public => {
-        :rd => [:email, :terms_accepted, :customer_ref],
-        :dtu => [:email, :terms_accepted, :customer_ref]
+        :rd => [:email, :terms_accepted, :customer_ref, :requirements],
+        :dtu => [:email, :terms_accepted, :customer_ref, :requirements]
       }
     }
   end

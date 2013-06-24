@@ -33,11 +33,12 @@ en:
         cancel: Cancel
         continue: Continue
         customer_ref_html: <b>Your reference</b> (included in invoice)
-        email_confirmation_html: <b>Email</b> (confirm)
-        email_html: <b>Email</b> (for article and invoice delivery)
-        email_without_invoice_html: <b>Email</b> (for article delivery)
+        email_confirmation_html: <b>Email <span class="dtu-red">*</span></b> (confirm)
+        email_html: <b>Email <span class="dtu-red">*</span></b> (for article and invoice delivery)
+        email_without_invoice_html: <b>Email <span class="dtu-red">*</span></b> (for article delivery)
         mobile_html: <b>Mobile</b> (for SMS-notification)
-        terms_accepted_html: <b>I have read and agree to the %{link}</b>
+        terms_accepted_html: I have read and agree to the <b>%{link}</b> and the <b>requirements and restrictions</b> (read the box on the right for more information) <span class="dtu-red">*</span>
+
       identify:
         continue_anonymously: I want to continue anonymously
         text: If you order an article while logged in, DTU FindIt adds your order to your order history, allowing you to keep track of the orders you have placed

@@ -11,6 +11,20 @@
         </div>
       <div class="span6">
         <%= render 'order_summary' %>
+        <% if @order.flow.fields.include? :requirements %>
+          <div class="well requirements">
+            <div class="header">
+              <b>Requirements and restrictions</b>: <a href="http://www.adobe.com/reader">Adobe Reader</a> 
+              may be required to read this document.
+            </div>
+            <div class="body">
+              Please not that some articles can only be viewed and printed once, in accordance
+              with copyright restrictions. <b>Save the document to your computer</b> before
+              opening it. If this PDF can be printed, after opening please print one copy and
+              then delete the file.
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
