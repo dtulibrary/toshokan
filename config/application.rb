@@ -105,7 +105,8 @@ module Toshokan
       # and development machines, unstable, staging and production all use the same DIBS
       :order_id_prefix => 'N/A-',
       :reply_to_email => '', 
-      :order_link_hidden => true
+      :order_link_hidden => true,
+      :enabled => true
     }   
 
     config.dibs = { 
