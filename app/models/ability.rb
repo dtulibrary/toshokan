@@ -7,7 +7,7 @@ class Ability
       can :logout, User
       can :view, :search_history
     else
-      if Rails.application.config.anonymous_only?
+      if Rails.application.config.anonymous_only
         cannot :login, User
       else
         can :login, User
@@ -50,7 +50,10 @@ class Ability
       cannot :login, User
       cannot :search, :public
       can :search, :dtu
+      can :ask, :librarian
     end
+
+    can :order, :article if Rails.application.config.orders[:enabled]
   end
 
 end
