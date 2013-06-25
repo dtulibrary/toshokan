@@ -106,7 +106,7 @@ module Toshokan
       :order_id_prefix => 'N/A-',
       :reply_to_email => '', 
       :order_link_hidden => true,
-      :enabled => true
+      :enabled => true,
     }   
 
     config.dibs = { 
@@ -119,16 +119,17 @@ module Toshokan
       :md5_key1 => '', 
       :md5_key2 => '', 
       :paytype => 'DK,VISA,ELEC,MC,MTRO,AMEX,JCB',
-      :test => true
+      :test => true,
     }
 
     config.doc_del = { 
-      :url => ''
+      :url => '',
+      :enabled => true,
     }   
 
     config.send_it = { 
       :url => '',
-      :delay_jobs => true
+      :delay_jobs => true,
     }
 
     config.delay_jobs = true

@@ -183,7 +183,7 @@ class OrdersController < ApplicationController
       @order.delivery_status = :initiated
       @order.save!
 
-      DocDel.delay.request_delivery @order, order_delivery_url(@order.uuid)
+      DocDel.delay.request_delivery @order, order_delivery_url(@order.uuid) if DocDel.enabled?
       SendIt.delay.send_confirmation_mail @order
     end
   end
