@@ -9,7 +9,7 @@
       <div class="order">
         <div class="info"><%= t "toshokan.orders.text.#{@order.supplier}_html" %></div>
         <p>
-          <b>Please review your order to the right before continuing.</b>
+          <b><%= t 'toshokan.orders.review_your_order' %></b>
         </p>
         <% if @order.flow.steps.include? :payment %>
           <%= render_payment_form @order, I18n.locale %>

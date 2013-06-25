@@ -1,5 +1,5 @@
 <div class="order-summary">
-  <h5 class="header">Your Order<%= @order.persisted? ? ": #{@order.dibs_order_id}" : ''%></h5>
+  <h5 class="header"><%= t 'toshokan.orders.your_order' %><%= @order.persisted? ? ": #{@order.dibs_order_id}" : ''%></h5>
   <hr>
   <div class="items">
     <div class="metadata">
@@ -7,7 +7,7 @@
       <div class="author">By <%= @order.document['author_ts'].first %></div>
       <div class="journal"><%= @order.document['journal_title_ts'].first %></div>
     </div>
-    <div>Price (excl. VAT) <%= render_formatted_price @order.price, @order.currency %></div>
+    <div><%= t 'toshokan.orders.price_excl_vat' %> <%= render_formatted_price @order.price, @order.currency %></div>
   </div>
   <hr>
   <% if @order.email %>
@@ -23,11 +23,11 @@
     <hr>
   <% end %>
   <div class="price-details">
-    Subtotal: <%= render_formatted_price @order.price, @order.currency %><br>
-    25% VAT: <%= render_formatted_price @order.vat, @order.currency %>
+    <%= t 'toshokan.orders.subtotal' %>: <%= render_formatted_price @order.price, @order.currency %><br>
+    <%= t 'toshokan.orders.vat', :vat_pct => 25 %>: <%= render_formatted_price @order.vat, @order.currency %>
   </div>
   <hr class="heavy">
   <div class="price">
-    Total: <%= render_formatted_price @order.price + @order.vat, @order.currency %>
+    <%= t 'toshokan.orders.total' %>: <%= render_formatted_price @order.price + @order.vat, @order.currency %>
   </div>
 </div>

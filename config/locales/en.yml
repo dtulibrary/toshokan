@@ -37,8 +37,10 @@ en:
         email_html: <b>Email <span class="dtu-red">*</span></b> (for article and invoice delivery)
         email_without_invoice_html: <b>Email <span class="dtu-red">*</span></b> (for article delivery)
         mobile_html: <b>Mobile</b> (for SMS-notification)
-        terms_accepted_html: I have read and agree to the <b>%{link}</b> and the <b>requirements and restrictions</b> (read the box on the right for more information) <span class="dtu-red">*</span>
-
+        terms_accepted_html: 
+          I have read and agree to the <b>%{link}</b> and the <b>requirements and restrictions</b> 
+          (read the box on the right for more information) <span class="dtu-red">*</span>
+      go_to_payment: Go to payment
       identify:
         continue_anonymously: I want to continue anonymously
         text: If you order an article while logged in, DTU FindIt adds your order to your order history, allowing you to keep track of the orders you have placed
@@ -47,13 +49,40 @@ en:
         dtu: DTU Library will scan a copy of the article.
         rd: DTU Library will invoke our international document supplier in order to acquire this article for you in digital form. Please enter your delivery information in the form below
       not_logged_in_notice: You are currently not logged in. Log in for discounts (DTU affiliates only) and for adding your order to your order history.
+      order_cancelled: Your order was cancelled.
       order_now: Order now
       order_placed: Your order has been placed.
       order_scan: 
         dtu_html: Order Scan<br>DTU Print Collection 
         rd_html: Order Scan
+      order_status: Order Status
       pay: Pay
       price: Price
+      price_excl_vat: Price (excl. VAT)
+      receipt_html:
+        <p>
+          <b>Your order has been placed.</b>
+        </p>
+        <p>
+          This page is your receipt. You will also receive an order receipt by email.
+        </p>
+        <p>
+          You can view the status of your order <a href="%{status_link}">here</a>.
+        </p>
+        <p>
+          <b>Thank you for your order!</b>
+        </p>
+      requirements_html: 
+        <h5>Requirements and Restrictions</h5>
+        <p>
+          %{link} may be required to read this article.
+        </p>
+        <p>
+          Please note that some articles can only be viewed and printed once, in accordance with 
+          copyright restrictions. <b>Save the PDF file to your computer</b> before opening it. 
+          If this PDF file can be printed, after opening please print one copy and then delete the PDF file.
+        </p>
+      review_your_order: Please review your order to the right before continuing.
       steps:
         confirm: Confirm
         delivery_info: Delivery information
@@ -66,12 +95,15 @@ en:
         mobile: Notify via SMS to
       terms_of_service: Terms of Service
       text:
-        dtu_html: Locating the article on our <b>daily</b> routine, DTU Library will scan the article and deliver it to you.
-        rd_html: Using our international scanning services, DTU Library will order a scan of the article and deliver it to you upon arrival &mdash; usually <b>within the hour</b>.
+        dtu_html: 
+          Locating the article on our <b>daily</b> routine, DTU Library will scan the article and deliver it to you.
+        rd_html: 
+          Using our international scanning services, DTU Library will order a scan of the article and deliver 
+          it to you upon arrival &mdash; usually <b>within the hour</b>.
       thank_you: Thank you for your order!
       total: Total
-      vat: VAT (%{vat} %)
-      status_link_html: You can follow your order status <a href="%{href}">here</a>.
+      vat: "%{vat_pct}% VAT"
+      your_order: Your order
     save: "Save"
     cancel: "Cancel"
     header_links:
@@ -146,12 +178,13 @@ en:
         title: 'Feedback on DTU Findit'
     feedback:
       label: 'Feedback'
-      success: 'Your feedback has been sent. Thank you for taking the time to help us improve DTU Findit. <a href="#" data-dismiss="modal">Close this dialog</a>'
-      message: 'Your message'
-      name: 'Your name'
-      email: 'Your email address'
+      success_html: Your feedback has been sent. Thank you for taking the time to help us improve DTU Findit. <a href="#" data-dismiss="modal">Close this dialog</a>
+      message_html: Your message
+      name_html: Your name
+      email_html: Your email address
+      fill_in_a_value: Please fill in a value
     forms:
-      required_fields: 'Fields marked with * are required'
+      required_fields_html: Fields marked with <b class="dtu-red">*</b> are required
       send: 'Send'
     catalog:
       display_formats:

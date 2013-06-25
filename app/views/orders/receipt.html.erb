@@ -5,18 +5,10 @@
     </div>
     <div class="row">
       <div class="span6">
-        <div class="info"><%= t "toshokan.orders.text.#{@order.supplier}_html" %></div>
-        <p>
-          <b>Your order has been placed.</b>
-        </p>
-        <p>
-          This page is your order receipt. You will also receive an order receipt by
-          email.
-        </p>
-        <p>You can view the status of your order <%= link_to 'here', order_status_url(@order.uuid) %>.</p>
-        <p>
-          <b>Thank you for your order!</b>
-        </p>
+        <div class="info">
+          <%= t "toshokan.orders.text.#{@order.supplier}_html" %>
+        </div>
+        <%= t 'toshokan.orders.receipt_html', :status_link => order_status_url(@order.uuid) %>
       </div>
       <div class="span6">
         <%= render 'order_summary' %>

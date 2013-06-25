@@ -1,6 +1,6 @@
 (function ($) {
   $('#feedback-modal .dtu-red').remove();
   <% @errors.each do |field| %>
-    $('#feedback-modal label[for="<%= field %>"]').append(' <span class="dtu-red">Please fill in a value</span>');
+    $('#feedback-modal label[for="<%= field %>"]').append('<span class="dtu-red"><%= t 'toshokan.feedback.fill_in_a_value' %></span>');
   <% end %>
 })(jQuery);

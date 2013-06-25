@@ -7,7 +7,6 @@ da:
       english_version: Engelsk udgave
       danish_version: Dansk udgave
     orders:
-      buy_article: Køb artikel
       by: Af
       delivery_information: Leveringsoplysninger
       discount_types:
@@ -36,7 +35,6 @@ da:
         remote: DTU Bibliotek bestiller artiklen på digital form til dig hos vores internationale dokumentleverandør. Udfyld venligst nedenstående formular med dine leveringsoplysninger.
         local: 
       not_logged_in_notice: Du har ikke logget ind. Log ind for at opnå rabat (kun for DTU-ansatte og -studerende) og for at tilføje din bestilling til din historik.
-      order_now: Bestil nu
       order_placed: Din bestilling er gennemført.
       pay: Betal
       price: Pris
