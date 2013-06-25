@@ -11,6 +11,7 @@
     h5 {
       line-height: 14px;
       font-size: 14px;
+      text-transform: uppercase;
 
       &:first-child {
         margin-top: 0px;
@@ -20,6 +21,19 @@
     a {
       color: #ccc;
       text-decoration: underline;
+    }
+
+    .about {
+      margin: 20px 0px;
+    }
+
+    .address {
+      margin-bottom: 20px;
+
+      .name {
+        font-weight: bold;
+        color: #fff;
+      }
     }
   }
 
