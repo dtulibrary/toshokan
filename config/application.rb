@@ -144,6 +144,5 @@ module Toshokan
         :how_to => 'http://libguides.dtu.dk/content.php?pid=462533&sid=3821789#13839230',
       }
     }
-
   end
 end
