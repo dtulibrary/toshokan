@@ -2,12 +2,7 @@
   <div class="navbar-inner level1-navbar">
     <div class="container">
       <div class="row">
-        <div class="span6">
-          <div class="pull-left">
-            <h5><%= link_to t('toshokan.header.dtu'), 'http://www.dtu.dk' %> &bull; <%= link_to t('toshokan.header.dtulibrary'), root_path %></h5>
-          </div>
-        </div>
-        <div class="span6">
+        <div class="span12">
           <div class="pull-right">
             <%- unless session[:come_back_later] -%>
               <%= render :partial=>'/user_util_links' %>
