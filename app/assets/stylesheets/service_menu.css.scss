@@ -1,17 +1,48 @@
 .service-menu {
   margin-top: 3em;
   
-  .nav-header {
-    background-color: whitesmoke; 
-    @include border-radius(5px 5px 0px 0px);
-    line-height: 2em;
+  ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+
+    li {
+      border-bottom: 1px solid #ddd;
+      font-size: 11px;
+      font-weight: bold;
+
+      &:first-child {
+        background-image: image_url('service_menu_bg.jpg');
+        background-repeat: repeat-x;
+        color: $dtu_red_light;
+        font-size: 1.1em;
+        text-transform: uppercase;
+        font-weight: bold;
+        padding: 11px 10px 9px 10px;
+        border-bottom: none;
+        height: 15px;
+        line-height: 15px;
+        font-size: 14px;
+      }
+
+      &:hover {
+        background-color: whitesmoke;
+
+        a {
+          color: $dtu_red_light;
+          text-decoration: none;
+          background-position: 2px center;
+        }
+      }
+
+      a {
+        display: block;
+        padding: 7px 15px;
+        color: #000;
+        background-image: image_url('service_menu_item_bg.png');
+        background-position: left center;
+        background-repeat: no-repeat;
+      }
+    }
   }
-
-  .nav-list a {
-    border-top: 1px solid #ddd;
-    color: #000;
-    font-size: 0.8em;
-  }
-
-
 }

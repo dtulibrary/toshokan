@@ -15,10 +15,10 @@
   <% end %>
   <% if @order.flow.fields.include? :terms_accepted %>
     <%= check_box_tag :terms_accepted, params[:terms_accepted] %>
-    <%= label_tag :terms_accepted, t('toshokan.orders.form.terms_accepted_html', :link => "<a target=\"_new\" href=\"http://www.dr.dk\">#{t 'toshokan.orders.terms_of_service'}</a>".html_safe), :class => 'terms-accepted' %>
+    <%= label_tag :terms_accepted, t('toshokan.orders.form.terms_accepted_html', :link => "<a target=\"_new\" href=\"/#{current_locale.to_sym == :en ? 'DTUFindit_TermsAndConditions.pdf' : 'DTUFindit_Handelsbetingelser.pdf'}\">#{t 'toshokan.orders.terms_of_service'}</a>".html_safe), :class => 'terms-accepted' %>
   <% end %>
   <p class="mandatory-fields-notice">
-    <%= t 'toshokan.forms.required_fields_html' %>
+    <%= t 'toshokan.orders.form.required_fields_html' %>
   </p>
   <%= button_tag t('toshokan.orders.form.continue'), :name => :button, :value => :continue, :class => 'btn btn-primary' %>
   <%= button_tag t('toshokan.orders.form.cancel'), :name => :button, :value => :cancel, :class => 'btn' %>

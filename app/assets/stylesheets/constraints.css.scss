@@ -1,10 +1,10 @@
 @import 'toshokan_defaults';
 
 #startOverLink {
-  color: $dtu_red;
+  color: $dtu_red_light;
 
   &:hover, &:active {
-    color: $dtu_red;
+    color: $dtu_red_light;
   }
 }
 

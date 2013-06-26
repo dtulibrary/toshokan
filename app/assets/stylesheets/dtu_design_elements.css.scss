@@ -7,3 +7,21 @@
 .dtu-grey, .dtu-gray {
   color: $dtu_grey;
 }
+
+.dtu-red-bar {
+  background-color: $dtu_red;
+  background-image: image_url('header_bg.png');
+  background-repeat: repeat-x;
+  line-height: 35px;
+  font-size: 12px;
+  height: 35px;
+  color: #fff;
+
+  a {
+    color: #fff;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}

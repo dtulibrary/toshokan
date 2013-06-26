@@ -1,48 +1,11 @@
 <div id="footer">
-  <% if false %>
-    <div class="service-menu container">
-      <div class="row">
-        <div class="span3">
-          <ul class="nav nav-list">
-            <li class="nav-header dtu-red">What</li>
-            <li><a href="">DTU Digital Library</a></li>
-            <li><a href="">Databases</a></li>
-            <li><a href="">Research Database</a></li>
-          </ul>
-        </div>
-        <div class="span3">
-          <ul class="nav nav-list">
-            <li class="nav-header dtu-red">How</li>
-            <li><a href="">User Status</a></li>
-            <li><a href="">Rules</a></li>
-            <li><a href="">Courses</a></li>
-          </ul>
-        </div>
-        <div class="span3">
-          <ul class="nav nav-list">
-            <li class="nav-header dtu-red">Where</li>
-            <li><a href="">Addresses</a></li>
-            <li><a href="">Facilities</a></li>
-            <li><a href="">Events</a></li>
-          </ul>
-        </div>
-        <div class="span3">
-          <ul class="nav nav-list">
-            <li class="nav-header dtu-red">Contact &amp; Opening Hours</li>
-            <li><a href="">Opening Hours Lyngby</a></li>
-            <li><a href="">Opening Hours Ballerup</a></li>
-            <li><a href="">Phone: 4525 7250</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  <% end %>
+  <%= render 'shared/service_menu' %>
 
-  <div class="fat-footer">
+  <div class="fat-footer hidden-phone">
     <div class="container">
       <div class="row">
         <div class="span1">
-          <%= image_tag 'dtulogo_white.png' %>
+          <%= link_to image_tag('dtulogo_white.png'), 'http://www.dtic.dtu.dk' %>
         </div>
         <div class="span5">
           <%= t 'toshokan.footer.about_dtu_library_html', :email => "<script type=\"text/javascript\">eval(unescape('%64%6f%63%75%6d%65%6e%74%2e%77%72%69%74%65%28%27%3c%61%20%68%72%65%66%3d%22%6d%61%69%6c%74%6f%3a%64%74%69%63%40%64%74%69%63%2e%64%74%75%2e%64%6b%22%3e%64%74%69%63%40%64%74%69%63%2e%64%74%75%2e%64%6b%3c%2f%61%3e%27%29%3b'));</script>".html_safe %>
@@ -55,9 +18,9 @@
       </div>
     </div>
   </div>
-  <div class="legal-notice">
+  <div class="dtu-red-bar">
     <div class="container">
-      <%= t 'toshokan.footer.legal_notice.text' %>
+      <div class="pull-right"><a href="http://www.dtu.dk/Om-DTU/Praktisk-information/Om-dtu_dk/Cookies">About cookies</a></div>
     </div>
   </div>
 

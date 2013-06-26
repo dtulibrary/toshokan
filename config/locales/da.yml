@@ -1,54 +1,98 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
+# TODO: Clean up this mess... Find better groupings or something.
+
 da:
   toshokan:
     languages:
-      english_version: Engelsk udgave
-      danish_version: Dansk udgave
+      english_version: English version
+      danish_version: Danish version
     orders:
+      buy_article: Bestil artikel
       by: Af
       delivery_information: Leveringsoplysninger
       discount_types:
         dtu_staff_discount: DTU medarbejderpris
         dtu_student_discount: DTU studenterpris
         dtu_discount: DTU-pris
-      done: Færdig
+      done: Afslut
       errors:
-        email_should_not_be_blank: Du skal indtaste en email-adresse
-        emails_dont_match: Email-adresserne er forskellige
-        you_must_accept_terms: Du skal acceptere DTU's salgsbetingelser
+        email_should_not_be_blank:  Du skal indtaste en email-adresse 
+        emails_dont_match: Email-adresserne du har indtastet er ikke ens
+        you_must_accept_terms:  Accepter venligst DTU's Handelsbetingelser
       form:
-        email_html: <b>Email</b> (til artikel- og fakturalevering)
-        email_confirmation_html: <b>Email</b> (bekræft)
-        email_without_invoice_html: <b>Email</b> (til artikellevering) 
-        mobile_html: <b>Mobil</b> (til SMS-notificering)
-        customer_ref_html: <b>Din reference</b> (inkluderet på faktura)
-        terms_accepted_html: <b>Jeg har læst og accepterer %{link}</b>
-        continue: Fortsæt
         cancel: Afbryd
-      identify:
-        continue_anonymously: Jeg vil fortsætte som anonym
-        text: Hvis du er logged på, når du bestiller en artikel, bliver din bestilling gemt af DTU FindIt, og du kan senere gå ind og se dine tidligere bestillinger.
-        title: Log på før bestilling?
-      info: 
-        remote: DTU Bibliotek bestiller artiklen på digital form til dig hos vores internationale dokumentleverandør. Udfyld venligst nedenstående formular med dine leveringsoplysninger.
-        local: 
-      not_logged_in_notice: Du har ikke logget ind. Log ind for at opnå rabat (kun for DTU-ansatte og -studerende) og for at tilføje din bestilling til din historik.
-      order_placed: Din bestilling er gennemført.
+        continue: Fortsæt
+        customer_ref_html: <b>Din reference</b> (overføres til kvitteringen)
+        email_confirmation_html: <b>Email <span class="dtu-red">*</span></b> (bekræft)
+        email_html: <b>Email <span class="dtu-red">*</span></b> (til artikel- og fakturalevering)
+        email_without_invoice_html: <b>Email <span class="dtu-red">*</span></b> (til artikellevering)
+        mobile_html: <b>Mobil</b> (til SMS-notificering)
+        required_fields_html: 
+          Felter markeret med <b class="dtu-red">*</b> skal udfyldes
+        terms_accepted_html: 
+          Jeg har læst og accepteret <b>%{link}</b> og <b>krav og restriktioner</b> 
+          (Læs boksen til højre for at få mere information) <span class="dtu-red">*</span>.
+        go_to_payment: Gå til betaling
+      info:
+        dtu: DTU Bibliotek vil scanne en kopi af artiklen. 
+        rd: DTU Bibliotek vil bestille en digital kopi fra vores dokumentleverandør. Vær venlig at indtaste dine oplysninger i nedenstående felt.
+      not_logged_in_notice: Du er ikke logget ind.  Log ind for at opnå nedsat pris (Kun for DTU-ansatte og -studerende) og for at tilføje bestillingen til din historik.
+      order_cancelled: Din bestilling er annulleret
+      order_now: Bestil nu
+      order_placed: Din bestilling er gennemført
+      order_scan: 
+        dtu_html: Bestil<br>DTU's trykte samling 
+        rd_html: Bestil 
+      order_status: Status for bestilling
       pay: Betal
       price: Pris
+      price_excl_vat: Pris (ex Moms)
+      receipt_html:
+        <p>
+          <b>Din bestilling er gennemført.</b>
+        </p>
+        <p>
+          Denne side er din kvittering. Du vil også modtage en kvittering på mail.
+        </p>
+        <p>
+           Du kan se status på din bestilling <a href="%{status_link}">her</a>.
+        </p>
+        <p>
+          <b>Tak for din bestilling!</b>
+        </p>
+      requirements_html: 
+        <h5>Krav og Restriktioner</h5>
+        <p>
+          %{link} kan være påkrævet for at kunne læse artiklen.
+        </p>
+        <p>
+          Bemærk venligst at nogle artikler <b>kun kan vises og udskrives en enkelt gang</b>, i overensstemmelse med copyright-reglerne.  
+          Gem PDF filen på din computer før du  åbner den. 
+          Hvis PDF-filen kan printes, bedes du udskrive en kopi
+        </p>
+      review_your_order: Vær venlig at kontrollere din bestilling til højre før du fortsætter. 
       steps:
         confirm: Bekræft
-        delivery_info: Leveringsoplysninger
-        done: Færdig
+        delivery_info: Leveringsinformation
+        done: Gennemført
         payment: Betaling
+      subtotal: Subtotal
       summary:
-        email: Leveres til email
-        mobile: Send SMS til
         customer_ref: Din reference
-      terms_of_service: DTU's salgsbetingelser
+        email: Email til levering
+      terms_of_service: Handelsbetingelser
       text:
-        local_html: Blah blah
-        remote_html: Blah blah
+        dtu_html: 
+          DTU Bibliotek vil scanne en kopi af artiklen og sende den til dig.
+        rd_html: 
+          DTU Bibliotek vil bestille en digital kopi fra vores dokumentleverandør og sende den til dig. 
       thank_you: Tak for din bestilling!
+      total: Total
+      vat: "%{vat_pct}% Moms"
+      your_order: Din bestilling
+    tools:
+      order:
+        rd_html: Bestil 
+        dtu_html: Bestil <br>DTU's trykte samling

@@ -16,6 +16,8 @@ en:
     languages:
       english_version: English version
       danish_version: Danish version
+      en: english
+      da: danish
     orders:
       buy_article: Order article
       by: By
@@ -37,6 +39,7 @@ en:
         email_html: <b>Email <span class="dtu-red">*</span></b> (for article and invoice delivery)
         email_without_invoice_html: <b>Email <span class="dtu-red">*</span></b> (for article delivery)
         mobile_html: <b>Mobile</b> (for SMS-notification)
+        required_fields_html: Fields marked with <b class="dtu-red">*</b> are required
         terms_accepted_html: 
           I have read and agree to the <b>%{link}</b> and the <b>requirements and restrictions</b> 
           (read the box on the right for more information) <span class="dtu-red">*</span>
@@ -93,7 +96,7 @@ en:
         customer_ref: Your reference
         email: Deliver to email
         mobile: Notify via SMS to
-      terms_of_service: Terms of Service
+      terms_of_service: Terms and conditions
       text:
         dtu_html: 
           Locating the article on our <b>daily</b> routine, DTU Library will scan the article and deliver it to you.
@@ -263,22 +266,21 @@ en:
         alis_books: "View in print books collection"
         alis_public: "On-site use at DTU Library"
         placeholder: "See full text options"        
-      home:
-        title: 'DTU Findit - one search finds it all'
     footer:
       about_dtu_library_html:
         <h5>About DTU Library</h5>
         <div class="about">
-          The Technical Information Center of Denmark, DTU Library, acts as the university library
-          at DTU and as a national technical information center.
+          Technical Information Center of Denmark, DTU Library, is the university library
+          of DTU and the national technical information center.
         </div>
         <div class="address">
-          <div class="name">The Technical Information Center of Denmark</div>
+          <div class="name">DTU Library</div>
+          <div class="name">Technical Information Center of Denmark</div>
           <div class="street">Anker Engelunds Vej 1</div>
           <div class="building">Building 101D</div>
-          <div class="city">2800 Kgs. Lyngby</div>
+          <div class="city">DK-2800 Kgs. Lyngby</div>
           <div class="email">%{email}</div>
-          <div class="telephone">Tel. 45 25 72 00</div>
+          <div class="telephone">Tel. (+45) 45 25 72 00</div>
         </div>
         <div class="cvr-number">CVR-no. 30060946</div>
         <div class="ean-number">EAN-no. 5798000430556</div>
@@ -288,3 +290,18 @@ en:
       legal_notice:
         title: 'LEGAL NOTICE'
         text: 'Systematic downloading and storing of data (including entire books or journals) is strictly prohibited'
+      service_menu:
+        find:
+          title: Find Information
+          search_literature: Search literature
+          other_search_tools: Other search tools
+          how_to_borrow_books: How to borrow books
+          reference_management: Reference management
+          for_industry_and_the_public: For industry and the public
+        visit:
+          title: Visit the Library
+        publishing:
+          title: Publishing at DTU
+        about:
+          title: About and Contact
+        

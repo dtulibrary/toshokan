@@ -3,6 +3,7 @@
     color: #ccc;
     background-color: #212121;
     padding: 48px 0px;
+    margin-top: 5em;
      
     h1,h2,h3,h4,h5,h6 {
       color: #fff;
@@ -30,7 +31,7 @@
     .address {
       margin-bottom: 20px;
 
-      .name {
+      .name:first-child {
         font-weight: bold;
         color: #fff;
       }

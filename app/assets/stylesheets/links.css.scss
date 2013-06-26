@@ -1,9 +1,9 @@
 @import 'toshokan_defaults';
 
 a {
-  color: $dtu_red;
+  color: $dtu_red_light;
 
   &:active, &:hover {
-    color: $dtu_red;
+    color: $dtu_red_light;
   }
 }

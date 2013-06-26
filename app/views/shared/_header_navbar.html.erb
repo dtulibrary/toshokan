@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="span6">
-          <a href="http://www.dtu.dk"><%= t 'toshokan.header.dtu' %></a>
+          <a href="http://www.dtu.dk"><%= image_tag 'dtu_text_header.png' %></a>
         </div>
         <div class="span6">
           <div class="pull-right">
@@ -18,22 +18,20 @@
   <div class="navbar-inner level2-navbar">
     <div class="container">
       <div class="row logos">
-        <div class="span6">
-          <%= link_to content_tag('div', '', :class => 'dtu-library-logo').html_safe, root_path, :class => 'logo pull-left' %>
+        <div class="span3">
+          <%= link_to 'DTU Findit', root_path, :class => 'logo pull-left' %>
         </div>
-        <div class="span6">
-          <%= link_to content_tag('div', '', :class => 'dtu-logo').html_safe, 'http://www.dtu.dk', :class => 'logo pull-right' %>
-        </div>
-      </div>
-      <% unless @disable_header_searchbar %>
-        <div class="row">
-          <div class="span9 offset3">
+        <div class="span8">
+          <% unless @disable_header_searchbar %>
             <div id="searchbar">
               <%= render_search_bar %>
             </div>
-          </div>
+          <% end %>
         </div>
-      <% end %>
+        <div class="span1">
+          <%= link_to content_tag('div', '', :class => 'dtu-logo').html_safe, 'http://www.dtu.dk', :class => 'logo pull-right' %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

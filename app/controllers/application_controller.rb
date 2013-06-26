@@ -18,6 +18,12 @@ class ApplicationController < ActionController::Base
     I18n.locale = params[:locale] || I18n.default_locale
   end
 
+  def current_locale
+    I18n.locale
+  end
+
+  helper_method :current_locale
+
   # Authenticate users if certain criteria are met.
   # - No authentication will be done if user is already logged in.
   # - No authentication will be done if an authentication provider 
