@@ -4,7 +4,7 @@
   <div class="items">
     <div class="metadata">
       <div class="title">"<%= @order.document['title_ts'].first %>"</div>
-      <div class="author">By <%= @order.document['author_ts'].first %></div>
+      <div class="author"><%= t 'toshokan.orders.by' %> <%= @order.document['author_ts'].first %></div>
       <div class="journal"><%= @order.document['journal_title_ts'].first %></div>
     </div>
     <div><%= t 'toshokan.orders.price_excl_vat' %> <%= render_formatted_price @order.price, @order.currency %></div>

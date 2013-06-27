@@ -59,39 +59,17 @@ class OrdersController < ApplicationController
 
       if @order.new_record?
         # Order has been created in session and needs information before going into database.
-        email = params[:email]
-        email_confirmation = params[:email_confirmation]
-        terms_accepted = params[:terms_accepted]
-
-        errors = {}
-        errors[:email] = I18n.t('toshokan.orders.errors.email_should_not_be_blank') if @order.flow.fields.include?(:email) && email.blank?
-        errors[:email_confirm] = I18n.t('toshokan.orders.errors.emails_dont_match') if @order.flow.fields.include?(:email) && email != email_confirmation
-        errors[:terms_accepted] = I18n.t('toshokan.orders.errors.you_must_accept_terms') if @order.flow.fields.include?(:terms_accepted) && !terms_accepted
+        errors = find_errors @order, params
 
         if errors.empty?
           # Update order and send user to confirmation page
-          @order.email = email
-          @order.mobile = params[:mobile]
-          @order.customer_ref = params[:customer_ref]
+          params_to_order @order
           @order.save!
-
-          @order.flow.continue
-
-          case @order.flow.current_step
-          when :confirm
-            render :confirm
-          else
-            # TODO: Since everybody has to confirm their order this should never happen.
-            #       Some sort of error should be shown.
-            logger.error "Invalid order flow step: #{@order.flow.current_step} for order with id #{@order.id}"
-            head :internal_server_error 
-          end
+          @order.flow.current_step = :confirm
+          render :confirm
         else
-          # Form values missing or invalid. Show form with values and errors.
-          flash.now[:error] = []
-          errors.each do |k,v|
-            flash.now[:error] << v
-          end
+          flash_errors errors
+          @order.flow.current_step = :delivery_info
           render :new
         end
       elsif !@order.payment_status && !@order.delivery_status
@@ -99,30 +77,33 @@ class OrdersController < ApplicationController
         # There are several reasons for being here:
         # - User reloaded the confirmation page
         # - User clicked 'back' on the confirmation page to edit delivery information
+        # - User clicked browser back on the confirmation and submitted delivery information form again
 
-        # User reloaded the confirmation page - just show the confirm page again
-        render :confirm and return if params[:button] == 'continue'
+        case params[:button]
+        when 'continue'
+          # This is a reload of order confirmation or a submit of delivery information
+          errors = find_errors @order, params
 
-        # Populate params with values from saved order
-        params[:email] = @order.email
-        params[:email_confirmation] = @order.email
-        params[:mobile] = @order.mobile
-        params[:customer_ref] = @order.customer_ref
-        params[:terms_accepted] = true
+          if errors.empty?
+            params_to_order @order
+            @order.save!
+            @order.flow.current_step = :confirm
+            render :confirm
+          else
+            @order = renew_order @order
+            
+            flash_errors errors
+            render :new and return
+          end
+        when 'back'
+          # This is click on "back" on the order confirmation page
+          order_to_params @order
+          @order = renew_order @order
 
-        # Remove the order from the database and reset it to be in a state suitable for
-        # the delivery information page.
-        # NOTE: Deleting the order from the database freezes its activerecord hash so
-        #       we duplicate the order and update the session and instance variable
-        #       with the new order object.
-        new_order = @order.dup
-        new_order.flow.back
-        session[:order] = new_order
-
-        @order.delete
-        @order = new_order
-
-        render :new
+          render :new
+        else
+          head :bad_request
+        end
       else
         # Error: The order is in a state where it can't be modified anymore (payment and/or delivery has been requested).
         #        This error should never be seen unless user tampers with order id's and such.
@@ -132,6 +113,56 @@ class OrdersController < ApplicationController
     else
       # Error: missing session values
       head :bad_request
+    end
+  end
+
+  # Remove the order from the database and reset it to be in a state suitable for
+  # the delivery information page.
+  # NOTE: Deleting the order from the database freezes its activerecord hash so
+  #       we duplicate the order and update the session and instance variable
+  #       with the new order object.
+  def renew_order order
+    new_order = order.dup
+    new_order.email = nil
+    new_order.mobile = nil
+    new_order.customer_ref = nil
+    new_order.flow.current_step = :delivery_info
+    session[:order] = new_order
+    
+    order.delete if order.persisted?
+    new_order
+  end
+
+  # Update order with values from params
+  def params_to_order order, local_params = params
+    order.email = local_params[:email]
+    order.mobile = local_params[:mobile]
+    order.customer_ref = local_params[:customer_ref]
+  end
+
+  # Update params with values from order
+  def order_to_params order, local_params = params
+    local_params[:email] = order.email
+    local_params[:email_confirmation] = order.email
+    local_params[:mobile] = order.mobile
+    local_params[:customer_ref] = order.customer_ref
+    local_params[:terms_accepted] = false
+  end
+
+  # Find errors in params
+  # TODO: Maybe should be put into activerecord validations instead
+  def find_errors order, local_params = params
+    errors = {}
+    errors[:email] = I18n.t('toshokan.orders.errors.email_should_not_be_blank') if order.flow.fields.include?(:email) && local_params[:email].blank?
+    errors[:email_confirm] = I18n.t('toshokan.orders.errors.emails_dont_match') if order.flow.fields.include?(:email) && local_params[:email] != local_params[:email_confirmation]
+    errors[:terms_accepted] = I18n.t('toshokan.orders.errors.you_must_accept_terms') if order.flow.fields.include?(:terms_accepted) && !local_params[:terms_accepted]
+    errors
+  end
+
+  def flash_errors errors
+    flash.now[:error] = []
+    errors.each do |k,v|
+      flash.now[:error] << v
     end
   end
 
