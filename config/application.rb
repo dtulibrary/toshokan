@@ -100,14 +100,15 @@ module Toshokan
 
     config.alis_url = ''
 
-    config.orders = { 
+    config.orders = {
       # Prefix order id's since we use unique order id's in DIBS
       # and development machines, unstable, staging and production all use the same DIBS
       :order_id_prefix => 'N/A-',
-      :reply_to_email => '', 
+      :reply_to_email => '',
       :order_link_hidden => true,
       :enabled => true,
-    }   
+      :enabled_ips => [],
+    }
 
     config.dibs = { 
       :payment_url => 'https://payment.architrade.com/paymentweb/start.action',

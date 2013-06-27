@@ -2,9 +2,10 @@
   include Blacklight::User
 
   attr_accessible :email, :firstname, :identifier, :lastname, :provider, :username, :image_url
-  attr_accessor :impersonating, :walk_in
+  attr_accessor :impersonating, :walk_in, :orders_enabled
   alias :impersonating? :impersonating
   alias :walk_in? :walk_in
+  alias :orders_enabled? :orders_enabled
 
   has_many :profiles
   has_and_belongs_to_many :roles

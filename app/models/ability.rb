@@ -41,7 +41,7 @@ class Ability
       can :update, User if user.roles.include? Role.find_by_code('ADM')
       can :switch, User if user.roles.include?(Role.find_by_code('SUP')) && !user.impersonating?
     end
-    
+
     # User can switch back if he is impersonating another user
     can :switch_back, User if user.impersonating?
 
@@ -53,7 +53,7 @@ class Ability
       can :ask, :librarian
     end
 
-    can :order, :article if Rails.application.config.orders[:enabled]
+    can :order, :article if user.orders_enabled?
   end
 
 end

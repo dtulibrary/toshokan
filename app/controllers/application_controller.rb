@@ -63,6 +63,12 @@ class ApplicationController < ActionController::Base
   def current_user
     user = logged_in_user || guest_user
     user.walk_in = walk_in_request?
+
+    if user.orders_enabled? != orders_enabled_request?
+      user.orders_enabled = orders_enabled_request?
+      @current_ability = nil
+    end
+
     return user
   end
 
@@ -75,17 +81,25 @@ class ApplicationController < ActionController::Base
   end
 
   def walk_in_request?
+    request_matches_ips? Rails.application.config.walk_in[:ips]
+  end
+
+  def orders_enabled_request?
+    Rails.application.config.orders[:enabled] || request_matches_ips?(Rails.application.config.orders[:enabled_ips])
+  end
+
+  def request_matches_ips? ips
     result = false
     remote = NetAddr::CIDR.create request.remote_ip
-    Rails.application.config.walk_in[:ips].each do |ip|
+    ips.each do |ip|
       if ip.include? '-'
-        # Range 
+        # Range
         lower, upper = NetAddr::CIDR.create($1), NetAddr::CIDR.create($2) if ip =~ /^(\S*)\s*-\s*(\S*)$/
         result ||= (lower..upper).include? remote
       elsif ip.include? '*'
         # Wildcard
         result ||= NetAddr.wildcard(ip).matches? remote
-      else 
+      else
         # Standard
         result ||= NetAddr::CIDR.create(ip).matches? remote
       end
