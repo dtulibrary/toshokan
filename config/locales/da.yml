@@ -82,6 +82,7 @@ da:
       summary:
         customer_ref: Din reference
         email: Email til levering
+        paid_with_card: Betal med betalingskort
       terms_of_service: Handelsbetingelser
       text:
         dtu_html: 
