@@ -108,6 +108,10 @@ module Toshokan
       :order_link_hidden => true,
       :enabled => true,
       :enabled_ips => [],
+      :terms_of_service => {
+        :en => 'http://lgdata.s3-website-us-east-1.amazonaws.com/docs/3935/791908/DTUFindit_TermsAndConditions.pdf',
+        :da => 'http://lgdata.s3-website-us-east-1.amazonaws.com/docs/3935/791910/DTUFindit_Handelsbetingelser.pdf',
+      },
     }
 
     config.dibs = { 

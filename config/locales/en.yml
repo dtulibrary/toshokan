@@ -43,7 +43,7 @@ en:
         back: Back
         cancel: Cancel
         continue: Continue
-        customer_ref_html: <b>Your reference</b> (included in invoice)
+        customer_ref_html: <b>Your reference</b> e.g. project no. (included in invoice)
         email_confirmation_html: <b>Email <span class="dtu-red">*</span></b> (confirm)
         email_html: <b>Email <span class="dtu-red">*</span></b> (for article and invoice delivery)
         email_without_invoice_html: <b>Email <span class="dtu-red">*</span></b> (for article delivery)
@@ -112,7 +112,7 @@ en:
           Locating the article on our <b>daily</b> routine, DTU Library will scan the article and deliver it to you.
         rd_html: 
           Using our international scanning services, DTU Library will order a scan of the article and deliver 
-          it to.
+          it to you.
       thank_you: Thank you for your order!
       total: Total
       vat: "%{vat_pct}% VAT"

@@ -43,4 +43,13 @@ module OrdersHelper
       "<div class=\"pull-right\">#{link_to t('toshokan.languages.danish_version', :locale => :da), new_order_path(:locale => :da)}</div>".html_safe
     end
   end
+
+  def render_terms_accepted_label
+    label_tag(:terms_accepted, 
+      t('toshokan.orders.form.terms_accepted_html', 
+        :link => link_to(t('toshokan.orders.terms_accepted'), 
+          Rails.application.config.orders[:terms_of_service][current_locale.to_sym], 
+          :target => '_blank')), 
+      :class => 'terms-accepted')
+  end
 end

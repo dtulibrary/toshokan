@@ -25,7 +25,7 @@ da:
         cancel: Afbryd
         continue: Fortsæt
         back: Tilbage
-        customer_ref_html: <b>Din reference</b> (overføres til kvitteringen)
+        customer_ref_html: <b>Din reference</b> f.eks. projektnr. (overføres til kvitteringen)
         email_confirmation_html: <b>Email <span class="dtu-red">*</span></b> (bekræft)
         email_html: <b>Email <span class="dtu-red">*</span></b> (til artikel- og fakturalevering)
         email_without_invoice_html: <b>Email <span class="dtu-red">*</span></b> (til artikellevering)
