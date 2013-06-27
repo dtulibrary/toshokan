@@ -40,6 +40,7 @@ en:
         payment_cancelled: Payment cancelled
         payment_captured: Payment completed
       form:
+        back: Back
         cancel: Cancel
         continue: Continue
         customer_ref_html: <b>Your reference</b> (included in invoice)
@@ -51,7 +52,7 @@ en:
         terms_accepted_html: 
           I have read and agree to the <b>%{link}</b> and the <b>requirements and restrictions</b> 
           (read the box on the right for more information) <span class="dtu-red">*</span>
-      go_to_payment: Go to payment
+        go_to_payment: Go to payment
       identify:
         continue_anonymously: I want to continue anonymously
         text: If you order an article while logged in, DTU FindIt adds your order to your order history, allowing you to keep track of the orders you have placed
@@ -111,7 +112,7 @@ en:
           Locating the article on our <b>daily</b> routine, DTU Library will scan the article and deliver it to you.
         rd_html: 
           Using our international scanning services, DTU Library will order a scan of the article and deliver 
-          it to you upon arrival &mdash; usually <b>within the hour</b>.
+          it to.
       thank_you: Thank you for your order!
       total: Total
       vat: "%{vat_pct}% VAT"

@@ -15,11 +15,11 @@
           <%= render_payment_form @order, I18n.locale %>
         <% else %>
           <%= form_tag order_receipt_path(@order.uuid), :method => :get, :style => 'display:inline' do %>
-            <%= button_tag 'Continue', :class => 'btn btn-primary' %>
+            <%= button_tag t('toshokan.orders.form.continue'), :class => 'btn btn-primary' %>
           <% end %>
         <% end %>
         <%= form_tag create_order_path, :style => 'display:inline' do %>
-          <%= button_tag 'Back', :name => 'button', :value => 'back', :class => 'btn' %>
+          <%= button_tag t('toshokan.orders.form.back'), :name => 'button', :value => 'back', :class => 'btn' %>
         <% end %>
       </div>
     </div>

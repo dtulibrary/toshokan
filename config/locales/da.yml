@@ -6,8 +6,8 @@
 da:
   toshokan:
     languages:
-      english_version: English version
-      danish_version: Danish version
+      english_version: Engelsk version
+      danish_version: Dansk version
     orders:
       buy_article: Bestil artikel
       by: Af
@@ -24,6 +24,7 @@ da:
       form:
         cancel: Afbryd
         continue: Fortsæt
+        back: Tilbage
         customer_ref_html: <b>Din reference</b> (overføres til kvitteringen)
         email_confirmation_html: <b>Email <span class="dtu-red">*</span></b> (bekræft)
         email_html: <b>Email <span class="dtu-red">*</span></b> (til artikel- og fakturalevering)
