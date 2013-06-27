@@ -3,9 +3,9 @@
     <h4><%= t 'toshokan.orders.order_status' %></h4>
 
     <dl class="dl-horizontal dl-invert">
-      <%- @order.order_events.each do |event| -%>
+      <%- @order.order_events.reject {|e| e.name == 'payment_authorized'}.each do |event| -%>
         <dt><%= l event.created_at %></dt>
-        <dd><%= t event.name %></dd>
+        <dd><%= t "toshokan.orders.events.#{event.name}" %></dd>
       <%- end -%>
     </dl>
   </div>

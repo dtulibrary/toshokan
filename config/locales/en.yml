@@ -31,6 +31,14 @@ en:
         email_should_not_be_blank: You must supply an email address
         emails_dont_match: Email doesn't match confirmation email
         you_must_accept_terms: You must accept DTU's terms of service
+      events:
+        delivery_cancelled: Article delivery cancelled
+        delivery_confirmed: Article delivery confirmed
+        delivery_done: Article delivered
+        delivery_requested: Article ordered
+        payment_authorized: Payment authorized
+        payment_cancelled: Payment cancelled
+        payment_captured: Payment completed
       form:
         cancel: Cancel
         continue: Continue
@@ -96,6 +104,7 @@ en:
         customer_ref: Your reference
         email: Deliver to email
         mobile: Notify via SMS to
+        paid_with_card: Pay with credit card
       terms_of_service: Terms and conditions
       text:
         dtu_html: 

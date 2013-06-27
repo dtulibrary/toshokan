@@ -40,7 +40,6 @@ da:
         rd: DTU Bibliotek vil bestille en digital kopi fra vores dokumentleverandør. Vær venlig at indtaste dine oplysninger i nedenstående felt.
       not_logged_in_notice: Du er ikke logget ind.  Log ind for at opnå nedsat pris (Kun for DTU-ansatte og -studerende) og for at tilføje bestillingen til din historik.
       order_cancelled: Din bestilling er annulleret
-      order_now: Bestil nu
       order_placed: Din bestilling er gennemført
       order_scan: 
         dtu_html: Bestil<br>DTU's trykte samling 

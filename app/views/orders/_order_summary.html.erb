@@ -19,6 +19,11 @@
           </div>
         <% end %>
       <% end %>
+      <% if @order.masked_card_number %>
+        <div>
+          <%= t 'toshokan.orders.summary.paid_with_card' %>:<span class="pull-right"><%= @order.masked_card_number %></span>
+        </div>
+      <% end %>
     </div>
     <hr>
   <% end %>
