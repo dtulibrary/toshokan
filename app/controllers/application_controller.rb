@@ -52,9 +52,6 @@ class ApplicationController < ActionController::Base
   end
 
   def check_walk_in_only
-    logger.info current_user.walk_in
-    logger.info Rails.application.config.walk_in[:only]
-
     if Rails.application.config.walk_in[:only]
       redirect_to come_back_later_url unless current_user.walk_in
     end
