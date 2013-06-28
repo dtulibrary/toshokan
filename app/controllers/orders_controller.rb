@@ -215,7 +215,7 @@ class OrdersController < ApplicationController
       @order.save!
 
       DocDel.delay.request_delivery @order, order_delivery_url(@order.uuid) if DocDel.enabled?
-      SendIt.delay.send_confirmation_mail @order
+      SendIt.delay.send_confirmation_mail @order, :status_url => order_status_url(@order.uuid)
     end
   end
 
@@ -232,7 +232,7 @@ class OrdersController < ApplicationController
         @order.delivered_at = Time.now
         @order.save!
 
-        SendIt.delay.send_receipt_mail @order
+        SendIt.delay.send_receipt_mail @order, :status_url => order_status_url(@order.uuid)
         PayIt::Dibs.delay.capture @order
       when :confirm
         @order.order_events << OrderEvent.new(:name => 'delivery_confirmed')
@@ -242,7 +242,7 @@ class OrdersController < ApplicationController
         @order.save!
 
         PayIt::Dibs.delay.cancel @order
-        SendIt.delay.send_cancellation_mail @order
+        SendIt.delay.send_cancellation_mail @order, :status_url => order_status_url(@order.uuid)
       end
 
       head :ok
