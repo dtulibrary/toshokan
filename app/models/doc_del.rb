@@ -16,6 +16,8 @@ class DocDel
       :callback_url => callback_url
     }
 
+    Rails.logger.info "Sending order to DocDel: URL = #{DocDel.url}, params = #{params}"
+
     response = HTTParty.post DocDel.url, :body => params
 
     if response.code == 200
