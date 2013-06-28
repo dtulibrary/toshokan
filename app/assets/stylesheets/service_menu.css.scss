@@ -1,6 +1,5 @@
 .service-menu {
   margin-top: 3em;
-  font-family: "DTU Medium";
   
   ul {
     margin: 0px;
@@ -10,11 +9,14 @@
     li {
       border-bottom: 1px solid #ddd;
       font-size: 12px;
+      font-weight: bold;
 
       &:first-child {
         background-image: image_url('service_menu_bg.jpg');
         background-repeat: repeat-x;
         color: $dtu_red_light;
+        font-family: "DTU Medium";
+        font-weight: normal;
         font-size: 1.1em;
         text-transform: uppercase;
         padding: 11px 10px 9px 10px;
