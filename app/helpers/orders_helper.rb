@@ -47,7 +47,7 @@ module OrdersHelper
   def render_terms_accepted_label
     label_tag(:terms_accepted, 
       t('toshokan.orders.form.terms_accepted_html', 
-        :link => link_to(t('toshokan.orders.terms_accepted'), 
+        :link => link_to(t('toshokan.orders.terms_of_service'), 
           Rails.application.config.orders[:terms_of_service][current_locale.to_sym], 
           :target => '_blank')), 
       :class => 'terms-accepted')

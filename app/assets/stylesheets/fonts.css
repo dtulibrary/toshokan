@@ -1,0 +1,40 @@
+@import url("http://fast.fonts.com/t/1.css?apiType=css&projectid=5cebbbb5-be88-4802-9d8e-4388b2411419");
+
+@font-face{
+  font-family:"DTU Sans W01";
+  src: 
+    url("http://www.dtu.dk/css/Fonts/2959d89a-a257-4ce7-9cda-63e00f275369.eot?#iefix") format("embedded-opentype"),
+    url("http://www.dtu.dk/css/Fonts/97316a7d-9db1-4dc1-bd87-e24103d88a81.ttf") format("truetype"),
+    url("http://www.dtu.dk/css/Fonts/1287ca7a-3ce7-40b7-9612-061d4c793f04.svg#1287ca7a-3ce7-40b7-9612-061d4c793f04") format("svg");
+}
+
+@font-face{
+  font-family:"DTU Sans W01 Medium";
+  src:
+    url("http://www.dtu.dk/css/Fonts/85c8556d-8a76-4037-a2e2-0f5fd9dabc03.eot?#iefix") format("embedded-opentype"),
+    url("http://www.dtu.dk/css/Fonts/b2931674-c992-42a0-aa22-e9cb15d3383d.ttf") format("truetype"),
+    url("http://www.dtu.dk/css/Fonts/af9d27b2-3ca0-47ca-8d5d-4c4665df6305.svg#af9d27b2-3ca0-47ca-8d5d-4c4665df6305") format("svg");
+}
+
+@font-face{
+  font-family:"DTU Sans W01 Bold";
+  src:
+    url("http://www.dtu.dk/css/Fonts/a0b14394-4dd9-4421-98cf-dfe2f8dc6251.eot?#iefix") format("embedded-opentype"),
+    url("http://www.dtu.dk/css/Fonts/2974017c-634d-4238-9381-e3f0b95a150c.ttf") format("truetype"),
+    url("http://www.dtu.dk/css/Fonts/0b4cc213-f9e9-4cb1-aa3c-64e91a1328dc.svg#0b4cc213-f9e9-4cb1-aa3c-64e91a1328dc") format("svg");
+}
+
+.neoSans { 
+  font-family:"DTU Sans W01"; 
+  font-weight: normal; 
+} 
+
+.neoSansMedium { 
+  font-family:"DTU Sans W01 Medium";
+  font-weight: normal; 
+} 
+
+.neoSansBold { 
+  font-family:"DTU Sans W01 Bold"; 
+  font-weight: normal;
+}
