@@ -64,6 +64,7 @@ module Toshokan
 
     # Enable I18n fallbacks
     config.i18n.fallbacks = true
+    config.i18n.load_path += Dir[File.join(Rails.root, 'config', 'locales', '**', '*.{rb,yml}')]
 
     # Config to be overriden by local settings
     config.stub_authentication = false;

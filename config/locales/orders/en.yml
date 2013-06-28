@@ -1,0 +1,101 @@
+en:
+  toshokan:
+    orders:
+      buy_article: Order article
+      by: By
+      delivery_information: Delivery information
+      discount_types:
+        dtu_staff_discount: DTU staff discount
+        dtu_student_discount: DTU student discount
+        dtu_discount: DTU discount
+      done: Done
+      errors:
+        email_should_not_be_blank: You must supply an email address
+        emails_dont_match: Email doesn't match confirmation email
+        you_must_accept_terms: You must accept DTU's terms of service
+      events:
+        delivery_cancelled: Article delivery cancelled
+        delivery_confirmed: Article delivery confirmed
+        delivery_done: Article delivered
+        delivery_requested: Article ordered
+        payment_authorized: Payment authorized
+        payment_cancelled: Payment cancelled
+        payment_captured: Payment completed
+      form:
+        back: Back
+        cancel: Cancel
+        continue: Continue
+        customer_ref_html: <b>Your reference</b> e.g. project no. (included in invoice)
+        email_confirmation_html: <b>Email <span class="dtu-red">*</span></b> (confirm)
+        email_html: <b>Email <span class="dtu-red">*</span></b> (for article and invoice delivery)
+        email_without_invoice_html: <b>Email <span class="dtu-red">*</span></b> (for article delivery)
+        mobile_html: <b>Mobile</b> (for SMS-notification)
+        required_fields_html: Fields marked with <b class="dtu-red">*</b> are required
+        terms_accepted_html: 
+          I have read and agree to the <b>%{link}</b> and the <b>requirements and restrictions</b> 
+          (read the box on the right for more information) <span class="dtu-red">*</span>
+        go_to_payment: Go to payment
+      identify:
+        continue_anonymously: I want to continue anonymously
+        text: If you order an article while logged in, DTU FindIt adds your order to your order history, allowing you to keep track of the orders you have placed
+        title: Log in before ordering?
+      info:
+        dtu: DTU Library will scan a copy of the article.
+        rd: DTU Library will invoke our international document supplier in order to acquire this article for you in digital form. Please enter your delivery information in the form below
+      not_logged_in_notice: You are currently not logged in. Log in for discounts (DTU affiliates only) and for adding your order to your order history.
+      order_cancelled: Your order was cancelled.
+      order_now: Order now
+      order_placed: Your order has been placed.
+      order_scan: 
+        dtu_html: Order Scan<br>DTU Print Collection 
+        rd_html: Order Scan
+      order_status: Order Status
+      pay: Pay
+      price: Price
+      price_excl_vat: Price (excl. VAT)
+      receipt_html:
+        <p>
+          <b>Your order has been placed.</b>
+        </p>
+        <p>
+          This page is your receipt. You will also receive an order receipt by email.
+        </p>
+        <p>
+          You can view the status of your order <a href="%{status_link}">here</a>.
+        </p>
+        <p>
+          <b>Thank you for your order!</b>
+        </p>
+      requirements_html: 
+        <h5>Requirements and Restrictions</h5>
+        <p>
+          %{link} may be required to read this article.
+        </p>
+        <p>
+          Please note that some articles can <b>only be viewed and printed once</b>, in accordance with 
+          copyright restrictions. Save the PDF file to your computer before opening it. 
+          If this PDF file can be printed, after opening please print one copy.
+        </p>
+      review_your_order: Please review your order to the right before continuing.
+      steps:
+        confirm: Confirm
+        delivery_info: Delivery information
+        done: Done
+        payment: Payment
+      subtotal: Subtotal
+      summary:
+        customer_ref: Your reference
+        email: Deliver to email
+        mobile: Notify via SMS to
+        paid_with_card: Pay with credit card
+      terms_of_service: Terms and conditions
+      text:
+        dtu_html: 
+          Locating the article on our <b>daily</b> routine, DTU Library will scan the article and deliver it to you.
+        rd_html: 
+          Using our international scanning services, DTU Library will order a scan of the article and deliver 
+          it to you.
+      thank_you: Thank you for your order!
+      total: Total
+      vat: "%{vat_pct}% VAT"
+      your_order: Your order

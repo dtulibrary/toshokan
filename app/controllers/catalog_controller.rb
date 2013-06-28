@@ -21,7 +21,7 @@ class CatalogController < ApplicationController
     # TODO: Would really be nice not to have this kind of thing. Possible fixes:
     #   - Go back to configuring BL in an initializer
     #   - Push translation lookup into BL and hope that pull request would get accepted
-    Dir[Rails.root + 'config/locales/*.yml'].each { |path| I18n.load_path << path }
+    Dir[Rails.root + 'config/locales/**/*.{rb,yml}'].each { |path| I18n.load_path << path }
 
     class << config
       # Wrapper on top of blacklight's config.add_*_field that simplifies I18n support for toshokan
