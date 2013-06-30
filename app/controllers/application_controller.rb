@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   before_filter :authenticate
   before_filter :check_walk_in_only
+  before_filter :set_google_analytics_dimensions_and_metrics
 
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
@@ -26,7 +27,7 @@ class ApplicationController < ActionController::Base
 
   # Authenticate users if certain criteria are met.
   # - No authentication will be done if user is already logged in.
-  # - No authentication will be done if an authentication provider 
+  # - No authentication will be done if an authentication provider
   #   has not been chosen. This will also check for sticky choice
   #   from :auth_provider cookie.
   def authenticate
@@ -63,6 +64,7 @@ class ApplicationController < ActionController::Base
   def current_user
     user = logged_in_user || guest_user
     user.walk_in = walk_in_request?
+    user.internal = internal_request?
 
     if user.orders_enabled? != orders_enabled_request?
       user.orders_enabled = orders_enabled_request?
@@ -86,6 +88,10 @@ class ApplicationController < ActionController::Base
 
   def orders_enabled_request?
     Rails.application.config.orders[:enabled] || request_matches_ips?(Rails.application.config.orders[:enabled_ips])
+  end
+
+  def internal_request?
+    request_matches_ips? Rails.application.config.internal[:ips]
   end
 
   def request_matches_ips? ips
@@ -113,6 +119,22 @@ class ApplicationController < ActionController::Base
 
   def current_or_guest_user
     current_user
+  end
+
+  def set_google_analytics_dimensions_and_metrics
+    user_group = case
+                 when current_user.internal?
+                   'dtic'
+                 when current_user.walk_in?
+                   'walk_in_anonymous'
+                 else
+                   'public_anonymous'
+                 end
+    set_google_analytics_dimension_or_metric 'dimension1', user_group
+  end
+
+  def set_google_analytics_dimension_or_metric name, value
+    GoogleAnalytics.set_custom_variable name, value
   end
 
   # Call this to bail out quickly and easily when something is not found.

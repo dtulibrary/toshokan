@@ -1,10 +1,11 @@
-  class User < ActiveRecord::Base
+class User < ActiveRecord::Base
   include Blacklight::User
 
   attr_accessible :email, :firstname, :identifier, :lastname, :provider, :username, :image_url
-  attr_accessor :impersonating, :walk_in, :orders_enabled
+  attr_accessor :impersonating, :walk_in, :internal, :orders_enabled
   alias :impersonating? :impersonating
   alias :walk_in? :walk_in
+  alias :internal? :internal
   alias :orders_enabled? :orders_enabled
 
   has_many :profiles
@@ -32,9 +33,6 @@
                           :email => dtubase_profile.email,
                           :identifier => dtubase_profile.id,
                           :org_id => dtubase_profile.org_id)
-
-
-
     end
     user.save
     user

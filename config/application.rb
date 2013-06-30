@@ -96,6 +96,10 @@ module Toshokan
       :only => false,
     }
 
+    config.internal = {
+      :ips => [],
+    }
+
     config.action_mailer.smtp_settings = {
     }
 
@@ -115,25 +119,25 @@ module Toshokan
       },
     }
 
-    config.dibs = { 
+    config.dibs = {
       :payment_url => 'https://payment.architrade.com/paymentweb/start.action',
       :capture_url => 'https://payment.architrade.com/cgi-bin/capture.cgi',
       :cancel_url => 'https://payment.architrade.com/cgi-adm/cancel.cgi',
       :username => '',
       :password => '',
-      :merchant_id => '', 
-      :md5_key1 => '', 
-      :md5_key2 => '', 
+      :merchant_id => '',
+      :md5_key1 => '',
+      :md5_key2 => '',
       :paytype => 'DK,VISA,ELEC,MC,MTRO,AMEX,JCB',
       :test => true,
     }
 
-    config.doc_del = { 
+    config.doc_del = {
       :url => '',
       :enabled => true,
-    }   
+    }
 
-    config.send_it = { 
+    config.send_it = {
       :url => '',
       :delay_jobs => true,
     }
@@ -150,5 +154,10 @@ module Toshokan
         :how_to => 'http://libguides.dtu.dk/content.php?pid=462533&sid=3821789#13839230',
       }
     }
+
+    config.google_analytics = {
+      :tracking_id => nil
+    }
+
   end
 end
