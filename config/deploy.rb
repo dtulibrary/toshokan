@@ -39,7 +39,7 @@ end
 # tasks
 
 before "deploy:assets:precompile", "config:symlink"
-before "deploy:assets:precompile", "deploy:assets:clean"
+#before "deploy:assets:precompile", "deploy:assets:clean"
 after "deploy:update", "deploy:cleanup"
 
 namespace :config do
