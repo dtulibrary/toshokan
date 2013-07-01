@@ -69,6 +69,9 @@ module Toshokan
     # Config to be overriden by local settings
     config.stub_authentication = false;
 
+    config.time_zone = 'CET'
+    config.active_record.default_timezone = 'CET'
+
     config.cas = {
       :host => ''
     }

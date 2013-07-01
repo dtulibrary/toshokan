@@ -4,7 +4,7 @@
 
     <dl class="dl-horizontal dl-invert">
       <%- @order.order_events.reject {|e| e.name == 'payment_authorized'}.each do |event| -%>
-        <dt><%= l event.created_at %></dt>
+        <dt><%= l event.created_at, :format => :long %></dt>
         <dd><%= t "toshokan.orders.events.#{event.name}" %></dd>
       <%- end -%>
     </dl>
