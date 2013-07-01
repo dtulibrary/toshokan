@@ -14,7 +14,7 @@ class SendIt
       default_params[:priority] = 'now' unless SendIt.delay_jobs?
 
       response = HTTParty.post url, {
-        :body => default_params.merge(params).to_json,
+        :body => default_params.deep_merge(params).to_json,
         :headers => { 'Content-Type' => 'application/json' }
       }
 
@@ -33,7 +33,7 @@ class SendIt
       :to => order.email,
       :from => Orders.reply_to_email,
       :order => {
-        :id => order.id,
+        :id => order.dibs_order_id,
         :title => order.document['title_ts'].first,
         :journal => order.document['journal_title_ts'].first,
         :author => order.document['author_ts'].first,
@@ -45,7 +45,7 @@ class SendIt
         :vat_pct => 25,
         :masked_card_no => order.masked_card_number,
       }
-    }.merge(params)
+    }.deep_merge(params)
   end
 
   def self.send_confirmation_mail order, params = {}
