@@ -135,9 +135,9 @@ class OrdersController < ApplicationController
 
   # Update order with values from params
   def params_to_order order, local_params = params
-    order.email = local_params[:email]
-    order.mobile = local_params[:mobile]
-    order.customer_ref = local_params[:customer_ref]
+    order.email = local_params[:email] unless local_params[:email].blank?
+    order.mobile = local_params[:mobile] unless local_params[:mobile].blank?
+    order.customer_ref = local_params[:customer_ref] unless local_params[:customer_ref].blank?
   end
 
   # Update params with values from order

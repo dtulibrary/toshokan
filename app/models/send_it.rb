@@ -40,6 +40,7 @@ class SendIt
         :amount => order.price,
         :vat => order.vat,
         :currency => order.currency,
+        :customer_ref => order.customer_ref,
         :total => (order.price + order.vat),
         :vat_pct => 25,
         :masked_card_no => order.masked_card_number,
