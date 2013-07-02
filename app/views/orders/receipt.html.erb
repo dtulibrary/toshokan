@@ -8,7 +8,7 @@
         <div class="info">
           <%= t "toshokan.orders.text.#{@order.supplier}_html" %>
         </div>
-        <%= t 'toshokan.orders.receipt_html', :status_link => order_status_url(@order.uuid) %>
+        <%= t 'toshokan.orders.receipt_html', :status_link => order_status_url(@order.uuid), :search_link => @order_return_url %>
       </div>
       <div class="span6">
         <%= render 'order_summary' %>

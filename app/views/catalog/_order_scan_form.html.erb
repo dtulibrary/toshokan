@@ -1,6 +1,7 @@
 <%= form_tag new_order_path, :method => :get do %>
   <%= hidden_field_tag :supplier, supplier %>
   <%= hidden_field_tag :open_url, open_url %>
+  <%= hidden_field_tag :order_return_url, request.fullpath %>
   <%= render_scan_price_tag current_user, :rd, index %>
   <%= button_tag t('toshokan.orders.order_now'), :value => 'create', :class => 'btn btn-primary btn-small' %>
 <% end %>

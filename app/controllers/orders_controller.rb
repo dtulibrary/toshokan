@@ -31,6 +31,8 @@ class OrdersController < ApplicationController
     if params[:open_url] && params[:supplier]
       @open_url = params[:open_url]
       @supplier = params[:supplier].to_sym
+      session[:order_return_url] = params[:order_return_url]
+      logger.debug "setting return_url :#{session[:order_return_url]}"
 
       price = PayIt::Prices.price current_user, @supplier, :DKK
       @order = Order.new({
@@ -189,6 +191,8 @@ class OrdersController < ApplicationController
   
     @order.flow = OrderFlow.new current_user, @order.supplier
     @order.flow.current_step = :done
+
+    @order_return_url = params[:return_url]
 
     if @order.flow.steps.include?(:payment) && !@order.payment_status
       case PayIt::Dibs.status_code params[:statuscode]
