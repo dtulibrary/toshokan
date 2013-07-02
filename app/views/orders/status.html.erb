@@ -8,6 +8,9 @@
         <dd><%= t "toshokan.orders.events.#{event.name}" %></dd>
       <%- end -%>
     </dl>
+    <% if @return_url %>
+      <%= link_to t('toshokan.orders.back_to_search'), @return_url %>
+    <% end %>
   </div>
   <div class="span6">
     <%= render 'order_summary' %>

@@ -1,6 +1,7 @@
 en:
   toshokan:
     orders:
+      back_to_search: Back to search
       buy_article: Order article
       by: By
       delivery_information: Delivery information

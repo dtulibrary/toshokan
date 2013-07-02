@@ -1,6 +1,7 @@
 da:
   toshokan:
     orders:
+      back_to_search: Tilbage til søgning
       buy_article: Bestil artikel
       by: Af
       delivery_information: Leveringsoplysninger

@@ -193,6 +193,7 @@ class OrdersController < ApplicationController
     @order.flow.current_step = :done
 
     @order_return_url = params[:return_url]
+    @order_status_url = order_status_url(:uuid => @order.uuid, :return_url => @order_return_url)
 
     if @order.flow.steps.include?(:payment) && !@order.payment_status
       case PayIt::Dibs.status_code params[:statuscode]
@@ -258,6 +259,7 @@ class OrdersController < ApplicationController
 
   def status
     @order = Order.find_by_uuid params[:uuid]
+    @return_url = params[:return_url]
   end
 
 end
