@@ -3,7 +3,7 @@
   $.fn.addResource = function(openUrl, id, service_list, options, manipulation_func) {
     var base = $(this);
     var customData = encodeURIComponent(JSON.stringify({"id" : id}));
-    var url = ['<%= Toshokan::Application.config.getit[:url] %>',
+    var url = [toshokan.getit.url,
                "/resolve?" + openUrl,                
                "&rft.data=" + customData,
                "&req_id=" + userType,
