@@ -12,6 +12,8 @@
     h5 {
       line-height: 14px;
       font-size: 14px;
+      font-weight: normal;
+      font-family: "DTU Medium";
       text-transform: uppercase;
 
       &:first-child {
@@ -32,7 +34,7 @@
       margin-bottom: 20px;
 
       .name:first-child {
-        font-weight: bold;
+        font-family: "DTU Medium";
         color: #fff;
       }
     }
