@@ -6,6 +6,8 @@ class SolrDocument
 
   include Blacklight::Solr::Document
 
+  self.unique_key = 'cluster_id_ss'
+
   SolrDocument.use_extension(References)
 
   attr_reader :citation_styles
@@ -14,6 +16,10 @@ class SolrDocument
     super
     @citation_styles = [:mla, :apa, :'chicago-author-date']
   end  
+
+  def id
+    self[self.class.unique_key].first
+  end
   
   # DublinCore uses the semantic field mappings below to assemble an OAI-compliant Dublin Core document
   # Semantic mappings of solr stored fields. Fields may be multi or

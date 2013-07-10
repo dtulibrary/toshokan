@@ -53,7 +53,8 @@ class CatalogController < ApplicationController
     ## parameters included in the Blacklight-jetty document requestHandler.
     #
     config.default_document_solr_params = {
-      :qt => '/toshokan_document'
+      :qt => '/toshokan_document',
+      :q => '{!raw f=cluster_id_ss v=$id}'
     #  ## These are hard-coded in the blacklight 'document' requestHandler
     #  # :fl => '*',
     #  # :rows => 1
