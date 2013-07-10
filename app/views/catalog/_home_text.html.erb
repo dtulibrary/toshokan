@@ -20,7 +20,11 @@
       <%= image_tag 'FA_search.png', :style => 'width: 50px' %>
     </div>
     <div style="background-color: whitesmoke; border-radius: 10px; padding: 20px; text-align: left">
+      <%- if can? :search, :dtu -%>
+      Search 170 million articles, journals and books.<br>
+      <%- else -%>
       Search more than 70 million articles, journals and books.<br>
+      <%- end -%>
       <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=13839230">Read more</a>
     </div>
   </div>
