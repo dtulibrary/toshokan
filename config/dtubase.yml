@@ -1,6 +1,0 @@
-development: 
-    
-
-<%= file = File.join("config", "dtubase.development.yml")
-  IO.read(file) if File.exist?(file) %>
-

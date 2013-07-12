@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def index
     if can? :update, User
-      @all_users = User.all :order => 'firstname asc, lastname asc'
+      @all_users = User.all :order => 'email asc'
       @all_roles = Role.all :order => :name
     else
       deny_access and return

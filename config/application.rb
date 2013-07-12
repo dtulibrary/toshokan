@@ -67,8 +67,6 @@ module Toshokan
     config.i18n.load_path += Dir[File.join(Rails.root, 'config', 'locales', '**', '*.{rb,yml}')]
 
     # Config to be overriden by local settings
-    config.stub_authentication = false;
-
     config.time_zone = 'CET'
     config.active_record.default_timezone = :local
 
@@ -76,14 +74,16 @@ module Toshokan
       :document_id => 'cluster_id_ss'
     }
 
-    config.cas = {
-      :host => ''
-    }
-
-    config.dtubase = {
-      :url => '',
-      :username => '',
-      :password => ''
+    config.auth = {
+      :stub => false,
+      :anonymous_only => false,
+      :cas_url => '',
+      :api_url => '',
+      :ip => {
+        :walk_in  => [],
+        :campus   => [],
+        :internal => [],
+      }
     }
 
     config.cover_images = {
@@ -93,18 +93,6 @@ module Toshokan
 
     config.getit = {
         :url => ''
-    }
-
-    config.walk_in = {
-      # List IP's for Walk-in PC's here.
-      # Can be listed as '127.0.0.1', '127.0.0.1/32', '127.0.0.*', '127.0.0.1-127.0.0.127'
-      # Wildcards can't be used in ranges.
-      :ips => [],
-      :only => false,
-    }
-
-    config.internal = {
-      :ips => [],
     }
 
     config.action_mailer.smtp_settings = {
@@ -154,8 +142,6 @@ module Toshokan
 
     config.scopus_url = "http://www.scimagojr.com/journalsearch.php?q=%s&tip=iss"
     config.orbit_url = "http://orbit.dtu.dk/en/publications/id(%s).html"
-
-    config.anonymous_only = false
 
     config.lib_guide = {
       :public => {

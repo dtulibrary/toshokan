@@ -3,7 +3,7 @@
       :method => :put, 
       :action => :update, 
       :class => 'manage-users',
-      'data-cwis' => user.identifier do %>
+      'data-identifier' => user.identifier do %>
     <% if user.image_url %>
       <img src="<%= user.image_url %>" class="mugshot pull-right" alt="<%= t 'toshokan.users.profile_picture_for' %> <%= user.to_s %>">
     <% end %>

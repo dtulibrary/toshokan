@@ -10,7 +10,7 @@ class SendIt
       begin
         url = "#{SendIt.url}/send/#{template}"
         Rails.logger.info "Sending mail request to SendIt: URL = #{url}, template = #{template}, params = #{params}"
-    
+
         default_params = {
           :from => 'noreply@dtic.dtu.dk'
         }

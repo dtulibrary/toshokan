@@ -6,29 +6,25 @@ class Ability
     if user.authenticated?
       can :logout, User
       can :view, :search_history
+      can :tag, [Bookmark, Search]
       can :alert, [:journal, Search]
     else
-      if Rails.application.config.anonymous_only
+      if Rails.application.config.auth[:anonymous_only]
         cannot :login, User
       else
         can :login, User
       end
       can :search, :public
-      can :remember, :auth_provider
     end
 
     # Apply abilities based on which authentication provider the user used for login
-    case user.provider
-    when 'dtu_cas'
+    case
+    when user.dtu?
       # Logged in using DTU CAS
-      can :tag, [Bookmark, Search]
-      can :share, Tag
-      can :search, :dtu    
+      can :search, :dtu
       can :view, :cant_find_links
-    when 'public'
+    when user.public?
       # Logged in from outside DTU Campus
-      can :tag, [Bookmark, Search]
-      can :share, Tag
       can :search, :public
     end
 

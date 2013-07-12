@@ -1,7 +1,7 @@
 OmniAuth.config.test_mode = true
 OmniAuth.config.add_mock(:cas, {
   :uid => 'abcd',
-  :info => { :name => 'Firstname Lastname' },  
+  :info => { :name => 'Firstname Lastname' },
   :extra => {
     :user => 'abcd'
   }

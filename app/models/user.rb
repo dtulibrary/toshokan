@@ -1,115 +1,56 @@
 class User < ActiveRecord::Base
+
   include Blacklight::User
 
-  attr_accessible :email, :firstname, :identifier, :lastname, :provider, :username, :image_url
-  attr_accessor :impersonating, :walk_in, :internal, :orders_enabled
+  attr_accessible :email, :identifier, :provider, :user_data
+  serialize :user_data, JSON
+
+  attr_accessor :impersonating, :walk_in, :internal, :campus, :orders_enabled
   alias :impersonating? :impersonating
   alias :walk_in? :walk_in
   alias :internal? :internal
+  alias :campus? :campus
   alias :orders_enabled? :orders_enabled
 
-  has_many :profiles
   has_and_belongs_to_many :roles
 
   has_many :subscriptions, :dependent => :destroy
   has_many :tags, :dependent => :destroy
   has_many :taggings, :through => :tags
 
-
-  def self.create_or_update_with_account(provider, account)
+  def self.create_or_update_with_user_data(provider, user_data)
     user =
-      find_by_provider_and_identifier(provider, account.cwis) ||
-      self.create(:provider => provider, :identifier => account.cwis)
-    user.username = account.username
-    user.firstname = account.firstname
-    user.lastname = account.lastname
-    user.email = account.email
-    user.image_url = account.image_url
-
-    user.profiles.clear
-    account.profiles.each do |dtubase_profile|
-      user.profiles.build(:active => dtubase_profile.active,
-                          :kind => dtubase_profile.kind,
-                          :email => dtubase_profile.email,
-                          :identifier => dtubase_profile.id,
-                          :org_id => dtubase_profile.org_id)
-    end
+      find_by_provider_and_identifier(provider, user_data['id']) ||
+      self.create(:provider => provider, :identifier => user_data['id'])
+    user.user_data = user_data
+    user.email = user_data['email']
     user.save
     user
   end
 
-  def active_profiles
-    profiles.find_all { |p| p.active }
+  def public?
+    !dtu?
   end
 
-  def active?
-    profiles.any? { |p| p.active }
-  end
-
-  def employee_profiles
-    profiles.find_all { |p| p.kind == 'employee'}
-  end
-
-  def student_profiles
-    profiles.find_all { |p| p.kind == 'student'}
-  end
-
-  def guest_profiles
-    profiles.find_all { |p| p.kind == 'guest'}
-  end
-
-  def active_employee_profiles
-    employee_profiles.find_all { |p| p.active }
-  end
-
-  def active_student_profiles
-    student_profiles.find_all { |p| p.active }
-  end
-
-  def active_guest_profiles
-    guest_profiles.find_all { |p| p.active }
+  def dtu?
+    user_data && user_data['dtu']
   end
 
   def employee?
-    employee_profiles.any? { |p| p.active }
+    dtu? && user_data['dtu']['user_type'] == 'dtu_empl'
   end
 
   def student?
-    student_profiles.any? { |p| p.active }
+    dtu? && user_data['dtu']['user_type'] == 'student'
   end
 
   def guest?
-    guest_profiles.any? { |p| p.active }
+    dtu? && user_data['dtu']['user_type'] == 'guest'
   end
 
   def authenticated?
     # Only authenticated users are stored in the database
     id
-  end
-
-  def tag(document, tag_name)
-    bookmark = bookmarks.find_or_create_by_document_id(document.id)
-    tag = tags.find_or_create_by_name(tag_name)
-    bookmark.tags << tag unless bookmark.tags.exists?(tag)
-    bookmark.save
-    tag
-  end
-
-  def tags_for(bookmark_document_or_document_id)
-    if bookmark_document_or_document_id.is_a?(String)
-      document_id = bookmark_document_or_document_id
-    elsif bookmark_document_or_document_id.respond_to?(:document_id)
-      document_id = bookmark_document_or_document_id.document_id
-    else
-      document_id = bookmark_document_or_document_id.id
-    end
-
-    bookmark = bookmarks.includes(:tags).find_by_document_id(document_id)
-    bookmark && bookmark.tags.order(:name)
-  end
-
-  def to_s
-    "%s %s" % [firstname, lastname]
   end
 
   def type
@@ -126,4 +67,40 @@ class User < ActiveRecord::Base
     end
   end
 
+  def image_url
+    dtu? && user_data['dtu']['image_url']
+  end
+
+  def tag(document, tag_name)
+    bookmark = bookmarks.find_or_create_by_document_id(document.id)
+    tag = tags.find_or_create_by_name(tag_name)
+    bookmark.tags << tag unless bookmark.tags.exists?(tag)
+    bookmark.save
+    tag
+  end
+
+  def tags_for(bookmark_document_or_document_id)
+    document_id = case
+                  when bookmark_document_or_document_id.is_a?(String)
+                    bookmark_document_or_document_id
+                  when bookmark_document_or_document_id.respond_to?(:document_id)
+                    bookmark_document_or_document_id.document_id
+                  else
+                    bookmark_document_or_document_id.id
+                  end
+    bookmark = bookmarks.includes(:tags).find_by_document_id(document_id)
+    bookmark && bookmark.tags.order(:name)
+  end
+
+  def to_s
+    if authenticated?
+      if dtu?
+        "%s %s" % [user_data['dtu']['firstname'], user_data['dtu']['lastname']]
+      else
+        email
+      end
+    else
+      'Anonymous'
+    end
+  end
 end

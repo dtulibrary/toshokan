@@ -12,7 +12,6 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_locale
   before_filter :authenticate
-  before_filter :check_walk_in_only
   before_filter :set_google_analytics_dimensions_and_metrics
   before_filter :set_search_history
 
@@ -28,21 +27,12 @@ class ApplicationController < ActionController::Base
 
   # Authenticate users if certain criteria are met.
   # - No authentication will be done if user is already logged in.
-  # - No authentication will be done if an authentication provider
-  #   has not been chosen. This will also check for sticky choice
-  #   from :auth_provider cookie.
+  # - Force login if the shunting cookie indicates
+  #   that last successful login was via CAS
   def authenticate
-    # Use sticky auth provider if it isn't already set in session
-    session[:auth_provider] ||= cookies[:auth_provider]
-
-    # No authentication if user is already logged in
     unless session[:user_id]
-      # Only do authentication if an auth provider has been chosen
-      if session[:auth_provider]
-        # Return URL could be set by the authentication provider selection page
+      if cookies[:shunt] == 'dtu'
         session[:return_url] ||= request.url
-        # Recreate user abilities on each login
-        @current_ability = nil
         redirect_to polymorphic_url(:new_user_session)
       end
     end
@@ -53,19 +43,13 @@ class ApplicationController < ActionController::Base
     @disable_header_searchbar = true
   end
 
-  def check_walk_in_only
-    if Rails.application.config.walk_in[:only]
-      redirect_to come_back_later_url unless current_user.walk_in
-    end
-    session.delete :come_back_later
-  end
-
   helper_method :guest_user, :current_or_guest_user
 
   def current_user
     user = logged_in_user || guest_user
     user.walk_in = walk_in_request?
     user.internal = internal_request?
+    user.campus   = campus_request?
 
     if user.orders_enabled? != orders_enabled_request?
       user.orders_enabled = orders_enabled_request?
@@ -77,22 +61,26 @@ class ApplicationController < ActionController::Base
 
   def logged_in_user
     if session[:user_id]
-      user = User.find session[:user_id]
+      user = User.find_by_id session[:user_id]
       user.impersonating = session.has_key? :original_user_id if user
       return user
     end
   end
 
   def walk_in_request?
-    request_matches_ips? Rails.application.config.walk_in[:ips]
+    request_matches_ips? Rails.application.config.auth[:ip][:walk_in]
+  end
+
+  def campus_request?
+    request_matches_ips? Rails.application.config.auth[:ip][:campus]
+  end
+
+  def internal_request?
+    request_matches_ips? Rails.application.config.auth[:ip][:internal]
   end
 
   def orders_enabled_request?
     Rails.application.config.orders[:enabled] || request_matches_ips?(Rails.application.config.orders[:enabled_ips])
-  end
-
-  def internal_request?
-    request_matches_ips? Rails.application.config.internal[:ips]
   end
 
   def request_matches_ips? ips

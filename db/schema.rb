@@ -71,20 +71,6 @@ ActiveRecord::Schema.define(:version => 20130815122318) do
   add_index "orders", ["user_id"], :name => "index_orders_on_user_id"
   add_index "orders", ["uuid"], :name => "index_orders_on_uuid"
 
-  create_table "profiles", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "kind"
-    t.boolean  "active"
-    t.string   "org_id"
-    t.string   "identifier"
-    t.string   "email"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "profiles", ["active"], :name => "index_profiles_on_active"
-  add_index "profiles", ["org_id"], :name => "index_profiles_on_org_id"
-
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -154,17 +140,13 @@ ActiveRecord::Schema.define(:version => 20130815122318) do
   create_table "users", :force => true do |t|
     t.string   "provider"
     t.string   "identifier"
-    t.string   "firstname"
-    t.string   "lastname"
     t.string   "email"
-    t.string   "username"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.string   "image_url"
+    t.string   "user_data"
   end
 
   add_index "users", ["identifier"], :name => "index_users_on_identifier"
   add_index "users", ["provider", "identifier"], :name => "index_users_on_provider_and_identifier", :unique => true
-  add_index "users", ["username"], :name => "index_users_on_username"
 
 end

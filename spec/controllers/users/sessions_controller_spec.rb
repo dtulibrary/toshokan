@@ -9,7 +9,7 @@ describe Users::SessionsController do
     end
 
     context 'with user id in session' do
-      before do 
+      before do
         session[:user_id] = existing_user.id
       end
 
@@ -18,67 +18,58 @@ describe Users::SessionsController do
         session.has_key?(:user_id).should be_false
       end
 
-      it 'redirects to the root path' do
+      it 'redirects to cas logout' do
         delete 'destroy'
-        response.should redirect_to root_path
+        response.should redirect_to controller.logout_url
       end
     end
 
-    context 'without user id in session' do
-      it 'sets flash notice' do
-        delete 'destroy'
-        flash[:notice].should == 'You are now logged out'
-      end
-
-      context 'with return_url in params' do
-        it 'redirects to return_url from params' do
-          delete :destroy, { :return_url => '/return_url' }
-          response.should redirect_to '/return_url'
-        end
-      end
-
-      context 'without return_url in params' do
-        it 'redirects to root_path' do
-          delete :destroy
-          response.should redirect_to root_path
-        end
-      end
-    end
   end
 
   describe '#new' do
-    context 'with auth provider in session' do
-      before do
-        session[:auth_provider] = :cas
-      end
-
-      it 'should redirect to auth provider' do
-        get :new
-        response.should redirect_to controller.omniauth_path(:cas)
-      end
+    it 'should redirect to cas' do
+      get :new
+      response.should redirect_to controller.omniauth_path(:cas)
     end
 
-    context 'without auth provider in session' do
-      it 'should redirect to auth provider selection' do
-        get :new
-        response.should redirect_to select_auth_provider_path
-      end
-    end
   end
 
-  it "should redirect to requested url on callback from CAS with proper auth hash" do
-    account = Dtubase::Account.new
-    account.cwis = '12345'
-    account.username = 'abcd'
-    Dtubase::Account.should_receive(:find_by_username).with('abcd').and_return(account)
+  describe "#create" do
+    before(:each) do
+      request.env["omniauth.auth"] = OmniAuth.mock_auth_for(:cas)
+      @return_url = "http://example.com/return_url"
+      controller.session[:return_url] = @return_url
 
-    request.env["omniauth.auth"] = OmniAuth.mock_auth_for(:cas)
-    return_url = "http://example.com/return_url"
-    controller.session[:return_url] = return_url
-    post "create", :provider => :cas
+      @user_data = {'id' => 'abcd', 'email' => 'somebody@example.com'}
+      Riyosha
+        .should_receive(:find).with('abcd')
+        .and_return(@user_data)
+    end
 
-    controller.session[:user_id].should_not be_nil
-    response.should redirect_to return_url
+    it "should redirect to requested url on callback from CAS with proper auth hash" do
+      post "create", :provider => :cas
+
+      controller.session[:user_id].should_not be_nil
+      response.should redirect_to @return_url
+    end
+
+    it "should create a user from the user data" do
+      post "create", :provider => :cas
+
+      User.find_by_identifier('abcd').user_data['email'].should eq @user_data['email']
+    end
+
+    it "should update the user data" do
+      post "create", :provider => :cas
+
+      updated_user_data = {'id' => 'abcd', 'email' => 'updated@example.com'}
+      Riyosha
+        .should_receive(:find).with('abcd')
+        .and_return(updated_user_data)
+
+      post "create", :provider => :cas
+      User.find_by_identifier('abcd').user_data['email'].should eq updated_user_data['email']
+    end
   end
 
   describe "update" do
@@ -87,66 +78,20 @@ describe Users::SessionsController do
       @user.roles = [Role.find_by_code('SUP')]
       @user.save!
       session[:user_id] = @user.id
-      @other_user = User.create(:username => 'test user name', :identifier => '1234', :provider => 'cas')
+      @other_user = User.create(:identifier => '1234', :provider => 'cas')
     end
 
-    context 'when CWIS is supplied' do
+    context 'when identifier is supplied' do
       before do
-        @params = {:user => {:identifier => '1234'}}
-        account = Dtubase::Account.new
-        account.cwis = '1234'
-        Dtubase::Account.should_receive(:find_by_cwis).with('1234').and_return(account)
+        @params = {:user => {:identifier => @other_user.identifier }}
+        user_data = {'id' => @other_user.identifier}
+        Riyosha.should_receive(:find).with(@other_user.identifier).and_return(user_data)
       end
 
       it 'should change the user' do
         put :update, @params
-        session[:user_id].should == @other_user.id
-        session[:original_user_id].should == @user.id
-      end
-
-      context 'when request is ajax' do
-        before do
-          @params[:ajax] = true
-        end
-
-        it 'should return status 200' do
-          put :update, @params
-          response.response_code.should == 200
-        end
-      end
-
-      context 'when request is not ajax' do
-        it 'should redirect to root path' do
-          put :update, @params
-          response.should redirect_to root_path
-        end
-      end
-    end
-
-    context 'when username is supplied' do
-      before do
-        @params = {:user => {:identifier => 'test user name'}}
-        account = Dtubase::Account.new
-        account.cwis = '1234'
-        Dtubase::Account.should_receive(:find_by_cwis).with('test user name').and_return(nil)
-        Dtubase::Account.should_receive(:find_by_username).with('test user name').and_return(account)
-      end
-
-      it 'should change the user' do
-        put :update, @params
-        session[:user_id].should == @other_user.id
-        session[:original_user_id].should == @user.id
-      end
-
-      context 'when request is ajax' do
-        before do
-          @params[:ajax] = true
-        end
-
-        it 'should return status 200' do
-          put :update, @params
-          response.response_code.should == 200
-        end
+        session[:user_id].should eq @other_user.id
+        session[:original_user_id].should eq @user.id
       end
 
       context 'when request is not ajax' do
@@ -160,18 +105,13 @@ describe Users::SessionsController do
     context 'when user is missing required role' do
       before do
         session[:user_id] = @other_user.id
-        @params = { :user => { :identifier => '4321' }}
+        @params = { :user => { :identifier => @user.identifier }}
       end
 
-      context 'when request is ajax' do
-        before do
-          @params[:ajax] = true
-        end
-
-        it 'should return status 403' do
-          put :update, @params
-          response.response_code.should == 403
-        end
+      it 'should not change the user' do
+        put :update, @params
+        session[:user_id].should eq @other_user.id
+        session[:original_user_id].should be_nil
       end
 
       context 'when request is not ajax' do
@@ -187,34 +127,15 @@ describe Users::SessionsController do
       end
     end
 
-    context "when cwis or username can't be found" do
+    context "when user can't' be found" do
       before do
-        @params = {:user => {:identifier => 'test user name'}}
-        account = Dtubase::Account.new
-        account.cwis = '1234'
-        Dtubase::Account.should_receive(:find_by_cwis).with('test user name').and_return(nil)
-        Dtubase::Account.should_receive(:find_by_username).with('test user name').and_return(nil)
+        @params = {:user => {:identifier => 'i_am_an_alien'}}
+        Riyosha.should_receive(:find).with('i_am_an_alien').and_return(nil)
       end
 
       it 'should flash an error message' do
         put :update, @params
         flash[:error].should == 'User not found'
-      end
-
-      context 'when request is ajax' do
-        before do
-          @params[:ajax] = true
-        end
-
-        it 'should return status 404' do
-          put :update, @params
-          response.response_code.should == 404
-        end
-
-        it 'should render text containing flash message' do
-          put :update, @params
-          response.body.should == 'User not found'
-        end
       end
 
       context 'when request is not ajax' do
