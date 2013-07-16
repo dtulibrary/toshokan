@@ -1,19 +1,22 @@
-<div>
-  <div class="row">
-    <div class="span12">
-      <form action="http://findit.dtu.dk" method="GET" target="_blank">
-        <div class="input-append pull-left">
-          <label for="q" class="hide-text"><%= t('blacklight.search.form.q') %></label>
-          <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :class => "search_q q", :id => "q"%>
-          <button type="submit" class="btn btn-primary search-btn" id="search">
-            <span class="submit-search-text"><%=t('blacklight.search.form.submit')%></span>
-            <i class="icon-search icon-white"></i>
-          </button>				
-        </div>
-      </form>
-      <div>
-        <br />- <%= t 'toshokan.pages.searchbox' %>
-      </div>
-    </div>
-  </div>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FindIt</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= csrf_meta_tags %>
+</head>
+<body style="margin:0;width:400px;">  
+  <div class="input-append pull-left">
+    <form action="http://findit.dtu.dk" method="GET" target="_blank" style="margin:0">      
+        <label for="q" class="hide-text"><%= t('blacklight.search.form.q') %></label>
+        <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :class => "search_q q", :id => "q"%>
+        <button type="submit" class="btn btn-primary search-btn" id="search">
+          <span class="submit-search-text"><%=t('blacklight.search.form.submit')%></span>
+          <i class="icon-search icon-white"></i>
+        </button>
+    </form>
+    <span class="help-block" style="font-size:14px;">- <%= t 'toshokan.pages.searchbox' %></span>
+  </div>  
+</body>
+</html>
+
