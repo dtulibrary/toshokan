@@ -51,6 +51,8 @@ Toshokan::Application.routes.draw do
     match 'tags'                          => 'tags#manage',              :as => 'manage_tags'
 
     resources :users, :only => [:index, :update, :destroy]
+
+    match '/pages/searchbox', :to => 'pages#searchbox', as: 'searchbox'
   end
 
   match '/:locale' => 'catalog#index'
