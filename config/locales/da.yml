@@ -1,4 +1,9 @@
 da:
+  blacklight:
+    search:
+      form:
+        submit: Søg
+        q: Søg...
   toshokan:
     languages:
       english_version: Engelsk version
@@ -7,3 +12,5 @@ da:
       order:
         rd_html: Bestil 
         dtu_html: Bestil <br>DTU's trykte samling
+    pages:
+      searchbox: artikler, tidsskrifter, bøger og e-bøger
