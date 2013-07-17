@@ -23,11 +23,12 @@ gem 'dalli'
 gem 'bibtex-ruby'
 gem 'citeproc-ruby'
 gem 'netaddr'
-gem "gelf"
-gem "lograge"
-gem "openurl"
+gem 'gelf'
+gem 'lograge'
+gem 'openurl'
 gem 'delayed_job_active_record'
 gem 'uuidtools'
+gem 'feature_flipper'
 
 # Gems used only for assets and not required
 # in production environments by default.
