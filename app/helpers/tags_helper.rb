@@ -124,24 +124,23 @@ module TagsHelper
 
       solr_parameters[:fq] ||= []
       t_request_params.each_pair do |t|
-	tag_name = t.first
-	if tag_name == Tag.reserved_tag_all
-	  document_ids = current_user.bookmarks.map(&:document_id);
-	elsif tag_name == Tag.reserved_tag_untagged
-	  document_ids = current_user.bookmarks.find_all{|b| b.taggings.empty?}.map(&:document_id);
+        tag_name = t.first
+        if tag_name == Tag.reserved_tag_all
+          document_ids = current_user.bookmarks.map(&:document_id);
+        elsif tag_name == Tag.reserved_tag_untagged
+          document_ids = current_user.bookmarks.find_all{|b| b.taggings.empty?}.map(&:document_id);
         else
-	  tag = current_user.tags.find_by_name(tag_name)
-	  if tag
-	    document_ids = tag.bookmarks.map(&:document_id)
-	  end
+          tag = current_user.tags.find_by_name(tag_name)
+      	  if tag
+      	    document_ids = tag.bookmarks.map(&:document_id)
+      	  end
         end
-
       end
 
       if not document_ids.empty?
-	solr_parameters[:fq] << "id:(#{document_ids.join(' OR ')})"
+        solr_parameters[:fq] << "#{SolrDocument.unique_key}:(#{document_ids.join(' OR ')})"
       else
-	solr_parameters[:fq] << "id:(NOT *)"
+        solr_parameters[:fq] << "#{SolrDocument.unique_key}:(NOT *)"
       end
 
     end

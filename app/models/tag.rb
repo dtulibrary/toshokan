@@ -32,7 +32,6 @@ class Tag < ActiveRecord::Base
     tag_name && tag_name.starts_with?('✩')
   end
 
-
   private
 
   def name_not_reserved
@@ -40,7 +39,4 @@ class Tag < ActiveRecord::Base
       errors.add :name, "Name can not start with #{Tag.reserved_tag_prefix}"
     end
   end
-
-
-
 end

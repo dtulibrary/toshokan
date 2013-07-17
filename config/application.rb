@@ -72,6 +72,10 @@ module Toshokan
     config.time_zone = 'CET'
     config.active_record.default_timezone = 'CET'
 
+    config.solr_document = {
+      :document_id => 'cluster_id_ss'
+    }
+
     config.cas = {
       :host => ''
     }

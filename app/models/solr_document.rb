@@ -3,10 +3,10 @@ require 'citeproc'
 require 'openurl'
 
 class SolrDocument 
-
+  include Configured
   include Blacklight::Solr::Document
 
-  self.unique_key = 'cluster_id_ss'
+  self.unique_key = SolrDocument.document_id
 
   SolrDocument.use_extension(References)
 
@@ -18,7 +18,8 @@ class SolrDocument
   end  
 
   def id
-    self[self.class.unique_key].first
+    id = self[self.class.unique_key]
+    id.kind_of?(Array) ? id.first : id
   end
   
   # DublinCore uses the semantic field mappings below to assemble an OAI-compliant Dublin Core document
