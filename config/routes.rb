@@ -53,6 +53,7 @@ Toshokan::Application.routes.draw do
     resources :users, :only => [:index, :update, :destroy]
 
     match '/pages/searchbox', :to => 'pages#searchbox', as: 'searchbox'
+    match '/pages/searchbox_styled', :to => 'pages#searchbox_styled', :as => 'searchbox_styled'
   end
 
   match '/:locale' => 'catalog#index'

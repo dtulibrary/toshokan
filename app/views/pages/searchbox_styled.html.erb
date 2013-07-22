@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body style="font-family: Arial, Verdana, sans-serif; font-size: .8em;">
+    <form action="http://findit.dtu.dk/search" method="GET" target="_blank">
+    	<!--
+    <input NAME="q" value size="40"><input type="submit" value="<%= t('blacklight.search.form.submit')%>">
+    <br>- <%= t 'toshokan.pages.searchbox' %>
+    -->
+    <div class="input-append pull-left external-searchbox">
+      <label for="q" class="hide-text"><%= t('blacklight.search.form.q') %></label>
+      <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :class => "search_q q", :id => "q"%>
+      <button type="submit" class="btn btn-primary search-btn" id="search">
+        <span class="submit-search-text"><%=t('blacklight.search.form.submit')%></span>
+        <i class="icon-search icon-white"></i>
+      </button>
+    </div>
+    <br>- <%= t 'toshokan.pages.searchbox' %>
+    </form>
+  </body>
+</html>

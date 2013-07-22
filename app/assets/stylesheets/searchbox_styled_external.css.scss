@@ -1,0 +1,13 @@
+@import 'toshokan_defaults';
+.external-page-body{
+  padding:0px;
+  form{
+    margin:0;
+    .external-searchbox{
+      width:100%;
+      input{
+        width:85%;
+      }
+    }
+  }
+}

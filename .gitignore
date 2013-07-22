@@ -39,3 +39,6 @@ features/cassettes
 spec/cassettes
 coverage
 public/assets
+
+# Ignore Aptana/Eclipse project files
+.project
