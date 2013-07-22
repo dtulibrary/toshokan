@@ -110,7 +110,7 @@ class CatalogController < ApplicationController
     config.add_labeled_field :index, 'pub_date_tis', :format => ['book']
     config.add_labeled_field :index, 'journal_page_ssf', :format => ['book']
     config.add_labeled_field :index, 'format', :helper_method => :render_type
-    config.add_labeled_field :index, 'doi_ss', :helper_method => :render_doi_link
+    config.add_labeled_field :index, 'doi_ss'
     config.add_labeled_field :index, 'publisher_ts', :format => ['book', 'journal']
     config.add_labeled_field :index, 'abstract_ts', :helper_method => :snip_abstract
 
@@ -132,7 +132,7 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'publisher_ts'
     config.add_labeled_field :show, 'isbn_ss'
     config.add_labeled_field :show, 'issn_ss'
-    config.add_labeled_field :show, 'doi_ss', :helper_method => :render_doi_link
+    config.add_labeled_field :show, 'doi_ss'
     config.add_labeled_field :show, 'language_ss'
     config.add_labeled_field :show, 'abstract_ts'
     config.add_labeled_field :show, 'keywords_ts', :helper_method => :render_keyword_links
