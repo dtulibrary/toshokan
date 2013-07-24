@@ -1,26 +1,24 @@
 
-.icon-openaccess {
-  background-image: image_url('openaccess.png');
-  background-position: center center;
-  height: 14px;
-  width: 9px;
+a > i[class^="icon-"], a > i[class*=" icon-"] {
+  color: #000;  
 }
 
-.icon-pubmed {
+a > i.icon-pubmed {
   background-image: image_url('pubmed_logo.png');
   background-position: center center;
   height: 16px;
   width: 16px;
+  display: inline-block;
 }
 
-.icon-isi {
+a > i.icon-isi {
   background-image: image_url('isi_logo.png');
   background-position: center center;
   height: 15px;
   width: 16px;
 }
 
-.icon-dtu {
+a > i.icon-dtu {
   background-image: image_url('dtu-logo-red.png');
   background-position: center center;
   height: 16px;

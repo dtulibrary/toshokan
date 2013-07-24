@@ -8,6 +8,13 @@ GIT
       rails (~> 3.0)
 
 GIT
+  remote: git://github.com/dtulibrary/findit_font.git
+  revision: f5fa252ccaac726e0773c0437c0c21c9fbc7d940
+  specs:
+    findit_font (0.0.1)
+      railties (>= 3.2)
+
+GIT
   remote: git://github.com/dtulibrary/metastore-test_data.git
   revision: 11406b9d1a640a8cef97136ec6f2fb00593ef815
   specs:
@@ -365,6 +372,7 @@ DEPENDENCIES
   delayed_job_active_record
   eventmachine (~> 1.0.0.rc4)
   feature_flipper
+  findit_font!
   gelf
   guard
   guard-brakeman
