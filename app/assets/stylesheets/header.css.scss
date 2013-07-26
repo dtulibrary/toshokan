@@ -22,8 +22,12 @@
       color: #fff;
 
       &:hover, &:active {
+        color: #fff;        
+        text-decoration: none;
+      }
+
+      i {
         color: #fff;
-        text-decoration: underline;
       }   
     }
 
@@ -31,6 +35,33 @@
       margin: 0px;
       line-height: 25px;
       padding: 0px;
+    }
+
+    .dropdown-menu {
+      a {
+        color: #000;
+      }
+      &:before {
+        position: absolute;
+        top: -7px;
+        left: 9px;
+        display: inline-block;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #ccc;
+        border-left: 7px solid transparent;
+        border-bottom-color: rgba(0, 0, 0, 0.2);
+        content: '';
+      }
+      &:after {
+        position: absolute;
+        top: -6px;
+        left: 10px;
+        display: inline-block;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid #ffffff;
+        border-left: 6px solid transparent;
+        content: '';
+      }
     }
   }
 
@@ -84,4 +115,31 @@
       }
     }   
   }
+}
+
+#header-menu {
+  .dropdown-menu {
+    li {
+      a {
+        padding: 3px 10px;
+
+        &:hover, &:active {
+          background-image: none;
+          background-color: $dtu_red;
+          color: #fff;
+          i {
+            color: #fff;
+          }
+        }
+        i {
+          color: #000;
+          background-image: inherit;
+          margin-right: 5px;
+        }
+      }
+      .divider {
+        margin: 6px 1px;
+      }
+    }
+  }  
 }

@@ -11,9 +11,10 @@
 # how to start up solr, generally for automated testing.
 
 development:
-  jetty_path: './jetty'
-  url: 'http://127.0.0.1:8983/solr/metastore'
-  toc_url: 'http://127.0.0.1:8983/solr/toc'
+  url: 'http://localhost:8811/solr/metastore'
+  #jetty_path: './jetty'
+  #url: 'http://127.0.0.1:8983/solr/metastore'
+  #toc_url: 'http://127.0.0.1:8983/solr/toc'
 
 test:
   jetty_path: './jetty'

@@ -7,7 +7,8 @@ en:
     header:
       dtu: 'Technical University of Denmark'
       dtulibrary: 'DTU Findit'
-      search: 'Search'
+      search: 'Search'      
+      menu:        
     languages:
       english_version: English version
       danish_version: Danish version
@@ -24,7 +25,10 @@ en:
       login_cas: "Login"
       login_velo: "Login"
       logout_cas: "Logout"
-      logout_velo: "Logout"
+      logout_velo: "Logout"      
+      tags: "Tags &mdash; <small>manage, share, subscribe</small>"
+      searches: "Searches &mdash; <small>history, saved and alerts</small>"
+      journals: "Journals &mdash; <small>alerts</small>"
     mylibrary:
       title: "MyLibrary"
       bookmarks_and_tags: "Bookmarks and tags"
