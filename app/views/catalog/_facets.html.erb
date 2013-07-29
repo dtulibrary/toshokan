@@ -16,21 +16,3 @@
   <% end %>
   </div>
 </div>
-
-
-<% if can? :logout, User %>
-  <div id="mylibrary" class="mylibrary sidenav">
-
-    <h4>
-      <%= t('toshokan.mylibrary.title') %>
-    </h4>
-
-    <div>
-      <div>
-	<h5><%= link_to t('toshokan.tags.bookmarks_and_tags'), :controller => "tags", :action => "manage" %></h5>
-	<h5><%= link_to t('toshokan.mylibrary.more'), '#' %></h5>
-      </div>
-    </div>
-  </div>
-<% end %>
-

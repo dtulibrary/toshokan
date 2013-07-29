@@ -17,21 +17,22 @@
         <%= can?(:switch_back, User) ? "(#{t('toshokan.header_links.acting_as')})" : ''%>    
       </a>    
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <li>
-          <%= link_to raw("<i class='icon-tags'></i>#{t('toshokan.header_links.tags')}"), 
-          "#", :tabindex => "-1" %>
+        <li>          
+          <%= link_to raw("<i class='icon-tags'></i>#{t('toshokan.header_links.tags')}"), manage_tags_path %>
+        </li>
         <li>
           <%= link_to raw("<i class='icon-search'></i>#{t('toshokan.header_links.searches')}"), 
-          search_history_path, :tabindex => "-1" %>
+          search_history_path%>
         </li>
         <li>
           <%= link_to raw("<i class='icon-exclamation-sign'></i>#{t('toshokan.header_links.journals')}"), 
-          "#", :tabindex => "-1" %>
+          "#" %>
         </li>
         <li class="divider"></li>
         <% if can? :switch, User %>
           <li>
-              <%= link_to raw("<i class='icon-user'></i>#{t('toshokan.header_links.switch_user')}"), switch_user_path, :id => 'switch_user' %>          
+              <%= link_to raw("<i class='icon-user'></i>#{t('toshokan.header_links.switch_user')}"), switch_user_path, 
+              :id => 'switch_user' %>          
             <div class="modal hide fade" id="switch_user_modal">
               <div class="modal-header">
                 <button style="display:inherit" class="close" data-dismiss="modal" type="button">&times;</button>
@@ -54,7 +55,7 @@
         <% end %>        
         <li>
           <%= link_to raw("<i class='icon-signout'></i>#{t('toshokan.header_links.logout_cas')}"), 
-          destroy_user_session_path(:return_url => root_path), :tabindex => "-1" %>
+          destroy_user_session_path(:return_url => root_path) %>
         </li>
       </ul>
     </div>
