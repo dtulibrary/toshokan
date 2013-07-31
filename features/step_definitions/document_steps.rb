@@ -1,7 +1,7 @@
 Given /^I have searched for "(.*?)"$/ do |query|
   visit catalog_index_path(:simple_search => true)  
   fill_in('q', :with => query) 
-  click_button('Find it')  
+  click_button('search')  
 end
 
 When /^I click on the first document$/ do
@@ -31,7 +31,7 @@ end
 
 Given /^I go to the record page for "(.*?)"$/ do |title|
   steps %{
-    And I have searched for "title:(#{title})"
+    And I have searched for "#{title}"
     And I click the link "#{title}"
   }
 end

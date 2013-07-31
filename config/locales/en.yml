@@ -3,8 +3,6 @@ en:
     application_name: 'DTU Findit'
     search:
       start_over: 'New Search'
-      form:
-        submit: Find it
   toshokan:
     header:
       dtu: 'Technical University of Denmark'

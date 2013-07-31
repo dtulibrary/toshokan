@@ -1,17 +1,145 @@
-@media (min-width: 1200px) {
+@media (max-width: 979px) {
   #header-navbar-fixed-top {
+    .level1-navbar {
+
+      .container {
+        width: 724px;
+        margin: auto;
+
+        .span6 {
+          width: 724px;
+          text-align: right;
+          &:first-child {
+            display: none;
+          }
+        }
+      }
+    }
     
+    .level2-navbar {
+      .container {
+        margin-left: auto;
+        margin-right: auto;
+        width: 724px;
+
+        .row:first-child {
+          h4 {
+            display: block;
+            margin-top: 1em;
+            margin-bottom: 0px;
+            padding-top: 8px;
+            font-size: $font_size_large;
+          }
+        }
+
+      }
+    }
+  }
+
+  #searchbar {
+    #q {
+      width: 20em;
+    }
   }
 }
 
 @media (max-width: 767px) {
   #header-navbar-fixed-top {
-    .span3, .span2 {
+
+    .level1-navbar {
+      display: block;
+      width: auto;
+      padding-left: 20px;
+      padding-right: 20px;
+
+      .container {
+        display: block;
+        margin: auto;
+        width: auto;
+
+        .span6 {
+          display: block;
+          text-align: right;
+          width: auto;
+          &:first-child {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .level2-navbar {
+      padding-left: 20px;
+      padding-right: 20px;
+      width: auto;
+
+      .container {
+        display: block;
+        width: auto;
+
+        .row {
+          display: block;
+          width: auto;
+          &:first-child {
+            h4 {
+              font-size: $font_size_normal;
+              margin-top: 0.5em;
+              padding-top: 5px;
+            }
+          }
+
+          .span3 {
+            float: right;
+            width: auto;
+
+            &:first-child {
+              float: left;
+              margin-right: 10px;
+            }
+          }
+
+          .span6 {
+            float: left;
+            width: auto;
+          }
+        }
+        .dtu-logo {
+          height: 38px;
+          background-position: 0px -30px;
+        }
+      }
+
+    }
+  }
+
+  #searchbar {
+    margin-top: 0.5em;
+    padding-top: 0px;
+  }
+}
+
+@media (max-width: 480px) {
+  #header-navbar-fixed-top {
+    .level1-navbar {
       display: none;
     }
 
-    &.navbar .container {
-      margin: 0px auto;
+    .level2-navbar {
+      .container {
+        .row:first-child {
+          h4 {
+            margin-top: 0.5em;
+          }
+        }
+      }
+
+      .logo {
+        display: none;
+      }
     }
+  }
+
+  #searchbar {
+    margin-top: 0.5em;
   }
 }

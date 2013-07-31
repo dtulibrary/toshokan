@@ -12,6 +12,7 @@
 //
 //= require jquery
 
+
 // For blacklight_range_limit built-in JS, if you don't want it you don't need
 // this:
 //= require 'blacklight_range_limit'
@@ -30,6 +31,3 @@
 
 // Server Side Events polyfill
 //= require eventsource.js
-
-// JQuery caret plugin - for getting cursor position in input fields
-//= require jquery.caret.js

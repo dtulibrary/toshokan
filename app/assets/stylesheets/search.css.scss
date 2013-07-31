@@ -7,60 +7,8 @@
     width: 110px;
   }
 
-  .text-field-with-icons {
-    background-color: #fff;
-    border: 1px solid #d4d4d4;
-    padding: 2px 5px;
-    height: 34px;
-    width: 450px;
-    float: left;
-    @include box-sizing(border-box);
-    @include border-radius(5px 0px 0px 5px);
-
-    .icons {
-      display: inline-block;
-      float: right;
-      margin-top: 5px;
-
-      a {
-        float: left;
-        margin-left: 5px;
-
-        &:first-child {
-          margin-left: 0px;
-        }
-
-        &.disabled {
-          @include opacity(50);
-        }
-      }
-    }
-  }
-
   #q {
-    width: 375px;
-    border: none;
-    padding: 0px;
-    margin: 0px 10px 0px 0px;
-    box-shadow: none;
-    font-size: 22px;
-    line-height: 22px;
-    height: 28px;
-
-    &:focus, &:active, &:hover {
-      border: 0px dotted blue;
-
-      box-shadow: none;
-    }
-  }
-
-  button {
-    width: 90px;
-    height: 34px;
-    font-size: 22px;
-    float: left;
-    margin-left: -1px;
-    @include border-radius(0px 5px 5px 0px);
+    width: 25em;
   }
 
 }

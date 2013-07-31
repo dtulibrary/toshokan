@@ -2,21 +2,9 @@
 
 // Index view
 #documents {
-  margin-top: 0em;
-
-  .document:first-child {
-    .index_title {
-      margin-top: 0em;
-    }
-  }
-
   .index_title {
     max-width: 750px;
     font-weight: normal;
-  }
-
-  .documentHeader {
-    margin-top: 0em;
   }
 
   dd.fulltext {

@@ -8,7 +8,7 @@ end
 
 When /^I search for "(.*?)"$/ do |query|
   fill_in('q', :with => query) 
-  click_button('Find it')
+  click_button('search')
 end
 
 Given /^I search for "(.*?)" in the title$/ do |query|
@@ -23,7 +23,7 @@ Given /^I search for "(.*?)" in the "(.*?)" field$/ do |query, field|
     select field, :from => 'in'
     fill_in('q', :with => query) 
   end
-  click_button('Find it')
+  click_button('Search')
 end
 
 Given /^I have the limited the "(.*?)" facet to "(.*?)"$/ do |facet_name, facet_value|

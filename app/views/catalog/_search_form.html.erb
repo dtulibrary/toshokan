@@ -3,27 +3,23 @@
 
   <% unless session[:advanced_search] || session[:come_back_later] %>
     <% unless search_fields.empty? %>
-      <div class="pull-left hide">
+      <div class="pull-left">
         <label for="search_field" class="hide-text"><%= t('blacklight.search.form.search_field.label') %></label>
         <%= select_tag(:search_field, options_for_select(search_fields, h(params[:search_field])), :title => t('blacklight.search.form.search_field.title'), :class=>"search_field input-small") %>
         <span class="hide-text"><%= t('blacklight.search.form.search_field.post_label') %></span>
       </div>
     <% end %>
-    <div class="text-field-with-icons">
-      <div class="icons">
-        <a title="Show search help" id="toggle-search-syntax" href="#"><i class="icon-question-sign"></i></a>
-        <a title="Clear search field" id="search-clear" href="#"><i class="icon-remove"></i></a>
-        <a title="Undo clear" id="undo-clear" href="#" class="hide"><i class="icon-repeat"></i></a>
-        <a title="More options" id="more-options" href="#"><i class="icon-chevron-down"></i></a>
-        <a title="Less options" id="less-options" href="#" class="hide"><i class="icon-chevron-up"></i></a>
-      </div>
-      <%= text_field_tag :q, params[:q], :class => "search_q q", :id => "q"%>
+    <div class="input-append pull-left">
+      <label for="q" class="hide-text"><%= t('blacklight.search.form.q') %></label>
+      <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :class => "search_q q", :id => "q"%>
+      <button type="submit" class="btn btn-primary search-btn" id="search">
+        <span class="submit-search-text"><%=t('blacklight.search.form.submit')%></span>
+        <i class="icon-search icon-white"></i>
+      </button>
     </div>
-    <button type="submit" class="btn btn-primary search-btn" id="search">
-      <span class="submit-search-text hidden-tablet"><%=t('blacklight.search.form.submit')%></span>
-      <i class="icon-search hidden-desktop"></i>
-    </button>
+    <div class="advanced-search-link pull-left">
+      <%= render_advanced_search_link t('toshokan.catalog.advanced_search') %>
+      | <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=13839230">Help</a>
+    </div>
   <% end %>
 <% end %>
-<%= render 'catalog/search_help' %>
-<%= render 'catalog/search_options' %>
