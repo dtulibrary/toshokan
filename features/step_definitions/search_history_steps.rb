@@ -3,8 +3,10 @@ When /^I go to the search history$/ do
 end
 
 Then /^I should see a constraint with name "(.*?)" and value "(.*?)"$/ do |name, value|
-  within('.constraint') do
-    find('.filterName').should have_content name
-    find('.filterValue').should have_content value
+  pending("Constraints temporarily disabled") do
+    within('.constraint') do
+      find('.filterName').should have_content name
+      find('.filterValue').should have_content value
+    end
   end
 end

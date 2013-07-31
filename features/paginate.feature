@@ -8,7 +8,7 @@ Feature: Paginate search results
     Given I'm logged in
 
   Scenario: A result set that fits on one page
-    When I search for "water resources bulletin" in the "Title" field
+    When I search for "title:(water resources bulletin)"
     Then I should not see any pagination
 
   Scenario: A result set that fits within the inner window of the pagination

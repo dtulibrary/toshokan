@@ -16,20 +16,29 @@
     </div>
   </div>
   <div class="navbar-inner level2-navbar">
-    <div class="container">
-      <div class="row logos">
-        <div class="span3">
-          <%= link_to 'DTU Find<span class="dtu-red">it</span>'.html_safe, root_path, :class => 'logo pull-left' %>
-        </div>
-        <div class="span8">
-          <% unless @disable_header_searchbar %>
-            <div id="searchbar">
-              <%= render_search_bar %>
-            </div>
-          <% end %>
-        </div>
-        <div class="span1">
-          <%= link_to content_tag('div', '', :class => 'dtu-logo').html_safe, 'http://www.dtu.dk', :class => 'logo pull-right' %>
+    <div class="header-gradient">
+      <div class="container">
+        <div class="row logos">
+          <div class="span3">
+            <%= link_to 'DTU Find<span class="dtu-red">it</span>'.html_safe, root_path, :class => 'findit-logo visible-desktop pull-left' %>
+          </div>
+          <div class="span7">
+            <% unless @disable_header_searchbar %>
+              <div class="search">
+                <div id="searchbar">
+                  <%= render_search_bar %>
+                </div>
+                <div id="resultset-options">
+                  <% if has_search_parameters? %>
+                    <div class="hit-count"><%= number_with_delimiter @response.total %> hits.</div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div class="span2">
+            <%= link_to content_tag('div', '', :class => 'dtu-logo').html_safe, 'http://www.dtu.dk', :class => 'logo pull-right' %>
+          </div>
         </div>
       </div>
     </div>
