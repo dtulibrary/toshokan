@@ -20,4 +20,7 @@ module FacetsHelper
     field == 'format' ? I18n.t("toshokan.catalog.formats.#{value}") : value
   end
 
+  def render_facet_count num
+    super number_with_delimiter(num)
+  end
 end

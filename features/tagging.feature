@@ -15,7 +15,7 @@ Scenario: Bookmarking a document in a search result
 
 Scenario: Un-bookmark a document in a search result
     When I bookmark the document with title "A cohomology theory for colored tangles"
-     And I search for "cohomology colored tangles" in the title
+     And I search for "title:(cohomology colored tangles)"
      And I unbookmark the first document
     Then the first document should not be bookmarked
 
@@ -58,7 +58,7 @@ Scenario: Un-bookmark a document in document view
     Then the document should not be bookmarked
 
 Scenario: Tagging a document in a search result
-   When I search for "A cohomology theory for colored tangles" in the title
+   When I search for "title:(A cohomology theory for colored tangles)"
     And I add a tag "some tag" to the first document
     And I filter by tag "some tag"
    Then I should see "A cohomology theory for colored tangles"

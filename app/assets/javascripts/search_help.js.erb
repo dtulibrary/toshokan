@@ -1,0 +1,143 @@
+(function ($) {
+
+  $(function () {
+    var syntaxVisible = false;
+    var searchOptionsVisible = false;
+    var undo = {
+      text : '',
+      enabled: false
+    };
+
+    $("#toggle-search-syntax").click(function () {
+      toggleSearchSyntax();
+      $("#q").focus();
+      return false;
+    });
+
+    $("#search-clear").click(function () {
+      enableUndo();
+      $("#q").val('').focus();
+      return false;
+    });
+
+    $("#undo-clear").click(function () {
+      $("#q").val(undo.text);
+      disableUndo();
+      $("#q").focus();
+      return false;
+    });
+
+    $("#more-options").click(function () {
+      toggleSearchOptions();
+      return false;
+    });
+
+    $("#search-syntax tr .syntax").parent().click(function () {
+      var template = $(this).find(".template").text();
+      var caretPositionOffset = template.indexOf("{}");
+      var currentQuery = $("#q").val();
+      var currentCaretPosition = $("#q").caret();
+      var prefix = currentQuery.substr(0, currentCaretPosition);
+      var suffix = currentQuery.substr(currentCaretPosition);
+
+      template = template.replace("{}", "");
+
+      if (template.match(/\S/)) {
+        if (prefix.lastIndexOf(" ") != prefix.length - 1) {
+          prefix = prefix + " ";
+          currentCaretPosition++;
+        }
+
+        if (suffix.indexOf(" ") != 0) {
+          suffix = " " + suffix;
+        }
+      }
+
+      $("#q").val(prefix + template + suffix).focus();
+      $("#q").caret(currentCaretPosition + caretPositionOffset);
+      toggleSearchSyntax();
+      disableUndo();
+      return false;
+    });
+
+    $("#q").keydown(function (event) {
+      if ($.ui.keyCode.SPACE == event.which && event.ctrlKey) {
+        toggleSearchSyntax();
+        return false;
+      } else if (syntaxVisible) {
+        if ($.ui.keyCode.ESCAPE == event.which) {
+          toggleSearchSyntax();
+          return false;
+        }
+      }
+
+      if (undo.enabled) {
+        disableUndo();
+      }
+    });
+
+    function enableUndo() {
+      undo.text = $("#q").val();
+      $("#search-clear").hide();
+      $("#undo-clear").show();
+      undo.enabled = true;
+    }
+
+    function disableUndo() {
+      undo.text = '';
+      $("#search-clear").show();
+      $("#undo-clear").hide();
+      undo.enabled = false;
+    }
+
+    function toggleSearchSyntax() {
+      var qWidth = $("#q").parent().outerWidth(true);
+      $("#search-syntax").width(qWidth - 2).toggle();
+
+      hideSearchOptions();
+
+      syntaxVisible = !syntaxVisible;
+      if (syntaxVisible) {
+        $("body").on("click.syntax", toggleSearchSyntax);
+      } else {
+        $("body").off("click.syntax");
+      }
+    }
+
+    function toggleSearchOptions() {
+      var qWidth = $("#q").parent().outerWidth(true);
+      $("#search-options").width(qWidth - 2).toggle();
+
+      hideSearchSyntax();
+
+      searchOptionsVisible = !searchOptionsVisible;
+      if (searchOptionsVisible) {
+        $("body").on("click.searchOptions", toggleSearchOptions);
+        $("body").on("keydown.searchOptions", function (event) {
+          if ($.ui.keyCode.ESCAPE == event.which) {
+            toggleSearchOptions();
+            return false;
+          }
+        });
+      } else {
+        $("body").off("click.searchOptions");
+        $("body").off("keydown.searchOptions");
+      }
+    }
+
+    function hideSearchSyntax() {
+      $("#search-syntax").hide();
+      $("body").off("click.syntax");
+      syntaxVisible = false;
+    }
+
+    function hideSearchOptions() {
+      $("#search-options").hide();
+      $("body").off("click.searchOptions");
+      $("body").off("keydown.searchOptions");
+      searchOptionsVisible = false;
+    }
+
+  });
+  
+})(jQuery);
