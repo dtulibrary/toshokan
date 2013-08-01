@@ -23,6 +23,9 @@
       <span class="submit-search-text hidden-tablet"><%=t('blacklight.search.form.submit')%></span>
       <i class="icon-search hidden-desktop"></i>
     </button>
+    <div class="hide">
+      <%= render_advanced_search_link t('toshokan.catalog.advanced_search') %>
+    </div>
   <% end %>
 <% end %>
 <%= render 'catalog/search_help' %>

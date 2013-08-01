@@ -57,7 +57,7 @@ module AdvancedSearchHelper
 
   def render_advanced_search_button
     button_tag(
-      ("%s %s" % [t('toshokan.header.search'), content_tag('i', '', :class => 'icon-search icon-white')]).html_safe,
+      ("%s %s" % [t('blacklight.search.form.submit'), content_tag('i', '', :class => 'icon-search icon-white')]).html_safe,
       :id => 'advanced_search',
       :value => 'advanced_search',
       :class => 'btn btn-primary'
