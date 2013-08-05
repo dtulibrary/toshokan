@@ -166,5 +166,9 @@ module Toshokan
       :tracking_id => nil
     }
 
+    config.alert = {
+      :url => 'http://localhost'
+    }
+
   end
 end

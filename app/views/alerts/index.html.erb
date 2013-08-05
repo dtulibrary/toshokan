@@ -1,0 +1,39 @@
+<%= render :partial => 'shared/mylib_menu' %>
+<div id="content" class="span9">
+
+<h3><%=t('toshokan.mylibrary.menu.journals')%></h3>
+
+  <% if(@alerts.empty?) %>
+    <div class="alert alert-info">
+      <%= t('toshokan.alerts.journal.none') %>
+    </div>    
+  <% else %>
+    
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>ISSN</th>        
+          <th class="action"><%= t('toshokan.mylibrary.info')%></th>
+          <th class="action"><%= t('toshokan.mylibrary.delete')%></th>
+        </tr>
+      </thead>
+      <% @alerts.each do |alert| %>
+        <tr>
+          <td><%= alert.name %></span></td>
+          <td><%= alert.query %></span></td>        
+          <td class="action">
+            <%= link_to alert_path(alert.id), method: :show do %>
+              <i class="icon-info-sign"></i>
+            <% end %>
+          </td>
+          <td class="action delete">
+            <%= link_to alert_path(alert.id), method: :delete, data: { confirm: t('toshokan.alerts.journal.confirm', :title => alert.name)} do %>
+              <i class="icon-remove"></i>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+</div>

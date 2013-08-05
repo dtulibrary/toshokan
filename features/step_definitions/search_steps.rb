@@ -26,7 +26,7 @@ Given /^I search for "(.*?)" in the "(.*?)" field$/ do |query, field|
   click_button('Find it')
 end
 
-Given /^I have the limited the "(.*?)" facet to "(.*?)"$/ do |facet_name, facet_value|
+Given /^I have limited the "(.*?)" facet to "(.*?)"$/ do |facet_name, facet_value|
   click_link(facet_value)
 end
 

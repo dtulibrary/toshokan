@@ -43,3 +43,13 @@ end
 Then /^I should see the document titled "(.*?)"$/ do |title|
   page.should have_css('.document dd', :text => title)
 end
+
+Given /^I go to the standalone page for id "(.*?)"$/ do |id|
+  visit solr_document_path(:id => id)  
+end
+
+When /^I click the link for journal "(.*?)"$/ do |title|
+  Alert.stub(:get).and_return(double(:success? => false, :body => "null", :code => 404))  
+  step "I click the link \"#{title}\""
+end
+

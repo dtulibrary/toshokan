@@ -79,7 +79,7 @@ end
 Given /^I rename tag "(.*?)" to "(.*?)"$/ do |tag_name, new_tag_name|
 visit manage_tags_path
   within(:xpath, "//tr[td/span/text()='#{tag_name}']") do
-    click_link 'Edit'
+    find(:xpath, "//a[@title='Edit']").click    
   end
   fill_in('tag_name', :with => new_tag_name)
   click_button 'Save'
@@ -88,7 +88,7 @@ end
 Given /^I delete tag "(.*?)"$/ do |tag_name|
   visit manage_tags_path
   within(:xpath, "//tr[td/span/text()='#{tag_name}']") do
-    click_link 'Delete'
+    find(:xpath, "//a[@title='Delete']").click        
   end
 end
 

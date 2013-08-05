@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130619091134) do
+ActiveRecord::Schema.define(:version => 20130815122318) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -100,9 +100,12 @@ ActiveRecord::Schema.define(:version => 20130619091134) do
   create_table "searches", :force => true do |t|
     t.text     "query_params"
     t.integer  "user_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.string   "user_type"
+    t.string   "title"
+    t.boolean  "saved",        :default => false
+    t.boolean  "alerted",      :default => false
   end
 
   add_index "searches", ["user_id"], :name => "index_searches_on_user_id"

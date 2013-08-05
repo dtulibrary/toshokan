@@ -52,8 +52,17 @@ Toshokan::Application.routes.draw do
 
     resources :users, :only => [:index, :update, :destroy]
 
-    match '/pages/searchbox', :to => 'pages#searchbox', as: 'searchbox'
+    get '/alerts/find/', :to => "alerts#find"
+    resources :alerts, :except => [:edit, :update]
+
+    match '/pages/searchbox', :to => 'pages#searchbox', :as => 'searchbox'
     match '/pages/searchbox_styled', :to => 'pages#searchbox_styled', :as => 'searchbox_styled'
+
+    put '/search_history/save/:id', :to => 'search_history#save', :as => 'save_search'
+    put '/search_history/alert/:id', :to => 'search_history#alert', :as => 'save_search_alert'
+    delete '/search_history/forget/:id', :to => 'search_history#forget', :as => 'forget_search'
+    delete '/search_history/forget_alert/:id', :to => 'search_history#forget_alert', :as => 'forget_search_alert'
+    delete '/search_history/:id', :to => 'search_history#destroy', :as => 'delete_search_history'
   end
 
   match '/:locale' => 'catalog#index'

@@ -6,6 +6,7 @@ class Ability
     if user.authenticated?
       can :logout, User
       can :view, :search_history
+      can :alert, [:journal, Search]
     else
       if Rails.application.config.anonymous_only
         cannot :login, User
@@ -22,7 +23,7 @@ class Ability
       # Logged in using DTU CAS
       can :tag, [Bookmark, Search]
       can :share, Tag
-      can :search, :dtu
+      can :search, :dtu    
     when 'public'
       # Logged in from outside DTU Campus
       can :tag, [Bookmark, Search]

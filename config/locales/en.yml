@@ -23,18 +23,12 @@ en:
       switch_back: "Switch Back"
       logged_in_as: "Logged in as"
       acting_as: "Acting as"
-      cwis: "User name or CWIS number"
-      login_cas: "Login"
-      login_velo: "Login"
-      logout_cas: "Logout"
-      logout_velo: "Logout"      
-      tags: "Tags &mdash; <small>manage, share, subscribe</small>"
-      searches: "Searches &mdash; <small>history, saved and alerts</small>"
-      journals: "Journals &mdash; <small>alerts</small>"
-    mylibrary:
-      title: "MyLibrary"
-      bookmarks_and_tags: "Bookmarks and tags"
-      more: "More..."
+      cwis: "User name or CWIS number"      
+      login_cas: "Log in"
+      login_velo: "Log in"
+      logout_cas: "Log out"
+      logout_velo: "Log out"      
+      tags: "Manage tags"
     tags:
       all: "All"
       untagged: "Untagged"
@@ -51,6 +45,28 @@ en:
       bookmarked: "Bookmarked"
       removed: "Removed"
       failure: "Failure"
+      none: "You have no saved tags"
+    alerts:
+      title: "Alert"
+      error: "Alerts are not available at the moment, please try again later"
+      journal:
+        add: "Alert me on new articles in this journal"
+        none: "You have no saved journal alerts"
+        confirm: "Are you sure you want to delete the alert '%{title}?'"      
+    search_history:
+      error: "Search history could not be updated, please try again later"
+    mylibrary:
+      delete: "Delete"
+      edit: "Edit"
+      info: "Info"
+      save: "Save"
+      saved: "Saved"
+      alert: "Alert"
+      alerted: "Alerted"
+      menu:
+        tags: "Manage tags"
+        search_history: "Search history"
+        journals: "Alerted journals"
     users:
       username: "Username"
       cwis: "CWIS"

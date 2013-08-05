@@ -69,6 +69,12 @@ Given /^I'm logged in(?: as user with no role)?$/ do
   log_in(user)  
 end
 
+Given /^I log in$/ do
+  steps %{
+    Given I'm logged in
+  }
+end
+
 Given /^I(?:'m| am) logged in by (DTU CAS|Public CAS)$/ do |auth_name|
   map = { 
     'DTU CAS' => 'dtu_cas', 
@@ -98,7 +104,7 @@ def log_in(user)
   visit('/')  
 
   # Click the login link that will take user to auth provider selection
-  click_link 'Login' if page.has_css? '#util-links a', :text => 'Login'
+  click_link 'Log in' if page.has_css? '#util-links a', :text => 'Log in'
 
   # Select auth provider by clicking radio buttn and do necessary stuff for each auth provider
   case user.provider
@@ -108,7 +114,11 @@ def log_in(user)
   end
   
   # Click final login button
-  click_button 'Login'
+  click_button 'Log in'
+end
+
+Given /^I log out$/ do
+  click_link 'Log out'
 end
 
 def mock_dtu_cas user

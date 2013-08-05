@@ -1,0 +1,22 @@
+<div id="sidebar" class="span3">
+  <div class="sidenav">    
+    <ul class="nav nav-list">
+      <li class="nav-header">MyLibrary</li>
+      <li>
+        <%= link_to manage_tags_path do %>
+          <%= t('toshokan.mylibrary.menu.tags') %> <i class='icon-tags pull-right'></i>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to search_history_path do %>
+          <%= t('toshokan.mylibrary.menu.search_history') %> <i class='icon-time pull-right'></i>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to alerts_path do %>
+          <%= t('toshokan.mylibrary.menu.journals') %> <i class='icon-bell pull-right'></i>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+</div>

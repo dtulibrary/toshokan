@@ -18,21 +18,26 @@
       </a>    
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
         <li>          
-          <%= link_to raw("<i class='icon-tags'></i>#{t('toshokan.header_links.tags')}"), manage_tags_path %>
+          <%= link_to manage_tags_path do %>
+            <i class='icon-tags'></i> <%= t('toshokan.mylibrary.menu.tags') %>
+          <% end %>
         </li>
         <li>
-          <%= link_to raw("<i class='icon-search'></i>#{t('toshokan.header_links.searches')}"), 
-          search_history_path%>
+          <%= link_to search_history_path do %>
+            <i class='icon-time'></i> <%= t('toshokan.mylibrary.menu.search_history') %>
+          <% end %>
         </li>
         <li>
-          <%= link_to raw("<i class='icon-exclamation-sign'></i>#{t('toshokan.header_links.journals')}"), 
-          "#" %>
+          <%= link_to alerts_path do %>
+            <i class='icon-bell'></i> <%= t('toshokan.mylibrary.menu.journals') %>
+          <% end %>
         </li>
         <li class="divider"></li>
         <% if can? :switch, User %>
           <li>
-              <%= link_to raw("<i class='icon-user'></i>#{t('toshokan.header_links.switch_user')}"), switch_user_path, 
-              :id => 'switch_user' %>          
+              <%= link_to switch_user_path, :id => 'switch_user' do %>
+                <i class='icon-user'></i> <%= t('toshokan.header_links.switch_user') %>
+              <% end %>
             <div class="modal hide fade" id="switch_user_modal">
               <div class="modal-header">
                 <button style="display:inherit" class="close" data-dismiss="modal" type="button">&times;</button>
@@ -45,17 +50,22 @@
           </li>
         <% elsif can? :switch_back, User %>
           <li>
-            <%= link_to raw("<i class='icon-user'></i>#{t('toshokan.header_links.switch_back')}"), user_session_path, :method => :put, :id => 'switch_back' %>
+            <%= link_to user_session_path, :method => :put, :id => 'switch_back' do %>
+              <i class='icon-user'></i> <%= t('toshokan.header_links.switch_back') %>
+            <% end %>
           </li>
         <% end %>
         <% if can? :update, User %>
           <li>
-            <%= link_to raw("<i class='icon-dashboard'></i>#{t('toshokan.header_links.admin')}"), users_path %>
+            <%= link_to users_path do %>
+              <i class='icon-dashboard'></i> <%= t('toshokan.header_links.admin') %>
+            <% end %>
           </li>
         <% end %>        
         <li>
-          <%= link_to raw("<i class='icon-signout'></i>#{t('toshokan.header_links.logout_cas')}"), 
-          destroy_user_session_path(:return_url => root_path) %>
+          <%= link_to destroy_user_session_path(:return_url => root_path) do %>
+            <i class='icon-signout'></i> <%= t('toshokan.header_links.logout_cas') %>
+          <% end %>
         </li>
       </ul>
     </div>

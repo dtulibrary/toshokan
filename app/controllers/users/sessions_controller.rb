@@ -27,6 +27,10 @@ class Users::SessionsController < ApplicationController
     # Make CanCan re-initialize abilities based on new user id
     @current_ability = nil
 
+    # Save session search history
+    current_user.searches << searches_from_history
+    current_user.save
+
     # redirect user to the requested url
     redirect_to session.delete(:return_url), :notice => 'You are now logged in', :only_path => true
   end
