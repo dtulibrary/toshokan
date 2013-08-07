@@ -31,13 +31,6 @@
       <% end %>
     <% end %>
 
-    <% if can? :tag, Bookmark %>
-      <li class="nav-header"><%= t('toshokan.tags.title') %></li>
-      <li class="tags">
-      <%= render_tag_control @document %>
-      </li>
-    <% end %>
-
     <% if @document[:format] == "journal" %>
       <%= render_journal_rank @document %>
     <% end %>

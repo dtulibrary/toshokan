@@ -3,6 +3,7 @@
 
   <div class="facets-collapse">
   <%= render_facet_partials %>
+  <hr/>
   <% if can? :logout, User %>
     <%= render_tag_partials %>
   <% end %>

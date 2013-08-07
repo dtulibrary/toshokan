@@ -2,13 +2,13 @@
   <% (Tag.reserved_tags + tags.map(&:name)).each do |tag_name| %>
     <li>
       <% if any_tag_in_params? %>
-	<% if tag_in_params? tag_name %>
-	  <%= render_selected_tag_value tag_name %>
-	<% else %>
-	  <%= render_tag_value tag_name %>
-	<% end %>
+        <% if tag_in_params? tag_name %>
+          <%= render_selected_tag_value tag_name %>
+        <% else %>
+          <%= render_tag_value tag_name %>
+        <% end %>
       <% else %>
-	<%= render_tag_value tag_name %>
+        <%= render_tag_value tag_name %>
       <% end %>
     </li>
   <% end %>

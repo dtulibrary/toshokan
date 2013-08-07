@@ -1,11 +1,10 @@
-<span class="btn-group dropdown form tags_dropdown">
-  <%= link_to (t('toshokan.tags.tags') + content_tag(:span, '', :class => "caret")).html_safe,
-	      {:controller => 'tags', :action => 'index',
-	       :document_id => document_id, :return_url => return_url},
-	      :class => 'btn btn-mini dropdown-toggle' + ((bookmark && !bookmark.tags.empty?) ? ' btn-danger' : ''), :'data-toggle' => 'dropdown' %>
+<span class="dropdown form tags_dropdown">
+  <%= link_to content_tag(:i, '', :class => 'icon-tag').html_safe,
+              {:controller => 'tags', :action => 'index',
+               :document_id => document_id, :return_url => return_url},
+              :title => 'Tags', :class => 'dropdown-toggle' + ((bookmark && !bookmark.tags.empty?) ? ' has-tags' : ' no-tags'), :'data-toggle' => 'dropdown' %>
 
   <%= render('tags/add_remove_tags_menu',
-	    {:document_id => document_id, :bookmark => bookmark, :tags => tags, :return_url => return_url,
-	     :list_class => "dropdown-menu pull-right"}) %>
-
+            {:document_id => document_id, :bookmark => bookmark, :tags => tags, :return_url => return_url,
+             :list_class => "dropdown-menu pull-right"}) %>
 </span>

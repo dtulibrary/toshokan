@@ -9,7 +9,7 @@ class Tag < ActiveRecord::Base
   attr_accessible :name, :shared
 
   validates :name, :presence => true,
-		   :length => { :in => 1..255 }
+                   :length => { :in => 1..255 }
   validate :name_not_reserved
 
   def self.reserved_tag_prefix
@@ -17,7 +17,7 @@ class Tag < ActiveRecord::Base
   end
 
   def self.reserved_tag_all
-    reserved_tag_prefix + I18n.t('toshokan.tags.bookmarked')
+    reserved_tag_prefix + I18n.t('toshokan.tags.all')
   end
 
   def self.reserved_tag_untagged
@@ -29,7 +29,7 @@ class Tag < ActiveRecord::Base
   end
 
   def self.reserved?(tag_name)
-    tag_name && tag_name.starts_with?('✩')
+    tag_name && tag_name.starts_with?(Tag.reserved_tag_prefix)
   end
 
   private

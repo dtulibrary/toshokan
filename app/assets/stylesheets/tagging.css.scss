@@ -1,18 +1,87 @@
+@import 'toshokan_defaults';
 
 // make tagging buttons line up side-by-side
 .tag_control {
-  .button_to {
-    display: inline-block;
-    margin: 0px;
+  form {
+    display: inline;
+    button {
+      display: inline;
+      border: none;
+      background: none;
+      padding: 0px;
+      margin: 0px;
+    }
   }
 }
 
-// hide tag labels in index view
-.documentFunctions .tag_control .tags_as_labels {
-  display: none;
+.show-document {
+  .documentFunctions {
+    text-align: right;
+    margin-bottom: 5px;
+    .tags_dropdown {
+      text-align: justify;
+    }
+  }
 }
 
-// wrap tag labels in show view
-.tools .tag_control {
-    max-width: 200px;
+.tag_list,.tag_control {
+  .tags_dropdown .has-tags i {
+    color: $dtu_blue;
+  }
+
+  .tags_dropdown .no-tags i {
+    color: $dtu_grey;
+  }
+
+  .icon-star,.icon-tag {
+    color: $dtu_blue;
+  }
+
+  .icon-star-empty {
+    color: $dtu_grey;
+  }
+}
+
+.document .tags .tag {
+  background-color: $dtu_blue;
+  .icon-remove {
+    color: #ffffff;
+  }
+}
+
+.tags_dropdown .dropdown-menu {
+  min-width: 280px;
+  padding: 5px 5px;
+  a.remove-tag {
+    color: $dtu-blue;
+    font-weight: bold;
+    .icon-remove {
+      color: $dtu-blue;
+    }
+  }
+  a.remove-tag:hover {
+    color: #ffffff;
+  }
+}
+
+.tag.label {
+  display: inline-block;
+  vertical-align: middle;
+  font-weight: normal;
+  padding-top: 1px;
+  padding-bottom: 0px;
+  text-shadow: none;
+
+  // format remove button with icon inside label
+  form {
+    display: inline;
+    button {
+      border: 0px;
+      padding: 0px;
+      margin: 0px;
+      background: none;
+      position: relative;
+      top: -1px;
+    }
+  }
 }

@@ -12,7 +12,7 @@ end
 
 When /^I unbookmark the( first)? document$/ do |first|
   scope = first ? find('.documentFunctions') : page
-  scope.find('.bookmark').click_on 'Remove'
+  scope.click_on 'Remove bookmark and tags'
 end
 
 Given /^I add a tag "(.*?)" to the first document$/ do |tag_name|
@@ -47,7 +47,7 @@ Given /^I remove the tag "(.*?)" from the first document$/ do |tag_name|
 end
 
 Given /^I remove the tag "(.*?)" from the document$/ do |tag_name|
-  within(".tags_as_labels .tag", :text => tag_name) do
+  within(".tag", :text => tag_name) do
     click_on 'Remove'
   end
 end
@@ -94,27 +94,30 @@ end
 
 Then /^the( first)? document should be bookmarked$/ do |first|
   scope = first ? find('.documentFunctions') : page
-  scope.should have_css('.tag_control .bookmark')
+  scope.should have_css('.tag_control .icon-star')
 end
 
 Then /^the( first)? document should not be bookmarked$/ do |first|
   scope = first ? find('.documentFunctions') : page
-  scope.should_not have_css('.tag_control .bookmark')
+  scope.should_not have_css('.tag_control .icon-star')
 end
 
-Then /^the(?: first)? document should have tags$/ do
-  page.should have_css('.tags_dropdown .btn-danger', :text => 'Tags')
+Then /^the( first)? document should have tags$/ do |first|
+  scope = first ? find('.documentFunctions') : page
+  scope.should have_css('.tags_dropdown .has-tags')
 end
 
-Then /^the(?: first)? document should not have tags$/ do
-  page.should have_css('.tags_dropdown .btn', :text => 'Tags')
-  page.should_not have_css('.tags_dropdown .btn-danger'), :text => 'Tags'
+Then /^the( first)? document should not have tags$/ do |first|
+  scope = first ? find('.documentFunctions') : page
+  scope.should have_css('.tags_dropdown .no-tags')
 end
 
-Then /^the document should be tagged with "(.*?)"$/ do |tag_name|
-  page.should have_css('.tags_as_labels .tag', :text => tag_name)
+Then /^the( first)? document should be tagged with "(.*?)"$/ do |first, tag_name|
+  scope = first ? find('.documentFunctions') : page
+  scope.should have_css('.tags-as-labels .tags .tag', :text => tag_name)
 end
 
-Then /^the document should not be tagged with "(.*?)"$/ do |tag_name|
-  page.should_not have_css('.tags_as_labels .tag', :text => tag_name)
+Then /^the( first)? document should not be tagged with "(.*?)"$/ do |first, tag_name|
+  scope = first ? find('.documentFunctions') : page
+  scope.should_not have_css('.tags-as-labels .tags .tag', :text => tag_name)
 end

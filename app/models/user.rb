@@ -104,7 +104,8 @@ class User < ActiveRecord::Base
       document_id = bookmark_document_or_document_id.id
     end
 
-    bookmarks.includes(:tags).find_by_document_id(document_id).tags.order(:name)
+    bookmark = bookmarks.includes(:tags).find_by_document_id(document_id)
+    bookmark && bookmark.tags.order(:name)
   end
 
   def to_s

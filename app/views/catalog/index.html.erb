@@ -5,8 +5,8 @@
 <div id="content" class="span9">
 
     <% unless has_search_parameters? %>
-	    <%# if there are no input/search related params, display the "home" partial -%>
-	    <%= render 'home' %>
+            <%# if there are no input/search related params, display the "home" partial -%>
+            <%= render 'home' %>
     <% else %>
 
       <h2 class="hide-text top-content-title"><%= t('blacklight.search.search_results_header') %></h2>
@@ -18,9 +18,9 @@
 
       <%= render 'refine_advanced_search' %>
 
-	    <%= render :partial => 'did_you_mean' %>
+            <%= render :partial => 'did_you_mean' %>
 
-	    <%= render :partial => 'constraints' %>
+            <%= render :partial => 'constraints' %>
 
       <% if @document_list.empty? %>
         <%= render 'no_hits' %>
@@ -30,7 +30,7 @@
       <% end %>
 
 
-	    <%= render 'results_pagination' %>
+            <%= render 'results_pagination' %>
 
 
     <% end %>

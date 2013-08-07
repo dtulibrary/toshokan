@@ -3,24 +3,24 @@
   <li>
     <%= form_tag(document_tags_path(document_id), :remote => true, :class => 'new_tag form-inline') do %>
       <%= text_field_tag :tag_name %>
-      <%= hidden_field_tag :return_url, return_url %>
       <%= submit_tag t('toshokan.tags.add'), :class => 'btn' %>
+      <%= hidden_field_tag :return_url, return_url %>
     <% end %>
   </li>
   <li class="divider"></li>
   <% (tags).each do |tag| %>
     <li class="tag">
     <% if bookmark && bookmark.tags.include?(tag) %>
-      <%= link_to content_tag(:em, tag.name) + content_tag(:i, '', :class=>'icon-remove'),
-		  {:controller => 'tags', :action => 'destroy', :id => tag.id,
-		   :document_id => document_id, :return_url => return_url},
-		  :method => :delete, :remote => remote, :title => "#{t('toshokan.tags.remove')} #{tag.name}" %>
+      <%= link_to (tag.name + ' ' + content_tag(:i, '', :class=>'icon-remove')).html_safe,
+                  {:controller => 'tags', :action => 'destroy', :id => tag.id,
+                   :document_id => document_id, :return_url => return_url},
+                  :class => 'remove-tag', :method => :delete, :remote => remote, :title => "#{t('toshokan.tags.remove')} #{tag.name}" %>
     <% else %>
       <%= link_to tag.name,
-		  {:controller => 'tags', :action => 'create', :tag_name => tag.name,
-		   :document_id => document_id, :return_url => return_url},
-		  :method => :post, :remote => remote, :title => "#{t('toshokan.tags.add')} #{tag.name}" %>
+                  {:controller => 'tags', :action => 'create', :tag_name => tag.name,
+                   :document_id => document_id, :return_url => return_url},
+                  :method => :post, :remote => remote, :title => "#{t('toshokan.tags.add')} #{tag.name}" %>
     <% end %>
-  </li>
+    </li>
   <% end %>
 </ul>

@@ -1,0 +1,8 @@
+<dl class="dl-horizontal dl-invert tags-as-labels">
+  <% unless current_or_guest_user.tags_for(document).blank? %>
+  <dt>Tags</dt>
+  <dd class="tags">
+    <%= render_tags_as_labels(document) %>
+  </dd>
+  <% end %>
+</dl>

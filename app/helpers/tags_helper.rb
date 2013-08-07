@@ -13,7 +13,7 @@ module TagsHelper
     end
 
     render 'tags/tag_control',
-	   {:document_id => document.id, :bookmark => bookmark, :tags => tags, :return_url => return_url}
+           {:document_id => document.id, :bookmark => bookmark, :tags => tags, :return_url => return_url}
   end
 
   def render_tag_partials options={}
@@ -30,10 +30,16 @@ module TagsHelper
     options[:locals] ||= {}
     options[:locals][:tags] ||= current_or_guest_user.tags.order(:name)
 
+    if request.xhr?
+      # TODO: on ajax requests we could query solr for document counts for each
+      # tag wrt. the current query
+    end
+
     if request.xhr? and controller.params and controller.params[:return_url]
       # if this is an ajax call, we are given a return_url that represents the original request
       # we replace the params hash with the one from the original url to generate correct links
       # for tag facets in the ajax-rendered tags_list
+
       return_url = controller.params[:return_url]
       params_from_return_url = Rack::Utils.parse_nested_query(URI::parse(return_url).query)
       params = controller.params = params_from_return_url.with_indifferent_access
@@ -41,21 +47,60 @@ module TagsHelper
     render(options)
   end
 
-  def render_tag_value(tag_name, options ={})
-    link_to_unless(options[:suppress_link], Tag.reserved?(tag_name) ? tag_name[1..-1] : tag_name,
-		   add_tag_params_and_redirect(tag_name),
+  def render_tags_for_document(document)
+    render 'catalog/tags', {:document => document}
+  end
+
+  def render_tags_as_labels(document)
+    bookmark = current_user.bookmarks.find_by_document_id(document.id)
+
+    return_url = request.url
+    if params && params[:return_url]
+      return_url = params[:return_url]
+    end
+
+    render 'tags/tags_as_labels', {:bookmark => bookmark, :return_url => return_url}
+  end
+
+  def tag_display_icon(tag_name)
+    case tag_name
+    when Tag.reserved_tag_all
+      content_tag(:i, '', :class => 'icon-empty')
+    when Tag.reserved_tag_untagged
+      content_tag(:i, '', :class => 'icon-star')
+    else
+      content_tag(:i, '', :class => 'icon-tag')
+    end
+  end
+
+  def tag_display_name(tag_name, options={})
+    case tag_name
+    when Tag.reserved_tag_all, Tag.reserved_tag_untagged
+      tag_name[1..-1]
+    else
+      tag_name
+    end
+  end
+
+  def tag_display(tag_name, options={})
+    (options[:suppress_icon] ? '' : tag_display_icon(tag_name)) + tag_display_name(tag_name)
+  end
+
+  def render_tag_value(tag_name, options={})
+    link_to_unless(options[:suppress_link], tag_display(tag_name, options),
+                   add_tag_params_and_redirect(tag_name),
                    :class=>"facet_select").html_safe
   end
 
   def render_selected_tag_value(tag_name, options ={})
-    #Updated class for Bootstrap Blacklight
+    options = options.merge({:suppress_link => true})
     content_tag(:span,
-		render_tag_value(tag_name, :suppress_link => true),
+                tag_display(tag_name, options),
                 :class => "selected") +
       link_to(content_tag(:i, '', :class => "icon-remove") +
-      content_tag(:span, '[remove]', :class => 'hide-text'),
-		  remove_tag_params(tag_name, params),
-                  :class=>"remove")
+                content_tag(:span, '[remove]', :class => 'hide-text'),
+              remove_tag_params(tag_name, params),
+              :class=>"remove")
   end
 
   # Adds the tag to params[:t]
@@ -131,9 +176,9 @@ module TagsHelper
           document_ids = current_user.bookmarks.find_all{|b| b.taggings.empty?}.map(&:document_id);
         else
           tag = current_user.tags.find_by_name(tag_name)
-      	  if tag
-      	    document_ids = tag.bookmarks.map(&:document_id)
-      	  end
+          if tag
+            document_ids = tag.bookmarks.map(&:document_id)
+          end
         end
       end
 

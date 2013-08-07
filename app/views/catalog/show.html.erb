@@ -14,12 +14,19 @@
 
       <div class="document media">
         <span class="pull-right hidden-phone">
+          <% if can? :tag, Bookmark %>
+          <div class="documentFunctions">
+            <%= render_tag_control @document %>
+          </div>
+          <% end %>
+
           <% # Cover image %>
           <%= render_cover_image @document %>
         </span>
         <div class="media-body">
           <%= render_document_partial @document, :show %>
         </div>
+        <%= render :partial => 'tags', :locals => { :document => @document}  %>
       </div>
 
     </div>

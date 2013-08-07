@@ -38,7 +38,7 @@ en:
     tags:
       all: "All"
       untagged: "Untagged"
-      title: "Bookmarks"
+      title: "My References"
       tags: "Tags"
       add: "Add"
       remove: "Remove"

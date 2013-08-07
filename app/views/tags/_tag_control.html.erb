@@ -1,11 +1,6 @@
 <div class="tag_control" id="<%= document_id %>-tag_control">
   <%= render 'tags/bookmark_button',
-	     {:document_id => document_id, :bookmark => bookmark, :tags => tags, :return_url => return_url} %>
+             {:document_id => document_id, :bookmark => bookmark, :tags => tags, :return_url => return_url} %>
   <%= render 'tags/tags_dropdown',
-	     {:document_id => document_id, :bookmark => bookmark, :tags => tags, :return_url => return_url} %>
-
-  <div class="tags_as_labels">
-    <%= render :partial => 'tags/tags_as_labels',
-	       :locals => {:bookmark => bookmark, :return_url => return_url} %>
-  </div>
+             {:document_id => document_id, :bookmark => bookmark, :tags => tags, :return_url => return_url} %>
 </div>
