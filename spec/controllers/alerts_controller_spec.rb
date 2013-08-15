@@ -148,12 +148,14 @@ describe AlertsController do
 
       context 'when alert does not exist' do
         it 'shows an error' do
+          Alert.stub(:delete).and_return(double(:success? => false, :message => "Failure", :code => 404))
           delete :destroy, :id => 12345          
           flash[:error].should_not be_nil
         end
       end
 
       it 'redirects to back' do
+        Alert.stub(:delete).and_return(double(:success? => true))
         delete :destroy, :id => 12345
         response.should redirect_to("where_i_came_from")
       end
