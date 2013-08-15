@@ -29,6 +29,7 @@ end
 # Alerted searches
 
 When /^I alert the search "(.*?)"$/ do |arg1|
+  Alert.stub(:post).and_return(double(:success? => true))
   click_link "Alert"
 end
 
@@ -37,10 +38,10 @@ Then /^it should( not)? be alerted$/ do |negate|
 end
 
 When /^I remove the alert from the search "(.*?)"$/ do |arg1|
+  Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+  Alert.stub(:delete).and_return(double(:success? => true))
   click_link "Alerted"
 end
-
-
 
 Then /^I should see a constraint with name "(.*?)" and value "(.*?)"$/ do |name, value|
   within('.constraint') do
