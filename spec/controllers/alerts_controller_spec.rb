@@ -115,7 +115,7 @@ describe AlertsController do
     context "with ability to alert" do
       before do
         ability.can :alert, :journal
-        Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+        Alert.stub(:post).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
         request.env["HTTP_REFERER"] = "where_i_came_from"
       end
 
@@ -148,13 +148,13 @@ describe AlertsController do
 
       context 'when alert does not exist' do
         it 'shows an error' do
-          post :destroy, :id => 12345          
+          delete :destroy, :id => 12345          
           flash[:error].should_not be_nil
         end
       end
 
       it 'redirects to back' do
-        post :destroy, :id => 12345
+        delete :destroy, :id => 12345
         response.should redirect_to("where_i_came_from")
       end
 
@@ -162,7 +162,7 @@ describe AlertsController do
 
     context 'without ability to alert' do
       it 'returns an HTTP 404' do
-        post :destroy, :id => 12345
+        delete :destroy, :id => 12345
         response.response_code.should == 404
       end
     end

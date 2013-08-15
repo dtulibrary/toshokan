@@ -94,7 +94,8 @@ describe SearchHistoryController do
         create_search
       end
 
-      it 'redirects to back' do        
+      it 'redirects to back' do
+        Alert.stub(:post).and_return(double(:success? => true))      
         put :alert, :id => 1
         response.should redirect_to("where_i_came_from")
       end
@@ -124,7 +125,9 @@ describe SearchHistoryController do
         search.save
       end
 
-      it 'redirects to back' do        
+      it 'redirects to back' do
+        Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+        Alert.stub(:delete).and_return(double(:success? => true))        
         delete :forget_alert, :id => 1
         response.should redirect_to("where_i_came_from")
       end
@@ -148,9 +151,7 @@ describe SearchHistoryController do
       before do
         ability.can :view, :search_history        
         request.env["HTTP_REFERER"] = "where_i_came_from"
-        search = create_search
-        search.alerted = true
-        search.save
+        @search = create_search
       end
 
       it 'redirects to back' do        
@@ -159,6 +160,9 @@ describe SearchHistoryController do
       end
 
       it 'does not delete search when an associated alert could not be deleted' do
+        @search.alerted = true
+        @search.save        
+        Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
         Alert.stub(:delete).and_return(double(:success? => false, :message => "Failure", :code => 500))
         Search.find_by_id(1).should_not be_nil
       end
