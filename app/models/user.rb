@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   end
 
   def dtu?
-    user_data && user_data['dtu']
+    authenticated? && user_data && user_data['dtu']
   end
 
   def employee?

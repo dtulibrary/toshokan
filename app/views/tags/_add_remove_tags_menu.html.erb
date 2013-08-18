@@ -1,4 +1,5 @@
 <% remote = true if local_assigns[:remote].nil? %>
+<% if can? :tag, Bookmark %>
 <ul class="<%= list_class %> existing_tags">
   <li>
     <%= form_tag(document_tags_path(document_id), :remote => true, :class => 'new_tag form-inline') do %>
@@ -24,3 +25,4 @@
     </li>
   <% end %>
 </ul>
+<% end %>
