@@ -1,40 +1,34 @@
 <table id="search-options" class="table hide">
   <tbody>
-    <tr>
-      <td style="color: #dc0000; text-align: right"><i class="icon-bell"></i> <a href="">Save with alert</a><i class="icon-star"></i> <%= link_to t('blacklight.search_history.save') %></td>
-    </tr>
+    <% if can? :view, :search_history && !@search_history.nil? && @search_history.length > 0 %>
+      <tr class="search-history-links">
+        <td>        
+          <i class="icon-star-empty">
+          <%= link_to save_search_path(@search_history.first.id), :method => :put, :title => t('toshokan.mylibrary.save') do %>
+            </i> <%= t('toshokan.mylibrary.save') %>
+          <%- end -%>
+          <i class="icon-bell"></i>
+          <%= link_to forget_search_path(@search_history.first.id), :method => :delete, :title => t('toshokan.mylibrary.saved') do %>
+            <%= t('toshokan.mylibrary.alert') %>
+          <%- end -%>
+        </td>
+      </tr>
+    <%- end -%>    
     <tr class="recent-history">
       <td class="bordered"><i class="icon-time"></i> <b>Recent History:</b></td>
     </tr>
-    <tr class="recent-history">
-      <td class="entry">
-        <i class="icon-search invisible"></i> <a href="">author:"Doe, John"</a>
-        <div>
-          <i class="icon-search invisible"></i>
-          <span style="font-size: 0.8em; color: #777">Filtered by: Type &gt; Journal article</span>
-        </div>
-      </td>
-    </tr>
-    <tr class="recent-history">
-      <td class="entry"><i class="icon-search invisible"></i> <a href="">title:water</a></td>
-    </tr>
-    <tr class="recent-history">
-      <td class="entry"><i class="icon-search invisible"></i> <a href="">nanotechnology</a></td>
-    </tr>
-    <tr class="recent-history">
-      <td class="entry">
-        <i class="icon-search invisible"></i> <a href="">title:"Photon mapping"</a>
-        <div>
-          <i class="icon-search invisible"></i>
-          <span style="font-size: 0.8em; color: #777">Filtered by: Author &gt; "Jensen, Henrik Wann" AND Type &gt; Journal article</span>
-        </div>
-      </td>
-    </tr>
-    <tr class="recent-history">
-      <td class="entry"><i class="icon-search invisible"></i> <a href="">opengl</a></td>
-    </tr>
-    <tr>
-      <td class="bordered" style="text-align: right; color: #dc0000"><i class="icon-time"></i> <%= link_to "Complete history", search_history_path %></td>
-    </tr>
+    <% @search_history.each do |entry| %>      
+      <tr class="recent-history">
+        <td class="entry">
+          <i class="icon-search invisible"></i> <%= link_to_previous_search(entry.query_params)%>
+        </td>
+      </tr>
+    <%- end -%>
+    <% if can? :view, :search_history %>
+      <tr class="search-history-links">
+        <td class="bordered">
+          <i class="icon-time"></i> <%= link_to "Complete history", search_history_path %></td>
+      </tr>
+    <%- end -%>
   </tbody>
 </table>

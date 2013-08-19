@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate
   before_filter :check_walk_in_only
   before_filter :set_google_analytics_dimensions_and_metrics
+  before_filter :set_search_history
 
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
@@ -166,5 +167,13 @@ class ApplicationController < ActionController::Base
 
   def default_url_options options = {}
     { :locale => I18n.locale }
+  end
+
+  def set_search_history
+    if can? :view, :search_history
+      @search_history = current_user.searches.order("created_at DESC").limit(Blacklight::Catalog::SearchHistoryWindow)
+    else
+      @search_history = searches_from_history
+    end
   end
 end

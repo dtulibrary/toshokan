@@ -29,12 +29,16 @@ class AlertsController < ApplicationController
   end
 
   def destroy
-    
-    if !Alert.destroy(params[:id])    
-      flash[:error] = t('toshokan.alerts.error')
-      Rails.logger.error "Could not delete alert"
+    respond_to do |format|   
+      if !Alert.destroy(params[:id])    
+        flash[:error] = t('toshokan.alerts.error')
+        format.json { render json: t('toshokan.alerts.error'), status: :internal_server_error }
+        Rails.logger.error "Could not delete alert"
+      else
+        format.js { head :no_content, status: :ok }
+      end
+      format.html { redirect_to :back }
     end
-    redirect_to :back
   end
 
   private

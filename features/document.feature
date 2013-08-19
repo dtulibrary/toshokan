@@ -5,7 +5,7 @@ Background:
 
 Scenario: User wants to see the details for a single record
 	 When I have searched for "A Codebook Design Method for Robust VQ-Based Face Recognition Algorithm"
-	  And I click the link "A Codebook Design Method for Robust VQ-Based Face Recognition Algorithm"
+	  And I click on the first document	  
    Then I should see the page for a single document
 
 Scenario: Export record in BibTex format

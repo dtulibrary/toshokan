@@ -3,7 +3,7 @@ When /^I go to the search history$/ do
 end
 
 Then /^I should( not)? see "(.*?)" in the history$/ do |negate, search|
-  css = '.history-item .constraint .filterValue'
+  css = '.item .constraint .filterValue'
   negate ? page.should_not(have_css(css, :text => search))
          : page.should(have_css(css, :text => search))
 end

@@ -8,7 +8,7 @@ class Alert
 
   base_uri Alert.url
 
-  attr_accessor :frequency, :user_id, :alert_type, :name, :query, :created_at, :updated_at, :id  
+  attr_accessor :frequency, :user_id, :alert_type, :name, :query, :created_at, :updated_at, :id, :reference  
   attr_accessible :alert_type, :query, :name
 
   validates_presence_of :query, :alert_type, :user_id
@@ -84,14 +84,15 @@ class Alert
     alert
   end
 
-  def self.find(user, query)
+  def self.find(user, query_params = {})
     begin
-      response = self.get("/alerts/find", :query => {"user_id" => user.id, "query" => query})
+      query_params[:user_id] = user.id
+      response = self.get("/alerts/find", :query => {:find => query_params})
       if response.success?
         alert = Alert.new(ActiveSupport::JSON.decode(response.body)["alert"])
       else
         if response.code != 404
-          Rails.logger.error "Alert service failed on find request for user #{user.inspect} and query '#{query}' with '#{response.message}'"
+          Rails.logger.error "Alert service failed on find request for user #{user.inspect} and query '#{query_params}' with '#{response.message}'"
         end
       end
     rescue Timeout::Error

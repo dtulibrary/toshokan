@@ -1,7 +1,7 @@
 
 <%= render :partial => 'shared/mylib_menu' %>
 
-<div id="content" class="span9">
+<div id="content" class="span9 mylibrary">
 
   <h3><%=t('toshokan.mylibrary.menu.search_history')%></h3>
 
@@ -22,7 +22,7 @@
         </tr>
       </thead>
       <% @searches.each do |search| %>
-        <tr class="history-item">
+        <tr class="item">
           <td><em class="muted">Add title</em></td>
           <td><%= link_to_previous_search(search.query_params) %></td>
           <td><%= search.created_at.to_s(:long) %></td>
@@ -32,34 +32,34 @@
             <% end %>
           </td>
           <td class="action">
-            <%- if !search.saved -%>
-              <%= link_to save_search_path(search.id), :method => :put, :title => t('toshokan.mylibrary.save') do %>
-                <i class="icon-star-empty"></i>
-              <%- end -%>
-            <%- else -%>
-              <%= link_to forget_search_path(search.id), :method => :delete, :title => t('toshokan.mylibrary.saved') do %>       
-                <i class="icon-star"></i>
-              <%- end -%>
-            <%- end -%>
+            <%= link_to forget_search_path(search.id), :method => :delete, 
+              :title => t('toshokan.mylibrary.saved'), :class => if !search.saved then "hidden" end,
+               :remote => true do %>       
+              <i class="icon-star"></i>
+            <%- end -%>          
+            <%= link_to save_search_path(search.id), :method => :put, :title => 
+              t('toshokan.mylibrary.save'), :remote => true, :class => if search.saved then "hidden" end do %>
+              <i class="icon-star-empty"></i>
+            <%- end -%>            
           </td>
-          <td class="action">
-            <%- if !search.alerted -%>
-              <%= link_to save_search_alert_path(search.id), :method => :put, :title => 
-              t('toshokan.mylibrary.alert') do %>
-                <i class="icon-bell"></i>
-              <%- end -%>
-            <%- else -%>
-              <%= link_to forget_search_alert_path(search.id), :method => :delete, :title =>
-              t('toshokan.mylibrary.alerted') do %> 
-                <i class="icon-bell-alt"></i>
-              <%- end -%>
-            <%- end -%>
+          <td class="action">            
+            <%= link_to forget_search_alert_path(search.id), :method => :delete, 
+              :title => t('toshokan.mylibrary.alerted'), :class => if !search.alerted then "hidden" end,
+              :remote => true do %> 
+              <i class="icon-bell-alt"></i>
+            <%- end -%>          
+            <%= link_to save_search_alert_path(search.id), :method => :put, 
+              :title => t('toshokan.mylibrary.alert'),  :class => if search.alerted then "hidden" end,
+              :remote => true do %>
+              <i class="icon-bell"></i>
+            <%- end -%>            
           </td>          
           <td class="action">
-            <%= link_to delete_search_history_path(search.id), method: :delete, :title => t('toshokan.mylibrary.delete') do %>
+            <%= link_to delete_search_history_path(search.id), :method => :delete, 
+            :title => t('toshokan.mylibrary.delete'), :remote => true, :class => "delete" do %>
               <i class="icon-remove"></i>
             <% end %>
-        </td>
+          </td>
         </tr>
       <% end %>
     </table>

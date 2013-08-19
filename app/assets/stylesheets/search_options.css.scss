@@ -36,6 +36,13 @@
     }
   }
 
+  tr.search-history-links {
+    td {
+      text-align: right; 
+      color: $dtu-red-light;
+    }
+  }
+
   a {
     color: #dc0000;
     margin-right: 1em;

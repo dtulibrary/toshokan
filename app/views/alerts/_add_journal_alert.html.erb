@@ -1,11 +1,11 @@
 <% alert = Alert.find(current_user, document['issn_ss'].first)
   if !alert.nil? %>
-    <%= link_to alert_path(alert.id), :method => :delete, :title => "Remove journal alert" do %>
+    <%= link_to alert_path(alert.id), :method => :delete, :title => "Remove journal alert", :remote => true do %>
       <i class="icon-check"></i>
     <em><%= t('toshokan.alerts.journal.add') %></em>
     <% end %>
   <% else %>
-    <%= link_to alerts_path("alert[alert_type]" => "journal", "alert[query]" => document['issn_ss'].first, "alert[name]" => document['title_ts'].first), :method => :post, :title => "Add journal alert" do %>
+    <%= link_to alerts_path("alert[alert_type]" => "journal", "alert[query]" => document['issn_ss'].first, "alert[name]" => document['title_ts'].first), :method => :post, :title => "Add journal alert", :remote => true do %>
       <i class="icon-check-empty"></i>
     <em><%= t('toshokan.alerts.journal.add') %></em>
   <% end %>  

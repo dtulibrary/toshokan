@@ -38,10 +38,6 @@ describe SearchHistoryController do
     end
   end
 
-  describe "#summary" do
-    pending
-  end
-
   describe "#save" do
     context "with ability to view search history" do
       before do

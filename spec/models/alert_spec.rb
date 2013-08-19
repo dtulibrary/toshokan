@@ -104,22 +104,22 @@ describe Alert do
 
     it "return the alert" do
       Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
-      Alert.find(@user, "123").should_not be_nil
+      Alert.find(@user, {:query => "123"}).should_not be_nil
     end
 
     it "returns nil on HTTP error" do
       Alert.stub(:get).and_return(double(:success? => false, :message => "Failure", :code => 500))
-      Alert.find(@user, "123").should be_nil
+      Alert.find(@user, {:query => "123"}).should be_nil
     end
 
     it "returns nil on timeout error" do
       Alert.stub(:get).and_raise(TimeoutError)
-      Alert.find(@user, "123").should be_nil
+      Alert.find(@user, {:query => "123"}).should be_nil
     end
 
     it "returns nil when not found" do
       Alert.stub(:get).and_return(double(:success? => false, :message => "Failure", :code => 404))
-      Alert.find(@user, "123").should be_nil
+      Alert.find(@user, {:query => "123"}).should be_nil
     end
   end
 end

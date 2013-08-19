@@ -333,14 +333,14 @@ class CatalogController < ApplicationController
 
       new_search = Search.create(:query_params => params_copy)
 
-      if(current_user.authenticated?)
+      if can? :view, :search_history
         current_user.searches << new_search
         current_user.save      
       else  
         session[:history].unshift(new_search.id)
         # Only keep most recent X searches in history, for performance. 
         # both database (fetching em all), and cookies (session is in cookie)
-        session[:history] = session[:history].slice(0, Blacklight::Catalog::SearchHistoryWindow )
+        session[:history] = session[:history].slice(0, Blacklight::Catalog::SearchHistoryWindow)
       end
     end
   end
