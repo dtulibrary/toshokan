@@ -25,7 +25,9 @@ class Alert
   def save
     begin
       response = self.class.post("/alerts", {:body => attributes})
-      unless response.success?
+      if response.success?
+        self.id = ActiveSupport::JSON.decode(response.body)["alert"]["id"]        
+      else
         Rails.logger.error "Alert service failed on saving alert for #{self.inspect} with #{response.message} and status #{response.code}"
       end    
       response.success?

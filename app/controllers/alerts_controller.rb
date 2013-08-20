@@ -20,12 +20,17 @@ class AlertsController < ApplicationController
 
   def create
     @alert = Alert.new(params[:alert], current_user)    
-
-    if !@alert.save
-      flash[:error] = t('toshokan.alerts.error')
-      Rails.logger.error "Alert #{alert.inspect} could not be saved"
+    
+    respond_to do |format|   
+      if !@alert.save
+        flash[:error] = t('toshokan.alerts.error')
+        Rails.logger.error "Alert #{alert.inspect} could not be saved"
+        format.json { render json: t('toshokan.alerts.error'), status: :internal_server_error }
+      else
+        format.json { render json: @alert, status: :ok }
+      end
+      format.html { redirect_to :back }
     end
-    redirect_to :back
   end
 
   def destroy

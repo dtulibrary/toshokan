@@ -29,5 +29,24 @@
     // shorten author and affiliation lists to at most 3 items in catalog#show
     shorten_list($('#document dd.blacklight-author_ts > a'), 3, ', <%= I18n.t("toshokan.catalog.shortened_list.et_al") %>');
     shorten_list($('#document dd.blacklight-affiliation_ts > span'), 3, '');
+
+    // add/remove journal alert
+    $('.journal-alert').each ( function() {
+      $(this).bind('ajax:success', function(evt, data, status, xhr) {
+        sibling = $(this).siblings().first();
+        if($(this).hasClass('add')) {
+          href = sibling.attr('href');          
+          sibling.attr('href', href.substring(0, href.lastIndexOf('/') + 1) + data.id);
+        }
+        $(this).addClass('hidden');
+        sibling.removeClass('hidden');
+      });
+    });
+    $('.journal-alert').each ( function() {
+      $(this).bind('ajax:error', function(evt, xhr, status, error){ 
+        addErrorFlashMessage(xhr.responseText);
+      });
+    });
+
   });
 })(jQuery);

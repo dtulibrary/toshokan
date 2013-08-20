@@ -91,7 +91,8 @@ describe SearchHistoryController do
       end
 
       it 'redirects to back' do
-        Alert.stub(:post).and_return(double(:success? => true))      
+        Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+        Alert.stub(:post).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
         put :alert, :id => 1
         response.should redirect_to("where_i_came_from")
       end

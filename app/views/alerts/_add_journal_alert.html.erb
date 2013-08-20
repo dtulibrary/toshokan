@@ -1,12 +1,15 @@
-<% alert = Alert.find(current_user, {:query => document['issn_ss'].first})
-  if !alert.nil? %>
-    <%= link_to alert_path(alert.id), :method => :delete, :title => "Remove journal alert", :remote => true do %>
-      <i class="icon-check"></i>
-    <em><%= t('toshokan.alerts.journal.add') %></em>
-    <% end %>
-  <% else %>
-    <%= link_to alerts_path("alert[alert_type]" => "journal", "alert[query]" => document['issn_ss'].first, "alert[name]" => document['title_ts'].first), :method => :post, :title => "Add journal alert", :remote => true do %>
-      <i class="icon-check-empty"></i>
-    <em><%= t('toshokan.alerts.journal.add') %></em>
-  <% end %>  
+<%- 
+  alert = Alert.find(current_user, {:query => document['issn_ss'].first}) 
+  alert_id = alert.nil? ? "" : alert.id
+-%>
+<%= link_to alert_path(alert_id), :method => :delete, :title => "Remove journal alert", :remote => true,
+    :class => if alert.nil? then "hidden journal-alert" else "journal-alert" end do %>
+    <i class="icon-check"></i>
+  <em><%= t('toshokan.alerts.journal.add') %></em>
 <% end %>
+<%= link_to alerts_path("alert[alert_type]" => "journal", "alert[query]" => document['issn_ss'].first, 
+      "alert[name]" => document['title_ts'].first), :method => :post, :title => "Add journal alert", :remote => true, 
+    :class => if !alert.nil? then "hidden journal-alert add" else "journal-alert add" end do%>
+    <i class="icon-check-empty"></i>
+  <em><%= t('toshokan.alerts.journal.add') %></em>
+<% end %>  

@@ -29,7 +29,8 @@ end
 # Alerted searches
 
 When /^I alert the search "(.*?)"$/ do |arg1|
-  Alert.stub(:post).and_return(double(:success? => true))
+  Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+  Alert.stub(:post).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
   click_link "Alert"
 end
 
