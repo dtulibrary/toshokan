@@ -1,4 +1,4 @@
-<% alert = Alert.find(current_user, document['issn_ss'].first)
+<% alert = Alert.find(current_user, {:query => document['issn_ss'].first})
   if !alert.nil? %>
     <%= link_to alert_path(alert.id), :method => :delete, :title => "Remove journal alert", :remote => true do %>
       <i class="icon-check"></i>
