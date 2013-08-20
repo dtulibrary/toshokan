@@ -25,7 +25,7 @@
         <tr class="item">
           <td><em class="muted">Add title</em></td>
           <td><%= link_to_previous_search(search.query_params) %></td>
-          <td><%= search.created_at.to_s(:long) %></td>
+          <td><%= l search.created_at, format: :long %></td>
           <td class="action">
             <%= link_to "#", method: :show , :title => "t('toshokan.mylibrary.info')" do %>
               <i class="icon-info-sign"></i>

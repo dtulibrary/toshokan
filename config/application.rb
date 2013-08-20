@@ -70,7 +70,7 @@ module Toshokan
     config.stub_authentication = false;
 
     config.time_zone = 'CET'
-    config.active_record.default_timezone = 'CET'
+    config.active_record.default_timezone = :local
 
     config.solr_document = {
       :document_id => 'cluster_id_ss'
