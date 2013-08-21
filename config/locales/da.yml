@@ -2,7 +2,7 @@ da:
   blacklight:
     search:
       form:
-        submit: Søg
+        submit: Find it
         q: Søg...
   toshokan:
     languages:
