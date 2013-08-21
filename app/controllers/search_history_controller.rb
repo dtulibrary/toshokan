@@ -10,7 +10,7 @@ class SearchHistoryController < ApplicationController
     @search.saved = true
     @search.save
     respond_to do |format|   
-      format.js { head :no_content, status: :ok }
+      format.js { head :no_content, status: 200 }
       format.html { redirect_to :back }
     end
   end
@@ -20,7 +20,7 @@ class SearchHistoryController < ApplicationController
     @search.saved = false
     @search.save
     respond_to do |format|   
-      format.js { head :no_content, status: :ok }
+      format.js { head :no_content, status: 200 }
       format.html { redirect_to :back }
     end
   end
@@ -45,8 +45,8 @@ class SearchHistoryController < ApplicationController
       end
     end  
     respond_to do |format|   
-      if alerted   
-        format.js { head :no_content, status: :ok }
+      if alerted           
+        format.js { head :no_content, status: 200 }        
       else
         format.json { render json: t('toshokan.search_history.error'), status: :internal_server_error }
       end
@@ -75,7 +75,7 @@ class SearchHistoryController < ApplicationController
     end
     respond_to do |format|
       if alert_deleted
-        format.js { head :no_content, status: :ok }
+        format.js { head :no_content, status: 200 }
       else
         format.json { render json: t('toshokan.search_history.error'), status: :internal_server_error }
       end
@@ -109,8 +109,8 @@ class SearchHistoryController < ApplicationController
       end
     end    
     respond_to do |format|   
-      if destroyed   
-        format.js { head :no_content, status: :ok }
+      if destroyed           
+        format.js { head :no_content, status: 200 }        
       else
         format.json { render json: t('toshokan.search_history.error'), status: :internal_server_error }
       end

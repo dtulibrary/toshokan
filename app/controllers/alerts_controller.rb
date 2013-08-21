@@ -27,7 +27,7 @@ class AlertsController < ApplicationController
         Rails.logger.error "Alert #{alert.inspect} could not be saved"
         format.json { render json: t('toshokan.alerts.error'), status: :internal_server_error }
       else
-        format.json { render json: @alert, status: :ok }
+        format.json { render json: @alert, status: 200 }
       end
       format.html { redirect_to :back }
     end
@@ -40,7 +40,7 @@ class AlertsController < ApplicationController
         format.json { render json: t('toshokan.alerts.error'), status: :internal_server_error }
         Rails.logger.error "Could not delete alert"
       else
-        format.js { head :no_content, status: :ok }
+        format.js { head :no_content, status: 200 }
       end
       format.html { redirect_to :back }
     end
