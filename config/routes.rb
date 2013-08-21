@@ -56,7 +56,7 @@ Toshokan::Application.routes.draw do
     resources :alerts, :except => [:edit, :update]
 
     match '/pages/searchbox', :to => 'pages#searchbox', :as => 'searchbox'
-    match '/pages/searchbox_styled', :to => 'pages#searchbox_styled', :as => 'searchbox_styled'
+    match '/pages/search_homepage', :to => 'pages#searchbox_styled', :as => 'searchbox_styled'
 
     put '/search_history/save/:id', :to => 'search_history#save', :as => 'save_search'
     put '/search_history/alert/:id', :to => 'search_history#alert', :as => 'save_search_alert'
