@@ -1,0 +1,30 @@
+(function ($) {
+  $(function () {
+
+    $('#search-summary-save').bind('ajax:success', function(evt, data, status, xhr) {      
+      $(this).disableSearchSummaryAction("<%=I18n.t('toshokan.mylibrary.saved')%>");
+      $(this).siblings().first().removeClass("icon-star-empty").addClass("icon-star");
+    });
+
+    $('#search-summary-alert').bind('ajax:success', function(evt, data, status, xhr) {
+      $(this).disableSearchSummaryAction("<%=I18n.t('toshokan.mylibrary.alerted')%>");      
+      $(this).siblings().first().removeClass("icon-bell").addClass("icon-bell-alt");
+    });
+
+    $('#search-summary-save,#search-summary-alert').each ( function() {
+      $(this).bind('ajax:error', function(evt, xhr, status, error){ 
+        addErrorFlashMessage(xhr.responseText);
+      });
+    });
+
+    $.fn.disableSearchSummaryAction = function(text) {
+      $(this).parent().addClass('disabled');
+      $(this).text(text);
+      $(this).click(function(event) {
+        event.preventDefault();
+      });   
+      return this;   
+    }
+
+  });
+})(jQuery);

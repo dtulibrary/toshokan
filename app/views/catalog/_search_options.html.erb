@@ -1,16 +1,21 @@
-<table id="search-options" class="table hide">
+<table id="search-options" class="table hide table-hover">
   <tbody>
-    <% if can? :view, :search_history && !@search_history.nil? && @search_history.length > 0 %>
+    <% if (can? :view, :search_history) && (!@search_history.nil?) && (@search_history.length > 0) && !params[:q].blank? %>
       <tr class="search-history-links">
-        <td>        
-          <i class="icon-star-empty">
-          <%= link_to save_search_path(@search_history.first.id), :method => :put, :title => t('toshokan.mylibrary.save') do %>
-            </i> <%= t('toshokan.mylibrary.save') %>
-          <%- end -%>
-          <i class="icon-bell"></i>
-          <%= link_to forget_search_path(@search_history.first.id), :method => :delete, :title => t('toshokan.mylibrary.saved') do %>
-            <%= t('toshokan.mylibrary.alert') %>
-          <%- end -%>
+        <td>
+          <span>
+            <i class="icon-star-empty"></i>                  
+            <%= link_to save_search_path(@search_history.first.id), :method => :put, 
+            :title => t('toshokan.mylibrary.save'), :id => "search-summary-save", :remote => true do %>
+               <%= t('toshokan.mylibrary.save') %>
+            <%- end -%>
+          </span>
+          <span>
+            <i class="icon-bell"></i>
+            <%= link_to save_search_alert_path(@search_history.first.id), :method => :put, :title => t('toshokan.mylibrary.alert'), :id => "search-summary-alert", :remote => true do %>
+              <%= t('toshokan.mylibrary.alert') %>
+            <%- end -%>
+          </span>
         </td>
       </tr>
     <%- end -%>    

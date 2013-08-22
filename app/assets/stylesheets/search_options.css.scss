@@ -38,13 +38,20 @@
 
   tr.search-history-links {
     td {
-      text-align: right; 
-      color: $dtu-red-light;
+      text-align: right;
+      color: $dtu-red-light;      
+    }
+    .disabled {      
+      a, i {
+        color: $dtu-gray;
+        cursor: default;
+        text-decoration: none;
+      }
     }
   }
 
   a {
-    color: #dc0000;
+    color: $dtu-red-light;
     margin-right: 1em;
   }
 }
