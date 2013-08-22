@@ -43,13 +43,13 @@ Scenario: Bookmark constraints should be displayed in search history
 
 Scenario: Bookmark constraints should be displayed above the search result
     When I bookmark the document with title "A cohomology theory for colored tangles"
-     And I filter by tag "All"
-    Then I should see a constraint with name "Bookmarks" and value "All"
+     And I filter by tag "All"     
+    Then I should see a tag constraint with name "Bookmarks" and value "All"
 
 Scenario: Bookmark constraints should be displayed above the search result
     When I bookmark the document with title "A cohomology theory for colored tangles"
      And I filter by tag "Untagged"
-    Then I should see a constraint with name "Bookmarks" and value "Untagged"
+    Then I should see a tag constraint with name "Bookmarks" and value "Untagged"
 
 Scenario: Un-bookmark a document in document view
     When I bookmark the document with title "A cohomology theory for colored tangles"
@@ -92,5 +92,5 @@ Scenario: Tag constraints should be displayed in search history
 Scenario: Tag constraints should be displayed above the search result
    When I add a tag "some tag" to the document with title "A cohomology theory for colored tangles"
     And I filter by tag "some tag"
-   Then I should see a constraint with name "Tagged" and value "some tag"
+   Then I should see a tag constraint with name "Tagged" and value "some tag"
 

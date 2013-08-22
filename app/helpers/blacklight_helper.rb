@@ -50,4 +50,9 @@ module BlacklightHelper
     filters
   end
 
+  # Search History and Saved Searches display
+  def link_to_search_history_item(params, html="")
+    link_to(raw(html+render_search_to_s(params)), catalog_index_path(params)).html_safe
+  end
+
 end

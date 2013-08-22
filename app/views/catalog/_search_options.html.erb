@@ -19,13 +19,13 @@
         </td>
       </tr>
     <%- end -%>    
-    <tr class="recent-history">
+    <tr class="search_history">
       <td class="bordered"><i class="icon-time"></i> <b>Recent History:</b></td>
     </tr>
     <% @search_history.each do |entry| %>      
-      <tr class="recent-history">
+      <tr class="search_history">
         <td class="entry">
-          <i class="icon-search invisible"></i> <%= link_to_previous_search(entry.query_params)%>
+          <%= link_to_search_history_item(entry.query_params, "<i class='icon-search invisible'></i>") %>
         </td>
       </tr>
     <%- end -%>

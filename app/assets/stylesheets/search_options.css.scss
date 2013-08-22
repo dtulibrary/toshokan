@@ -15,23 +15,30 @@
       }
     }
 
-    &.recent-history {
+    &.search_history {
       td {
         &.entry {
           &:hover {
-            background: whitesmoke;
-            cursor: pointer;
+            background: whitesmoke;            
           }
 
           a {
             text-decoration: none;
             color: #000;
+            height: 100%;
+            width: 100%;
+            display: block;
 
             &:hover {
               text-decoration: none;
-            }
+            }            
           }
         }
+      }
+      .constraint {
+        display: inline;
+        margin-right: 0.5em;
+        padding-left: 0;
       }
     }
   }

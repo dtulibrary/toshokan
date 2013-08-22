@@ -121,3 +121,11 @@ Then /^the( first)? document should not be tagged with "(.*?)"$/ do |first, tag_
   scope = first ? find('.documentFunctions') : page
   scope.should_not have_css('.tags-as-labels .tags .tag', :text => tag_name)
 end
+
+Then /^I should see a tag constraint with name "(.*?)" and value "(.*?)"$/ do |name, value|
+  within('.tag-constraint.constraint') do
+    find('.filterName').should have_content name
+    find('.filterValue').should have_content value
+  end
+end
+

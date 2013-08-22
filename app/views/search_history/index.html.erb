@@ -24,7 +24,7 @@
       <% @searches.each do |search| %>
         <tr class="item">
           <td><em class="muted">Add title</em></td>
-          <td><%= link_to_previous_search(search.query_params) %></td>
+          <td class="search_history"><%= link_to_previous_search(search.query_params) %></td>
           <td><%= l search.created_at, format: :long %></td>
           <td class="action">
             <%= link_to "#", method: :show , :title => "t('toshokan.mylibrary.info')" do %>

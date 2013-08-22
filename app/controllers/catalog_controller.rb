@@ -320,7 +320,8 @@ class CatalogController < ApplicationController
   end
 
   # Saves the current search (if it does not already exist) as a models/search object
-  # then adds the id of the serach object to session[:history]
+  # then adds the id of the search object to session[:history] (if not logged in) or
+  # add the search to the users searches
   def save_current_search_params    
     # If it's got anything other than controller, action, total, we
     # consider it an actual search to be saved. Can't predict exactly
@@ -329,18 +330,22 @@ class CatalogController < ApplicationController
     params_copy = search_session.clone # don't think we need a deep copy for this
     params_copy.delete(:page)    
 
-    unless @searches.collect { |search| search.query_params }.include?(params_copy)
+    unless @search_history.collect { |search| search.query_params }.include?(params_copy)
 
-      new_search = Search.create(:query_params => params_copy)
+      # don't save default 'empty' search
+      unless params[:q].blank? && params[:f].blank? && params[:t].blank?
 
-      if can? :view, :search_history
-        current_user.searches << new_search
-        current_user.save      
-      else  
-        session[:history].unshift(new_search.id)
-        # Only keep most recent X searches in history, for performance. 
-        # both database (fetching em all), and cookies (session is in cookie)
-        session[:history] = session[:history].slice(0, Blacklight::Catalog::SearchHistoryWindow)
+        new_search = Search.create(:query_params => params_copy)
+
+        if can? :view, :search_history
+          current_user.searches << new_search
+          current_user.save      
+        else  
+          session[:history].unshift(new_search.id)
+          # Only keep most recent X searches in history, for performance. 
+          # both database (fetching em all), and cookies (session is in cookie)
+          session[:history] = session[:history].slice(0, Blacklight::Catalog::SearchHistoryWindow)
+        end
       end
     end
   end

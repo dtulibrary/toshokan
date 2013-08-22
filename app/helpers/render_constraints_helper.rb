@@ -57,13 +57,13 @@ module RenderConstraintsHelper
 						I18n.t('toshokan.tags.untagged')
 				end,
 				:remove => url_for(remove_tag_params(tag_name, localized_params)),
-				:classes => ["filter", "tag-" + tag_name]
+				:classes => ["filter", "tag-" + tag_name, "tag-constraint"]
 				) + "\n"
     else
       render_constraint_element(I18n.t('toshokan.tags.tagged'),
 				tag_name,
 				  :remove => url_for(remove_tag_params(tag_name, localized_params)),
-				  :classes => ["filter", "tag-" + tag_name]
+				  :classes => ["filter", "tag-" + tag_name, "tag-constraint"]
 				) + "\n"
     end
   end
