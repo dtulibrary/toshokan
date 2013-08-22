@@ -1,9 +1,3 @@
-Given /^I have searched for "(.*?)"$/ do |query|
-  visit catalog_index_path(:simple_search => true)  
-  fill_in('q', :with => query) 
-  click_button('Find it')  
-end
-
 When /^I click on the first document$/ do
   step 'I click on the title for the first of the results'
 end

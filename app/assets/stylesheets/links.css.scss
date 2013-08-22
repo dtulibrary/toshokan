@@ -6,4 +6,12 @@ a {
   &:active, &:hover {
     color: $dtu_red_light;
   }
+
+  &.cant-find-link {
+    width: 100%;
+    margin-bottom: 20px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 20px;
+  }
 }

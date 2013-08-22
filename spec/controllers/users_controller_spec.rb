@@ -8,7 +8,7 @@ describe UsersController do
   describe '#index' do
     context 'with ability to update users' do
       before do
-        @ability = give_ability :update, User
+        @ability = create_ability :update, User
         controller.stub(:current_ability).and_return @ability
       end
 
@@ -45,7 +45,7 @@ describe UsersController do
 
     context 'with ability to update users' do
       before do
-        @ability = give_ability :update, User
+        @ability = create_ability :update, User
         controller.stub(:current_ability).and_return @ability
       end
 
@@ -109,7 +109,7 @@ describe UsersController do
 
     context 'with ability to update users' do
       before do
-        @ability = give_ability :update, User
+        @ability = create_ability :update, User
         controller.stub(:current_ability).and_return @ability
       end
 
@@ -149,11 +149,4 @@ describe UsersController do
       end
     end
   end
-end
-
-def give_ability actions, subjects
-  ability = Object.new
-  ability.extend CanCan::Ability
-  ability.can actions, subjects
-  return ability
 end

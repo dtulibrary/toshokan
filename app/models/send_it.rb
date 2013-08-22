@@ -59,4 +59,104 @@ class SendIt
   def self.send_receipt_mail order, params = {}
     send_order_mail 'findit_receipt', order, params
   end
+
+  def self.send_request_assistance_mail genre, user, params = {}
+    case genre
+    when :journal_article
+      type = 'article'
+      title = params[:article_title]
+    when :conference_article
+      type = 'conference_article'
+      title = params[:article_title]
+    when :book
+      type = 'book'
+      title = params[:book_title]
+    else
+      type = 'article'
+      title = params[:article_title]
+    end
+
+
+    local_params = {
+      :to => SendIt.delivery_support_mail,
+      :type => type,
+      :title => title,
+      :user => {
+        :email => user.email,
+        :name => "#{user} (CWIS: #{user.identifier})",
+      }
+    }
+
+    local_params.deep_merge! article_params params
+    local_params.deep_merge! journal_params params
+    local_params.deep_merge! conference_params params
+    local_params.deep_merge! proceedings_params params
+    local_params.deep_merge! book_params params
+    local_params.deep_merge! publisher_params params
+
+    send_mail 'library_assistance', local_params
+  end
+
+  def self.article_params params
+    result = {}
+    if params['article_title']
+      result[:article] = extract_params ['article_title', 'author', 'doi'], params
+    end
+    result
+  end
+
+  def self.journal_params params
+    result = {}
+    if params['journal_title']
+      result[:journal] = extract_params ['journal_title', 'issn', 'volume', 'issue', 'year', 'pages'], params
+    end
+    result
+  end
+
+  def self.conference_params params
+    result = {}
+    if params['conference_title']
+      result[:conference] = extract_params ['conference_title', 'location', 'number', 'year'], params
+    end
+    result
+  end
+
+  def self.proceedings_params params
+    result = {}
+    if params['proceedings_title']
+      result[:proceedings] = extract_params ['proceedings_title', 'isxn', 'pages'], params
+    end
+    result
+  end
+
+  def self.book_params params
+    result = {}
+    if params['book_title']
+      result[:book] = extract_params ['book_title', 'author', 'edition', 'doi', 'isbn'], params
+    end
+    result
+  end
+
+  def self.publisher_params params
+    result = {}
+    if params['publisher_name']
+      result[:publisher] = extract_params ['publisher_name'], params
+    end
+    result
+  end
+
+  def self.extract_params names, params
+    result = {}
+    names.each do |name|
+      # XXX: Rename form parameters like 'article_title' or 'publisher_name' to 'title' and 'name'
+      #      since they will appear in an object-style hash. 
+      #      So 'article_title' will be in 'article' => { 'title' => ... }
+      result[name.gsub /.*_(title|name)/, '\1'] = params[name] unless params[name].blank?
+    end
+    result
+  end
+
+  def self.send_article_assistance_mail user, params = {}
+    send_request_assistance_mail :journal_article, user, params
+  end
 end

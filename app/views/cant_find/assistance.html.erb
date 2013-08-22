@@ -1,0 +1,30 @@
+<div class="span12">
+  <p>Your request has been sent with the following values:</p>
+  <div class="row">
+    <% @form_sections.each do |section| -%>
+      <div class="span3">
+        <% if section.is_a? Array -%>
+          <% section.each do |nested_section| -%>
+            <% if @sections.has_key? nested_section -%>
+              <dl class="<%= nested_section %>-section">
+                <% @sections[nested_section].each do |field, value| -%>
+                  <dt><%= t "toshokan.cant_find.forms.fields.#{field}" %></dt>
+                  <dd><%= value %></dd>
+                <% end -%>
+              </dl>
+            <% end -%>
+          <% end -%>
+        <% else -%>
+          <% if @sections.has_key? section -%>
+            <dl class="<%= section %>-section">
+              <% @sections[section].each do |field, value| -%>
+                <dt><%= t "toshokan.cant_find.forms.fields.#{field}" %></dt>
+                <dd><%= value %></dd>
+              <% end -%>
+            </dl>
+          <% end -%>
+        <% end -%>
+      </div>
+    <% end -%>
+  </div>
+</div>

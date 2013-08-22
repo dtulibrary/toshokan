@@ -1,0 +1,10 @@
+p {
+  &.full-section {
+    // As opposed to bootstrap's definition of p that doesn't section above
+    margin: 10px 0px;
+  }
+}
+
+.indented {
+  margin-left: 2em;
+}

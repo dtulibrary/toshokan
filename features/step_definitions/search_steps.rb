@@ -2,8 +2,17 @@ Given /^I am on the front page$/ do
   visit(root_path)
 end
 
+Given /^I(?:'m| am) on the search page/ do
+  visit catalog_index_path
+end
+
 Given /^I(?: a|')m on the advanced search page$/ do
   visit(advanced_path)
+end
+
+Given /^I(?:'ve| have) searched for "(.*?)"$/ do |q|
+  step %{I'm on the search page}
+  step %{I search for "#{q}"}
 end
 
 When /^I search for "(.*?)"$/ do |query|

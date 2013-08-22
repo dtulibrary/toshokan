@@ -1,0 +1,27 @@
+<div class="span12" style="margin-bottom: 3em">
+  <h4 class="underlined"><%= t 'toshokan.cant_find.title', :genre => @genre %></h4>
+  <h5><%= t 'toshokan.cant_find.tips.title' %></h5>
+  <% unless @tips.empty? %>
+    <ul class="search-tips">
+      <% @tips.each do |tip| %>
+        <li><%= t "toshokan.cant_find.tips.#{tip}_html" %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <h5 style="margin-top: 3em;"><%= t 'toshokan.cant_find.forms.title' %></h5>
+  <%= form_tag dtic_assistance_path(:genre => @genre) do %>
+    <div class="row">
+      <% @form_sections.each do |section| %>
+        <div class="span3">
+          <% if section.is_a? Array %>
+            <% section.each do |nested_section| %>
+              <%= render "#{nested_section}_section" %>
+            <% end %>
+          <% else %>
+            <%= render "#{section}_section" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

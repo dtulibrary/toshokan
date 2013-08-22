@@ -1,18 +1,15 @@
-<h4>Sorry, no hits</h4>
-<p>
-  Your search did not return any results. Please modify your search and try again.
-</p>
-<p>
-  If the search is still unsuccessful, consider one of the following alternatives:
-</p> 
-<dl>
-  <dt>Articles</dt>
-  <dd>Do the search in <a target="_blank" href="http://scholar.google.com">Google Scholar</a>.</dd>
-  <dt>Books</dt>
-  <dd>Do the search in <a target="_blank" href="http://books.google.com">Google books</a>.</dd>
-  <dt>Other</dt>
-  <dd>Do the search in <a target="_blank" href="http://www.google.com">Google</a>.</dd>
-</dl>
-<p>
-  Read <a target="_blank" href="<%= Rails.application.config.lib_guide[:public][:how_to] %>">tips on searching DTU Findit</a><%- if can? :ask, :librarian -%> or ask a librarian<%- end %>.
-</p>
+<div class="row" style="margin-bottom: 3em">
+  <div class="span6">
+    <h4><%= t 'toshokan.catalog.no_hits.title' %></h4>
+    <p><%= t 'toshokan.catalog.no_hits.text' %></p>
+  </div>
+</div>
+<% if can? :view, :cant_find_links %>
+  <% [:journal_article, :conference_article, :book].each do |genre| %>
+    <div class="row">
+      <div class="span6">
+        <%= link_to t("toshokan.cant_find.genres.#{genre}"), cant_find_path(:genre => genre), :class => 'btn btn-primary cant-find-link' %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

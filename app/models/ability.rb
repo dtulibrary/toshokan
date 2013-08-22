@@ -24,6 +24,7 @@ class Ability
       can :tag, [Bookmark, Search]
       can :share, Tag
       can :search, :dtu    
+      can :view, :cant_find_links
     when 'public'
       # Logged in from outside DTU Campus
       can :tag, [Bookmark, Search]

@@ -44,6 +44,12 @@ Toshokan::Application.routes.draw do
     # Temp fix since BL 4.1 removed the POST route to feedback (but BL's code still seems to rely on it).
     match '/feedback',                :to => 'feedback#show',            :as => 'feedback',             :via => :post
 
+    # DTIC librarian assistance (create redmine issues)
+    match '/cant_find/assistance/:genre',      :to => 'cant_find#assistance',     :as => 'dtic_assistance',    :via => :post
+
+    # Can't find forms
+    match '/cant_find/:genre',          :to => 'cant_find#index',          :as => 'cant_find',          :via => :get
+
     resources :documents, :only => [] do
       resources :tags, :except => [:edit, :update]
     end

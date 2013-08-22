@@ -147,6 +147,7 @@ module Toshokan
     config.send_it = {
       :url => '',
       :delay_jobs => true,
+      :delivery_support_mail => '',
     }
 
     config.delay_jobs = true

@@ -1,5 +1,9 @@
 # encoding: utf-8
 
+Given /^I have(?: not|n't) logged in$/ do
+  # For narrative purposes in features
+end
+
 Then /^the user should be "(.*?)"$/ do |username|
   page.should have_selector '#util-links a', :text => username
 end
@@ -78,7 +82,7 @@ end
 Given /^I(?:'m| am) logged in by (DTU CAS|Public CAS)$/ do |auth_name|
   map = { 
     'DTU CAS' => 'dtu_cas', 
-    'Public CAS' => 'public_cas' 
+    'Public CAS' => 'public' 
   }
 
   if map.has_key? auth_name
@@ -98,6 +102,15 @@ Given /^I(?:'m| am) a walk-in user$/ do
   ApplicationController.stub(:walk_in_request?).and_return(true)
 end
 
+Given /^I(?:'m| am) logged in as a (DTU|public) user$/ do |login_type|
+  case login_type
+  when 'DTU'
+    step %{I'm logged in by DTU CAS}
+  when 'public'
+    step %{I'm logged in by Public CAS}
+  end
+end
+
 def log_in(user)
   OmniAuth.config.test_mode = true
 
@@ -111,6 +124,9 @@ def log_in(user)
   when 'dtu_cas'
     mock_dtu_cas user
     choose 'DTU Campus Login'
+  when 'public'
+    mock_public_cas user
+    choose 'Public Login'
   end
   
   # Click final login button
@@ -119,6 +135,14 @@ end
 
 Given /^I log out$/ do
   click_link 'Log out'
+end
+
+def mock_public_cas user
+  OmniAuth.config.add_mock :public_cas, {
+    :uid => user.username,
+    :info => { :name => user.to_s },
+    :extra => { :user => user.username },
+  }
 end
 
 def mock_dtu_cas user

@@ -18,6 +18,63 @@ en:
       da: danish
     save: "Save"
     cancel: "Cancel"
+    read_more: Read more
+    cant_find:
+      title: Unable to find the %{genre} you are looking for?
+      about_service: Learn about DTU Library request service.
+      forms:
+        title: Need DTU library assistance?
+        fields:
+          article_title: Article title
+          author: Author
+          book_title: Book title
+          conference_title: Conference title
+          doi: DOI
+          edition: Edition
+          isbn: ISBN
+          issn: ISSN
+          issue: Iss.
+          journal_title: Journal title
+          notes: Notes
+          number: No.
+          pages: Pages
+          proceedings_isxn: ISSN/ISBN
+          proceedings_title: Proceedings/series title
+          publisher_name: Publisher name
+          volume: Vol.
+          year: Year
+        sections:
+          article: The article
+          book: The book
+          conference: The conference
+          conference_article: The conference article
+          email: 
+            title: Email
+            text: For dialog and for material that can be delivered electronically.
+          journal: The journal
+          notes: Notes
+          physical_location: 
+            title: Physical location
+            text: For material that can only be delivered physically
+          proceedings: Proceedings/series
+          publisher: The publisher
+        submit: Send request
+      genres:
+        journal_article: Journal article
+        conference_article: Conference article
+        book: Book
+      tips:
+        title: Some tips to help yourself
+        bibliotek_dk_html:
+          Try Danish national union catalogue <a target="_blank" href="http://www.bibliotek.dk">bibliotek.dk</a>
+        google_books_html:
+          Try <a target="_blank" href="http://books.google.com">Google Books</a>
+        google_scholar_html:
+          DTU Findit has a technical scientific focus; other search engines might have a different
+          and broader scope and may assist you. Try <a target="_blank" href="http://scholar.google.com">Google Scholar</a>.
+        refine_search_html:
+          Explore the full search power of DTU Findit. <a href="">See what DTU Findit covers</a>
+          and <a href="">learn about the powerful search syntax</a>.
     header_links:
       switch_user: "Switch User"
       switch_back: "Switch Back"
@@ -118,6 +175,18 @@ en:
       required_fields_html: Fields marked with <b class="dtu-red">*</b> are required
       send: 'Send'
     catalog:
+      home:
+        title_html: DTU Findit &mdash; Your digital library
+        subtitle: Search millions of academic articles 
+        features:
+          coverage: Complete coverage of published articles from all major STM publishers.
+          search:
+            dtu: Search 170 million articles, journals and books.
+            public: Search more than 70 million articles, journals and books.
+          download: Download full articles or order digital copies.
+      no_hits:
+        title: No results in DTU Findit
+        text: Refine your search or get help and assistance locating what you are looking for
       display_formats:
         standard_index: 'Standard'
         standard_show: 'Standard'

@@ -1,0 +1,8 @@
+@import 'toshokan_defaults';
+
+h1, h2, h3, h4, h5, h6 {
+  &.underlined {
+    border-bottom: 2px solid $dtu_red;
+    padding-bottom: 0.25em;
+  }
+}
