@@ -15,8 +15,8 @@
           <th>Title</th>
           <th>Search</th>
           <th>Issued</th>
-          <th class="action"><%= t('toshokan.mylibrary.info') %></th>
-          <th class="action"><%= t('toshokan.mylibrary.save') %></th>
+<!--           <th class="action"><%= t('toshokan.mylibrary.info') %></th>
+ -->          <th class="action"><%= t('toshokan.mylibrary.save') %></th>
           <th class="action"><%= t('toshokan.mylibrary.alert') %></th> 
           <th class="action"><%= t('toshokan.mylibrary.delete') %></th>
         </tr>
@@ -26,12 +26,12 @@
           <td><em class="muted">Add title</em></td>
           <td class="search_history"><%= link_to_previous_search(search.query_params) %></td>
           <td><%= l search.created_at, format: :long %></td>
-          <td class="action">
+<!--           <td class="action">
             <%= link_to "#", method: :show , :title => "t('toshokan.mylibrary.info')" do %>
               <i class="icon-info-sign"></i>
             <% end %>
           </td>
-          <td class="action">
+ -->          <td class="action">
             <%= link_to forget_search_path(search.id), :method => :delete, 
               :title => t('toshokan.mylibrary.saved'), :class => if !search.saved then "hidden" end,
                :remote => true do %>       

@@ -14,7 +14,8 @@
         <tr>
           <th>Title</th>
           <th>ISSN</th>        
-          <th class="action"><%= t('toshokan.mylibrary.info')%></th>
+<!--           <th class="action"><%= t('toshokan.mylibrary.info')%></th>
+ -->          
           <th class="action"><%= t('toshokan.mylibrary.delete')%></th>
         </tr>
       </thead>
@@ -22,12 +23,12 @@
         <tr class="item">
           <td><%= alert.name %></span></td>
           <td><%= alert.query %></span></td>        
-          <td class="action">
+<!--           <td class="action">
             <%= link_to alert_path(alert.id), method: :show do %>
               <i class="icon-info-sign"></i>
             <% end %>
           </td>
-          <td class="action delete">
+ -->          <td class="action delete">
             <%= link_to alert_path(alert.id), method: :delete, data: { confirm: t('toshokan.alerts.journal.confirm', :title => alert.name)}, :remote => true do %>
               <i class="icon-remove"></i>
             <% end %>
