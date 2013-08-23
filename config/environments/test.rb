@@ -34,6 +34,9 @@ Toshokan::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Disable sending of mails via SendIt
+  config.send_it[:test_mode]= true
 end
 
 if File.exists? File.dirname(__FILE__) + '/../application.local.rb'

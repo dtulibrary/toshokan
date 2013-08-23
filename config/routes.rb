@@ -50,6 +50,9 @@ Toshokan::Application.routes.draw do
     # Can't find forms
     match '/cant_find/:genre',          :to => 'cant_find#index',          :as => 'cant_find',          :via => :get
 
+    # Resolver (populates can't find forms on zero hits)
+    match '/resolve',                   :to => 'resolver#index',           :as => 'resolve',            :via => :get
+
     resources :documents, :only => [] do
       resources :tags, :except => [:edit, :update]
     end
