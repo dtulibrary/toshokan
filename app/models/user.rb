@@ -20,8 +20,8 @@ class User < ActiveRecord::Base
 
   def self.create_or_update_with_user_data(provider, user_data)
     user =
-      find_by_provider_and_identifier(provider, user_data['id']) ||
-      self.create(:provider => provider, :identifier => user_data['id'])
+      find_by_provider_and_identifier(provider, user_data['id'].to_s) ||
+      self.create(:provider => provider, :identifier => user_data['id'].to_s)
     user.user_data = user_data
     user.email = user_data['email']
     user.save
