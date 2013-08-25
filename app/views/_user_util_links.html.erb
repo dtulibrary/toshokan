@@ -6,7 +6,9 @@
 <div id="util-links" class="util-links pull-right">
   <!-- Login -->
   <% if can? :login, User %>
-    <%= link_to t('toshokan.header_links.login_cas'), new_user_session_path(:return_url => request.fullpath) %>
+    <%= link_to new_user_session_path(:return_url => request.fullpath) do %>
+      <i class='icon-signin'></i> <%= t('toshokan.header_links.login_cas') %>
+    <% end %>
   <% end %>
   <% if current_user.authenticated? %>
     <div class="dropdown" id="header-menu">
