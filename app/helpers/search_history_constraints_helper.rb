@@ -1,11 +1,6 @@
 module SearchHistoryConstraintsHelper
   include Blacklight::SearchHistoryConstraintsHelperBehavior
 
-  def render_search_to_s(params)
-    super +
-    render_search_to_s_tags(params)
-  end
-
   def render_search_to_s_tags(params)
     return "".html_safe unless params[:t]
 
