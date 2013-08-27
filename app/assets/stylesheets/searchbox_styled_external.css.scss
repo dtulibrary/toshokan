@@ -6,21 +6,11 @@
   font-family: Arial, Verdana, sans-serif; 
   font-size: .8em;
 
-  @media (min-width: 400px) {
-    #searchbar {
-      .text-field-with-icons {
-        width: 320px;
-      }
-
-      #q {
-        width: 310px;
-      }
-
-      #search {
-        width: auto;
-      }
-    }
-  }  
+  #searchbar {
+    #q {
+      margin: 0;
+    }  
+  }
 
   @media (max-width: 400px) {
     #searchbar {
@@ -30,6 +20,22 @@
 
       #q {
         width: 290px;
+      }
+
+      #search {
+        width: auto;
+      }
+    }
+  }  
+
+  @media (min-width: 400px) {
+    #searchbar {
+      .text-field-with-icons {
+        width: 320px;
+      }
+
+      #q {
+        width: 310px;
       }
 
       #search {
