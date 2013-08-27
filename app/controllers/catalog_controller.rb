@@ -328,14 +328,16 @@ class CatalogController < ApplicationController
     # what the keys for a search will be, due to possible extra plugins.
     return if (search_session.keys - [:controller, :action, :total, :counter, :commit, :locale]) == [] 
     params_copy = search_session.clone # don't think we need a deep copy for this
-    params_copy.delete(:page)    
+    params_copy.delete(:page)        
 
-    unless @search_history.collect { |search| search.query_params }.include?(params_copy)
+    # don't save default 'empty' search
+    unless params[:q].blank? && params[:f].blank? && params[:t].blank?
 
-      # don't save default 'empty' search
-      unless params[:q].blank? && params[:f].blank? && params[:t].blank?
+      index = @search_history.collect { |search| search.query_params }.index(params_copy)
+      if index.nil?
 
         new_search = Search.create(:query_params => params_copy)
+        search_id = new_search.id
 
         if can? :view, :search_history
           current_user.searches << new_search
@@ -346,8 +348,11 @@ class CatalogController < ApplicationController
           # both database (fetching em all), and cookies (session is in cookie)
           session[:history] = session[:history].slice(0, Blacklight::Catalog::SearchHistoryWindow)
         end
+      else
+        search_id = @search_history[index].id
       end
+
+      params[:s_id] = search_id
     end
   end
-
 end

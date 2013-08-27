@@ -5,14 +5,13 @@
         <td>
           <span>
             <i class="icon-star-empty"></i>                  
-            <%= link_to save_search_path(@search_history.first.id), :method => :put, 
-            :title => t('toshokan.mylibrary.save'), :id => "search-summary-save", :remote => true do %>
+            <%= link_to save_search_path(params[:s_id]), :title => t('toshokan.mylibrary.save'), :id => "search-summary-save" do %>
                <%= t('toshokan.mylibrary.save') %>
             <%- end -%>
           </span>
           <span>
             <i class="icon-bell"></i>
-            <%= link_to save_search_alert_path(@search_history.first.id), :method => :put, :title => t('toshokan.mylibrary.alert'), :id => "search-summary-alert", :remote => true do %>
+            <%= link_to save_search_alert_path(params[:s_id]), :title => t('toshokan.mylibrary.alert'), :id => "search-summary-alert" do %>
               <%= t('toshokan.mylibrary.alert') %>
             <%- end -%>
           </span>
