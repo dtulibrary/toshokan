@@ -11,6 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 
+// IE8 media query support
 //= require 'respond.min.js'
 
 // For blacklight_range_limit built-in JS, if you don't want it you don't need
@@ -34,3 +35,6 @@
 
 // JQuery caret plugin - for getting cursor position in input fields
 //= require jquery.caret.js
+
+// Polyfill for HTML5 placeholders
+//= require Placeholders.min.js
