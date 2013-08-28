@@ -56,6 +56,11 @@ en:
           physical_location: 
             title: Physical location
             text: For material that can only be delivered physically
+          pickup_location: 
+            title: Pick-up location
+            text: For material that can only be delivered physically
+            ballerup_html: Ballerup (<a href="">Address</a>)
+            lyngby_html: Lyngby (<a href="">Address</a>)
           proceedings: Proceedings/series
           publisher: The publisher
         submit: Send request
@@ -66,7 +71,7 @@ en:
       tips:
         title: Some tips to help yourself
         bibliotek_dk_html:
-          Try Danish national union catalogue <a target="_blank" href="http://www.bibliotek.dk">bibliotek.dk</a>
+          Try Danish national union catalogue <a target="_blank" href="http://www.bibliotek.dk/?lingo=eng">bibliotek.dk</a>
         google_books_html:
           Try <a target="_blank" href="http://books.google.com">Google Books</a>
         google_scholar_html:

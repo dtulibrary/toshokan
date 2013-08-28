@@ -13,7 +13,7 @@ class CantFindForms
           'notes', 
           [
             'email', 
-            'physical_location', 
+            { :dtu_staff => 'physical_location', :dtu_student => 'pickup_location' },
             'submit',
           ]
         ],
@@ -31,7 +31,7 @@ class CantFindForms
           'notes',
           [
             'email',
-            'physical_location',
+            { :dtu_staff => 'physical_location', :dtu_student => 'pickup_location' },
             'submit',
           ],
         ],
@@ -48,7 +48,7 @@ class CantFindForms
           'notes',
           [
             'email',
-            'physical_location',
+            { :dtu_staff => 'physical_location', :dtu_student => 'pickup_location' },
             'submit',
           ],
         ],
@@ -91,6 +91,7 @@ class CantFindForms
         { :name => 'edition' },
         { :name => 'doi' },
         { :name => 'isbn' },
+        { :name => 'year' },
       ],
       :publisher => [
         { :name => 'publisher_name' },
@@ -146,7 +147,7 @@ class CantFindForms
       result.deep_merge! form_fields_values('proceedings', ['proceedings_title', 'proceedings_isxn', 'pages'], params)
       result.deep_merge! form_fields_values('conference', ['conference_title', 'number', 'year', 'location'], params)
     when :book
-      result.deep_merge! form_fields_values('book', ['book_title', 'author', 'edition', 'doi', 'isbn'], params)
+      result.deep_merge! form_fields_values('book', ['book_title', 'author', 'edition', 'doi', 'isbn', 'year'], params)
       result.deep_merge! form_fields_values('publisher', ['publisher_name'], params)
     end 
     result.deep_merge! form_fields_values('notes', ['notes'], params)
@@ -160,33 +161,4 @@ class CantFindForms
     genre_matrix[genre][:forms]
   end
 
-  def self.mandatory_fields_matrix
-    {
-      :article => [ 
-        'article_title',
-      ],
-      :journal => [
-        'journal_title',
-        'volume',
-        'issue',
-        'year',
-        'pages',
-      ],
-      :proceedings => [
-        'pages',
-      ],
-      :conference => [
-        'title',
-        'year',
-      ],
-      :book => [
-        'title',
-        'year',
-      ]
-    }
-  end
-
-  def self.mandatory_fields_for section
-    mandatory_fields_matrix[section.to_sym]
-  end
 end

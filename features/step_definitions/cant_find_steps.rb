@@ -18,29 +18,35 @@ Then /^I should(n't| not)? see the "can't find" form links$/ do |negate|
   step %{I should#{negate} see the "Book" link}
 end
 
-Then /^I should see the "can't find" form for journal article$/ do 
-  step %{I should see the article form section}
-  step %{I should see the journal form section}
-  step %{I should see the notes form section}
-  step %{I should see the email form section}
-  step %{I should see the physical location form section}
+Then /^I should(n't| not)? see the "can't find" form for journal article$/ do |negate|
+  if negate
+    page.should_not have_css ".article-section"
+  else
+    step %{I should see the article form section}
+    step %{I should see the journal form section}
+    step %{I should see the notes form section}
+  end
 end
 
-Then /^I should see the "can't find" form for conference article$/ do
-  step %{I should see the article form section}
-  step %{I should see the proceedings form section}
-  step %{I should see the conference form section}
-  step %{I should see the notes form section}
-  step %{I should see the email form section}
-  step %{I should see the physical location form section}
+Then /^I should(n't| not)? see the "can't find" form for conference article$/ do |negate|
+  if negate
+    page.should_not have_css ".conference-section"
+  else
+    step %{I should see the article form section}
+    step %{I should see the proceedings form section}
+    step %{I should see the conference form section}
+    step %{I should see the notes form section}
+  end
 end
 
-Then /^I should see the "can't find" form for book$/ do
-  step %{I should see the book form section}
-  step %{I should see the publisher form section}
-  step %{I should see the notes form section}
-  step %{I should see the email form section}
-  step %{I should see the physical location form section}
+Then /^I should(n't|not )? see the "can't find" form for book$/ do |negate|
+  if negate
+    page.should_not have_css ".book-section"
+  else
+    step %{I should see the book form section}
+    step %{I should see the publisher form section}
+    step %{I should see the notes form section}
+  end
 end
 
 Then /^I should see the article form section$/ do
@@ -77,6 +83,13 @@ end
 Then /^I should see the physical location form section$/ do
   within '.physical-location-section' do
     step %{I should see "Physical location"}
+  end
+end
+
+Then /^I should see the pickup location form section$/ do
+  within '.pickup-location-section' do
+    step %{I should see "Lyngby"}
+    step %{I should see "Ballerup"}
   end
 end
 

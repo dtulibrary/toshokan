@@ -9,6 +9,7 @@ input {
   &[type = 'text']:focus {
     @include focused_field;
   }
+  
 }
 
 textarea {
@@ -16,4 +17,3 @@ textarea {
     @include focused_field;
   }
 }
-

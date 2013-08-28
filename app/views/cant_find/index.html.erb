@@ -1,5 +1,5 @@
 <div class="span12" style="margin-bottom: 3em">
-  <h4 class="underlined"><%= t 'toshokan.cant_find.title', :genre => @genre %></h4>
+  <h4 class="underlined"><%= t 'toshokan.cant_find.title', :genre => t("toshokan.cant_find.genres.#{@genre}").downcase %></h4>
   <h5><%= t 'toshokan.cant_find.tips.title' %></h5>
   <% unless @tips.empty? %>
     <ul class="search-tips">
@@ -9,19 +9,32 @@
     </ul>
   <% end %>
   <h5 style="margin-top: 3em;"><%= t 'toshokan.cant_find.forms.title' %></h5>
-  <%= form_tag dtic_assistance_path(:genre => @genre) do %>
-    <div class="row">
-      <% @form_sections.each do |section| %>
-        <div class="span3">
-          <% if section.is_a? Array %>
-            <% section.each do |nested_section| %>
-              <%= render "#{nested_section}_section" %>
+  <% if can? :view, :cant_find_forms -%>
+    <%= form_tag dtic_assistance_path(:genre => @genre) do %>
+      <div class="row">
+        <% @form_sections.each do |section| %>
+          <div class="span3">
+            <% if section.is_a? Array %>
+              <% section.each do |nested_section| %>
+                <% if nested_section.is_a? Hash -%>
+                  <%= render "#{nested_section[current_user.type]}_section" %>
+                <% else -%>
+                  <%= render "#{nested_section}_section" %>
+                <% end -%>
+              <% end %>
+            <% else %>
+              <%= render "#{section}_section" %>
             <% end %>
-          <% else %>
-            <%= render "#{section}_section" %>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>
+      DTU Library may assist you in acquiring the article that you are looking for.
+    </p>
+    <p>
+      To learn more about prices and the DTU Library Corporate service, click <a href="http://www.dtic.dtu.dk/english/servicemenu/find/industry_public">here</a>.
+    </p>
   <% end %>
 </div>

@@ -97,6 +97,7 @@ class SendIt
     local_params.deep_merge! proceedings_params params
     local_params.deep_merge! book_params params
     local_params.deep_merge! publisher_params params
+    local_params.deep_merge! pickup_location_params params
 
     send_mail 'library_assistance', local_params
   end
@@ -147,6 +148,10 @@ class SendIt
       result[:publisher] = extract_params ['publisher_name'], params
     end
     result
+  end
+
+  def self.pickup_location_params params
+    extract_params ['pickup_location'], params
   end
 
   def self.extract_params names, params

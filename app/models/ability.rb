@@ -22,7 +22,7 @@ class Ability
     when user.dtu?
       # Logged in using DTU CAS
       can :search, :dtu
-      can :view, :cant_find_links
+      can :view, :cant_find_forms
     when user.public?
       # Logged in from outside DTU Campus
       can :search, :public

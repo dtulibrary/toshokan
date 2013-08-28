@@ -13,7 +13,7 @@ Given /^the following DTU employee users? exists?:$/ do |table|
   table.hashes.each do |hash|
     hash['name'] ||= 'John Doe'
 
-    user = mock_dtu_user(hash['identifier'], hash['email'], 'employee', hash['name'])
+    user = mock_dtu_user(hash['identifier'], hash['email'], 'dtu_empl', hash['name'])
     hash['roles'].each { |role| user.roles << Role.find_by_name(role) }
     user.save!
   end
@@ -105,5 +105,6 @@ end
 
 def mock_dtu_user(identifier, email='fake.email@example.com', user_type='employee', name="Firstname Lastname")
   names = name.split(" ", 2)
+  user_type = 'dtu_empl' if user_type == 'employee'
   mock_user(identifier, email, {:provider => 'dtu', :dtu => {:cwis => '1234', :firstname => names[0], :lastname => names[1], :user_type => user_type}})
 end

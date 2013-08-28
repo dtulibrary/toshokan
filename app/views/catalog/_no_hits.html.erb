@@ -4,12 +4,10 @@
     <p><%= t 'toshokan.catalog.no_hits.text' %></p>
   </div>
 </div>
-<% if can? :view, :cant_find_links %>
-  <% [:journal_article, :conference_article, :book].each do |genre| %>
-    <div class="row">
-      <div class="span6">
-        <%= link_to t("toshokan.cant_find.genres.#{genre}"), cant_find_path(:genre => genre), :class => 'btn btn-primary cant-find-link' %>
-      </div>
+<% [:journal_article, :conference_article, :book].each do |genre| %>
+  <div class="row">
+    <div class="span6">
+      <%= link_to t("toshokan.cant_find.genres.#{genre}"), cant_find_path(:genre => genre), :class => 'btn btn-primary cant-find-link' %>
     </div>
-  <% end %>
+  </div>
 <% end %>

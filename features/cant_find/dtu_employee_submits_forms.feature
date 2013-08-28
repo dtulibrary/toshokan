@@ -1,12 +1,12 @@
-Feature: DTU users submits forms
+Feature: DTU employee submits forms
 
 In order to request library assistance on finding a
 journal article, a conference article or a book
-as a DTU user
+as a DTU employee
 I should be able to fill in and submit the forms.
 
-Background: Logged in as a DTU user
-  Given I'm logged in as a DTU user
+Background: Logged in as a DTU employee
+  Given I'm logged in as a DTU employee
 
 Scenario: Submitting a fully filled form for journal article
   Given I'm on the "can't find" form for "journal article"
@@ -74,5 +74,29 @@ Scenario: Submitting a fully filled form for conference article
     And I should see the "notes" section with the following values
      | Notes         | Urgent! Please hurry! |
 
-
-Scenario: Submitting form for book
+Scenario: Submitting a fully filled form for book
+  Given I'm on the "can't find" form for "book"
+   When I fill in the "book" section with the following values
+     | Book title | Non-existing book |
+     | Author     | A. N. Onymous     |
+     | Edition    | 3rd Ed.           |
+     | DOI        | 10.1234/book      |
+     | ISBN       | 1234567890123     |
+     | Year       | 2001              |
+    And I fill in the "publisher" section with the following values
+     | Publisher name | Some publisher |
+    And I fill in the "notes" section with the following values
+     | Notes | Urgent! Please Hurry! |
+    And I click "Send request"
+   Then I should see "Your request has been sent with the following values:"
+    And I should see the "book" section with the following values
+     | Book title | Non-existing book |
+     | Author     | A. N. Onymous     |
+     | Edition    | 3rd Ed.           |
+     | DOI        | 10.1234/book      |
+     | ISBN       | 1234567890123     |
+     | Year       | 2001              |
+    And I should see the "publisher" section with the following values
+     | Publisher name | Some publisher |
+    And I should see the "notes" section with the following values
+     | Notes | Urgent! Please Hurry! |
