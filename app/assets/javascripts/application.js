@@ -23,6 +23,7 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 //= require bootstrap-dropdown
+//= require bootstrap-popover
 //= require_tree .
 
 // Spin.js

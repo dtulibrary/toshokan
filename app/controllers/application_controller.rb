@@ -32,6 +32,11 @@ class ApplicationController < ActionController::Base
   #   if the user originates from a DTU Campus ip address
   # - Otherwise authentication is optional
   def authenticate
+    if params[:stay_anonymous]
+      cookies[:shunt_hint] = 'anonymous'
+      redirect_to url_for(params.except!(:stay_anonymous))
+    end
+
     unless session[:user_id]
       if (cookies[:shunt] == 'dtu') || (campus_request? && !cookies[:shunt_hint])
         session[:return_url] ||= request.url

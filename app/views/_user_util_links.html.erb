@@ -7,18 +7,34 @@
   <!-- Login -->
   <% if can? :login, User %>
     <%= link_to new_user_session_path(:return_url => request.fullpath) do %>
-      <i class='icon-signin'></i> <%= t('toshokan.header_links.login_cas') %>
+      <i class='icon-signin'></i> <%= t('toshokan.header_links.login') %>
+    <% end %>
+    <% if !cookies[:shunt_hint] && !current_user.walk_in? %>
+      <div id="login-popover" class="popover fade bottom in">
+        <div class="arrow"></div>
+        <div class="popover-inner">
+          <h3 class="popover-title"><%= t('toshokan.header_links.suggest_login.title') %></h3>
+          <div class="popover-content">
+            <p><%= t('toshokan.header_links.suggest_login.benefits') %></p>
+            <p><%= t('toshokan.header_links.suggest_login.question') %></p>
+            <p>
+              <%= link_to t('toshokan.header_links.suggest_login.yes_please'), new_user_session_path(:return_url => request.fullpath), :class => 'btn btn-mini' %> 
+              <%= link_to t('toshokan.header_links.suggest_login.no_thanks'), url_for({:stay_anonymous => true}), :class => 'pull-right btn btn-mini'%>
+            </p>
+          </div>
+        </div>
+      </div>
     <% end %>
   <% end %>
   <% if current_user.authenticated? %>
     <div class="dropdown" id="header-menu">
       <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
-        <i class="icon-cog"></i>    
+        <i class="icon-cog"></i>
         <%=current_user %>
         <%= can?(:switch_back, User) ? "(#{t('toshokan.header_links.acting_as')})" : ''%>    
-      </a>    
+      </a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <li>          
+        <li>
           <%= link_to manage_tags_path do %>
             <i class='icon-tags'></i> <%= t('toshokan.mylibrary.menu.tags') %>
           <% end %>
@@ -62,13 +78,13 @@
               <i class='icon-dashboard'></i> <%= t('toshokan.header_links.admin') %>
             <% end %>
           </li>
-        <% end %>        
+        <% end %>
         <li>
           <%= link_to destroy_user_session_path(:return_url => root_path) do %>
-            <i class='icon-signout'></i> <%= t('toshokan.header_links.logout_cas') %>
+            <i class='icon-signout'></i> <%= t('toshokan.header_links.logout') %>
           <% end %>
         </li>
       </ul>
     </div>
-  <% end %>  
+  <% end %>
 </div>

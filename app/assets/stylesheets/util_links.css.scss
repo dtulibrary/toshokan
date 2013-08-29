@@ -1,5 +1,20 @@
 @import 'toshokan_defaults';
 
-.util-links {
+#util-links {
   font-size: $font_size_small;
+  
+  #login-popover {
+      color: $dtu_grey;
+      a {
+          color: $dtu_red;
+      }
+      .arrow {
+          left: 60%;
+      }
+
+      p {
+          line-height: 1.2em;
+      }
+  }
 }
+
