@@ -87,7 +87,7 @@ class SendIt
       :title => title,
       :user => {
         :email => user.email,
-        :name => "#{user} (CWIS: #{user.identifier})",
+        :name => "#{user}#{user.dtu? ? " (CWIS: #{user.user_data['dtu']['matrikel_id']})" : ""}",
       }
     }
 
@@ -98,6 +98,7 @@ class SendIt
     local_params.deep_merge! book_params params
     local_params.deep_merge! publisher_params params
     local_params.deep_merge! pickup_location_params params
+    local_params.deep_merge! notes_params params
 
     send_mail 'library_assistance', local_params
   end
@@ -152,6 +153,10 @@ class SendIt
 
   def self.pickup_location_params params
     extract_params ['pickup_location'], params
+  end
+
+  def self.notes_params params
+    extract_params ['notes'], params
   end
 
   def self.extract_params names, params
