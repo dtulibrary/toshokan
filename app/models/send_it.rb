@@ -64,6 +64,10 @@ class SendIt
     send_order_mail 'findit_receipt', order, params
   end
 
+  def self.send_delivery_mail order, params = {}
+    send_order_mail 'findit_delivery', order, params
+  end
+
   def self.send_request_assistance_mail genre, user, params = {}
     case genre
     when :journal_article

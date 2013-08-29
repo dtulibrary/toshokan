@@ -232,13 +232,18 @@ class OrdersController < ApplicationController
     if [:deliver, :confirm, :cancel].include? delivery_status
       case delivery_status
       when :deliver
-        @order.order_events << OrderEvent.new(:name => 'delivery_done')
+        logger.error "No 'url' parameter on delivery event for order #{@order.dibs_order_id}" unless params[:url]
+
+        @order.order_events << OrderEvent.new(:name => 'delivery_done', :data => params[:url])
         @order.delivery_status = delivery_status
         @order.delivered_at = Time.now
         @order.save!
 
+        SendIt.delay.send_delivery_mail @order, :drm => !(@order.user && @order.user.dtu?), :url => params[:url], :order => {:status_url => order_status_url(@order.uuid)}
         SendIt.delay.send_receipt_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
-        PayIt::Dibs.delay.capture @order
+
+        # Only capture amounts for orders that were paid for
+        PayIt::Dibs.delay.capture @order if @order.payment_status
       when :confirm
         @order.order_events << OrderEvent.new(:name => 'delivery_confirmed')
         @order.save!
@@ -246,7 +251,8 @@ class OrdersController < ApplicationController
         @order.order_events << OrderEvent.new(:name => 'delivery_cancelled')
         @order.save!
 
-        PayIt::Dibs.delay.cancel @order
+        # Only cancel in DIBS if order was paid for
+        PayIt::Dibs.delay.cancel @order if @order.payment_status
         SendIt.delay.send_cancellation_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
       end
 
