@@ -27,11 +27,13 @@ class ApplicationController < ActionController::Base
 
   # Authenticate users if certain criteria are met.
   # - No authentication will be done if user is already logged in.
-  # - Force login if the shunting cookie indicates
-  #   that last successful login was via CAS
+  # - Force authentication if the shunting cookie indicates
+  #   that last successful login was via CAS or
+  #   if the user originates from a DTU Campus ip address
+  # - Otherwise authentication is optional
   def authenticate
     unless session[:user_id]
-      if cookies[:shunt] == 'dtu'
+      if (cookies[:shunt] == 'dtu') || (campus_request? && !cookies[:shunt_hint])
         session[:return_url] ||= request.url
         redirect_to polymorphic_url(:new_user_session)
       end
@@ -47,9 +49,12 @@ class ApplicationController < ActionController::Base
 
   def current_user
     user = logged_in_user || guest_user
-    user.walk_in = walk_in_request?
-    user.internal = internal_request?
-    user.campus   = campus_request?
+
+    unless user.impersonating?
+      user.walk_in  = walk_in_request?
+      user.internal = internal_request?
+      user.campus   = campus_request?
+    end
 
     if user.orders_enabled? != orders_enabled_request?
       user.orders_enabled = orders_enabled_request?
@@ -84,8 +89,12 @@ class ApplicationController < ActionController::Base
   end
 
   def request_matches_ips? ips
-    result = false
     remote = NetAddr::CIDR.create request.remote_ip
+    remote_matches_ips? remote, ips
+  end
+
+  def remote_matches_ips? remote, ips
+    result = false
     ips.each do |ip|
       if ip.include? '-'
         # Range
@@ -99,7 +108,7 @@ class ApplicationController < ActionController::Base
         result ||= NetAddr::CIDR.create(ip).matches? remote
       end
     end
-    return result
+    result
   end
 
   def guest_user
