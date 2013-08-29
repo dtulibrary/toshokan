@@ -1,6 +1,12 @@
 @media (min-width: 1200px) {
-  #header-navbar-fixed-top {
-    
+  #appliedParams {
+    width: 580px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  #appliedParams {
+    width: 320px;
   }
 }
 
@@ -13,5 +19,9 @@
     &.navbar .container {
       margin: 0px auto;
     }
+  }
+
+  #appliedParams {
+    width: 320px;
   }
 }

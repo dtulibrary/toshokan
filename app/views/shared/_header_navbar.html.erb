@@ -28,9 +28,9 @@
                 <div id="searchbar">
                   <%= render_search_bar %>
                 </div>
-                <div id="resultset-options">
+                <div id="appliedParams">
                   <% if has_search_parameters? %>
-                    <div class="hit-count"><%= number_with_delimiter @response.total %> hits.</div>
+                    <%= render 'constraints' %>
                   <% end %>
                 </div>
               </div>

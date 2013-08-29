@@ -9,10 +9,31 @@
 }
 
 .appliedFilter {
+  background: none;
+  border-radius: 5px;
+  border: none; /*1px solid #d4d4d4;*/
   font-size: 0.9em;
+  padding: 0px 2px;
+  margin: 0px 2px 2px 0px;
+
+  .filterName {
+    background: none;
+    padding: 0px;
+  }
+
+  .filterValue {
+    background: none;
+    padding: 0px;
+  }
+
+  .remove-filter {
+    font-size: 15px;
+  }
 }
 
 #appliedParams {
+  width: 450px;
+  position: absolute;
   .constraints-label {
     margin-right: 0.5em;
     font-weight: normal;

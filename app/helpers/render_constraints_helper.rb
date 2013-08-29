@@ -16,7 +16,7 @@ module RenderConstraintsHelper
   end
 
   def render_constraints(localized_params = params)
-    (super + render_constraints_tags(localized_params) + render_advanced_search_constraints(localized_params)).html_safe
+    (render_constraints_filters(localized_params) + render_constraints_tags(localized_params) + render_advanced_search_constraints(localized_params)).html_safe
   end
 
   def render_constraints_tags(localized_params = params)
