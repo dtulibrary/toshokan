@@ -19,7 +19,8 @@
       <%- unless options[:remove].blank? -%>
         <%= link_to('&times;'.html_safe,
 					options[:remove],
-          :class => 'remove-filter'
+          :class => 'remove-filter',
+          :title => t('toshokan.catalog.constraints.remove'),
 				) %>
       <%- end -%>
 </span>

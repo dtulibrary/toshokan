@@ -17,6 +17,8 @@ class DocDel
       :callback_url => callback_url
     }
 
+    params[:user_id] = order.user.identifier if order.user
+
     Rails.logger.info "Sending order to DocDel: URL = #{DocDel.url}, params = #{params}"
 
     response = HTTParty.post DocDel.url, :body => params

@@ -180,6 +180,8 @@ en:
       required_fields_html: Fields marked with <b class="dtu-red">*</b> are required
       send: 'Send'
     catalog:
+      constraints:
+        remove: Remove filter
       home:
         title_html: DTU Findit &mdash; Your digital library
         subtitle: Search millions of academic articles 
