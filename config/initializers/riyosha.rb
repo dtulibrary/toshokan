@@ -13,7 +13,7 @@ Rails.application.config.to_prepare do
         'dtu'        => {
           'firstname' => 'Firstname',
           'lastname'  => 'Lastname',
-          'user_type' => 'employed'
+          'user_type' => 'dtu_empl'
         }
       }
     )

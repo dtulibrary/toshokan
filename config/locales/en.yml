@@ -78,8 +78,8 @@ en:
           DTU Findit has a technical scientific focus; other search engines might have a different
           and broader scope and may assist you. Try <a target="_blank" href="http://scholar.google.com">Google Scholar</a>.
         refine_search_html:
-          Explore the full search power of DTU Findit. <a href="">See what DTU Findit covers</a>
-          and <a href="">learn about the powerful search syntax</a>.
+          Explore the full search power of DTU Findit. <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=13937966">See what DTU Findit covers</a>
+          and <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=14174533">learn about the powerful search syntax</a>.
     header_links:
       switch_user: "Switch User"
       switch_back: "Switch Back"
