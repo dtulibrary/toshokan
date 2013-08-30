@@ -4,6 +4,9 @@ class OrdersController < ApplicationController
   
   before_filter :disable_header_searchbar
 
+  # Delivery is called from DocDel
+  skip_before_filter :authenticate, :only => [:delivery]
+
   # TODO:
   # - HTTP 409 (Conflict) should report why there is a conflict
   # - Make more user friendly error screens
