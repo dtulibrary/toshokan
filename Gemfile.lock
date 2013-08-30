@@ -142,8 +142,6 @@ GEM
     feature_flipper (1.3.0)
     ffi (1.1.5)
     ffi (1.1.5-x86-mingw32)
-    gelf (1.4.0)
-      json
     gherkin (2.11.6)
       json (>= 1.7.6)
     gherkin (2.11.6-x86-mingw32)
@@ -203,9 +201,6 @@ GEM
     logging (1.8.0)
       little-plugger (>= 1.1.3)
       multi_json (>= 1.3.6)
-    lograge (0.2.0)
-      actionpack
-      activesupport
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -372,7 +367,6 @@ DEPENDENCIES
   eventmachine (~> 1.0.0.rc4)
   feature_flipper
   findit_font!
-  gelf
   guard
   guard-brakeman
   guard-cucumber
@@ -386,7 +380,6 @@ DEPENDENCIES
   jettywrapper
   jquery-rails
   launchy
-  lograge
   metastore-test_data!
   netaddr
   omniauth

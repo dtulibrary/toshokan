@@ -39,6 +39,9 @@ Toshokan::Application.configure do
   # Use a different logger for distributed setups
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
+  # Colorize logs (default is true)
+  config.colorize_logging = false
+
   # Use a different cache store in production
   config.cache_store = :dalli_store
 
