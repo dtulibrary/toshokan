@@ -79,4 +79,8 @@ class Order < ActiveRecord::Base
     self[:currency].try :to_sym
   end
 
+  # Indicate whether this order may have DRM restrictions
+  def drm?
+    !(user && user.dtu?)
+  end
 end

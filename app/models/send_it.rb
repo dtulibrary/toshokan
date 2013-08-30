@@ -48,6 +48,8 @@ class SendIt
         :total => (order.price + order.vat),
         :vat_pct => 25,
         :masked_card_no => order.masked_card_number,
+        :drm => order.drm?,
+        :paid => order.payment_status == :authorized,
       }
     }.deep_merge(params)
   end

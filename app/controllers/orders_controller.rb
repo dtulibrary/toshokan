@@ -239,8 +239,11 @@ class OrdersController < ApplicationController
         @order.delivered_at = Time.now
         @order.save!
 
-        SendIt.delay.send_delivery_mail @order, :drm => !(@order.user && @order.user.dtu?), :url => params[:url], :order => {:status_url => order_status_url(@order.uuid)}
-        SendIt.delay.send_receipt_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
+        SendIt.delay.send_delivery_mail @order, :url => params[:url], :order => {:status_url => order_status_url(@order.uuid)}
+        unless @order.user && @order.user.employee?
+          # Do not send receipt mails to DTU staff
+          SendIt.delay.send_receipt_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
+        end
 
         # Only capture amounts for orders that were paid for
         PayIt::Dibs.delay.capture @order if @order.payment_status
