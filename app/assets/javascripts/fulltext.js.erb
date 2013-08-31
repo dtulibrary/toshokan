@@ -1,32 +1,21 @@
 (function ($) {
 
-  $.fn.addResource = function(openUrl, id, service_list, options, manipulation_func) {
+  $.fn.addResource = function(openUrl, id, service_list, layout_func, stop_spinner_func) {
     var base = $(this);
     var customData = encodeURIComponent(JSON.stringify({"id" : id}));
     var url = [toshokan.getit.url,
                "/resolve?" + openUrl,                
                "&rft.data=" + customData,
                "&req_id=" + userType,
-               "&svc_dat=" + service_list].join("");
-        
-    manipulation_func = typeof manipulation_func !== 'undefined' ? manipulation_func : 'append';
-
-    var spin_options = $.extend({
-      length: 3,
-      width: 3,
-      radius: 3
-    }, options);
-
-    var count = 0;
-    
-    base[manipulation_func]().spin(spin_options);
+               "&svc_dat=" + service_list].join("");        
 
     var source = new EventSource(url);
+    var count = 0;
     source.onmessage = function (event) {
-      layout(JSON.parse(event.data), base, manipulation_func);
+      layout_func(JSON.parse(event.data));
       count++;
       if(count == 1) {
-        base.spin(false);      
+        stop_spinner_func.call();
       }
     }
     source.onerror = function(event) {
@@ -38,102 +27,126 @@
 
     function stop() {
       if(count == 0) {
-        base[manipulation_func]($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
+        layout_func(null);
       }
-      base.spin(false);
+      stop_spinner_func.call();
       source.close();
     }
 
-    function layout(data, selector, manipulation_func) {
-      switch(data.service_type) {
-        case "fulltext":
-          if(data.subtype.match(/_scan/)) {
-            layout_scan(data);
-          } else if(data.subtype.match(/nal/)) {
-            layout_nal(data);
-          } else {
-            base[manipulation_func](layout_fulltext(data));
-          }
-          break;
-      }
-    }
-
-    function layout_scan(data) {
-      if(data.subtype == "rd_scan") {
-        base.parent().find(".order-rd-scan").show(); 
-        base.parent().find("dt").html("Price");          
-      }
-    }
-
-    function layout_nal(data) {
-      var nal_header = base.parent().find("#nal-header");      
-      var nal_element = $("<a/>", {
-        text    : data.text,
-        "class" : "nal-content collapse",
-        "href"  : data.url        
-      });
-      nal_header.show();
-      nal_header.after($("<li/>").html(nal_element));      
-    }
-
-    function layout_fulltext(data) {
-      
-      var link = $("<a/>", {
-        text          : data.text,
-        "class"       : "fulltext " + data.subtype,
-        "title"       : data.note,
-        "href"        : data.url,
-        "data-toggle" : "tooltip"  
-      });
-
-      if(data.subtype == "openaccess") {
-        $(link).prepend("<i class=\"icon-openaccess\"></i> ");
-      } else if(data.subtype == "license") {
-        $(link).prepend("<i class=\"icon-download\"></i> ");
-      }
-
-      $(link).tooltip();
-      return $("<li />").html(link);
-    }
     return this;
   };
 
   $(function () {
     if($('body.blacklight-catalog-index').length) {
 
-      var spin_options = {
-        length: 3,
-        width: 2,
-        radius: 4,
-        left: 5,
-        top: 0
-      };
+      var spin_options = {length: 3, width: 2, radius: 4, left: 5, top: 0 };
 
       $('.document').each(function() {
         var openUrl = $(this).find(".Z3988").attr("title");
         var id = $(this).attr("id");
-        $(this).find('.fulltext').addResource(openUrl, id, "fulltext_short", spin_options);
+        var fulltext = $(this).find('.getit-item');        
+        
+        if(fulltext) {          
+          $(".fulltext-options").spin(spin_options);                
+          fulltext.addResource(openUrl, id, "fulltext_info", partial(layout_index, fulltext), 
+            function() { $(".fulltext-options").spin(false); });
+        }
       });      
     }
     else if($('body.blacklight-catalog-show').length) {
-
-      $(document).on("show", ".nal-content", function () {
-        $('#nal-header').addClass('twiddle-open');
-      });
-      $(document).on("hide", ".nal-content", function () {        
-        $('#nal-header').removeClass('twiddle-open');
-      });
-
-      var spin_options = {
-        length: 4,
-        width: 3,
-        radius: 5,
-        top: 0
-      };
       var openUrl = $(".Z3988").attr("title");
       var id = $("input[name=id]").val();
-      $('.fulltext-header').addResource(openUrl, id, "fulltext", spin_options, 'after');
+      var fulltext = $(".fulltext-header");
+      
+      fulltext.spin({length: 4, width: 3, radius: 5, top: 0});
+      var stop_spinner = function() { fulltext.spin(false); }
+      
+      fulltext.addResource(openUrl, id, "fulltext", partial(layout_show, fulltext), stop_spinner);
     }
   });
+
+  var layout_show = function (elm, data) {
+
+    if(data == null) {      
+      elm.after($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
+    } else {    
+      var action;
+      var header_elm = elm;
+
+      if(data.subtype.match(/_scan/)) {
+        
+        action = $("li.order-rd-scan > form");
+        $(action).find("button").text(data.button_text);
+        data.lead_text = action.attr("data-price");
+
+      } else if(data.subtype.match(/nal/)) {
+        
+        var other_header = elm.parent().find(".other-header")
+        other_header.show();
+        link = $("<a />", {
+          text          : data.button_text,
+          "class"       : "fulltext btn btn-primary btn-small dropdown-toggle",
+          "title"       : data.tool_tip,
+          "href"        : "",
+          "data-toggle" : "dropdown"  
+        });
+        link.append("<span class='caret'></span>");
+
+        action = $("<div />", {"class" : "btn-group nal"});
+        action.append(link);
+
+        var nal_list = $('<ul />', {"class" : "dropdown-menu"});        
+        for(var val in data.url_list) {        
+          nal_list.append($('<li />').append($('<a />', {text : val, "href" : data.url_list[val], "target" : "_blank"})));
+        }
+        action.append(nal_list);
+        header_elm = other_header;
+
+      } else {
+        
+        action = $("<a/>", {
+          text          : data.button_text,
+          "class"       : "fulltext btn btn-primary btn-small",
+          "title"       : data.tool_tip,
+          "href"        : data.url,
+          "data-toggle" : "tooltip"
+        });
+
+      }
+      $(action).tooltip();
+
+      var item = $("<li />", { "class" : "fulltext-item"});
+      item.append("<strong><i class='" + data.icon + "'></i>" + data.short_name + "</strong> (" + data.type + ")");
+      item.append("<p><small>" + data.short_explanation + "</small></p>");        
+      item.append(
+        $("<div />").append(
+          $("<div />", {"class" : "leadtext"}).append(
+            $("<div />").append("<strong>"+data.lead_text+"</strong>")),              
+          $("<div />").append(action)
+        )
+      );
+      if (data.explanation !== '') {
+        item.find(".leadtext").append($("<div />").append("<small>" + data.explanation + "</small>")); 
+      }
+
+      header_elm.after(item);
+    }
+  };
+
+  var layout_index = function (elm, data) {
+    if(data == null) {
+      elm.before($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
+      elm.hide();
+    } else {
+      var item = $("<li />", {
+        text: data.short_name,
+        "title": data.tool_tip,
+        "data-toggle" : "tooltip"
+      });
+      $(item).tooltip();
+      $(item).prepend("<i class='" + data.icon + "'></i>");
+      elm.before(item);
+    }
+  };
 
 })(jQuery);

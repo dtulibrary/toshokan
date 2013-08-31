@@ -155,15 +155,17 @@ en:
       cite_and_export: "Cite and export"
       bibtex: "Export to BibTeX"
       ris: "Export to RIS"
-      fulltext: "Full Text"
+      fulltext: "Get it"
       not_available: "Not available"
       nal: "On-site use at other libraries"
       order:
         rd_html: Order Scan
-        dtu_html: Order Scan<br>DTU Print Collection
-      other: "Other resources"
+        dtu_html: Order Scan<br>DTU Print Collection      
       journal: "Journal ranks"
       scopus: "Scopus journal rank"
+    availability:
+      getit: "Get it"
+      other: "Other resources"
     citation:
       mla: "MLA"
       apa: "APA"

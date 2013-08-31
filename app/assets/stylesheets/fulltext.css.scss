@@ -1,0 +1,53 @@
+
+dd.fulltext-options {
+  a {
+    color: $dtu_red_light;
+  }
+  i {
+    vertical-align: inherit;
+    margin: 0 0.2em 0 0.2em;
+    &.getit {
+      color: $dtu_red;
+      font-size: 1.5em;
+      width: auto;
+      height: auto;
+      vertical-align: top;
+    }
+  }
+}
+
+#fulltext {
+  .fulltext-item {
+    line-height: 15px;
+    margin: 10px 0 15px;
+    i {
+      margin-right: 6px;
+    }
+    .leadtext {
+      float: left;
+      margin-right: 15px;
+      i.icon-openaccess {
+        margin-right: 0;
+        color: orange;
+      }
+    }
+    p {
+      margin: 0 0 5px;
+    }
+    .nal {
+      .caret {
+        border-top-color: white;
+        border-bottom-color: white;
+        margin-top: 8px;
+        margin-left: 2px;
+      }
+      .dropdown-menu li > a:hover {
+        background-color: $dtu_red_light;
+        @include gradient-vertical($dtu_red,$dtu_red_light);
+      }
+    }
+    a.btn-primary {
+      @include dtu-button;
+    }
+  }
+}

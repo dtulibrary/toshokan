@@ -17,3 +17,27 @@
   font-weight: normal;
   text-align: $align;
 }
+
+@mixin dtu-button {
+  background-color: $dtu_red;
+  @include gradient-vertical($dtu_red, $dtu_red_dark);
+  background-position: top left;
+  border-color: $dtu_red_darker;
+
+  &:hover, &:active {
+    background-color: $dtu_red_light;
+    @include gradient-vertical($dtu_red_light, $dtu_red);
+    background-position: top left;
+    border-color: $dtu_red_darker;
+  }
+
+  &.disabled, &[disabled] {
+    background-color: $dtu_grey;
+    border-color: $dtu_grey;
+
+    &:hover, &:active {
+      background: $dtu_grey;
+      border-color: $dtu_grey;
+    }
+  }
+}

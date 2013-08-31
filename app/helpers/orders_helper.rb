@@ -1,4 +1,9 @@
 module OrdersHelper
+
+  def render_scan_price user, supplier, currency = :DKK
+    format_price(PayIt::Prices.price_with_vat(user, supplier, currency), currency)
+  end
+
   def render_scan_price_tag user, supplier, index = :true, currency = :DKK
     tag = index ? "span" : "div"
 
