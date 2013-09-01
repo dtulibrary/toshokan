@@ -12,7 +12,7 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th>Title</th>
+          <!--<th>Title</th>-->
           <th>Search</th>
           <th>Issued</th>
 <!--           <th class="action"><%= t('toshokan.mylibrary.info') %></th>
@@ -23,7 +23,7 @@
       </thead>
       <% @searches.each do |search| %>
         <tr class="item">
-          <td><em class="muted">Add title</em></td>
+          <!--<td><em class="muted">Add title</em></td>-->
           <td class="search_history"><%= link_to_previous_search(search.query_params) %></td>
           <td><%= l search.created_at, format: :long %></td>
 <!--           <td class="action">
