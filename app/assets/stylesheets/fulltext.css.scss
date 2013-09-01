@@ -5,14 +5,18 @@ dd.fulltext-options {
   }
   i {
     vertical-align: inherit;
-    margin: 0 0.2em 0 0.2em;
+    margin: 0 5px 0 0;
     &.getit {
       color: $dtu_red;
-      font-size: 1.5em;
+      font-size: 20px;
       width: auto;
       height: auto;
       vertical-align: top;
+      margin-left: 5px;
     }
+  }
+  ul.inline > li {
+    padding-left: 0px;
   }
 }
 

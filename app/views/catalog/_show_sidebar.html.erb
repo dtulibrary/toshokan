@@ -1,7 +1,9 @@
 
-<div class="well tools" id="sidebar-nav">
-  <%= render :partial => 'show_fulltext' %>
-</div><!--/well -->
+<% if @document[:format] != "journal" %>
+  <div class="well tools" id="sidebar-nav">
+    <%= render :partial => 'show_fulltext' %>
+  </div><!--/well -->
+<% end %>
 
 <div class="well tools" id="sidebar-nav">
   <%= render :partial => 'show_tools' %>
