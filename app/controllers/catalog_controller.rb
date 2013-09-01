@@ -329,6 +329,7 @@ class CatalogController < ApplicationController
     return if (search_session.keys - [:controller, :action, :total, :counter, :commit, :locale]) == [] 
     params_copy = search_session.clone # don't think we need a deep copy for this
     params_copy.delete(:page)        
+    params_copy.delete(:s_id)        
 
     # don't save default 'empty' search
     unless params[:q].blank? && params[:f].blank? && params[:t].blank?
