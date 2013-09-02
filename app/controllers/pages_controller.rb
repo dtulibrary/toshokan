@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+  skip_before_filter :authenticate
 
   def searchbox
     render("pages/searchbox", :layout => nil)
