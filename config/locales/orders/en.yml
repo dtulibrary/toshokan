@@ -67,9 +67,6 @@ en:
         <p>
           <b>Thank you for your order!</b>
         </p>
-        <p>
-          <a href="%{search_link}">Back to search</a>
-        </p>
       requirements_html: 
         <h5>Requirements and Restrictions</h5>
         <p>

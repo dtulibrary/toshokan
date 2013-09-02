@@ -55,9 +55,6 @@ da:
         <p>
           <b>Tak for din bestilling!</b>
         </p>
-        <p>
-          <a href="%{search_link}">Tilbage til søgning</a>
-        </p>
       requirements_html: 
         <h5>Krav og Restriktioner</h5>
         <p>
