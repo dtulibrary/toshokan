@@ -272,7 +272,7 @@ en:
       holdings:
         printed: "Paper based"
         electronic: "Electronic"    
-        alis: "View in ALIS"
+        alis: "View in print journals collection"
         alis_books: "View in print books collection"
         alis_public: "On-site use at DTU Library"
         placeholder: "See full text options"        
