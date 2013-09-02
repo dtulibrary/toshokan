@@ -7,6 +7,8 @@ class OrdersController < ApplicationController
   # Delivery is called from DocDel
   skip_before_filter :authenticate, :only => [:delivery]
 
+  protect_from_forgery :except => [:receipt]
+
   # TODO:
   # - HTTP 409 (Conflict) should report why there is a conflict
   # - Make more user friendly error screens
@@ -194,7 +196,6 @@ class OrdersController < ApplicationController
     @order.flow = OrderFlow.new current_user, @order.supplier
     @order.flow.current_step = :done
 
-    @order_return_url = params[:return_url]
     @order_status_url = order_status_url :uuid => @order.uuid
 
     if @order.flow.steps.include?(:payment) && !@order.payment_status
