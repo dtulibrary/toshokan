@@ -7,7 +7,11 @@
       <%= image_tag 'FA_ok.png' %>
       <p>
         <%= t 'toshokan.catalog.home.features.coverage' %><br>
-        <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=14267802"><%= t 'toshokan.read_more' %></a>
+        <% if can? :search, :dtu %>
+          <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=13937966"><%= t 'toshokan.read_more' %></a>
+        <% else %>
+          <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=14267802"><%= t 'toshokan.read_more' %></a>
+        <% end %>
       </p>
     </div>
     <div class="span3 feature-highlight">
