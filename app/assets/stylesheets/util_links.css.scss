@@ -2,19 +2,26 @@
 
 #util-links {
   font-size: $font_size_small;
+
+  &.impersonating {
+    padding-left: 5px;
+    padding-right: 5px;
+    @include border-radius(5px);
+    background-color: $dtu_orange;
+  }
   
   #login-popover {
-      color: $dtu_grey;
-      a {
-          color: $dtu_red;
-      }
-      .arrow {
-          left: 60%;
-      }
+    color: $dtu_grey;
+    a {
+      color: $dtu_red;
+    }
+    .arrow {
+      left: 60%;
+    }
 
-      p {
-          line-height: 1.2em;
-      }
+    p {
+      line-height: 1.2em;
+    }
   }
 }
 

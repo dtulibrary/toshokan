@@ -3,7 +3,8 @@
   window.userType = '<%= current_user.type %>'
 <% end %>
 
-<div id="util-links" class="util-links pull-right">
+
+<div id="util-links" class="util-links pull-right <%= current_user.impersonating? ? 'impersonating' : '' %>">
   <!-- Login -->
   <% if can? :login, User %>
     <%= link_to new_user_session_path(:return_url => request.fullpath) do %>
@@ -26,44 +27,43 @@
       </div>
     <% end %>
   <% end %>
-  <% if current_user.authenticated? %>
+  <% if current_user.authenticated? || current_user.impersonating? %>
     <div class="dropdown" id="header-menu">
       <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
         <i class="icon-cog"></i>
-        <%=current_user %>
-        <%= can?(:switch_back, User) ? "(#{t('toshokan.header_links.acting_as')})" : ''%>    
+        <% if current_user.impersonating? %>
+          <span id="original-user"><%= original_user %> <%= t('toshokan.header_links.acting_as') %></span>
+        <% end %>
+        <span id="current-user"><%= current_user %></span>
       </a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <li>
-          <%= link_to manage_tags_path do %>
-            <i class='icon-tags'></i> <%= t('toshokan.mylibrary.menu.tags') %>
-          <% end %>
+        <% if can? :tag, Bookmark %>
+          <li>
+            <%= link_to manage_tags_path do %>
+              <i class='icon-tags'></i> <%= t('toshokan.mylibrary.menu.tags') %>
+            <% end %>
         </li>
-        <li>
-          <%= link_to search_history_path do %>
-            <i class='icon-time'></i> <%= t('toshokan.mylibrary.menu.search_history') %>
-          <% end %>
-        </li>
-        <li>
-          <%= link_to alerts_path do %>
-            <i class='icon-bell'></i> <%= t('toshokan.mylibrary.menu.journals') %>
-          <% end %>
-        </li>
+        <% end %>
+        <% if can? :view, :search_history %>
+          <li>
+            <%= link_to search_history_path do %>
+              <i class='icon-time'></i> <%= t('toshokan.mylibrary.menu.search_history') %>
+            <% end %>
+          </li>
+        <% end %>
+        <% if can? :alert, :journal %>
+          <li>
+            <%= link_to alerts_path do %>
+              <i class='icon-bell'></i> <%= t('toshokan.mylibrary.menu.journals') %>
+            <% end %>
+          </li>
+        <% end %>
         <li class="divider"></li>
         <% if can? :switch, User %>
           <li>
               <%= link_to switch_user_path, :id => 'switch_user' do %>
                 <i class='icon-user'></i> <%= t('toshokan.header_links.switch_user') %>
               <% end %>
-            <div class="modal hide fade" id="switch_user_modal">
-              <div class="modal-header">
-                <button style="display:inherit" class="close" data-dismiss="modal" type="button">&times;</button>
-                <h3><%= t 'toshokan.modals.switch_user.title' %></h3>
-              </div>
-              <div class="modal-body">
-                <%= render '/users/sessions/switch_user_form' %>
-              </div>
-            </div>
           </li>
         <% elsif can? :switch_back, User %>
           <li>
@@ -79,11 +79,13 @@
             <% end %>
           </li>
         <% end %>
-        <li>
-          <%= link_to destroy_user_session_path(:return_url => root_path) do %>
-            <i class='icon-signout'></i> <%= t('toshokan.header_links.logout') %>
-          <% end %>
-        </li>
+        <% if can? :logout, User %>
+          <li>
+            <%= link_to destroy_user_session_path(:return_url => root_path) do %>
+              <i class='icon-signout'></i> <%= t('toshokan.header_links.logout') %>
+            <% end %>
+          </li>
+        <% end %>
       </ul>
     </div>
   <% end %>

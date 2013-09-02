@@ -41,7 +41,12 @@ class Ability
     end
 
     # User can switch back if he is impersonating another user
-    can :switch_back, User if user.impersonating?
+    if user.impersonating?
+      can :switch_back, User
+      cannot :login, User
+      cannot :logout, User
+    end
+
 
     # Apply abilities for users on walk-in PC's
     if user.walk_in?

@@ -1,0 +1,5 @@
+<h6><%= user.name %></h6>
+<% if user.dtu? %>
+<%= user.cwis %>, <%= user.email %>
+<% end %>
+(Findit ID: <%= user.id %>, Auth ID: <%= user.identifier %>)

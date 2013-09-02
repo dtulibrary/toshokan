@@ -4,8 +4,8 @@ Given /^I have(?: not|n't) logged in$/ do
   # For narrative purposes in features
 end
 
-Then /^the user should be "(.*?)"$/ do |username|
-  page.should have_selector '#util-links a', :text => username
+Then /^the(?: current)? user should be "(.*?)"$/ do |username|
+  find('#util-links #current-user').should have_content username
 end
 
 Given /^the following DTU employee users? exists?:$/ do |table|

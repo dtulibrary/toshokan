@@ -6,10 +6,6 @@ Then /^I should(?: not|n't) see "(.*?)"$/ do |content|
   page.should_not have_content content
 end
 
-Then /^I should see the DTU CAS login page$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
 Then /^I should((?:n't| not))? see the search page$/ do |negate|
   page.has_css?('#search').should (negate ? be_false : be_true)
 end

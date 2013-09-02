@@ -82,42 +82,86 @@ class Users::SessionsController < ApplicationController
     unless can? :switch, User
       render(:file => 'public/401', :format => :html, :status => :unauthorized) and return
     end
+
+    @found_users = []
+    q = params[:user_q]
+    if q
+      logger.debug "Query: #{q}"
+
+      tokens = q.split
+      logger.debug "Tokens: #{tokens}"
+
+      query  = User.where('identifier <> ?', current_user.identifier)
+      tokens.each do |token|
+        query = query.where('LOWER(user_data) LIKE ?', "%#{token.downcase}%")
+      end
+      @found_users = query.order(:identifier).limit(10)
+      logger.debug "Found users with identifiers: #{@found_users.map(&:identifier)}"
+    end
+
   end
+
 
   def update
     if can? :switch, User
-      # new_user_id is made available for switch user form to be able
-      # to populate the form with submitted data when there is an error
-      @new_user_id = params[:user][:identifier]
-      user_data = Riyosha.find(@new_user_id)
+      current_user_id = current_user.id
 
-      if user_data == nil
-        flash[:error] = 'User not found'
-        redirect_to switch_user_path, flash: flash
-        return
+      # Determine the user we want to impersonate
+      if params[:anonymous]
+        session[:user_id] = nil
+        session[:impersonate_anonymous] = true
+        logger.info "User #{current_user.id}(#{current_user.name}) impersonates anonymous user"
+      elsif params[:student]
+        session[:user_id] = current_user.id
+        session[:impersonate_student] = true
+        logger.info "User #{current_user.id}(#{current_user.name}) impersonates self as student user"
+      elsif params[:employee]
+        session[:user_id] = current_user.id
+        session[:impersonate_employee] = true
+        logger.info "User #{current_user.id}(#{current_user.name}) impersonates self as employee user"
+      elsif params[:identifier]
+        # new_user_id is made available for switch user form to be able
+        # to populate the form with submitted data when there is an error
+        new_user_id = params[:identifier]
+        new_user = User.find_by_identifier(new_user_id)
+
+        if new_user == nil
+          logger.info "User not found with identifier: #{new_user_id}"
+          flash[:error] = 'User not found'
+          redirect_to switch_user_path, flash: flash
+          return
+        end
+        logger.info "User #{current_user.id}(#{current_user}) impersonates #{new_user.id}(#{new_user})"
+        session[:user_id] = new_user.id
       end
 
-      new_user = User.create_or_update_with_user_data('cas', user_data)
-      session[:original_user_id] = current_user.id
-      session[:user_id] = new_user.id
+      if params[:walk_in]
+        logger.info "#{current_user.id}(#{current_user.name}) impersonates walk_in status"
+        session[:impersonate_walk_in] = true
+      end
 
-      # Switching user affects abilities - in particular when switching
-      # to a user that can also switch user, it should not be allowed
-      # to switch further. Instead it should be allowed to switch back.
-      # Otherwise we would need to keep a stack of the users, that was
-      # switched into in order to get the proper "switch back" functionality
-      # and that behaviour just seems silly.
+      # Ensure that abilities are reloaded on next request
       @current_ability = nil
+
       flash[:notice] = "You succesfully switched user."
       flash.keep :notice
 
+      # Store impersonating user id, so that we can switch back
+      session[:original_user_id] = current_user_id
+
     elsif can? :switch_back, User
+      logger.info "#{session[:original_user_id]} no longer impersonates"
+
       # Restore original user and his cancan abilities
       session[:user_id] = session[:original_user_id]
+      session.delete :impersonate_anonymous
+      session.delete :impersonate_student
+      session.delete :impersonate_employee
+      session.delete :impersonate_walk_in
       session.delete :original_user_id
-
       @current_ability = nil
-      flash[:notice] = "You succesfully switched user."
+
+      flash[:notice] = "You succesfully switched back."
       flash.keep :notice
 
     else

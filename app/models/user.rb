@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
     user
   end
 
+  def roles
+    impersonating ? [] : super
+  end
+
   def public?
     !dtu?
   end
@@ -37,15 +41,11 @@ class User < ActiveRecord::Base
   end
 
   def employee?
-    dtu? && user_data['dtu']['user_type'] == 'dtu_empl'
+    impersonating == 'employee' || (dtu? && user_data['dtu']['user_type'] == 'dtu_empl')
   end
 
   def student?
-    dtu? && user_data['dtu']['user_type'] == 'student'
-  end
-
-  def guest?
-    dtu? && user_data['dtu']['user_type'] == 'guest'
+    impersonating == 'student' || (dtu? && user_data['dtu']['user_type'] == 'student')
   end
 
   def authenticated?
@@ -92,8 +92,14 @@ class User < ActiveRecord::Base
     bookmark && bookmark.tags.order(:name)
   end
 
-  def to_s
-    if authenticated?
+  def name
+    if impersonating == 'anonymous'
+      'Anonymous'
+    elsif impersonating == 'student'
+      'a Student'
+    elsif impersonating == 'employee'
+      'an Employee'
+    elsif authenticated?
       if dtu?
         "%s %s" % [user_data['dtu']['firstname'], user_data['dtu']['lastname']]
       else
@@ -102,5 +108,17 @@ class User < ActiveRecord::Base
     else
       'Anonymous'
     end
+  end
+
+  def email
+    user_data['email']
+  end
+
+  def cwis
+    dtu? && user_data['dtu']['matrikel_id']
+  end
+
+  def to_s
+    name
   end
 end

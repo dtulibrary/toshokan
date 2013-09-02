@@ -55,27 +55,45 @@ class ApplicationController < ActionController::Base
   def current_user
     user = logged_in_user || guest_user
 
-    unless user.impersonating?
-      user.walk_in  = walk_in_request?
-      user.internal = internal_request?
-      user.campus   = campus_request?
-    end
+    user.impersonating = case
+                         when session[:impersonate_student]
+                           'student'
+                         when session[:impersonate_employee]
+                           'employee'
+                         when session[:original_user_id]
+                           true
+                         else
+                           false
+                         end
+
+    user.internal      = internal_request?
+    user.campus        = campus_request?
+    user.walk_in       = case
+                         when user.impersonating?
+                           session[:impersonate_walk_in]
+                         else
+                           walk_in_request?
+                         end
 
     if user.orders_enabled? != orders_enabled_request?
       user.orders_enabled = orders_enabled_request?
       @current_ability = nil
     end
 
-    return user
+    user
   end
 
   def logged_in_user
     if session[:user_id]
       user = User.find_by_id session[:user_id]
-      user.impersonating = session.has_key? :original_user_id if user
       return user
     end
   end
+
+  def original_user
+    User.find_by_id(session[:original_user_id])
+  end
+  helper_method :original_user
 
   def walk_in_request?
     request_matches_ips? Rails.application.config.auth[:ip][:walk_in]

@@ -8,7 +8,7 @@ Rails.application.config.to_prepare do
   if Rails.application.config.auth[:stub]
     Riyosha.config.test_mode = true
     Riyosha.config.add_mock('1234', {
-        'identifier' => '1234',
+        'id'         => '1234',
         'email'      => 'someone@example.com',
         'dtu'        => {
           'firstname' => 'Firstname',

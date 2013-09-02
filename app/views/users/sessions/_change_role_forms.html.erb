@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="span3">
+    <%= form_tag user_session_path, :method => :put do %>
+      <%= hidden_field :anonymous, :value => true %>
+      <%= button_tag t('toshokan.users.switch.become_anonymous'), :class => 'btn btn-primary' %>
+      <label class="checkbox">
+        <%= check_box_tag :walk_in %><%= t('toshokan.users.switch.with_walk_in') %>
+      </label>
+    <% end %>
+  </div>
+  <div class="span3">
+    <%= form_tag user_session_path, :method => :put do %>
+      <%= hidden_field :student, :value => true %>
+      <%= button_tag t('toshokan.users.switch.become_student'), :class => 'btn btn-primary' %>
+      <label class="checkbox">
+        <%= check_box_tag :walk_in %><%= t('toshokan.users.switch.with_walk_in') %>
+      </label>
+    <% end %>
+  </div>
+  <div class="span3">
+    <%= form_tag user_session_path, :method => :put do %>
+      <%= hidden_field :employee, :value => true %>
+      <%= button_tag t('toshokan.users.switch.become_employee'), :class => 'btn btn-primary' %>
+      <label class="checkbox">
+        <%= check_box_tag :walk_in %><%= t('toshokan.users.switch.with_walk_in') %>
+      </label>
+    <% end %>
+  </div>
+</div>

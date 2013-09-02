@@ -81,10 +81,10 @@ en:
           Explore the full search power of DTU Findit. <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=13937966">See what DTU Findit covers</a>
           and <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=14174533">learn about the powerful search syntax</a>.
     header_links:
-      switch_user: "Switch User"
-      switch_back: "Switch Back"
+      switch_user: "Switch user"
+      switch_back: "Switch back"
       logged_in_as: "Logged in as"
-      acting_as: "Acting as"
+      acting_as: "acting as"
       cwis: "User name or CWIS number"      
       login: "Log in"
       logout: "Log out"
@@ -138,6 +138,15 @@ en:
       cwis: "CWIS"
       email: "email"
       profile_picture_for: "Profile picture for"
+      switch:
+        search_label: "Search for user by first name, last name, email, cwis, initials, or any combination of these"
+        search: "Search"
+        become_user: 'Become user'
+        become_anonymous: 'Become anonymous'
+        become_student: 'Become student'
+        become_employee: 'Become employee'
+        to_another_user: 'Switch to another user'
+        to_another_role: 'Change the role of the current user'
     roles:
       ADM: "Administrator"
       SUP: "User supporter"

@@ -1,43 +1,5 @@
 (function ($) {
 
-  // Enable modal display when clicking on "Switch User"
-  $(function () {
-    $('#switch_user').click(function () {
-      $('#switch_user_modal').modal({
-        backdrop: false
-      });
-      return false;
-    });
-  });
-
-  // Intercept switch user form submission
-  $(function () {
-    var form = $('#switch_user_modal form');
-
-    form.submit(function () {
-      var identifier = form.find('#identifier').val();
-      var errors = form.find('.alert.alert-error');
-
-      errors.hide();
-
-      $.ajax({
-        url : 'user/session',
-        type : 'put',
-        data : 'ajax=true&user[identifier]=' + identifier,
-        statusCode : {
-          404 : function (response, statusText, statusCode) {
-            errors.text(response.responseText);
-            errors.show();
-          }
-        },
-        success : function () {
-          window.location.reload(true);
-        },
-      });
-      return false;
-    });
-  });
-
   // User role management
   $(function () {
     $('.save-user').hide();
