@@ -45,7 +45,6 @@ class Ability
 
     # Apply abilities for users on walk-in PC's
     if user.walk_in?
-      cannot :login, User
       cannot :search, :public
       can :search, :dtu
       can :ask, :librarian
