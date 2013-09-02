@@ -7,7 +7,7 @@ class FeedbackMailer < ActionMailer::Base
       subject_sub = 'walk-in user'
     elsif user.authenticated?
       # Logged in - send info about user (username, provider, ... )
-      @user_info = "Authenticated user - username: #{user.username}, identifier: #{user.identifier} (from #{user.provider})"
+      @user_info = "Authenticated user: #{user.user_data}"
       subject_sub = 'authenticated user'
     else
       # Public, not logged in
