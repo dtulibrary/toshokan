@@ -145,7 +145,7 @@ module PayIt
         },  
         :dtu_student => {
           :rd => { 
-            :DKK => 10000 
+            :DKK => 4000 
           },  
           :dtu => {
             :DKK => 0
