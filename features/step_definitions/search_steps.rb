@@ -35,7 +35,7 @@ Given /^I search for "(.*?)" in the "(.*?)" field$/ do |query, field|
   click_button('Find it')
 end
 
-Given /^I have limited the "(.*?)" facet to "(.*?)"$/ do |facet_name, facet_value|
+Given /^I(?:'ve| have) limited the "(.*?)" facet to "(.*?)"$/ do |facet_name, facet_value|
   click_link(facet_value)
 end
 
@@ -65,4 +65,8 @@ Then /^I should((?:n'| no)t)? see the simple search form$/ do |negate|
   else
     page.should have_selector('#q')
   end
+end
+
+Then /^I should see the search form filled with "(.*?)"$/ do |q|
+  find_field('q').value.should == q
 end

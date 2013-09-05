@@ -56,4 +56,7 @@ module BlacklightHelper
     link_to(raw(html+render_search_to_s(params)), catalog_index_path(params)).html_safe
   end
 
+  def render_search_bar
+    render :partial => 'catalog/search_form', :locals => {:params => (session[:search] || {}).deep_merge(params)}
+  end
 end

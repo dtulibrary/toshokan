@@ -259,7 +259,7 @@ class CatalogController < ApplicationController
   end
 
   def show
-
+    @disable_remove_filter = true
     @display_format = current_display_format + '_show'
 
     # TODO: Fix problem with nested queries getting dropped from search

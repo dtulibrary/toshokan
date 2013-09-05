@@ -3,7 +3,16 @@
 module RenderConstraintsHelper
   include Blacklight::RenderConstraintsHelperBehavior
 
+  def search_params localized_params = params
+    result = {}.with_indifferent_access
+    session[:search].each do |k,v|
+      result[k] = params.has_key?(k) ? params[k] : v
+    end
+    result
+  end
+
   def query_has_constraints?(localized_params = params)
+    localized_params = search_params localized_params
     super or !(localized_params[:t].blank?) or query_has_advanced_search_constraints?(localized_params)
   end
 
@@ -16,6 +25,7 @@ module RenderConstraintsHelper
   end
 
   def render_constraints(localized_params = params)
+    localized_params = search_params localized_params
     (render_constraints_filters(localized_params) + render_constraints_tags(localized_params) + render_advanced_search_constraints(localized_params)).html_safe
   end
 
@@ -67,5 +77,16 @@ module RenderConstraintsHelper
 				) + "\n"
     end
   end
+
+  def render_filter_element(facet, values, localized_params)
+    facet_config = facet_configuration_for_field(facet)
+
+    options = {:classes => ['filter', 'filter-' + facet.parameterize]}
+
+    values.map do |val|
+      options[:remove] = url_for(remove_facet_params(facet, val, localized_params)) unless @disable_remove_filter 
+      render_constraint_element(facet_field_labels[facet], facet_display_value(facet, val), options) + "\n"    
+    end 
+  end 
 
 end

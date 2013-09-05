@@ -1,4 +1,4 @@
-<div class="span12" style="margin-bottom: 3em">
+<div class="span12 cant-find-form">
   <h4 class="underlined"><%= t 'toshokan.cant_find.title', :genre => t("toshokan.cant_find.genres.#{@genre}").downcase %></h4>
   <h5><%= t 'toshokan.cant_find.tips.title' %></h5>
   <% unless @tips.empty? %>
@@ -8,7 +8,7 @@
       <% end %>
     </ul>
   <% end %>
-  <h5 style="margin-top: 3em;"><%= t 'toshokan.cant_find.forms.title' %></h5>
+  <h5 class="form-title"><%= t 'toshokan.cant_find.forms.title' %></h5>
   <% if can? :view, :cant_find_forms -%>
     <%= form_tag dtic_assistance_path(:genre => @genre) do %>
       <div class="row">
