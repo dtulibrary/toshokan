@@ -135,3 +135,16 @@ Then /^I should see the "(.*?)" section with the following values$/ do |section,
     end
   end
 end
+
+Then /^I should(n't| not)? see the can't find menu items$/ do |negate|
+  within '#facets' do
+    if negate
+      should_not have_css '.cant-find-items' 
+    else
+      step %{I should see "Can't find what you're looking for?"}
+      step %{I should see "Journal article"}
+      step %{I should see "Conference article"}
+      step %{I should see "Book"}
+    end
+  end
+end

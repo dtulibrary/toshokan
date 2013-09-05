@@ -51,6 +51,8 @@ class Ability
     end
 
     can :order, :article if user.orders_enabled?
+
+    cannot :use_feature, :cant_find_facet
   end
 
 end
