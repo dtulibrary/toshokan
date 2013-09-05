@@ -116,9 +116,9 @@ describe CantFindController do
       context 'when genre is book' do
       end
 
-      it 'renders the assistance template' do
+      it 'redirects to show_assitance_request' do
         post :assistance, :genre => :journal_article
-        should render_template :assistance
+        should redirect_to show_assistance_request_path
       end
     end
 

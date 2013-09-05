@@ -44,7 +44,8 @@ Toshokan::Application.routes.draw do
     match '/feedback',                :to => 'feedback#show',            :as => 'feedback',             :via => :post
 
     # DTIC librarian assistance (create redmine issues)
-    match '/cant_find/assistance/:genre',      :to => 'cant_find#assistance',     :as => 'dtic_assistance',    :via => :post
+    match '/cant_find/assistance/:genre',      :to => 'cant_find#assistance',                :as => 'dtic_assistance',            :via => :post
+    match '/cant_find/assistance/:genre',      :to => 'cant_find#show_assistance_request',   :as => 'show_assistance_request',    :via => :get
 
     # Can't find forms
     match '/cant_find/:genre',          :to => 'cant_find#index',          :as => 'cant_find',          :via => :get

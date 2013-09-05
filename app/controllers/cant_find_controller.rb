@@ -18,9 +18,13 @@ class CantFindController < ApplicationController
   end
 
   def assistance
+    SendIt.delay.send_request_assistance_mail genre, current_user, params
+    redirect_to show_assistance_request_path params.reject { |p| p == 'action'}
+  end
+
+  def show_assistance_request
     @sections = CantFindForms.submitted_values_for genre, params
     @form_sections = CantFindForms.form_sections_for(genre)
-    SendIt.delay.send_request_assistance_mail genre, current_user, params
   end
 
 end
