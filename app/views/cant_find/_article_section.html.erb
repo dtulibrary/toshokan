@@ -1,6 +1,6 @@
 <div class="article-section">
   <h5 class="underlined"><%= t 'toshokan.cant_find.forms.sections.article' %></h5>
-  <%= label_tag 'article_title', t('toshokan.cant_find.forms.fields.article_title') %>
+  <%= label_tag 'article_title', (t('toshokan.cant_find.forms.fields.article_title') + ' <span class="dtu-red">*</span>').html_safe %>
   <%= text_field_tag 'article_title', nil, :class => 'input-block-level' %>
   <%= label_tag 'author', t('toshokan.cant_find.forms.fields.author') %>
   <%= text_field_tag 'author', nil, :class => 'input-block-level' %>

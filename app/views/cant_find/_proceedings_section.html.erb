@@ -6,7 +6,7 @@
   <%= text_field_tag 'proceedings_isxn', nil, :class => 'input-block-level' %>
   <div class="row-fluid">
     <div class="span6 offset6">
-      <%= label_tag 'pages', t('toshokan.cant_find.forms.fields.pages') %>
+      <%= label_tag 'pages', (t('toshokan.cant_find.forms.fields.pages') + ' <span class="dtu-red">*</span>').html_safe %>
       <%= text_field_tag 'pages', nil, :class => 'input-block-level' %>
     </div>
   </div>
