@@ -4,7 +4,7 @@
   <div class="facets-collapse">
   <%= render_facet_partials %>
   <hr/>
-  <% if can? :logout, User %>
+  <% if can? :tag, Bookmark %>
     <%= render_tag_partials %>
   <% end %>
   <% if can? :use_feature, :cant_find_facet %>
