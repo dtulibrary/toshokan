@@ -60,8 +60,9 @@ describe Users::SessionsController do
       User.find_by_identifier('abcd').user_data['email'].should eq @user_data['email']
     end
 
-    it "should update the user data" do
+    it "should update the user data for an existing user" do
       post "create", :provider => :cas
+      post "destroy"
 
       updated_user_data = {'id' => 'abcd', 'email' => 'updated@example.com'}
       Riyosha
@@ -73,7 +74,7 @@ describe Users::SessionsController do
     end
   end
 
-  describe "update" do
+  describe "#update" do
     before do
       @user = User.new(:identifier => '4321', :provider => 'cas',
         :user_data => {'id' => '4321', 'email' => 'somebody@example.com' })
@@ -211,113 +212,113 @@ describe Users::SessionsController do
     end
 
     it "should deny access for a user that doesn't have \"User Support\" role" do
-      get 'switch'
+      get :switch
       response.response_code.should eq 401
     end
 
     it "should allow access for a user that has \"User Support\" role" do
       @user.roles << Role.find_by_code('SUP') 
-      get 'switch'
+      get :switch
       response.response_code.should eq 200
     end
 
-  end
-
-  describe '#find' do
-    before do
-      @user = User.new(:identifier => '4321', :provider => 'cas',
-        :user_data => {
-          'email' => '12345@exmaple.com',
-          'first_name' => 'Firstname',
-          'last_name' => 'Lastname',
-          'user_type' => 'student',
-          'dtu' => {
-            'email' => '12345@exmaple.com',
-            'firstname' => 'Firstname',
-            'lastname' => 'Lastname',
-            'initials' => 'fl',
-            'matrikel_id' => '12345',
-            'user_type' => 'student'}})
-      @user.roles = [Role.find_by_code('SUP')]
-      @user.save!
-      session[:user_id] = @user.id
-      @other_user = User.create(:identifier => '1234', :provider => 'cas',
-        :user_data => {
-          'email' => '54321@example.com',
-          'first_name' => 'Funny Name',
-          'last_name' => 'Lastname',
-          'user_type' => 'dtu_empl',
-          'dtu' => {
-            'email' => '54321@example.com',
-            'firstname' => 'Funny Name ',
-            'lastname' => 'Lastname',
-            'initials' => 'fnl',
-            'matrikel_id' => '54321',
-            'user_type' => 'dtu_empl'}})
-      @third_user = User.create(:identifier => '9876', :provider => 'cas',
-        :user_data => {
-          'email' => '98765@example.com',
-          'first_name' => 'Another Name',
-          'last_name' => 'Anotherlastname',
-          'user_type' => 'dtu_empl',
-          'dtu' => {
-            'email' => '98765@example.com',
-            'firstname' => 'Another Name ',
-            'lastname' => 'Anotherlastname',
-            'initials' => 'ana',
-            'matrikel_id' => '98765',
-            'user_type' => 'dtu_empl'}})
-
-    end
-
-    context 'when query matches one or more users' do
-      it 'should assign a list of users' do
-        get :switch, { :user_q => '12345' }
-        found_users = assigns[:found_users]
-        found_users.should_not be_nil
-      end
-
-      it 'should include matched users in the assigned list' do
-        get :switch, { :user_q => 'example.com' }
-        found_users = assigns[:found_users]
-        found_users.should include(@other_user)
-        found_users.should include(@third_user)
-      end
-
-      it 'should not include the current user in the assigned list' do
-        get :switch, { :user_q => 'lastname' }
-        found_users = assigns[:found_users]
-        found_users.should_not include(@user)
-      end
-    end
-
-    context 'when query has multiple tokens' do
-      it 'should find only the user that matches all tokens' do
-        get :switch, { :user_q => 'Lastname 54321@example.com' }
-        found_users = assigns[:found_users]
-        found_users.should include(@other_user)
-        found_users.size.should eq 1
-      end
-    end
-
-    context 'when query does not match a user' do
-      it 'should assign an empty list of users' do
-        get :switch, { :user_q => 'you cant find me' }
-        found_users = assigns[:found_users]
-        found_users.should be_empty
-      end
-    end
-
-    context 'when user is missing required role' do
+    context 'when searching for a user' do
       before do
-        session[:user_id] = @other_user.id
-        @params = { :user_q => 'bla' }
+        @user = User.new(:identifier => '4321', :provider => 'cas',
+          :user_data => {
+            'email' => '12345@exmaple.com',
+            'first_name' => 'Firstname',
+            'last_name' => 'Lastname',
+            'user_type' => 'student',
+            'dtu' => {
+              'email' => '12345@exmaple.com',
+              'firstname' => 'Firstname',
+              'lastname' => 'Lastname',
+              'initials' => 'fl',
+              'matrikel_id' => '12345',
+              'user_type' => 'student'}})
+        @user.roles = [Role.find_by_code('SUP')]
+        @user.save!
+        session[:user_id] = @user.id
+        @other_user = User.create(:identifier => '1234', :provider => 'cas',
+          :user_data => {
+            'email' => '54321@example.com',
+            'first_name' => 'Funny Name',
+            'last_name' => 'Lastname',
+            'user_type' => 'dtu_empl',
+            'dtu' => {
+              'email' => '54321@example.com',
+              'firstname' => 'Funny Name ',
+              'lastname' => 'Lastname',
+              'initials' => 'fnl',
+              'matrikel_id' => '54321',
+              'user_type' => 'dtu_empl'}})
+        @third_user = User.create(:identifier => '9876', :provider => 'cas',
+          :user_data => {
+            'email' => '98765@example.com',
+            'first_name' => 'Another Name',
+            'last_name' => 'Anotherlastname',
+            'user_type' => 'dtu_empl',
+            'dtu' => {
+              'email' => '98765@example.com',
+              'firstname' => 'Another Name ',
+              'lastname' => 'Anotherlastname',
+              'initials' => 'ana',
+              'matrikel_id' => '98765',
+              'user_type' => 'dtu_empl'}})
+
       end
 
-      it 'should not allow listing users' do
-        put :switch, @params
-        response.response_code.should eq 401
+      context 'and query matches one or more users' do
+        it 'should assign a list of users' do
+          get :switch, { :user_q => '12345' }
+          found_users = assigns[:found_users]
+          found_users.should_not be_nil
+        end
+
+        it 'should include matched users in the assigned list' do
+          get :switch, { :user_q => 'example.com' }
+          found_users = assigns[:found_users]
+          found_users.should include(@other_user)
+          found_users.should include(@third_user)
+        end
+
+        it 'should not include the current user in the assigned list' do
+          get :switch, { :user_q => 'lastname' }
+          found_users = assigns[:found_users]
+          found_users.should_not include(@user)
+        end
       end
+
+      context 'and query has multiple tokens' do
+        it 'should find only the user that matches all tokens' do
+          get :switch, { :user_q => 'Lastname 54321@example.com' }
+          found_users = assigns[:found_users]
+          found_users.should include(@other_user)
+          found_users.size.should eq 1
+        end
+      end
+
+      context 'and query does not match a user' do
+        it 'should assign an empty list of users' do
+          get :switch, { :user_q => 'you cant find me' }
+          found_users = assigns[:found_users]
+          found_users.should be_empty
+        end
+      end
+
+      context 'and user is missing required role' do
+        before do
+          session[:user_id] = @other_user.id
+          @params = { :user_q => 'bla' }
+        end
+
+        it 'should not allow listing users' do
+          put :switch, @params
+          response.response_code.should eq 401
+        end
+      end
+
     end
 
   end

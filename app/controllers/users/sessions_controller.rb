@@ -15,6 +15,10 @@ class Users::SessionsController < ApplicationController
   end
 
   def new
+    unless can? :login, User
+      render(:file => 'public/401', :format => :html, :status => :unauthorized) and return
+    end
+
     session[:return_url] ||= '/'
 
     case
@@ -30,6 +34,10 @@ class Users::SessionsController < ApplicationController
   end
 
   def create
+    unless can? :login, User
+      render(:file => 'public/401', :format => :html, :status => :unauthorized) and return
+    end
+
     # extract authentication data
     auth = request.env["omniauth.auth"]
     provider = params['provider']

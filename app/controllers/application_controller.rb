@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
       redirect_to url_for(params.except!(:stay_anonymous))
     end
 
-    unless session[:user_id]
+    unless session[:user_id] || current_user.impersonating?
       if (cookies[:shunt] == 'dtu') || (campus_request? && !cookies[:shunt_hint])
         session[:return_url] ||= request.url
         redirect_to polymorphic_url(:new_user_session)
