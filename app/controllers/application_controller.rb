@@ -144,14 +144,35 @@ class ApplicationController < ActionController::Base
 
   def set_google_analytics_dimensions_and_metrics
     user_group = case
-                 when current_user.internal?
+                 when current_user.internal? || current_user.impersonating?
                    'dtic'
-                 when current_user.walk_in?
-                   'walk_in_anonymous'
+                 when current_user.dtu?
+                   case
+                   when current_user.employee?
+                     'dtu_staff'
+                   when current_user.student?
+                     'dtu_student'
+                   else
+                     'dtu'
+                   end
+                 when current_user.authenticated?
+                   case
+                   when current_user.walk_in?
+                     'walk_in_authenticated'
+                   else
+                     'public_authenticated'
+                   end
                  else
-                   'public_anonymous'
+                   case
+                   when current_user.walk_in?
+                     'walk_in_anonymous'
+                   else
+                     'public_anonymous'
+                   end
                  end
     set_google_analytics_dimension_or_metric 'dimension1', user_group
+  rescue Exception => e
+    logger.warn "Could not set GA metrics. #{e.class}: #{e.message}"
   end
 
   def set_google_analytics_dimension_or_metric name, value
