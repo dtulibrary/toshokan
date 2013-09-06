@@ -143,6 +143,7 @@ en:
         search: "Search"
         become_user: 'Become user'
         become_anonymous: 'Become anonymous'
+        with_walk_in: 'simulate walk in'
         become_student: 'Become student'
         become_employee: 'Become employee'
         to_another_user: 'Switch to another user'
