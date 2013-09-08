@@ -34,7 +34,7 @@
     <% if @document[:format] == "journal" %>
 
       <% if can? :view, :search_history %>
-        <li class="nav-header"><i class="icon-bell"></i><%= t('toshokan.alerts.title') %></li>
+        <li class="nav-header journal-alert-header"><i class="icon-bell"></i><%= t('toshokan.alerts.title') %></li>
         <li>
           <%= render :partial => 'alerts/add_journal_alert', :locals => { :document => @document } %>
         </li>

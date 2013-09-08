@@ -76,31 +76,6 @@ module CatalogHelper
     affiliations.collect { |affiliation| content_tag(:span, affiliation)}.join('<br>').html_safe
   end
 
-  def render_holdings args
-    holdings = {}
-    args[:document][args[:field]].each { |h|
-      holding = JSON.parse(h)
-      if(holding["type"] == "printed")
-        holdings[holding["type"]] ||= []
-        holdings[holding["type"]] << holding
-      end
-    }
-    if holdings.size > 0
-      holdings.each { |type, holding|
-        holding.sort! {|x, y| x['fromyear'] <=> y['fromyear'] }
-      }
-
-      issn = args[:document]['issn_ss'].first
-      render :partial => 'catalog/holdings', :locals => {:holdings => holdings, :issn => issn}
-    else
-      I18n.t("toshokan.catalog.holdings.placeholder")
-    end
-  end
-
-  def render_alis_link args
-    render :partial => 'catalog/alis_link', :locals => {:alis_key => args[:document][args[:field]].first}
-  end
-
   def render_advanced_search_link label = 'More options'
     local_params = {}
     advanced_search_fields.each do |field_name, field|

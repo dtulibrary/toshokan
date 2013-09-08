@@ -5,7 +5,7 @@
     var customData = encodeURIComponent(JSON.stringify({"id" : id}));
     var url = [toshokan.getit.url,
                "/resolve?" + openUrl,                
-               "&rft.data=" + customData,
+               "&rft_dat=" + customData,
                "&req_id=" + userType,
                "&svc_dat=" + service_list].join("");        
 
@@ -37,7 +37,7 @@
   };
 
   $(function () {
-    if($('body.blacklight-catalog-index').length) {
+    if($('body.blacklight-catalog-index').length) {      
 
       $('.document').each(function() {
         var openUrl = $(this).find(".Z3988").attr("title");
@@ -51,7 +51,7 @@
           fulltext.addResource(openUrl, id, "fulltext_info", partial(layout_index, fulltext), 
             function() { spinner.spin(false); spinner.remove(); });
         }
-      });      
+      });
     }
     else if($('body.blacklight-catalog-show').length) {
       var openUrl = $(".Z3988").attr("title");
@@ -60,11 +60,13 @@
       
       if(fulltext.length) {          
         fulltext.spin({length: 4, width: 3, radius: 5, top: 0});      
+
         fulltext.addResource(openUrl, id, "fulltext", partial(layout_show, fulltext), 
           function() { fulltext.spin(false); });
-        }
+      }
     }
   });
+
 
   var layout_show = function (elm, data) {
 
@@ -120,32 +122,74 @@
       item.append("<strong><i class='" + data.icon + "'></i>" + data.short_name + "</strong> (" + data.type + ")");
       item.append("<p><small>" + data.short_explanation + "</small></p>");        
       item.append(
-        $("<div />").append(
-          $("<div />", {"class" : "leadtext"}).append(
-            $("<div />").append("<strong>"+data.lead_text+"</strong>")),              
+        $("<div />", {"class" : "fulltext-action"}).append(
+          $("<div />", {"class" : "leadtext"}),              
           $("<div />").append(action)
         )
       );
-      if (data.explanation !== '') {
-        item.find(".leadtext").append($("<div />").append("<small>" + data.explanation + "</small>")); 
+      lead_text = item.find(".leadtext");
+      if (data.lead_text) {
+        $(lead_text).append($("<div />").append("<strong>" + data.lead_text + "</strong>"));
+      }
+      if (data.explanation) {
+        $(lead_text).append($("<div />").append("<small>" + data.explanation + "</small>")); 
+      }
+
+      if(data.holdings_list) {
+        holdings_item = format_holdings_list(data.holdings_list);
+        item.find(".fulltext-action").before(holdings_item);
       }
 
       header_elm.after(item);
     }
   };
 
+  function format_holdings_list(holdings_list) {
+
+    holdings_list.sort(function(a, b) { return a.fromyear - b.fromyear; }).reverse;
+    var item = $("<div />", {"class" : "coverage"});
+    item.append("<p><small><%= I18n.t('toshokan.tools.coverage') %>:</small></p>");
+    for(var i=0; i<holdings_list.length; i++) {
+      h = holdings_list[i];      
+
+      if(h.fromyear) {
+        from = h.fromyear;
+        if(h.fromvolume) {
+          from += " vol. " + h.fromvolume
+        }
+        if(h.fromissue) {
+          from += " iss. " + h.fromissue
+        }
+      }
+      if(h.toyear) {
+        to = h.toyear;
+        if(h.tovolume) {
+          to += " vol. " + h.tovolume
+        }
+        if(h.toissue) {
+          to += " iss. " + h.toissue
+        }
+      }      
+      item.append("<p><small>" + from + " &mdash; " + to + "</small></p>");
+    }    
+    return item;
+  }
+
   var layout_index = function (elm, data) {
     if(data == null) {
       elm.before($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
       elm.hide();
     } else {
+
       var item = $("<li />", {
         text             : data.short_name,
         "title"          : data.tool_tip,
         "data-toggle"    : "tooltip",
         "data-placement" : "bottom"
       });
-      $(item).tooltip();
+      if(data.tool_tip) {
+        $(item).tooltip();
+      }
       $(item).prepend("<i class='" + data.icon + "'></i>");
       elm.before(item);
     }

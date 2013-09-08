@@ -3,6 +3,11 @@ a > i[class^="icon-"], a > i[class*=" icon-"] {
   color: #000;  
 }
 
+i[class^="icon-"], i[class*=" icon-"] {
+  width: auto;
+  height: auto;
+}
+
 a > i.icon-pubmed {
   background-image: image_url('pubmed_logo.png');
   background-position: center center;

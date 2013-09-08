@@ -166,6 +166,7 @@ en:
       bibtex: "Export to BibTeX"
       ris: "Export to RIS"
       fulltext: "Get it"
+      coverage: "Coverage"
       not_available: "Not available"
       nal: "On-site use at other libraries"
       order:
@@ -225,8 +226,7 @@ en:
         format: 'Type'
         publisher_ts: 'Publisher'
         journal_page_ssf: 'Pages'
-        alis_key_ssf: 'Holdings'
-        holdings_ssf: 'Holdings'
+        issn_ss: 'ISSN'
       show_field_labels:
         abstract_ts: 'Abstract'
         affiliation_ts: 'Affiliations'
@@ -247,8 +247,6 @@ en:
         conf_title_ts: 'Conference title'
         subtitle_ts: 'Subtitle'
         journal_page_ssf: 'Pages'
-        alis_key_ssf: 'Holdings'
-        holdings_ssf: 'Holdings'
       facet_field_labels:
         author_facet: 'Author'
         format: 'Type'
@@ -279,13 +277,6 @@ en:
         article: 'Journal article'
         book: 'Book'
         journal: 'Journal'
-      holdings:
-        printed: "Paper based"
-        electronic: "Electronic"    
-        alis: "View in print journals collection"
-        alis_books: "View in print books collection"
-        alis_public: "On-site use at DTU Library"
-        placeholder: "See full text options"        
     footer:
       about_dtu_library_html:
         <h5>About DTU Library</h5>
