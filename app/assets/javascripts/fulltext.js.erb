@@ -152,6 +152,7 @@
     for(var i=0; i<holdings_list.length; i++) {
       h = holdings_list[i];      
 
+      from = "";
       if(h.fromyear) {
         from = h.fromyear;
         if(h.fromvolume) {
@@ -161,6 +162,7 @@
           from += " iss. " + h.fromissue
         }
       }
+      to = "";
       if(h.toyear) {
         to = h.toyear;
         if(h.tovolume) {
