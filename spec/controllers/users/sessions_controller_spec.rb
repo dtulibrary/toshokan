@@ -2,6 +2,7 @@
 require 'spec_helper'
 
 describe Users::SessionsController do
+
   describe '#destroy' do
     let :existing_user do
       user = User.new :identifier => '1234', :provider => 'cas'
@@ -30,47 +31,81 @@ describe Users::SessionsController do
   describe '#new' do
     it 'should redirect to cas' do
       get :new
-      response.should redirect_to controller.omniauth_path(:cas)
+      response.code.should eq "302"
+      response.location.should include controller.omniauth_path(:cas)
     end
 
   end
 
   describe "#create" do
-    before(:each) do
-      request.env["omniauth.auth"] = OmniAuth.mock_auth_for(:cas)
-      @return_url = "http://example.com/return_url"
-      controller.session[:return_url] = @return_url
 
-      @user_data = {'id' => 'abcd', 'email' => 'somebody@example.com'}
-      Riyosha
-        .should_receive(:find).with('abcd')
-        .and_return(@user_data)
+    context "when Riyosha api request works properly" do
+      before(:each) do
+        request.env["omniauth.auth"] = OmniAuth.mock_auth_for(:cas)
+        @user_data = {'id' => 'abcd', 'email' => 'somebody@example.com'}
+        Riyosha
+          .should_receive(:find).with('abcd')
+          .and_return(@user_data)
+      end
+
+      it "should redirect to requested url on callback from CAS with proper auth hash" do
+        post "create", :provider => :cas, :url => root_path
+
+        controller.session[:user_id].should_not be_nil
+        response.should redirect_to(root_path)
+      end
+
+      it "should create a user from the user data" do
+        post "create", :provider => :cas
+
+        User.find_by_identifier('abcd').user_data['email'].should eq @user_data['email']
+      end
+
+      it "should update the user data for an existing user" do
+        post "create", :provider => :cas
+        post "destroy"
+
+        updated_user_data = {'id' => 'abcd', 'email' => 'updated@example.com'}
+        Riyosha
+          .should_receive(:find).with('abcd')
+          .and_return(updated_user_data)
+
+        post "create", :provider => :cas
+        User.find_by_identifier('abcd').user_data['email'].should eq updated_user_data['email']
+      end
     end
 
-    it "should redirect to requested url on callback from CAS with proper auth hash" do
-      post "create", :provider => :cas
-
-      controller.session[:user_id].should_not be_nil
-      response.should redirect_to @return_url
-    end
-
-    it "should create a user from the user data" do
-      post "create", :provider => :cas
-
-      User.find_by_identifier('abcd').user_data['email'].should eq @user_data['email']
-    end
-
-    it "should update the user data for an existing user" do
-      post "create", :provider => :cas
-      post "destroy"
-
-      updated_user_data = {'id' => 'abcd', 'email' => 'updated@example.com'}
-      Riyosha
-        .should_receive(:find).with('abcd')
-        .and_return(updated_user_data)
-
-      post "create", :provider => :cas
-      User.find_by_identifier('abcd').user_data['email'].should eq updated_user_data['email']
+    context "when Riyosha api request fails " do
+      before(:each) do
+        request.env["omniauth.auth"] = OmniAuth.mock_auth_for(:cas)
+      end
+      context "and the user does not exist" do
+        before(:each) do
+          Riyosha
+            .should_receive(:find).with('abcd')
+            .and_return(nil)
+        end
+        it "should not login" do
+          post "create", :provider => :cas
+          controller.current_user.should_not be_authenticated
+        end
+        it "should display an error message" do
+          post "create", :provider => :cas
+          controller.flash[:alert].should_not be_blank
+        end
+      end
+      context "and the user does exist" do
+        before(:each) do
+          @user_data = {'id' => 'abcd', 'email' => 'somebody@example.com'}
+          Riyosha
+            .should_receive(:find).with('abcd')
+            .and_return(@user_data)
+        end
+        it "should perform the login" do
+          post "create", :provider => :cas
+          controller.current_user.should be_authenticated
+        end
+      end
     end
   end
 

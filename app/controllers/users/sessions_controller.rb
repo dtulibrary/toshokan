@@ -1,11 +1,40 @@
 class Users::SessionsController < ApplicationController
   skip_before_filter :authenticate, :only => [ :setup, :create, :new ]
 
+  # #new is either called by the user clicking login or by the authorize before_filter
+  # (due to forced shunting of dtu users).
+  def new
+    unless can? :login, User
+      render(:file => 'public/401', :format => :html, :status => :unauthorized) and return
+    end
+
+    case
+    when cookies[:shunt] == 'dtu'
+      logger.info "Shunt cookie set to 'dtu'. Shunting directly to DTU CAS"
+      session[:only_dtu] = true
+    when cookies[:shunt_hint] == 'dtu'
+      logger.info "Shunt hint cookie set to 'dtu'. Shunting with hint to DTU CAS"
+      session[:prefer_dtu] = true
+    when current_user.campus? && !current_user.walk_in?
+      logger.info "Campus request. Shunting with hint to DTU CAS"
+      session[:prefer_dtu] = true
+    end
+
+    # store given return url in session also, since omniauth-cas in
+    # test mode does not pass url parameter back to sessions_controller#create
+    url = session[:return_url] = params[:url] || '/'
+
+    redirect_to "#{omniauth_path(:cas)}?#{{ :url => url }.to_query }"
+  end
+
+  # #setup is called by omniauth before the request phase. We utilize it
+  # to setup extra query parameters to Riyosha in the CAS request based on the
+  # session
   def setup
     case
-    when session[:only_dtu]
+    when session.delete(:only_dtu)
       request.env['omniauth.strategy'].options[:login_url] = '/login?only=dtu&template=dtu_user'
-    when session[:prefer_dtu]
+    when session.delete(:prefer_dtu)
       request.env['omniauth.strategy'].options[:login_url] = '/login?template=dtu_user'
     else
       request.env['omniauth.strategy'].options[:login_url] = '/login'
@@ -14,25 +43,9 @@ class Users::SessionsController < ApplicationController
     render :text => "Omniauth setup phase.", :status => 404
   end
 
-  def new
-    unless can? :login, User
-      render(:file => 'public/401', :format => :html, :status => :unauthorized) and return
-    end
 
-    session[:return_url] ||= '/'
-
-    case
-    when cookies[:shunt] == 'dtu'
-      session[:only_dtu] = true
-    when cookies[:shunt_hint] == 'dtu'
-      session[:prefer_dtu] = true
-    when current_user.campus? && !current_user.walk_in?
-      session[:prefer_dtu] = true
-    end
-
-    redirect_to omniauth_path(:cas)
-  end
-
+  # Riyosha redirects the user to #create upon succesful login (since omniauth-cas is
+  # configured with #create as callback_url).
   def create
     unless can? :login, User
       render(:file => 'public/401', :format => :html, :status => :unauthorized) and return
@@ -43,10 +56,23 @@ class Users::SessionsController < ApplicationController
     provider = params['provider']
     identifier = auth.uid
 
-    #  sync user data from user database
+    # try to sync user data from user database
+    # if sync fails
+    #   - use cached user_data if it exists
+    #   - otherwise fail login
     user_data = Riyosha.find(identifier)
-    user = User.create_or_update_with_user_data(provider, user_data)
-    session[:user_id] = user.id
+    if user_data
+      user = User.create_or_update_with_user_data(provider, user_data)
+      session[:user_id] = user.id
+    else
+      user = User.find_by_provider_and_identifier(provider, identifier)
+      if user
+        session[:user_id] = user.id
+      else
+        logger.error "Could not get user data from Riyosha and could therefore not create new user. Login failed."
+        redirect_to params[:url] || root_path, :alert => 'Login failed. We apologize for the inconvenience. Please try again later.' and return
+      end
+    end
 
     # Make CanCan re-initialize abilities based on new user id
     @current_ability = nil
@@ -55,11 +81,12 @@ class Users::SessionsController < ApplicationController
     current_user.searches << searches_from_history
     current_user.save
 
-    # Set shunting cookie(s)
+    # Set shunting cookies
     cookies.permanent[:shunt] = cookies.permanent[:shunt_hint] = user.user_data["authenticator"] unless current_user.walk_in?
 
     # redirect user to the requested url
-    redirect_to params[:url] || session.delete(:return_url) || root_path, :notice => 'You are now logged in'
+    session_return_url = session.delete(:return_url)
+    redirect_to params[:url] || session_return_url || root_path, :notice => 'You are now logged in'
   end
 
   def destroy

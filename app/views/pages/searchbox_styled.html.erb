@@ -1,6 +1,6 @@
 <div id="searchbar">
   <div class="input-append pull-left external-searchbox">
-    <form action="http://findit.dtu.dk" method="GET" target="_parent">  
+    <form action="/catalog" method="get" target="_parent">
       <div class="text-field-with-icons">
         <%= text_field_tag :q, params[:q], :class => "search_q q", :id => "q", :placeholder => t('blacklight.search.form.q')%>
       </div>

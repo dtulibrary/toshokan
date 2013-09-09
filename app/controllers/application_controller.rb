@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :set_locale
+  before_filter :log_user_info
   before_filter :authenticate
   before_filter :set_google_analytics_dimensions_and_metrics
   before_filter :set_search_history
@@ -25,6 +26,16 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_locale
 
+  def log_user_info
+    logger.info "session_id: #{request.session_options[:id]}"
+    logger.info "current_user.id: #{current_user.id}"
+
+    logger.info "current_user: #{current_user.inspect}" if current_user.authenticated?
+    logger.info "original_user: #{original_user.inspect}" if current_user.impersonating?
+  rescue Exception => e
+    logger.warn "Could not log user info: #{e.class} #{e.message}"
+  end
+
   # Authenticate users if certain criteria are met.
   # - No authentication will be done if user is already logged in.
   # - Force authentication if the shunting cookie indicates
@@ -32,17 +43,33 @@ class ApplicationController < ActionController::Base
   #   if the user originates from a DTU Campus ip address
   # - Otherwise authentication is optional
   def authenticate
+
+    # This suppresses the log in suggestion on subsequent
+    # request if the user clicks "No"
     if params[:stay_anonymous]
       cookies[:shunt_hint] = 'anonymous'
+      logger.info "Suppressing log in suggestion"
       redirect_to url_for(params.except!(:stay_anonymous))
     end
 
-    unless session[:user_id] || current_user.impersonating?
-      if (cookies[:shunt] == 'dtu') || (campus_request? && !cookies[:shunt_hint])
-        session[:return_url] ||= request.url
-        redirect_to polymorphic_url(:new_user_session)
-      end
+    if should_force_authentication
+      force_authentication
     end
+  end
+
+
+  def should_force_authentication
+    # We force authentication in two situations:
+    #  - The user has successfully logged in via DTU Cas before (i.e. the shunt cookie is set to 'dtu')
+    #  - The user has never been logged in before  (i.e. the shunt hint cookie is not set), and originates from an identified campus IP
+    can?(:login, User) && (cookies[:shunt] == 'dtu') || (!cookies[:shunt_hint] && campus_request?)
+  end
+
+  def force_authentication
+    logger.info "Forcing authentication: cookies[:shunt]:#{cookies[:shunt]}, cookies[:shunt_hint]:#{cookies[:shunt_hint]}, campus_request?:#{campus_request?}"
+    params = { :url => request.url }
+    logger.info "params: #{params}"
+    redirect_to new_user_session_path(params)
   end
 
   # Disable rendering the searchbar in the header
