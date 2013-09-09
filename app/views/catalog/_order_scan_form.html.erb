@@ -1,4 +1,4 @@
-<%= form_tag new_order_path, :method => :get, "data-price" => "#{render_scan_price(current_user, :rd)}" do %>
+<%= form_tag new_order_path, :method => :get, "data-price" => "#{render_scan_price(current_user, supplier)}" do %>
   <%= hidden_field_tag :supplier, supplier %>
   <%= hidden_field_tag :open_url, open_url %>
   <%= hidden_field_tag :order_return_url, request.fullpath %>  

@@ -78,7 +78,12 @@
 
       if(data.subtype.match(/_scan/)) {
         
-        action = $("li.order-rd-scan > form");
+        if(data.subtype == "rd_scan") {
+          action = $("li.order-rd-scan > form");
+        } else {
+          action = $("li.order-dtu-scan > form");
+        }
+        
         $(action).find("button").text(data.button_text);
         data.lead_text = action.attr("data-price");
 

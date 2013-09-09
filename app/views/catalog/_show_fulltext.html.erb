@@ -2,8 +2,11 @@
     <li class="nav-header fulltext-header"><%= t('toshokan.tools.fulltext') %></li>
 
     <% if can? :order, :article %>
-      <li class="order-rd-scan hide">
+      <li class="order-rd-scan order-scan hide">
         <%= render :partial => 'order_scan_form', :locals => { :supplier => :rd, :open_url => @document.export_as_openurl_ctx_kev, :index => false } %>
+      </li>
+      <li class="order-dtu-scan order-scan hide">
+        <%= render :partial => 'order_scan_form', :locals => { :supplier => :dtu, :open_url => @document.export_as_openurl_ctx_kev, :index => false } %>
       </li>
     <% end %>
     
