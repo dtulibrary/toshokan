@@ -1,4 +1,9 @@
 <p> 
   <a href="http://api.libguides.com/api_box.php?iid=3935&bid=15084512" target="_blank"><%= t 'toshokan.cant_find.about_service' %></a>
 </p>
-<%= button_tag t('toshokan.cant_find.forms.submit'), :class => 'btn btn-primary pull-right' %>
+<%= button_tag t('toshokan.cant_find.forms.submit'),
+               :class => 'btn btn-primary pull-right',
+               :title => t('toshokan.cant_find.forms.submit'),
+               :data => { :confirm => t('toshokan.cant_find.forms.confirm.text', :genre => t("toshokan.cant_find.genres.#{@genre}").downcase),
+                          :commit => t('toshokan.cant_find.forms.confirm.submit'),
+                          :cancel => t('toshokan.cant_find.forms.confirm.cancel') } %>

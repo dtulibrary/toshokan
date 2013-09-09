@@ -3,7 +3,7 @@
   <% if bookmark %>
     <%= form_tag({:controller => 'bookmarks', :action => 'destroy', :id => document_id},
                  {:method => :delete, :remote => remote}) do %>
-      <%= button_tag :data => { :confirm => bookmark.tags.empty? ? nil : t('toshokan.tags.remove_all') },
+      <%= button_tag :data => { :confirm => bookmark.tags.empty? ? nil : t('toshokan.tags.remove_all'), :commit => t('toshokan.yes'), :cancel => t('toshokan.no') },
                      :title => 'Remove bookmark and tags' do %>
         <%= content_tag(:i, '', :class=>'icon-star') %>
       <% end %>

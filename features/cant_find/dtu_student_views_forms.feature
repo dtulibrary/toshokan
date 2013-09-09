@@ -14,7 +14,7 @@ Scenario Outline: Following links to forms
     But I shouldn't see <should_not_see>
 
 Examples:
-  | link               | should_see                                   | should_not_see                  |
-  | Journal article    | the "can't find" form for journal article    | "DTU Library Corporate service" |
-  | Conference article | the "can't find" form for conference article | "DTU Library Corporate service" |
-  | Book               | the "can't find" form for book               | "DTU Library Corporate service" |
+  | link                                          | should_see                                   | should_not_see                  |
+  | Contact librarian to order journal article    | the "can't find" form for journal article    | "DTU Library Corporate service" |
+  | Contact librarian to order conference article | the "can't find" form for conference article | "DTU Library Corporate service" |
+  | Contact librarian to order book               | the "can't find" form for book               | "DTU Library Corporate service" |

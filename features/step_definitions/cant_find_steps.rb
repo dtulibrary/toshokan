@@ -13,6 +13,14 @@ end
 Then /^I should(n't| not)? see the "can't find" form links$/ do |negate|
   step %{I should see the result page}
   step %{I should see "No results in DTU Findit"}
+  step %{I should#{negate} see the "Contact librarian to order journal article" link}
+  step %{I should#{negate} see the "Contact librarian to order conference article" link}
+  step %{I should#{negate} see the "Contact librarian to order book" link}
+end
+
+Then /^I should(n't| not)? see the "can't find" help links$/ do |negate|
+  step %{I should see the result page}
+  step %{I should see "No results in DTU Findit"}
   step %{I should#{negate} see the "Journal article" link}
   step %{I should#{negate} see the "Conference article" link}
   step %{I should#{negate} see the "Book" link}
