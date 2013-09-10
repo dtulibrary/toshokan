@@ -142,7 +142,7 @@ class ApplicationController < ActionController::Base
     remote = NetAddr::CIDR.create request.remote_ip
     remote_matches_ips? remote, ips
   rescue => e
-    logger.warn "#{e.class} #{e.message}"
+    logger.info "request.remote_ip: #{request.remote_ip} is not an ip address. #{e.class}: #{e.message}"
     false
   end
 
