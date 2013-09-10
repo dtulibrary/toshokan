@@ -34,7 +34,6 @@ module Riyosha
       JSON.parse(HTTParty.get(Rails.application.config.auth[:api_url] + "/users/#{identifier}.json").body)
     end
   rescue Exception => e
-    logger.error "Could not fetch user data from Riyosha. #{e.class}: #{e.message}"
     nil
   end
 

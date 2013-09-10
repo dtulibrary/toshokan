@@ -68,6 +68,7 @@ class Users::SessionsController < ApplicationController
       user = User.find_by_provider_and_identifier(provider, identifier)
       if user
         session[:user_id] = user.id
+        logger.warn "Could not get user data from Riyosha. Using cached data for user with identifier #{identifier}."
       else
         logger.error "Could not get user data from Riyosha and could therefore not create new user. Login failed."
         redirect_to params[:url] || root_path, :alert => 'Login failed. We apologize for the inconvenience. Please try again later.' and return
