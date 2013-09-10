@@ -60,7 +60,7 @@ describe User do
     subject.tags_for(bookmark).map(&:name).should eq ['a tag']
   end
 
-  describe 'from Riyosha user data' do
+  describe 'from Riyosha user data for DTU employee' do
     before(:each) do
       @user_data = {'id' => '12345',
                     'provider' => 'dtu',
@@ -69,7 +69,8 @@ describe User do
                       'username'  => 'abcd',
                       'firstname' => 'Firstname',
                       'lastname'  => 'Lastname',
-                      'type'      => 'employee'
+                      'user_type' => 'dtu_empl',
+                      'matrikel_id' => '1234',
                    }}
       @provider = :cas
     end
@@ -79,6 +80,12 @@ describe User do
       user.persisted?.should be_true
       user.identifier.should eq @user_data['id']
       user.dtu?.should be_true
+      user.employee?.should be_true
+      user.student?.should be_false
+
+      user.email.should eq 'mail@example.com'
+      user.name.should eq 'Firstname Lastname'
+      user.cwis.should eq '1234'
     end
 
     it "should be updated correctly" do
@@ -90,6 +97,18 @@ describe User do
       updated_user.email.should eq @user_data['email']
       updated_user.id.should eq user.id
     end
+  end
 
+  describe "for anonymous user" do
+    it "should be created correctly" do
+      user = User.new
+      user.persisted?.should be_false
+      user.identifier.should be_nil
+      user.dtu?.should be_false
+      user.public?.should be_true
+
+      user.email.should be_nil
+      user.name.should eq 'Anonymous'
+    end
   end
 end

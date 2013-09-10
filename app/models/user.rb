@@ -111,7 +111,7 @@ class User < ActiveRecord::Base
   end
 
   def email
-    user_data['email']
+    user_data && user_data['email']
   end
 
   def cwis

@@ -56,8 +56,12 @@ Given /^I'm logged in as a DTU (user|employee|student|guest)$/ do |arg1|
   log_in(mock_dtu_user('12345678', 'fake.email@example.com', arg1, 'Fake Name'))
 end
 
-Given /^I'm logged in as a DTU (user|employee|student|guest) with name "(.*?)"$/ do |arg1, arg2|
+Given /^I'm logged in as a DTU (user|employee|student|guest) with name "([^\"]*?)"$/ do |arg1, arg2|
   log_in(mock_dtu_user('12345678', 'fake.email@example.com', arg1, arg2))
+end
+
+Given /^I'm logged in as a DTU (user|employee|student|guest) with email "(.*?)" and name "(.*?)"$/ do |arg1, arg2, arg3|
+  log_in(mock_dtu_user('12345678', arg2, arg1, arg3))
 end
 
 Given /^I'm logged in as a public user$/ do
