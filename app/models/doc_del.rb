@@ -6,7 +6,7 @@ class DocDel
   def self.request_delivery order, callback_url
     supplier_map = {
       :rd => :reprintsdesk,
-      :dtu => :dtu_print
+      :dtu => :local_scan
     }
 
     params = {
