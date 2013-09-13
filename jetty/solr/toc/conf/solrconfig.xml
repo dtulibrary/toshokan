@@ -8,7 +8,6 @@
     <indexConfig>
         <useCompoundFile>false</useCompoundFile>
         <ramBufferSizeMB>1024</ramBufferSizeMB>
-        <mergeFactor>10</mergeFactor>
         <maxBufferedDocs>1073741824</maxBufferedDocs>
         <unlockOnStartup>false</unlockOnStartup>
         <reopenReaders>true</reopenReaders>
@@ -35,8 +34,8 @@
             <str name="dir">${solr.ulog.dir:}</str>
         </updateLog>
         <autoCommit>
-            <maxTime>15000</maxTime>
-            <maxDocs>100000</maxDocs>
+            <maxTime>30000</maxTime>
+            <maxDocs>250000</maxDocs>
             <openSearcher>false</openSearcher>
         </autoCommit>
     </updateHandler>
@@ -54,7 +53,7 @@
     <query>
         <queryResultWindowSize>30</queryResultWindowSize>
         <useColdSearcher>false</useColdSearcher>
-        <maxWarmingSearchers>2</maxWarmingSearchers>
+        <maxWarmingSearchers>1</maxWarmingSearchers>
 
         <filterCache class="solr.FastLRUCache"
                      size="20480"
