@@ -37,4 +37,15 @@ module Riyosha
     nil
   end
 
+  def self.find_or_create_by_cwis(cwis)
+    config = Riyosha.config
+    if (config.test_mode)
+      Riyosha.mock_user_data_for(cwis)
+    else
+      JSON.parse(HTTParty.get(Rails.application.config.auth[:api_url] + "/create_dtu/#{cwis}.json").body)
+    end
+  rescue Exception => e
+    nil
+  end
+
 end

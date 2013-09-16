@@ -92,6 +92,16 @@ class User < ActiveRecord::Base
     bookmark && bookmark.tags.order(:name)
   end
 
+  def bookmark(document_or_document_id)
+    document_id = case
+                  when document_or_document_id.is_a?(String)
+                    document_or_document_id
+                  else
+                    document_or_document_id.id
+                  end
+    bookmarks.find_or_create_by_document_id(document_id)
+  end
+
   def name
     if impersonating == 'anonymous'
       'Anonymous'
