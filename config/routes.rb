@@ -72,6 +72,8 @@ Toshokan::Application.routes.draw do
     delete '/search_history/forget/:id', :to => 'search_history#forget', :as => 'forget_search'
     delete '/search_history/forget_alert/:id', :to => 'search_history#forget_alert', :as => 'forget_search_alert'
     delete '/search_history/:id', :to => 'search_history#destroy', :as => 'delete_search_history'
+    get '/search_history/saved', :to => 'search_history#saved', :as => 'saved_searches'
+    get '/search_history/alerted', :to => 'search_history#alerted', :as => 'alerted_searches'
   end
 
   match '/:locale' => 'catalog#index'

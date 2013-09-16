@@ -133,6 +133,9 @@ en:
         confirm: "Are you sure you want to delete the alert '%{title}?'"
     search_history:
       error: "Search history could not be updated, please try again later"
+      saved_filter: "Show saved"
+      alerted_filter: "Show alerted"
+      all_filter: "Show all"
     mylibrary:
       delete: "Delete"
       edit: "Edit"

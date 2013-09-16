@@ -1,10 +1,32 @@
-.table {
-  td, tr {
-    .action {
-      text-align: center;
+
+.mylibrary {
+  
+  .table {
+    td, tr {
+      .action {
+        text-align: center;
+      }
+      .icon-remove {
+        color: $dtu_red;
+      }
     }
-    .icon-remove {
-      color: $dtu_red;
+  }
+
+  .search-history-tools {
+
+    margin: 20px 0;
+
+    .nav { 
+      li + li:before{
+        content: " | ";        
+        margin: 0 10px;
+      }
+      li {
+        display: inline;
+        a {
+          display: inline-block;
+        }
+      }
     }
   }
 }

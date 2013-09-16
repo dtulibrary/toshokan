@@ -5,6 +5,19 @@
 
   <h3><%=t('toshokan.mylibrary.menu.search_history')%></h3>
 
+  <div class="search-history-tools">
+    <div class="pull-left">
+      <%= paginate @searches, :theme => 'blacklight_compact' %>
+    </div> 
+    <div class="pull-right filter-history">    
+      <ul class="nav">      
+        <li class="<%= 'disabled' if current_page? search_history_path %>"><%= link_to t('toshokan.search_history.all_filter'), search_history_path %></li>
+        <li class="<%= 'disabled' if current_page? saved_searches_path %>"><%= link_to t('toshokan.search_history.saved_filter'), saved_searches_path %></li>
+        <li class="<%= 'disabled' if current_page? alerted_searches_path %>"><%= link_to t('toshokan.search_history.alerted_filter'), alerted_searches_path %></li>
+      </ul>
+    </div>
+  </div>
+
   <%- if @searches.blank? -%>
     <div class="alert alert-info"><%=t('blacklight.search_history.no_history')%></div>
   <%- else -%>
@@ -15,8 +28,8 @@
           <!--<th>Title</th>-->
           <th>Search</th>
           <th>Issued</th>
-<!--           <th class="action"><%= t('toshokan.mylibrary.info') %></th>
- -->          <th class="action"><%= t('toshokan.mylibrary.save') %></th>
+          <!--<th class="action"><%= t('toshokan.mylibrary.info') %></th>-->
+          <th class="action"><%= t('toshokan.mylibrary.save') %></th>
           <th class="action"><%= t('toshokan.mylibrary.alert') %></th> 
           <th class="action"><%= t('toshokan.mylibrary.delete') %></th>
         </tr>
@@ -26,12 +39,12 @@
           <!--<td><em class="muted">Add title</em></td>-->
           <td class="search_history"><%= link_to_previous_search(search.query_params) %></td>
           <td><%= l search.created_at, format: :long %></td>
-<!--           <td class="action">
+          <!--<td class="action">
             <%= link_to "#", method: :show , :title => "t('toshokan.mylibrary.info')" do %>
               <i class="icon-info-sign"></i>
             <% end %>
-          </td>
- -->          <td class="action">
+          </td>-->          
+          <td class="action">
             <%= link_to forget_search_path(search.id), :method => :delete, 
               :title => t('toshokan.mylibrary.saved'), :class => if !search.saved then "hidden" end,
                :remote => true do %>       
@@ -63,6 +76,8 @@
         </tr>
       <% end %>
     </table>
+
+    <%= paginate @searches, :theme => 'bootstrap' %>
   <%- end -%>
  
 </div>

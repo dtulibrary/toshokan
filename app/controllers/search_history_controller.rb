@@ -1,8 +1,26 @@
-class SearchHistoryController < ApplicationController
+class SearchHistoryController < ApplicationController  
   before_filter :require_search_history_ability
 
+  def initialize
+    Search.paginates_per 10    
+    super
+  end
+
   def index
-    @searches = current_user.searches.order("created_at DESC")
+    @searches = current_user.searches.order("created_at DESC").page params[:page]
+    paginate
+  end
+
+  def saved
+    @searches = current_user.searches.where(saved: true).order("created_at DESC").page params[:page]
+    paginate
+    render 'search_history/index'
+  end
+
+  def alerted
+    @searches = current_user.searches.where(alerted: true).order("created_at DESC").page params[:page]
+    paginate
+    render 'search_history/index'
   end
 
   def save
@@ -124,4 +142,21 @@ class SearchHistoryController < ApplicationController
     not_found unless can? :view, :search_history
   end
 
+  # define/alias methods so that pagination (on a Solr result) on search page can be reused
+  def paginate
+    @response = @searches
+
+    class <<@response
+      alias :rows :length      
+      alias :total :total_count
+
+      def docs
+        self        
+      end
+
+      def start
+        (current_page - 1) * length 
+      end
+    end
+  end
 end
