@@ -21,21 +21,17 @@ task :import_from_dlib, [:filename] => :environment do |t, args|
     end
 
     puts '  - saved searches'
-    data[:saved_searches].each do |search|
-    end
+    create_saved_searches(user, data[:saved_searches], true, false)
 
     puts '  - search alerts'
-    data[:search_alerts].each do |alert|
-    end
+    create_saved_searches(user, data[:search_alerts], false, true)
 
     puts '  - journal alerts'
-    data[:journal_alerts].each do |alert|
+    data[:journal_alerts].each do |alert|      
+      create_journal_alert(user, alert, solr)
     end
-
   end
-
 end
-
 
 def load_user_data(path)
   data = YAML.load(File.open(path)).with_indifferent_access
@@ -98,4 +94,64 @@ def get_document_for_record(record, solr)
     puts "    #{record[:type]}: #{record[:id]} => NOT FOUND"
   end
   document
+end
+
+def create_saved_searches(user, searches, saved, alerted)
+
+  # note: Issued date in search history will be import date
+  searches.each do |search|        
+
+    unless disallowed_syntax(search["query"])
+  
+      params = {}
+      params[:q] = transform_syntax(search["query"])
+
+      if search["type"] != "all"
+        # remove plural from type (articles => article)
+        params[:f] = {"format" => [search["type"].chop]}.with_indifferent_access
+      end
+
+      # hack to not set default search_field keyword      
+      params[:search_field] = "all_fields"
+
+      new_search = Search.create(:query_params => params)      
+      if search.has_key?("title") && search["title"] != search["query"]
+        new_search.title = search["title"]
+      end
+      
+      # TODO should controller, action and locale be set?
+      new_search.saved = saved
+      new_search.alerted = alerted
+      user.searches << new_search
+    end
+  end    
+  user.save
+  puts "    imported #{searches.length} searches"
+end
+
+def disallowed_syntax(query)
+  /^id:\d*/ =~ query
+end
+
+def transform_syntax(query)
+  # remove exact match
+  query.gsub!(/(journaltitle|jo)=/, '\1:')
+
+  query
+end
+
+def create_journal_alert(user, dlib_alert, solr)
+  
+  result = solr.toshokan(
+    :params => {:q => dlib_alert.to_s, :fl => 'title_ts', :fq => 'format:journal', :rows => 1, :facet => false})
+
+  if result['response']['numFound'] > 0 
+    params = {:query => dlib_alert, :name => result['response']['docs'].first['title_ts'].first}
+    alert = Alert.new(params, user)
+    if !alert.save
+      puts "Could not save alert #{alert.inspect}"
+    end
+  else
+    puts "ISSN #{dlib_alert} could not be found in index"
+  end
 end
