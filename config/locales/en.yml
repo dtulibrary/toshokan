@@ -141,6 +141,7 @@ en:
         tags: "Manage tags"
         search_history: "Search history"
         journals: "Alerted journals"
+        my_publications: My publications
     users:
       username: "Username"
       cwis: "CWIS"

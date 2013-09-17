@@ -56,6 +56,13 @@
             <% end %>
           </li>
         <% end %>
+        <% if can? :view, :my_publications %>
+          <li>
+            <%= link_to 'http://digitallibrary.dtu.dk/mypublications', :target => '_blank' do %>
+              <i class="icon-file-text"></i> <%= t 'toshokan.mylibrary.menu.my_publications' %>
+            <% end %>
+          </li>
+        <% end %>
         <li class="divider"></li>
         <% if can? :switch, User %>
           <li>

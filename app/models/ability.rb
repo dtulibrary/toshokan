@@ -23,6 +23,7 @@ class Ability
       # Logged in using DTU CAS
       can :search, :dtu
       can :view, :cant_find_forms
+      can :view, :my_publications if user.employee?
     when user.public?
       # Logged in from outside DTU Campus
       can :search, :public
