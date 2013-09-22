@@ -221,6 +221,7 @@ class OrdersController < ApplicationController
       @order.order_events << OrderEvent.new(:name => :delivery_requested)
       @order.delivery_status = :initiated
       @order.save!
+      session.delete :order
 
       DocDel.delay.request_delivery @order, order_delivery_url(@order.uuid) if DocDel.enabled?
       SendIt.delay.send_confirmation_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
