@@ -29,18 +29,6 @@ Scenario: Filtering by "All" should list bookmarked documents
      And I filter by tag "All"
     Then I should see "A cohomology theory for colored tangles"
 
-# Scenario: Bookmark constraints should be displayed in search history
-#     When I bookmark the document with title "A cohomology theory for colored tangles"
-#      And I filter by tag "All"
-#      And I go to the search history
-#     Then I should see a constraint with name "Bookmarks:" and value "All"
-
-# Scenario: Bookmark constraints should be displayed in search history
-#     When I bookmark the document with title "A cohomology theory for colored tangles"
-#      And I filter by tag "Untagged"
-#      And I go to the search history
-#     Then I should see a constraint with name "Bookmarks:" and value "Untagged"
-
 Scenario: Bookmark constraints should be displayed above the search result
     When I bookmark the document with title "A cohomology theory for colored tangles"
      And I filter by tag "All"     
@@ -82,12 +70,6 @@ Scenario: Removing tag from only tagged document and filtering by same tag
     And I remove the tag "some tag" from the first document
     And I reload the page
    Then I should see 0 documents
-
-# Scenario: Tag constraints should be displayed in search history
-#    When I add a tag "some tag" to the document with title "A cohomology theory for colored tangles"
-#     And I filter by tag "some tag"
-#     And I go to the search history
-#    Then I should see a constraint with name "Tagged:" and value "some tag"
 
 Scenario: Tag constraints should be displayed above the search result
    When I add a tag "some tag" to the document with title "A cohomology theory for colored tangles"
