@@ -5,7 +5,7 @@ module RenderConstraintsHelper
 
   def search_params localized_params = params
     result = {}.with_indifferent_access
-    session[:search].each do |k,v|
+    (session[:search] || {}).each do |k,v|
       result[k] = params.has_key?(k) ? params[k] : v
     end
     result
