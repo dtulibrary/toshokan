@@ -27,7 +27,13 @@ module References
       when :author
         names = BibTeX::Names.new
         values.each do |v|
-          names.add(BibTeX::Name.parse(v))
+          begin
+            names.add(BibTeX::Name.parse(v))
+          rescue Exception => e 
+            Rails.logger.info "Could not parse name when converting to BibTeX: #{e.inspect}"
+            # Name is not well formed, we'll just add it as is
+            names.add(BibTeX::Name.new({:last => v}))
+          end 
         end
         bib_doc.add(field.to_sym, names)
       when :abstract
