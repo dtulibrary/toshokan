@@ -95,7 +95,7 @@ class SolrDocument
         @context_object.referent.set_metadata("au", value.first)
       when :volume
         @context_object.referent.set_metadata("volume", value.first)
-      when :issue
+      when :number
         @context_object.referent.set_metadata("issue", value.first)
       when :pages
         if value.first.to_s =~ /^\s*(\d+)\s*-+\s*(\d+)\s*$/
