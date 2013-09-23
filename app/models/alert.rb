@@ -19,7 +19,7 @@ class Alert
     end
     @alert_type ||= "journal"
     @frequency ||= 7
-    @user_id = user.id unless user.nil?
+    @user_id = user.identifier unless user.nil?
   end
 
   def save
@@ -53,7 +53,7 @@ class Alert
   def self.all(user, type)
     alerts = nil
     begin
-      response = self.get("/alerts", :query => {"user_id" => user.id, "alert_type" => type})
+      response = self.get("/alerts", :query => {"user_id" => user.identifier, "alert_type" => type})
       if response.success?
         alerts = []
         ActiveSupport::JSON.decode(response.body).each do |a|        
@@ -88,7 +88,7 @@ class Alert
 
   def self.find(user, query_params = {})
     begin
-      query_params[:user_id] = user.id
+      query_params[:user_id] = user.identifier
       response = self.get("/alerts/find", :query => {:find => query_params})
       if response.success?
         alert = Alert.new(ActiveSupport::JSON.decode(response.body)["alert"])
