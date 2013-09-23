@@ -99,9 +99,13 @@ en:
       tags: "Manage tags"
       suggest_login:
         title: "Log in?"
-        benefits: "Logging in gives access to personalized features such as bookmarks, tags, and alerts."
+        benefits_material_html: Everybody can log in. If you are a <b>DTU student or employee</b>,
+          we strongly recommend you to do so, in order to obtain free access to licensed resources.
+        benefits_personalization: Regardless who you are, choosing to log in enables personalised
+          features such as bookmarks, tags and alerts.
         question: "Would you like to log in?"
-        yes_please: "Yes please."
+        yes_please_non_dtu_html: Yes please &mdash; I'm not from DTU. 
+        yes_please_dtu_html: Yes please &mdash; I'm from DTU.
         no_thanks: "No thanks."
     tags:
       all: "All"

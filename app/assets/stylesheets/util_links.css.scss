@@ -11,9 +11,11 @@
   }
   
   #login-popover {
-    color: $dtu_grey;
+    color: $dtu_grey_dark;
     a {
-      color: $dtu_red;
+      color: $white;
+      font-size: 0.9em;
+      display: block;
     }
     .arrow {
       left: 60%;

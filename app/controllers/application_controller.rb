@@ -52,6 +52,11 @@ class ApplicationController < ActionController::Base
       redirect_to url_for(params.except!(:stay_anonymous))
     end
 
+    if params[:public]
+      cookies[:shunt_hint] = 'public'
+      redirect_to url_for(params.except!(:public))
+    end
+
     if should_force_authentication
       force_authentication
     end

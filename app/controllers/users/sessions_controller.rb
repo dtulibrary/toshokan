@@ -9,6 +9,12 @@ class Users::SessionsController < ApplicationController
     end
 
     case
+    when params[:only_dtu]
+      logger.info "Overriding shunt cookie with value from params. Using DTU CAS"
+      session[:only_dtu] = true
+    when params[:public]
+      logger.info "Overriding shunt cookie with value from params. Using local user"
+      session[:public] = true
     when cookies[:shunt] == 'dtu'
       logger.info "Shunt cookie set to 'dtu'. Shunting directly to DTU CAS"
       session[:only_dtu] = true
@@ -36,6 +42,8 @@ class Users::SessionsController < ApplicationController
       request.env['omniauth.strategy'].options[:login_url] = '/login?only=dtu&template=dtu_user'
     when session.delete(:prefer_dtu)
       request.env['omniauth.strategy'].options[:login_url] = '/login?template=dtu_user'
+    when session.delete(:public)
+      request.env['omniauth.strategy'].options[:login_url] = '/login?template=local_user'
     else
       request.env['omniauth.strategy'].options[:login_url] = '/login'
     end

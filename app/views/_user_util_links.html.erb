@@ -14,11 +14,13 @@
         <div class="popover-inner">
           <h3 class="popover-title"><%= t('toshokan.header_links.suggest_login.title') %></h3>
           <div class="popover-content">
-            <p><%= t('toshokan.header_links.suggest_login.benefits') %></p>
+            <p><%= t('toshokan.header_links.suggest_login.benefits_material_html') %></p>
+            <p><%= t('toshokan.header_links.suggest_login.benefits_personalization') %></p>
             <p><%= t('toshokan.header_links.suggest_login.question') %></p>
             <p>
-              <%= link_to t('toshokan.header_links.suggest_login.yes_please'), new_user_session_path(:url => request.fullpath), :class => 'btn btn-mini' %>
-              <%= link_to t('toshokan.header_links.suggest_login.no_thanks'), url_for({:stay_anonymous => true}), :class => 'pull-right btn btn-mini'%>
+              <%= link_to t('toshokan.header_links.suggest_login.yes_please_dtu_html'), new_user_session_path(:url => request.fullpath, :only_dtu => true), :class => 'btn btn-primary' %>
+              <%= link_to t('toshokan.header_links.suggest_login.yes_please_non_dtu_html'), new_user_session_path(:url => request.fullpath, :public => true), :class => 'btn btn-primary' %>
+              <%= link_to t('toshokan.header_links.suggest_login.no_thanks'), url_for({:stay_anonymous => true}), :class => 'btn btn-primary', :style => 'display: block'%>
             </p>
           </div>
         </div>
