@@ -189,7 +189,9 @@ class OrdersController < ApplicationController
     end
   end
 
-  # Will be called by DIBS both as callbackurl and accepturl so this must be idempotent.
+  # Will be called by DIBS upon entering valid credit card info. 
+  # Will be redirected to by DIBS when user goes to receipt.
+  # Will be redirected to for non-payment orders.
   def receipt
     session.delete :order
 
@@ -261,7 +263,13 @@ class OrdersController < ApplicationController
 
         # Only cancel in DIBS if order was paid for
         PayIt::Dibs.delay.cancel @order if @order.payment_status
-        SendIt.delay.send_cancellation_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
+
+        if @order.user.dtu? && @order.user.employee?
+          # Send mail to delivery support 
+          SendIt.delay.send_failed_automatic_request_mail @order
+        else
+          SendIt.delay.send_cancellation_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
+        end
       end
 
       head :ok

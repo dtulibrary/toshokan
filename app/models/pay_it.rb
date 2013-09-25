@@ -77,15 +77,24 @@ module PayIt
         }
 
         Rails.logger.debug "DIBS responded with HTTP #{response.code}:\n#{response.body}"
-        if response.code == 200 && response.body =~ /status=ACCEPTED/
+
+        if response.code == 200
           order.order_events << OrderEvent.new(:name => 'payment_cancelled')
           order.save!
+          case response.body
+          when /status=ACCEPTED/
+            log.info "Successfully canced payment in DIBS for order id = #{order.dibs_order_id}."
+          when /status=DECLINED/
+            log.info "Payment could not be cancelled in DIBS for order id = #{order.dibs_order_id} - see DIBS reason code:\n#{response.body}"
+          else
+            log.info "Missing or unknown status from DIBS returned on cancel request:\n#{response.body}"
+          end
         else
           Rails.logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}"
           raise 'Error cancelling order in DIBS'
         end
       rescue
-        Rails.logger.error "Error capturing payment from DIBS for DIBS order id = #{order.dibs_order_id}."
+        Rails.logger.error "Error cancelling payment from DIBS for DIBS order id = #{order.dibs_order_id}."
         raise
       end
     end
