@@ -5,7 +5,7 @@ gem 'rails', '3.2.14'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 2.3.0'
 gem 'blacklight', '4.1'
 gem 'unicode'
 gem 'bootstrap-sass', '~> 2.2.0'
