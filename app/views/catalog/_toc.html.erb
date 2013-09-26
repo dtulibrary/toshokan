@@ -1,0 +1,45 @@
+<% if show_feature?(:toc) && !document[:toc].blank? %>
+  <hr/>
+    <div class="row">
+      <div class="span3">
+        <ul>
+          <% document[:toc].group_by{|t| t[:year]}.each do |year, issues| %>
+            <li>
+              <%= year %>
+              <ul>
+                <% issues.group_by{|i| i[:vol] }.each do |vol, issues| %>
+                  <li>
+                    <span>Volume <%= vol %>:</span>
+                    <% issues.sort{|i,j| i[:issue] <=> j[:issue]}.each do |issue| %>
+                      <% if @current_issue && issue[:key] == @current_issue[:key] %>
+                        <%= content_tag :span, issue[:issue], :class => 'toc_issue selected' %>
+                      <% else %>
+                        <%= link_to issue[:issue], params.merge(:key => issue[:key]), :class => 'toc_issue' %>
+                      <% end %>
+                      <% end %>
+                  </li>
+                  <% end %>
+              </ul>
+            </li>
+          <% end %>
+        <ul>
+      </div>
+      <div class="span6">
+        <% if @current_issue %>
+          <div class="pull-right">
+            <%= link_to_if @previous_issue, 'Previous issue', params.merge(:key => @previous_issue.try(:fetch, :key)) %>
+            |
+            <%= link_to_if @next_issue, 'Next issue', params.merge(:key => @next_issue.try(:fetch, :key)) %>
+          </div>
+          <h5><%= "#{@current_issue[:year]}, Volume #{@current_issue[:vol]}, Issue #{@current_issue[:issue]}" %></h5>
+          <ul>
+          <% @current_issue_articles[:response][:docs].each do |article| %>
+            <li>
+              <%= link_to article[:title_ts].first, "/catalog/#{article[:cluster_id_ss].first}" %> — <em><%= article[:author_ts].join('; ') %></em> — p. <%= article[:journal_page_ssf].first %>
+            </li>
+          <% end %>
+          </ul>
+        <% end %>
+      </div>
+    </div>
+<% end %>

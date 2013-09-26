@@ -9,6 +9,7 @@
         <useCompoundFile>false</useCompoundFile>
         <ramBufferSizeMB>1024</ramBufferSizeMB>
         <maxBufferedDocs>1073741824</maxBufferedDocs>
+        <maxIndexingThreads>12</maxIndexingThreads>
         <unlockOnStartup>false</unlockOnStartup>
         <reopenReaders>true</reopenReaders>
         <maxFieldLength>32768</maxFieldLength>
@@ -53,7 +54,7 @@
     <query>
         <queryResultWindowSize>30</queryResultWindowSize>
         <useColdSearcher>false</useColdSearcher>
-        <maxWarmingSearchers>1</maxWarmingSearchers>
+        <maxWarmingSearchers>2</maxWarmingSearchers>
 
         <filterCache class="solr.FastLRUCache"
                      size="20480"
@@ -71,9 +72,9 @@
                        autowarmCount="1024"/>
 
         <fieldValueCache class="solr.FastLRUCache"
-                         size="2048"
-                         autowarmCount="1024"
-                         showItems="32"/>
+                         size="10"
+                         autowarmCount="10"
+                         showItems="10"/>
 
         <listener event="firstSearcher" class="solr.QuerySenderListener"/>
         <listener event="newSearcher" class="solr.QuerySenderListener"/>
@@ -83,7 +84,7 @@
         <lst name="defaults">
             <str name="echoParams">explicit</str>
             <str name="fl">*</str>
-            <str name="sort">issn asc,year desc,vol desc,issue asc</str>
+            <str name="sort">pub_date_tsort desc,journal_vol_sort desc,journal_issue_sort asc</str>
         </lst>
     </requestHandler>
 

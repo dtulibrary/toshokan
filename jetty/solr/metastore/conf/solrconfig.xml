@@ -9,6 +9,7 @@
         <useCompoundFile>false</useCompoundFile>
         <ramBufferSizeMB>2048</ramBufferSizeMB>
         <maxBufferedDocs>1073741824</maxBufferedDocs>
+        <maxIndexingThreads>12</maxIndexingThreads>
         <unlockOnStartup>false</unlockOnStartup>
         <reopenReaders>true</reopenReaders>
         <maxFieldLength>32768</maxFieldLength>
@@ -53,7 +54,7 @@
     <query>
         <queryResultWindowSize>30</queryResultWindowSize>
         <useColdSearcher>false</useColdSearcher>
-        <maxWarmingSearchers>1</maxWarmingSearchers>
+        <maxWarmingSearchers>2</maxWarmingSearchers>
 
         <filterCache class="solr.FastLRUCache"
                      size="204800"

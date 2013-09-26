@@ -8,6 +8,7 @@ class CatalogController < ApplicationController
 
   include TagsHelper
   include AdvancedSearchHelper
+  include TocHelper
   include CatalogHelper
 
   before_filter :detect_search_mode
@@ -269,8 +270,21 @@ class CatalogController < ApplicationController
     params.merge! advanced_query_params if advanced_search?
 
     # override super#show to add access filters to request
+    # and to add toc data to response
     begin
-      @response, @document = get_solr_response_for_doc_id nil, add_access_filter   
+      @response, @document = get_solr_response_for_doc_id nil, add_access_filter
+
+      if show_feature?(:toc)
+        if @document[:toc] = toc_for(@document, add_access_filter)
+          current_toc_key = (params[:key] || @document[:toc].first[:key])
+          if current_issue_index = @document[:toc].find_index{ |t| t[:key] == current_toc_key }
+            @current_issue          = @document[:toc][current_issue_index]
+            @next_issue             = @document[:toc][current_issue_index-1] if current_issue_index > 0
+            @previous_issue         = @document[:toc][current_issue_index+1] if current_issue_index < @document[:toc].size-1
+            @current_issue_articles = articles_for(@current_issue[:key], add_access_filter)
+          end
+        end
+      end
 
       respond_to do |format|
         format.html {setup_next_and_previous_documents}
