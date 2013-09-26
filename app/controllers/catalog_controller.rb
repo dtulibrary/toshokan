@@ -244,8 +244,13 @@ class CatalogController < ApplicationController
   def index
     @display_format = current_display_format + '_index'
     orig_q = params[:q];
-    
+
     params.merge! advanced_query_params if advanced_search?
+
+    if params[:range] && params[:range][:pub_date_tsort]
+      params[:range][:pub_date_tsort] = normalize_year_range(params[:range][:pub_date_tsort])
+    end
+
     super
 
     # Restore params
