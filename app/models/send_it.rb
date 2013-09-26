@@ -183,18 +183,16 @@ class SendIt
   def self.send_failed_automatic_request_mail order
     local_params = {
       :to => SendIt.delivery_support_mail,
-      :document => {},
+      :open_url => {},
       :user => {
-        :name => order.user.to_s,
+        :name => "%s (CWIS: %s)" % [order.user.to_s, order.user.user_data['dtu']['matrikel_id']],
         :email => order.user.email
       }
     }
 
-    order.document.keys.reject {|k,v| k == :open_url}.each do |field|
-      # XXX: Remove field name suffixes from solr field names, so "title_ts" is replaced by "title"
-      field_name = field.to_s.gsub /_[^_]*$/, ''
-      local_params[:document][field_name] = order.document[field].join('; ') unless order.document[field].blank?
-    end
+    order.open_url.scan /([^&=]+)=([^&]*)/ do |k,v|
+      local_params[:open_url][k] = URI.unescape(v.gsub '+', '%20') if k.start_with? 'rft'
+    end 
 
     send_mail 'failed_automatic_requests', local_params
   end
