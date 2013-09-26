@@ -105,6 +105,7 @@ class SolrDocument
       when :year 
         @context_object.referent.set_metadata("date", value.first.to_s)        
       when :doi
+        @context_object.referent.set_metadata("doi", "#{value.first}")
         @context_object.referent.add_identifier("info:doi/#{value.first}")
       end
       if [:issn, :isbn].include?(field)
