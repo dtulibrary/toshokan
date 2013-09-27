@@ -155,9 +155,11 @@ en:
       cwis: "CWIS"
       email: "email"
       profile_picture_for: "Profile picture for"
-      switch:
+      find:
         search_label: "Search for user by first name, last name, email, cwis, initials, or any combination of these"
         search: "Search"
+        filter_label: "Filter users by role"
+      switch:
         become_user: 'Become user'
         become_anonymous: 'Become anonymous'
         with_walk_in: 'simulate walk in'

@@ -28,6 +28,24 @@ class User < ActiveRecord::Base
     user
   end
 
+  def self.search(query)
+    if query
+      logger.debug "Query: #{query}"
+
+      tokens = query.split
+      logger.debug "Tokens: #{tokens}"
+
+      query = where('1=1')
+      tokens.each do |token|
+        query = query.where('LOWER(user_data) LIKE ?', "%#{token.downcase}%")
+      end
+      logger.debug { "Found users with identifiers: #{query.map(&:identifier)}" }
+      query.order(:identifier)
+    else
+      where('1=0')
+    end
+  end
+
   def roles
     impersonating ? [] : super
   end

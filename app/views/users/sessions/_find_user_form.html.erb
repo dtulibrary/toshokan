@@ -1,7 +1,0 @@
-<%= form_tag do %>
-  <div class="alert alert-error" style="display:none"></div>
-  <%= label_tag :user_q, t('toshokan.users.switch.search_label') %>
-  <%= text_field_tag :user_q, '', :id => :user_q, :class => 'no-margin input-xxlarge' %>
-  <%= button_tag t('toshokan.users.switch.search'), :class => 'btn btn-primary' %>
-<% end %>
-<%= render :partial => 'user_list', :locals => { :users => found_users } %>

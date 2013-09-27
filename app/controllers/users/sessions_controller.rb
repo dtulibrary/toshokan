@@ -1,5 +1,6 @@
 class Users::SessionsController < ApplicationController
   skip_before_filter :authenticate, :only => [ :setup, :create, :new ]
+  before_filter :disable_header_searchbar, :only => [ :switch ]
 
   # #new is either called by the user clicking login or by the authorize before_filter
   # (due to forced shunting of dtu users).
@@ -127,22 +128,7 @@ class Users::SessionsController < ApplicationController
       render(:file => 'public/401', :format => :html, :status => :unauthorized) and return
     end
 
-    @found_users = []
-    q = params[:user_q]
-    if q
-      logger.debug "Query: #{q}"
-
-      tokens = q.split
-      logger.debug "Tokens: #{tokens}"
-
-      query  = User.where('identifier <> ?', current_user.identifier)
-      tokens.each do |token|
-        query = query.where('LOWER(user_data) LIKE ?', "%#{token.downcase}%")
-      end
-      @found_users = query.order(:identifier).limit(10)
-      logger.debug "Found users with identifiers: #{@found_users.map(&:identifier)}"
-    end
-
+    @found_users = User.search(params[:user_q]).where('identifier <> ?', current_user.identifier).page(params[:page] || 1).per(10)
   end
 
 

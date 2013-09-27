@@ -2,7 +2,7 @@
   <% users.each do |user| %>
   <tr class="found_user">
     <td>
-      <%= render :partial => 'user_info', :locals => { :user => user } %>
+      <%= render :partial => 'users/user_info', :locals => { :user => user } %>
     </td>
     <td>
       <%= button_to t('toshokan.users.switch.become_user'), { :action => :update, :identifier => user.identifier }, { :method => :put, :class => 'btn btn-primary' } %>
@@ -10,3 +10,4 @@
   </tr>
   <% end %>
 </table>
+<%= paginate users %>

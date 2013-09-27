@@ -1,9 +1,21 @@
 class UsersController < ApplicationController
   protect_from_forgery
 
+  before_filter :disable_header_searchbar
+
   def index
     if can? :update, User
-      @all_users = User.all :order => 'email asc'
+
+      @all_users = User.search(params[:user_q] || '').includes(:roles).order('email asc')
+      if params[:roles]
+        params[:roles].each do |r|
+          @all_users = @all_users.where(:id => User.select('users.id').joins(:roles).where(:roles => {:id => r }))
+        end
+      end
+      @all_users = @all_users
+        .page(params[:page] || 1)
+        .per(params[:all] ? 100000 : 10)
+
       @all_roles = Role.all :order => :name
     else
       deny_access and return

@@ -1,24 +1,31 @@
+<div class="well">
+  <%= render :partial => 'find_user_form', :locals => { :roles => @all_roles } %>
+</div>
+
 <% @all_users.each do |user| %>
-  <%= form_tag user_path(user.id), 
-      :method => :put, 
-      :action => :update, 
+  <%= form_tag user_path(user.id),
+      :method => :put,
+      :action => :update,
       :class => 'manage-users',
       'data-identifier' => user.identifier do %>
-    <% if user.image_url %>
-      <img src="<%= user.image_url %>" class="mugshot pull-right" alt="<%= t 'toshokan.users.profile_picture_for' %> <%= user.to_s %>">
-    <% end %>
-    <h4><%= user.to_s %></h4>
-    <small><%= t 'toshokan.users.cwis' %>: <%= user.identifier %>, <%= t 'toshokan.users.email' %>: <%= user.email %></small></h4>
-    <h5><%= t 'toshokan.manage_users.roles' %></h5>
+    <%= render :partial => 'user_info', :locals => {:user => user} %>
+    <div>
     <% @all_roles.each do |role| %>
       <div class="role-option">
-        <%= check_box_tag "#{role.id}", 1, user.roles.include?(role), 
-            :class => 'ajax update-role', 
-            'data-role_id' => role.id, 
+        <%= check_box_tag "#{role.id}", 1, user.roles.include?(role),
+            :class => 'ajax update-role',
+            'data-role_id' => role.id,
             :id => "#{user.id}_#{role.id}" %>
         <%= label_tag "#{user.id}_#{role.id}", t('toshokan.roles.' + role.code) %>
       </div>
     <% end %>
+    </div>
     <%= submit_tag t('toshokan.manage_users.save'), :class => 'save-user' %>
   <% end %>
+<% end %>
+<%= paginate @all_users %>
+<% if @all_users.total_pages > 1 %>
+  <div class="pagination">
+  <%= link_to "Show all #{@all_users.total_count}", params.merge({:all => '✓'}) %>
+  </div>
 <% end %>

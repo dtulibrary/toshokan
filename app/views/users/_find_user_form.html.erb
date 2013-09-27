@@ -1,0 +1,19 @@
+<%= form_tag({}, {:method => :get}) do %>
+  <div class="alert alert-error" style="display:none"></div>
+  <%= label_tag :user_q, t('toshokan.users.find.search_label') %>
+  <%= text_field_tag :user_q, params[:user_q], :id => :user_q, :class => 'no-margin input-xxlarge' %>
+  <%= button_tag t('toshokan.users.find.search'), :class => 'btn btn-primary' %>
+
+  <% if defined? roles %>
+    <div>
+      <p></p>
+      <p><%= t('toshokan.users.find.filter_label') %></p>
+      <% roles.each do |role| %>
+        <div class="role-option">
+          <%= check_box_tag 'roles[]', role.id, (params[:roles] || []).include?(role.id.to_s), :id => "role_#{role.id}" %>
+          <%= label_tag "role_#{role.id}", t('toshokan.roles.' + role.code) %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
