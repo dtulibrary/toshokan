@@ -83,11 +83,11 @@ module PayIt
           order.save!
           case response.body
           when /status=ACCEPTED/
-            log.info "Successfully canced payment in DIBS for order id = #{order.dibs_order_id}."
+            Rails.logger.info "Successfully canced payment in DIBS for order id = #{order.dibs_order_id}."
           when /status=DECLINED/
-            log.info "Payment could not be cancelled in DIBS for order id = #{order.dibs_order_id} - see DIBS reason code:\n#{response.body}"
+            Rails.logger.info "Payment could not be cancelled in DIBS for order id = #{order.dibs_order_id} - see DIBS reason code:\n#{response.body}"
           else
-            log.info "Missing or unknown status from DIBS returned on cancel request:\n#{response.body}"
+            Rails.logger.info "Missing or unknown status from DIBS returned on cancel request:\n#{response.body}"
           end
         else
           Rails.logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}"
