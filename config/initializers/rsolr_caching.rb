@@ -12,12 +12,13 @@ module RSolr
       # Add cache header to request params
       params = request_context[:params]
       cache_key = params.hash.to_s
-      cache_header = Rails.cache.exist?(cache_key)? Hash["If-None-Match" => Rails.cache.read(cache_key)[:etag]] : {}
-      request_context[:headers] = cache_header
+      cache_entry = Rails.cache.read(cache_key)
+      request_context[:headers] = Hash["If-Modified-Since" => cache_entry[:last_modified]] if cache_entry
 
       h = http request_context[:uri], request_context[:proxy], request_context[:read_timeout], request_context[:open_timeout]
       request = setup_raw_request request_context
       request.body = request_context[:data] if request_context[:method] == :post and request_context[:data]
+
       begin
         cache_hit = false
         # execute request
@@ -28,10 +29,10 @@ module RSolr
         if     304 == response[:status]
           # read response from cache if code if 304 Not Modified
           cache_hit = true
-          response = Rails.cache.read(cache_key)[:response]
+          response = cache_entry[:response]
         elsif [200,302].include? response[:status]
           # store response in cache if successful
-          Rails.cache.write(cache_key, {:etag => response[:headers]["etag"].first, :response => response})
+          Rails.cache.write(cache_key, {:last_modified => response[:headers]["last-modified"].first, :etag => response[:headers]["etag"].first, :response => response})
         end
 
         # log request and statistics in json format
