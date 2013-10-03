@@ -37,7 +37,7 @@
     modal_string += '</div>';
 
     var modal = $(modal_string);
-    modal.find('.modal-header h3').text(element.attr('title') || 'Are you ABSOLUTELY sure?');
+    modal.find('.modal-header h3').text(element.attr('title') || 'Are you sure?');
 
     var body = modal.find('.modal-body');
 

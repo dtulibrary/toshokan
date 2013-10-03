@@ -44,26 +44,28 @@ class SearchHistoryController < ApplicationController
   end
 
   def alert    
-    alerted = true
+    success = true
+    search = Search.find_by_id(params[:id])
+    search.alerted = true    
+
     Search.transaction do
-      search = Search.find_by_id(params[:id])
-      search.alerted = true    
-      if !search.save
-        alerted = false
-        flash[:error] = t('toshokan.search_history.error')
-        Rails.logger.error "Couldn't save and alert search with id #{params[:id]}"
-      else
+      if search.save!
         alert = Alert.new({:alert_type => "search", :query => search.query_params, :reference => search.id}, current_user)
-        if !alert.save
-          alerted = false
+        success = alert.save
+        unless success          
           flash[:error] = t('toshokan.search_history.error')
           Rails.logger.error "Could not update alert for search with id #{params[:id]}"
           raise ActiveRecord::Rollback
-        end
+        end        
+      else
+        success = false
+        flash[:error] = t('toshokan.search_history.error')
+        Rails.logger.error "Couldn't save and alert search with id #{params[:id]}"
       end
     end  
+
     respond_to do |format|   
-      if alerted           
+      if success           
         format.js { head :no_content, status: 200 }        
       else
         format.json { render json: t('toshokan.search_history.error'), status: :internal_server_error }
@@ -73,26 +75,28 @@ class SearchHistoryController < ApplicationController
   end  
 
   def forget_alert
-    alert_deleted = true
+    success = true
+    search = Search.find_by_id(params[:id])
+    search.alerted = false      
+
     Search.transaction do
-      search = Search.find_by_id(params[:id])
-      search.alerted = false      
-      if !search.save
-        alert_deleted = false
-        flash[:error] = t('toshokan.search_history.error')
-        Rails.logger.error "Couldn't save search with id #{params[:id]}"
-      else
+      if search.save
         alert = Alert.find(current_user, {:reference => search.id})        
         if alert.nil? || !Alert.destroy(alert.id)
-          alert_deleted = false
+          success = false
           flash[:error] = t('toshokan.search_history.error')
           Rails.logger.error "Could not delete search alert"
           raise ActiveRecord::Rollback
         end
+      else
+        success = false
+        flash[:error] = t('toshokan.search_history.error')
+        Rails.logger.error "Couldn't save search with id #{params[:id]}"
       end    
     end
+
     respond_to do |format|
-      if alert_deleted
+      if success
         format.js { head :no_content, status: 200 }
       else
         format.json { render json: t('toshokan.search_history.error'), status: :internal_server_error }
@@ -101,33 +105,35 @@ class SearchHistoryController < ApplicationController
     end
   end
 
-  def destroy
-    destroyed = true
+  def destroy    
+    success = true
+    # remove user id from search
+    search = Search.find_by_id(params[:id])
+    alerted = search.alerted
+    search.user_id = nil
+    search.alerted = false
+    search.saved = false
+    
     Search.transaction do
-      # remove user id from search
-      search = Search.find_by_id(params[:id])
-      alerted = search.alerted
-      search.user_id = nil
-      search.alerted = false
-      search.saved = false
-      if !search.save
-        destroyed = false
-        flash[:error] = t('toshokan.search_history.error')
-        Rails.logger.error "Couldn't delete user from search with id #{params[:id]}"
-      else
+      if search.save
         if alerted
           alert = Alert.find(current_user, {:reference => search.id})        
           if alert.nil? || !Alert.destroy(alert.id)
-            destroyed = false
+            success = false
             flash[:error] = t('toshokan.search_history.error')
             Rails.logger.error "Could not delete search alert"
             raise ActiveRecord::Rollback
           end
         end
+      else
+        success = false
+        flash[:error] = t('toshokan.search_history.error')
+        Rails.logger.error "Couldn't delete user from search with id #{params[:id]}"
       end
     end    
+
     respond_to do |format|   
-      if destroyed           
+      if success           
         format.js { head :no_content, status: 200 }        
       else
         format.json { render json: t('toshokan.search_history.error'), status: :internal_server_error }

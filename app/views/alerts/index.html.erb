@@ -29,7 +29,7 @@
             <% end %>
           </td>
  -->          <td class="action delete">
-            <%= link_to alert_path(alert.id), method: :delete, data: { confirm: t('toshokan.alerts.journal.confirm', :title => alert.name)}, :remote => true do %>
+            <%= link_to alert_path(alert.id), method: :delete, data: { confirm: t('toshokan.alerts.journal.confirm', :title => alert.name)}, :remote => true, :title => t('toshokan.alerts.journal.delete') do %>
               <i class="icon-remove"></i>
             <% end %>
           </td>

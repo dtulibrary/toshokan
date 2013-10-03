@@ -131,6 +131,7 @@ en:
         add: "Alert me on new articles in this journal"
         none: "You have no saved journal alerts"
         confirm: "Are you sure you want to delete the alert '%{title}?'"
+        delete: "Delete alert"
     search_history:
       error: "Search history could not be updated, please try again later"
       saved_filter: "Show saved"
