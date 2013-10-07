@@ -6,14 +6,18 @@ class CatalogController < ApplicationController
 
   include Blacklight::Catalog
 
+  include CatalogHelper
+
   include TagsHelper
+  include LimitsHelper
   include AdvancedSearchHelper
   include TocHelper
-  include CatalogHelper
+  include SolrHelper
 
   before_filter :detect_search_mode
 
   self.solr_search_params_logic += [:add_tag_fq_to_solr]
+  self.solr_search_params_logic += [:add_limit_fq_to_solr]
   self.solr_search_params_logic += [:add_access_filter]
 
   configure_blacklight do |config|
@@ -38,6 +42,14 @@ class CatalogController < ApplicationController
         args[:label] ||= I18n.translate("toshokan.catalog.#{field_type.to_s}_field_labels.#{effective_field_name}")
         args.delete :field_name
         send "add_#{field_type.to_s}_field".to_sym, field_name.to_s, args, &block
+      end
+    end
+
+    # Add support for :limit field type. Used by ToC filters. See also LimitsHelper.
+    config[:limit_fields] = {}
+    class << config
+      def add_limit_field(limit, options={})
+        self[:limit_fields][limit] = options
       end
     end
 
@@ -105,7 +117,7 @@ class CatalogController < ApplicationController
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
     config.add_labeled_field :index, 'author_ts', :helper_method => :render_shortened_author_links
-    config.add_labeled_field :index, 'journal_title_ts', :helper_method => :render_journal_info_index
+    config.add_labeled_field :index, 'journal_title_ts', :format => ['article'], :helper_method => :render_journal_info_index
     config.add_labeled_field :index, 'pub_date_tis', :format => ['book']
     config.add_labeled_field :index, 'journal_page_ssf', :format => ['book']
     config.add_labeled_field :index, 'format', :helper_method => :render_type
@@ -124,7 +136,7 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'editor_ts', :helper_method => :render_author_links
     config.add_labeled_field :show, 'pub_date_tis', :format => ['book']
     config.add_labeled_field :show, 'journal_page_ssf', :format => ['book']
-    config.add_labeled_field :show, 'journal_title_ts', :helper_method => :render_journal_info_show
+    config.add_labeled_field :show, 'journal_title_ts', :format => ['article'], :helper_method => :render_journal_info_show
     config.add_labeled_field :show, 'conf_title_ts'
     config.add_labeled_field :show, 'format', :helper_method => :render_type
     config.add_labeled_field :show, 'publisher_ts'
@@ -207,21 +219,19 @@ class CatalogController < ApplicationController
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
-    config.add_labeled_field :sort, 'score desc, pub_date_tsort desc, title_sort asc', :field_name => 'relevance'
-    config.add_labeled_field :sort, 'pub_date_tsort desc, title_sort asc', :field_name => 'year'
+    config.add_labeled_field :sort, 'score desc, pub_date_tsort desc, journal_vol_sort asc, journal_issue_sort desc, journal_page_start_tsort asc, title_sort asc', :field_name => 'relevance'
+    config.add_labeled_field :sort, 'pub_date_tsort desc, journal_vol_sort asc, journal_issue_sort desc, journal_page_start_tsort asc, title_sort asc', :field_name => 'year'
     config.add_labeled_field :sort, 'author_sort asc, title_sort asc', :field_name => 'author'
     config.add_labeled_field :sort, 'title_sort asc, pub_date_tsort desc', :field_name => 'title'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
-  end
 
-  def add_access_filter solr_parameters = {}, user_parameters = {}
-    solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << 'access_ss:dtu' if can? :search, :dtu
-    solr_parameters[:fq] << 'access_ss:dtupub' if can? :search, :public
-    solr_parameters
+    config.add_labeled_field :limit, 'toc', :helper_method => :toc_limit_display_value, :fields => ['toc_key_s']
+    config.add_labeled_field :limit, 'author', :fields => ['author_ts', 'editor_ts']
+    config.add_labeled_field :limit, 'subject', :fields => ['keywords_ts']
+
   end
 
   def current_display_format
@@ -273,21 +283,10 @@ class CatalogController < ApplicationController
     # and to add toc data to response
     begin
       @response, @document = get_solr_response_for_doc_id nil, add_access_filter
-
-      if show_feature?(:toc)
-        if @document[:toc] = toc_for(@document, add_access_filter)
-          current_toc_key = (params[:key] || @document[:toc].first[:key])
-          if current_issue_index = @document[:toc].find_index{ |t| t[:key] == current_toc_key }
-            @current_issue          = @document[:toc][current_issue_index]
-            @next_issue             = @document[:toc][current_issue_index-1] if current_issue_index > 0
-            @previous_issue         = @document[:toc][current_issue_index+1] if current_issue_index < @document[:toc].size-1
-            @current_issue_articles = articles_for(@current_issue[:key], add_access_filter)
-          end
-        end
-      end
+      @toc = toc_for @document, params, add_access_filter
 
       respond_to do |format|
-        format.html {setup_next_and_previous_documents}
+        format.html {setup_next_and_previous_documents unless params[:ignore_search]}
 
         # Add all dynamically added (such as by document extensions)
         # export formats.
@@ -301,6 +300,11 @@ class CatalogController < ApplicationController
     rescue Blacklight::Exceptions::InvalidSolrID
       not_found
     end
+  end
+
+  def journal
+    id = journal_id_for_issns(params[:issn]) or not_found
+    redirect_to catalog_path :id => id, :key => params[:key], :ignore_search => params[:ignore_search]
   end
 
   # Definition of solr local parameter references that are not
@@ -348,10 +352,11 @@ class CatalogController < ApplicationController
     params_copy.delete(:s_id)        
 
     # don't save default 'empty' search
-    unless params[:q].blank? && params[:f].blank? && params[:t].blank?
+    unless params[:q].blank? && params[:f].blank? && params[:l].blank? && params[:t].blank?
 
       index = @search_history.collect { |search| search.query_params }.index(params_copy)
       if index.nil?
+
 
         new_search = Search.create(:query_params => params_copy)
         search_id = new_search.id

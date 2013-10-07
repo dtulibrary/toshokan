@@ -3,6 +3,8 @@ Toshokan::Application.routes.draw do
   scope "(:locale)", :locale => /en|da/ do
     Blacklight.add_routes(self)
 
+    get   '/journal',                 :to => 'catalog#journal',          :as => 'catalog_journal'
+
     match '/login',                   :to => 'users/sessions#new',       :as => 'new_user_session'
     match '/auth/:provider/callback', :to => 'users/sessions#create',    :as => 'create_user_session'
     match '/auth/:provider/setup',    :to => 'users/sessions#setup',     :as => 'setup_user_session'

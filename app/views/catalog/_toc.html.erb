@@ -1,45 +1,37 @@
-<% if show_feature?(:toc) && !document[:toc].blank? %>
+<% if show_feature?(:toc) && toc && !toc[:issues].blank? %>
   <hr/>
-    <div class="row">
-      <div class="span3">
-        <ul>
-          <% document[:toc].group_by{|t| t[:year]}.each do |year, issues| %>
-            <li>
-              <%= year %>
-              <ul>
-                <% issues.group_by{|i| i[:vol] }.each do |vol, issues| %>
-                  <li>
-                    <span>Volume <%= vol %>:</span>
-                    <% issues.sort{|i,j| i[:issue] <=> j[:issue]}.each do |issue| %>
-                      <% if @current_issue && issue[:key] == @current_issue[:key] %>
-                        <%= content_tag :span, issue[:issue], :class => 'toc_issue selected' %>
-                      <% else %>
-                        <%= link_to issue[:issue], params.merge(:key => issue[:key]), :class => 'toc_issue' %>
-                      <% end %>
-                      <% end %>
-                  </li>
-                  <% end %>
-              </ul>
-            </li>
-          <% end %>
-        <ul>
-      </div>
-      <div class="span6">
-        <% if @current_issue %>
-          <div class="pull-right">
-            <%= link_to_if @previous_issue, 'Previous issue', params.merge(:key => @previous_issue.try(:fetch, :key)) %>
-            |
-            <%= link_to_if @next_issue, 'Next issue', params.merge(:key => @next_issue.try(:fetch, :key)) %>
-          </div>
-          <h5><%= "#{@current_issue[:year]}, Volume #{@current_issue[:vol]}, Issue #{@current_issue[:issue]}" %></h5>
-          <ul>
-          <% @current_issue_articles[:response][:docs].each do |article| %>
-            <li>
-              <%= link_to article[:title_ts].first, "/catalog/#{article[:cluster_id_ss].first}" %> — <em><%= article[:author_ts].join('; ') %></em> — p. <%= article[:journal_page_ssf].first %>
-            </li>
-          <% end %>
-          </ul>
-        <% end %>
-      </div>
+  <div class="row toc">
+    <div class="span2">
+      <%= render_toc toc %>
+      <% if toc[:truncated] %>
+        <%= link_to t('toshokan.catalog.toc.show_full'), catalog_path(params.merge(:all => '✓')) %>
+      <% end %>
     </div>
+
+    <div class="span7">
+      <% if toc[:current_issue] %>
+        <p>
+          <div class="pull-right">
+            <%= link_to_if toc[:previous_issue], t('toshokan.catalog.toc.previous_issue'), params.merge(:key => toc[:previous_issue].try(:fetch, :key)) %>
+            |
+            <%= link_to_if toc[:next_issue], t('toshokan.catalog.toc.next_issue'), params.merge(:key => toc[:next_issue].try(:fetch, :key)) %>
+          </div>
+          <strong><%= link_to render_journal_info_for_issue(toc[:current_issue]), catalog_index_path(:l => {:toc => toc[:current_issue][:key]}), { :class => 'find_in_issue', :title => I18n.t('toshokan.catalog.find_in_issue'), :data => { :toggle => 'tooltip' } }  %></strong>
+        </p>
+        <ul class="toc_articles">
+          <% toc[:articles].each do |article| %>
+            <li class="toc_article" id="<%= article[:cluster_id_ss].first %>">
+              <%= link_to article[:title_ts].first, catalog_path(:id => article[:cluster_id_ss].first, :ignore_search => '✓'), { :title => article[:title_ts].first } %>
+              <% if article[:author_ts] %>
+                <br/><em><%= render_author_list article[:author_ts], { :suppress_link => true, :max_length => 1, :append => I18n.t('toshokan.catalog.shortened_list.et_al') } %></em>
+              <% end %>
+              <% if article[:journal_page_ssf] %>
+                <div class="pull-right"><%= article[:journal_page_ssf].first %></div>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  </div>
 <% end %>

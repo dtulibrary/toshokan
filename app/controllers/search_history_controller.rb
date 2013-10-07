@@ -1,4 +1,9 @@
-class SearchHistoryController < ApplicationController  
+class SearchHistoryController < ApplicationController
+  include Blacklight::Catalog
+  copy_blacklight_config_from(CatalogController)
+
+  include SolrHelper
+
   before_filter :require_search_history_ability
 
   def initialize

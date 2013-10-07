@@ -5,7 +5,8 @@ module RenderConstraintsHelper
 
   def search_params localized_params = params
     result = {}.with_indifferent_access
-    (session[:search] || {}).each do |k,v|
+
+    (!params[:ignore_search] && session[:search] || {}).each do |k,v|
       result[k] = params.has_key?(k) ? params[k] : v
     end
     result
@@ -13,7 +14,7 @@ module RenderConstraintsHelper
 
   def query_has_constraints?(localized_params = params)
     localized_params = search_params localized_params
-    super or !(localized_params[:t].blank?) or query_has_advanced_search_constraints?(localized_params)
+    super or !(localized_params[:t].blank?) or !(localized_params[:l].blank?) or query_has_advanced_search_constraints?(localized_params)
   end
 
   def query_has_advanced_search_constraints? localized_params = params
@@ -26,7 +27,17 @@ module RenderConstraintsHelper
 
   def render_constraints(localized_params = params)
     localized_params = search_params localized_params
-    (render_constraints_filters(localized_params) + render_constraints_tags(localized_params) + render_advanced_search_constraints(localized_params)).html_safe
+    (render_constraints_filters(localized_params) + render_constraints_limits(localized_params) + render_constraints_tags(localized_params) + render_advanced_search_constraints(localized_params)).html_safe
+  end
+
+  def render_constraints_limits(localized_params = params)
+    return "".html_safe unless localized_params[:l]
+    content = []
+    localized_params[:l].each_pair do |limit|
+      content << render_limit_element(limit.first, limit.second, localized_params)
+    end
+
+    return content.flatten.join("\n").html_safe
   end
 
   def render_constraints_tags(localized_params = params)
@@ -76,6 +87,13 @@ module RenderConstraintsHelper
 				  :classes => ["filter", "tag-" + tag_name, "tag-constraint"]
 				) + "\n"
     end
+  end
+
+  def render_limit_element(limit, value, localized_params)
+    options = {:classes => ['filter', 'limit', 'limit-' + limit.parameterize]}
+
+    options[:remove] = url_for(remove_limit_params(limit, localized_params))
+    render_constraint_element(limit_label(limit), limit_display_value(limit, value), options) + "\n"
   end
 
   def render_filter_element(facet, values, localized_params)

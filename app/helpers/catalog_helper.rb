@@ -3,7 +3,7 @@ module CatalogHelper
   include Blacklight::CatalogHelperBehavior
 
   def has_search_parameters? 
-    result = super || !params[:t].blank? || has_advanced_search_parameters?
+    result = super || !params[:t].blank? || !params[:l].blank? || has_advanced_search_parameters?
   end
 
   def has_advanced_search_parameters? local_params = params || {}
@@ -28,23 +28,46 @@ module CatalogHelper
   end
 
   def render_journal_info_show args
+    document = args[:document]
     render_journal_info_index args, :show
   end
 
   def render_journal_info_index args, format = :index
     document = args[:document]
     field = args[:field]
-    "#{document[field].first} &mdash; #{render_journal_info(document, format)}".html_safe
+    has_toc  = document[:toc_key_s] && document[:issn_ss]
+    (link_to_if(has_toc && show_feature?(:toc),
+        document[field].first,
+        catalog_journal_path(:issn => document[:issn_ss], :key => document[:toc_key_s], :ignore_search => '✓'),
+        { :title => I18n.t('toshokan.catalog.toc.open_table_of_contents'), :data => { :toggle => 'tooltip' } }) +
+      ' — ' +
+      link_to_if(has_toc,
+        render_journal_info(document, format),
+        catalog_index_path(:l => {
+            :toc => document[:toc_key_s] }),
+        { :title => I18n.t('toshokan.catalog.find_in_issue'), :data => { :toggle => 'tooltip' } }) +
+      render_journal_page_info(document, format)).html_safe
   end
 
   def render_journal_info document, format
+    render_journal_info_from_parts(
+      document['pub_date_tis']      && document['pub_date_tis'].first,
+      document['journal_vol_ssf']   && document['journal_vol_ssf'].first,
+      document['journal_issue_ssf'] && document['journal_issue_ssf'].first,
+      document['journal_part_ssf']  && document['journal_part_ssf'].first)
+  end
+
+  def render_journal_info_from_parts year, vol, issue, part
     info = []
-    info << document['pub_date_tis'].first if document['pub_date_tis']
-    info << "Volume #{document['journal_vol_ssf'].first}" if document['journal_vol_ssf']
-    info << "Part #{document['journal_part_ssf'].first}" if format == :show && document['journal_part_ssf']
-    info << "Issue #{document['journal_issue_ssf'].first}" if document['journal_issue_ssf']
-    info << "pp. #{document['journal_page_ssf'].first}" if document['journal_page_ssf']
+    info << year if year
+    info << "#{I18n.t('toshokan.catalog.toc.volume')} #{vol}" if vol
+    info << "#{I18n.t('toshokan.catalog.toc.issue')} #{issue}" if issue
+    info << part if part
     (info.join ', ').html_safe
+  end
+
+  def render_journal_page_info document, format
+    ", #{I18n.t('toshokan.catalog.toc.page')} #{document['journal_page_ssf'].first}" if document['journal_page_ssf']
   end
 
   def render_doi_link args
@@ -53,22 +76,36 @@ module CatalogHelper
   end
 
   def render_author_links args
-    authors = args[:document][args[:field]]
-    authors.collect { |author| link_to author, root_path(:q => author, :search_field => :author) }.join(content_tag(:span, ', ')).html_safe
+    render_author_list args[:document][args[:field]]
   end
 
   def render_shortened_author_links args
-    authors = args[:document][args[:field]]
-    if authors.length <= 3
-      render_author_links args
-    else
-      authors[0,3].collect { |author| link_to author, root_path(:q => author, :search_field => :author) }.push(I18n.t('toshokan.catalog.shortened_list.et_al')).join(content_tag(:span, ', ')).html_safe
+    render_author_list args[:document][args[:field]], { :max_length => 3, :append => I18n.t('toshokan.catalog.shortened_list.et_al') }
+  end
+
+  def render_author_list authors, options = {}
+    list = authors.map { |author| render_author_link author, options[:suppress_link] }
+
+    case
+    when !options[:max_length] && options[:append]
+      list << options[:append]
+    when options[:max_length] && list.size > options[:max_length]
+      list = list[0, options[:max_length]]
+      list << options[:append] if options[:append]
     end
+
+    list.join(options[:separator] || content_tag(:span, '; ')).html_safe
+  end
+
+  def render_author_link author, suppress_link = false
+    link_to_unless( suppress_link, author,
+      set_limit_params_and_redirect(:author, author),
+      { :title => I18n.t('toshokan.catalog.find_by_author', :author => author), :data => { :toggle => 'tooltip' } })
   end
 
   def render_keyword_links args
     keywords = args[:document][args[:field]]
-    keywords.collect { |keyword| link_to keyword, root_path(:q => "\"#{keyword}\"", :search_field => :subject) }.join(', ').html_safe
+    keywords.collect { |keyword| link_to keyword, set_limit_params_and_redirect(:subject, keyword), { :title => I18n.t('toshokan.catalog.find_about_subject', :subject => keyword), :data => { :toggle => 'tooltip' } } }.join(', ').html_safe
   end
 
   def render_affiliations args

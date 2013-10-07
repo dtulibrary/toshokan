@@ -10,3 +10,7 @@ Then /^the "(.*?)" facet should be constrained to "(.*?)"$/ do |name, value|
     should have_css('.filterValue', :text => value)
   end
 end
+
+Then /^I should see a limit constraint for "(.*?)"$/ do |name|
+  should have_css('.filterName', :text => "#{name}:")
+end

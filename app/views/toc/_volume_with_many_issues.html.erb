@@ -1,0 +1,6 @@
+<%= t('toshokan.catalog.toc.volume') %> <%= vol%>:
+<ul>
+  <% issues.each do |issue| %>
+    <li style="white-space: nowrap;"><%= render_toc_entry render_issue_info(issue[:issue], issue[:part]), issue[:key], current_issue %></li>
+  <% end %>
+</ul>

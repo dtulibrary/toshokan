@@ -288,6 +288,10 @@ en:
         relevance: 'relevance'
         title: 'title'
         year: 'year'
+      limit_field_labels:
+         toc: 'Articles in'
+         author: 'Author'
+         subject: 'Subject'
       shortened_list:
         show_all: 'Show all'
         hide_last: 'Hide last'
@@ -301,6 +305,17 @@ en:
         article: 'Journal article'
         book: 'Book'
         journal: 'Journal'
+      find_in_issue: 'Find all articles in same issue'
+      find_by_author: "Find other material by %{author}"
+      find_about_subject: "Find other material about %{subject}"
+      toc:
+        issue: 'Issue'
+        volume: 'Volume'
+        page: 'pp.'
+        open_table_of_contents: 'Open table of contents'
+        previous_issue: 'Previous issue'
+        next_issue: 'Next issue'
+        show_full: 'Show full table of contents'
     footer:
       about_dtu_library_html:
         <h5>About DTU Library</h5>
