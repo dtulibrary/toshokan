@@ -226,7 +226,7 @@ class OrdersController < ApplicationController
       @order.delivery_status = :initiated
       @order.save!
 
-      DocDel.delay.request_delivery @order, order_delivery_url(@order.uuid) if DocDel.enabled?
+      DocDel.delay.request_delivery @order, order_delivery_url(@order.uuid), :timecap_base => Time.now.iso8601 if DocDel.enabled?
       SendIt.delay.send_confirmation_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
     end
   end
@@ -266,7 +266,7 @@ class OrdersController < ApplicationController
 
         if @order.user.dtu? && @order.user.employee?
           # Send mail to delivery support 
-          SendIt.delay.send_failed_automatic_request_mail @order
+          SendIt.delay.send_failed_automatic_request_mail @order, params[:reason]
         else
           SendIt.delay.send_cancellation_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
         end

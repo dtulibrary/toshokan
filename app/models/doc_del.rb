@@ -3,7 +3,7 @@ require 'httparty'
 class DocDel
   include Configured
 
-  def self.request_delivery order, callback_url
+  def self.request_delivery order, callback_url, options = {}
     supplier_map = {
       :rd => :reprintsdesk,
       :dtu => :local_scan
@@ -18,6 +18,7 @@ class DocDel
     }
 
     params[:user_id] = order.user.identifier if order.user
+    params[:timecap_base] = options[:timecap_base] || Time.now.iso8601
 
     Rails.logger.info "Sending order to DocDel: URL = #{DocDel.url}, params = #{params}"
 

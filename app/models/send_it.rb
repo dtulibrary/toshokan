@@ -180,7 +180,7 @@ class SendIt
     send_request_assistance_mail :journal_article, user, params
   end
 
-  def self.send_failed_automatic_request_mail order
+  def self.send_failed_automatic_request_mail order, reason = nil
     local_params = {
       :to => SendIt.delivery_support_mail,
       :open_url => {},
@@ -189,6 +189,8 @@ class SendIt
         :email => order.user.email
       }
     }
+
+    local_params[:reason] = reason if reason
 
     order.open_url.scan /([^&=]+)=([^&]*)/ do |k,v|
       local_params[:open_url][k] = URI.unescape(v.gsub '+', '%20') if k.start_with? 'rft'
