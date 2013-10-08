@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/dtulibrary/metastore-test_data.git
-  revision: 11406b9d1a640a8cef97136ec6f2fb00593ef815
+  revision: 3e918a7fd3c34b9d07f5dac85f8b47a104560563
   specs:
     metastore-test_data (0.0.1)
       jettywrapper (~> 1.3.0)

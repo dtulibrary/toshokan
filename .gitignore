@@ -15,6 +15,7 @@ vendor/bundle
 /log/*.log
 /jetty/*.log
 /jetty/logs/*
+/jetty/solr-webapp/
 /tmp
 
 # Ignore index test files and generated config
