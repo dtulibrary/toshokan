@@ -111,7 +111,7 @@ class SolrDocument
       if [:issn, :isbn].include?(field)
         value.each do |v|
           @context_object.referent.set_metadata(field.to_s, v)
-          #@context_object.referent.add_identifier("urn:#{field}:#{v}")
+          @context_object.referent.add_identifier("urn:#{field}:#{v}")
         end
       end
     end

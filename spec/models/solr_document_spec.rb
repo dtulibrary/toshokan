@@ -51,8 +51,9 @@ describe "SolrDocument" do
 
     it "generates an OpenUrl" do
       openurl = OpenURL::ContextObject.new_from_kev(@art.export_as_openurl_ctx_kev)
-      openurl.referent.metadata["genre"].should match "article"
-      openurl.referent.identifier.should match /doi/
+      openurl.referent.metadata["genre"].should match "article"      
+      openurl.referent.identifiers.first.should match /issn/
+      openurl.referent.identifiers.last.should match /doi/
     end
   end
 
