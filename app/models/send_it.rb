@@ -192,6 +192,13 @@ class SendIt
 
     local_params[:reason] = reason if reason
 
+    supplier_map = {
+      :dtu => 'DTU Library - local scan',
+      :rd => 'Reprint Desk'
+    }
+
+    local_params[:failed_from] = supplier_map[order.supplier] if order.supplier
+
     order.open_url.scan /([^&=]+)=([^&]*)/ do |k,v|
       local_params[:open_url][k] = URI.unescape(v.gsub '+', '%20') if k.start_with? 'rft'
     end 
