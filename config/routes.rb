@@ -14,7 +14,6 @@ Toshokan::Application.routes.draw do
     match '/user/session'                 => 'users/sessions#update',    :as => 'user_session',         :via => :put
     match '/cover_images/:id',        :to => 'cover_images#show',        :as => 'cover_images'
     match '/advanced',                :to => 'catalog#advanced',         :as => 'advanced'
-    match '/come_back_later',         :to => 'come_back_later#index',    :as => 'come_back_later'
 
     # Show form for order creation
     match '/orders/',                 :to => 'orders#new',               :as => 'new_order',            :via => :get

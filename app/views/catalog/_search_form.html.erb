@@ -1,7 +1,7 @@
 <%= form_tag search_action_url, :method => :get, :class => 'search-query-form form-inline clearfix' do %>
   <%= search_as_hidden_fields(:omit_keys => [:q, :search_field, :qt, :page]).html_safe %> 
 
-  <% unless session[:advanced_search] || session[:come_back_later] %>
+  <% unless session[:advanced_search] %>
     <% unless search_fields.empty? %>
       <div class="pull-left hide">
         <label for="search_field" class="hide-text"><%= t('blacklight.search.form.search_field.label') %></label>

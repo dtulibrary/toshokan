@@ -4,9 +4,7 @@
       <div class="row">
         <div class="span12">
           <div class="pull-right">
-            <%- unless session[:come_back_later] -%>
-              <%= render :partial=>'/user_util_links' %>
-            <%- end -%>
+            <%= render :partial=>'/user_util_links' %>
           </div>
           <a href="http://www.dtu.dk/english"><%= image_tag 'dtu_text_header.png' %></a>
         </div>
@@ -42,9 +40,7 @@
     </div>
   </div>
 </div>
-<%- unless session[:come_back_later] -%>
-  <%= link_to '', feedback_path, :class => 'feedback', :'data-toggle' => 'modal', :'data-target' => '#feedback-modal' %>
-<%- end -%>
+<%= link_to '', feedback_path, :class => 'feedback', :'data-toggle' => 'modal', :'data-target' => '#feedback-modal' %>
 
 <div id="feedback-modal" class="modal fade">
   <div class="modal-header">
