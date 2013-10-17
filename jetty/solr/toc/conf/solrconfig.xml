@@ -57,19 +57,19 @@
         <maxWarmingSearchers>2</maxWarmingSearchers>
 
         <filterCache class="solr.FastLRUCache"
-                     size="20480"
-                     initialSize="10240"
-                     autowarmCount="10240"/>
+                     size="2000"
+                     initialSize="1000"
+                     autowarmCount="50"/>
 
         <queryResultCache class="solr.LRUCache"
-                          size="2048"
-                          initialSize="1024"
-                          autowarmCount="1024"/>
+                          size="200"
+                          initialSize="100"
+                          autowarmCount="50"/>
 
         <documentCache class="solr.LRUCache"
-                       size="2048"
-                       initialSize="1024"
-                       autowarmCount="1024"/>
+                       size="200"
+                       initialSize="100"
+                       autowarmCount="50"/>
 
         <fieldValueCache class="solr.FastLRUCache"
                          size="10"
