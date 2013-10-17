@@ -76,7 +76,6 @@ module Toshokan
 
     config.auth = {
       :stub => false,
-      :anonymous_only => false,
       :cas_url => '',
       :api_url => '',
       :ip => {

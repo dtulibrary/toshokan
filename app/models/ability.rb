@@ -9,11 +9,7 @@ class Ability
       can :tag, [Bookmark, Search]
       can :alert, [:journal, Search]
     else
-      if Rails.application.config.auth[:anonymous_only]
-        cannot :login, User
-      else
-        can :login, User
-      end
+      can :login, User
       can :search, :public
     end
 
