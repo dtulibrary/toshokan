@@ -42,12 +42,13 @@ Toshokan::Application.routes.draw do
     match '/test_payment',              :to => 'payment#credit_card',      :as => 'payment',            :via => :post
 
     # Temp fix since BL 4.1 removed the POST route to feedback (but BL's code still seems to rely on it).
-    match '/feedback',                :to => 'feedback#show',            :as => 'feedback',             :via => :post
+    match '/feedback',                  :to => 'feedback#show',            :as => 'feedback',             :via => :post
 
     # Resolver (populates can't find forms on zero hits)
     match '/resolve',                   :to => 'resolver#index',           :as => 'resolve',            :via => :get
 
     resources :assistance_requests, :only => [:index, :new, :create, :show]
+    get   '/cant_find/:genre',          :to => redirect('/assistance_requests/new?genre=%{genre}')
 
     resources :documents, :only => [] do
       resources :tags, :except => [:edit, :update]
