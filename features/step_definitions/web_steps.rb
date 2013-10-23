@@ -6,12 +6,19 @@ Then /^I should(?: not|n't) see "(.*?)"$/ do |content|
   page.should_not have_content content
 end
 
-Then /^I should((?:n't| not))? see the search page$/ do |negate|
+Then /^I should(n't| not)? see the search page$/ do |negate|
   page.has_css?('#search').should (negate ? be_false : be_true)
 end
 
-Then /^I should((?:n't| not))? see the "(.*?)" link$/ do |negate, value|
-  page.has_css?('a', :text => value).should (negate ? be_false : be_true)
+Then /^I should(n't| not)? see the "(.*?)" link$/ do |negate, expected|
+  found = false
+  # Test all links
+  page.body.scan /<a .*?>(.*?)<\/a>/ do |link, _|
+    # Trim spaces, normalize spaces, remove markup
+    actual = link.gsub(/^\s+|<.*?>|\s+$/, '').gsub(/\s+/, ' ')
+    found ||= actual == expected
+  end
+  found.should (negate ? be_false : be_true)
 end
 
 Then /^render the page$/ do

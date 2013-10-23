@@ -2,7 +2,16 @@
 
 h1, h2, h3, h4, h5, h6 {
   &.underlined {
-    border-bottom: 2px solid $dtu_red;
+    border-width: 0px 0px 2px 0px;
+    border-style: solid;
     padding-bottom: 0.25em;
   }
+}
+
+h1, h2, h3, h4 {
+  border-color: $dtu_red;
+}
+
+h5, h6 {
+  border-color: $dtu_gray;
 }

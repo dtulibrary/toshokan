@@ -14,6 +14,17 @@ Rails.application.config.to_prepare do
           'firstname' => 'Firstname',
           'lastname'  => 'Lastname',
           'user_type' => 'dtu_empl'
+        },
+        'address' => {
+          'line1'    => 'Address line 1',
+          'line2'    => 'Address line 2',
+          'line3'    => 'Address line 3',
+          'line4'    => 'Address line 4',
+          'line5'    => 'Address line 5',
+          'line6'    => 'Address line 6',
+          'zipcode'  => 'ZIP',
+          'cityname' => 'City',
+          'country'  => 'Country' 
         }
       }
     )

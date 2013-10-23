@@ -1,0 +1,10 @@
+<% if can? :request, :assistance -%>
+  <div class="span12 request-assistance-form">
+    <h4 class="underlined">Request librarian's assistance</h4>
+    <%= t 'toshokan.assistance_requests.new.text_html', 
+          :genre => t("toshokan.assistance_requests.genres.#{@genre}").downcase %>
+    <%= form_tag assistance_requests_path(:genre => @genre) do %>
+      <%= render @assistance_request.class.name.underscore %>
+    <% end %>
+  </div>
+<% end -%>

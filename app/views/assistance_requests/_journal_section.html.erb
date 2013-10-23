@@ -1,0 +1,37 @@
+<div class="section journal-section">
+  <h5 class="underlined">
+    <%= t 'toshokan.assistance_requests.forms.sections.journal.title' %>
+  </h5>
+  <% if params[:button] == 'create' -%>
+    <%= render :partial => 'submitted_values', 
+      :locals => { 
+        :field_prefix => 'journal_', 
+        :fields => ['title', 'issn', 'volume', 'issue', 'year', 'pages']
+      } %>
+  <% else -%>
+    <%= required_text_field 'assistance_request', 'journal_title',
+                            t('toshokan.assistance_requests.forms.field_labels.journal_title') %>
+    <%= optional_text_field 'assistance_request', 'journal_issn',
+                            t('toshokan.assistance_requests.forms.field_labels.journal_issn') %>
+    <div class="row-fluid">
+      <div class="span6">
+        <%= required_text_field 'assistance_request', 'journal_volume',
+                                t('toshokan.assistance_requests.forms.field_labels.journal_volume') %>
+      </div>
+      <div class="span6">
+        <%= required_text_field 'assistance_request', 'journal_issue',
+                                t('toshokan.assistance_requests.forms.field_labels.journal_issue') %>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span6">
+        <%= required_text_field 'assistance_request', 'journal_year',
+                                t('toshokan.assistance_requests.forms.field_labels.journal_year') %>
+      </div>
+      <div class="span6">
+        <%= required_text_field 'assistance_request', 'journal_pages',
+                                t('toshokan.assistance_requests.forms.field_labels.journal_pages') %>
+      </div>
+    </div>
+  <% end -%>
+</div>

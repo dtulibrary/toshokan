@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="span3">
+    <div class="section book-section">
+      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.book.title' %></h5>
+      <%= render_section_fields ['title', 'author', 'edition', 'doi', 'isbn', 'year'], @assistance_request, 'book_' %>
+    </div>
+  </div>
+  <div class="span3">
+    <div class="section publisher-section">
+      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.publisher.title' %></h5>
+      <%= render_section_fields ['publisher_name'], @assistance_request %>
+    </div>
+  </div>
+  <div class="span3">
+    <div class="section notes-section">
+      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.notes.title' %></h5>
+      <%= render_section_fields ['notes'], @assistance_request %>
+    </div>
+  </div>
+  <div class="span3">
+    <div class="section email-section">
+      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.email.title' %></h5>
+      <p><%= t 'toshokan.assistance_requests.forms.sections.email.text' %></p>
+      <% section_fields(['email'], @assistance_request) do |label, value| %>
+        <p class="indented"><tt><%= value %></tt></p>
+      <% end %>
+    </div>
+    <% if @assistance_request.pickup_location %>
+      <div class="section pickup-location-section">
+        <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.pickup_location.title' %></h5>
+        <p><%= t 'toshokan.assistance_requests.forms.sections.pickup_location.text' %></p>
+        <% section_fields(['pickup_location'], @assistance_request) do |label, value| %>
+          <p class="indented"><%= t "toshokan.assistance_requests.forms.sections.pickup_location.#{value}_html" %></p>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="section physical-location-section">
+        <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.physical_location.title' %></h5>
+        <p><%= t 'toshokan.assistance_requests.forms.sections.physical_location.text' %></p>
+        <% section_fields(['physical_location'], @assistance_request) do |label, value| %>
+          <p class="indented"><tt><%= render :partial => 'user_address', :locals => {:address => value} %></tt></p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

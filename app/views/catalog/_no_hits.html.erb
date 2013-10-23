@@ -1,25 +1,35 @@
-<div class="row" style="margin-bottom: 3em">
+<div class="row">
   <div class="span6">
     <h4><%= t 'toshokan.catalog.no_hits.title' %></h4>
-    <% if can? :view, :cant_find_forms -%>
-      <p><%= t 'toshokan.catalog.no_hits.can_see_forms.text' %></p>
-      <p><%= t 'toshokan.catalog.no_hits.can_see_forms.sub_text' %></p>
-    <% else %>
-      <p><%= t 'toshokan.catalog.no_hits.cant_see_forms.text' %></p>
-    <% end %>
+    <p style="margin-bottom: 3em"><%= t 'toshokan.catalog.no_hits.text' %></p>
+
+    <h5><%= t 'toshokan.catalog.no_hits.need_help.title' %></h5>
+    <p><%= t 'toshokan.catalog.no_hits.need_help.common' %></p>
+
+    <% if current_user.dtu? -%>
+      <p><%= t 'toshokan.catalog.no_hits.need_help.dtu' %></p>
+    <% else -%>
+      <p><%= t 'toshokan.catalog.no_hits.need_help.non_dtu_html' %></p>
+    <% end -%>
+
+    <% if can? :request, :assistance -%>
+      <div class="row-fluid">
+        <% [:journal_article, :conference_article, :book].each do |genre| -%>
+          <div class="span4">
+            <%= link_to t("toshokan.assistance_requests.genres.#{genre}"),
+                new_assistance_request_path(:genre => genre), :class => 'btn request-assistance-link' %>
+          </div>
+        <% end %>
+      </div>
+    <% end -%>
   </div>
-</div>
-<% [:journal_article, :conference_article, :book].each do |genre| %>
-  <div class="row">
-    <div class="span6">
-      <% if can? :view, :cant_find_forms -%>
-        <%= link_to t('toshokan.cant_find.contact_librarian',
-                      :genre => t("toshokan.cant_find.genres.#{genre}").downcase),
-            cant_find_path(:genre => genre), :class => 'btn btn-primary cant-find-link' %>
-      <% else %>
-        <%= link_to t("toshokan.cant_find.genres.#{genre}"),
-            cant_find_path(:genre => genre), :class => 'btn btn-primary cant-find-link' %>
+  <aside class="span3">
+    <h5>Search tips</h5>
+    <ul class="search-tips">
+      <% ['broaden_search', 'for_books_html', 
+          'for_articles_html', 'in_general_html', 'watch_tutorial_html', 'how_to_search_html'].each do |key| %>
+        <li><%= t "toshokan.catalog.no_hits.tips.#{key}" %></li>
       <% end %>
-    </div>
-  </div>
-<% end %>
+    </ul>
+  </aside>
+</div>

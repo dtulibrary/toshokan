@@ -1,0 +1,4 @@
+<% (1..6).collect {|i| address["line#{i}"]}.reject {|v| v.blank?}.each do |v| %>
+  <%= v %><br>
+<% end %>
+<%= address['zipcode'] %> <%= address['cityname'] %>

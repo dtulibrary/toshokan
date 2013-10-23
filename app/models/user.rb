@@ -59,11 +59,19 @@ class User < ActiveRecord::Base
   end
 
   def employee?
-    impersonating == 'employee' || (dtu? && user_data['dtu']['user_type'] == 'dtu_empl')
+    if impersonating
+      impersonating == 'employee'
+    else
+      dtu? && user_data['dtu']['user_type'] == 'dtu_empl'
+    end
   end
 
   def student?
-    impersonating == 'student' || (dtu? && user_data['dtu']['user_type'] == 'student')
+    if impersonating
+      impersonating == 'student'
+    else
+      dtu? && user_data['dtu']['user_type'] == 'student'
+    end
   end
 
   def authenticated?
@@ -148,5 +156,9 @@ class User < ActiveRecord::Base
 
   def to_s
     name
+  end
+
+  def address
+    user_data && user_data['address']
   end
 end

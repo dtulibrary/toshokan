@@ -1,0 +1,13 @@
+@import 'toshokan_defaults';
+
+.request-assistance-form {
+  margin-bottom: 3em;
+
+  input[type='text'], textarea {
+    @include input-block-level;
+  }
+
+  .section {
+    margin-bottom: 3em;
+  }
+}

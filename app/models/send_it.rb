@@ -71,6 +71,8 @@ class SendIt
   end
 
   def self.send_request_assistance_mail genre, user, params = {}
+    title = ''
+
     case genre
     when :journal_article
       type = 'article'
@@ -85,7 +87,6 @@ class SendIt
       type = 'article'
       title = params[:article_title]
     end
-
 
     local_params = {
       :to => SendIt.delivery_support_mail,
@@ -103,8 +104,13 @@ class SendIt
     local_params.deep_merge! proceedings_params params
     local_params.deep_merge! book_params params
     local_params.deep_merge! publisher_params params
-    local_params.deep_merge! pickup_location_params params
     local_params.deep_merge! notes_params params
+
+    if params[:pickup_location].blank?
+      local_params[:user].deep_merge! ({:address => user.address})
+    elsif user.address
+      local_params.deep_merge! pickup_location_params params
+    end
 
     send_mail 'library_assistance', local_params
   end
@@ -112,7 +118,7 @@ class SendIt
   def self.article_params params
     result = {}
     if params['article_title']
-      result[:article] = extract_params ['article_title', 'author', 'doi'], params
+      result[:article] = extract_params ['article_title', 'article_author', 'article_doi'], params
     end
     result
   end
@@ -120,7 +126,7 @@ class SendIt
   def self.journal_params params
     result = {}
     if params['journal_title']
-      result[:journal] = extract_params ['journal_title', 'issn', 'volume', 'issue', 'year', 'pages'], params
+      result[:journal] = extract_params ['journal_title', 'journal_issn', 'journal_volume', 'journal_issue', 'journal_year', 'journal_pages'], params
     end
     result
   end
@@ -128,7 +134,7 @@ class SendIt
   def self.conference_params params
     result = {}
     if params['conference_title']
-      result[:conference] = extract_params ['conference_title', 'location', 'number', 'year'], params
+      result[:conference] = extract_params ['conference_title', 'conference_location', 'conference_number', 'conference_year'], params
     end
     result
   end
@@ -136,7 +142,7 @@ class SendIt
   def self.proceedings_params params
     result = {}
     if params['proceedings_title']
-      result[:proceedings] = extract_params ['proceedings_title', 'isxn', 'pages'], params
+      result[:proceedings] = extract_params ['proceedings_title', 'proceedings_isxn', 'proceedings_pages'], params
     end
     result
   end
@@ -144,7 +150,7 @@ class SendIt
   def self.book_params params
     result = {}
     if params['book_title']
-      result[:book] = extract_params ['book_title', 'author', 'edition', 'doi', 'isbn'], params
+      result[:book] = extract_params ['book_title', 'book_author', 'book_edition', 'book_doi', 'book_isbn'], params
     end
     result
   end
@@ -170,8 +176,8 @@ class SendIt
     names.each do |name|
       # XXX: Rename form parameters like 'article_title' or 'publisher_name' to 'title' and 'name'
       #      since they will appear in an object-style hash. 
-      #      So 'article_title' will be in 'article' => { 'title' => ... }
-      result[name.gsub /.*_(title|name)/, '\1'] = params[name] unless params[name].blank?
+      #      So 'article_title' will be in 'article' => { 'title' => ... }, etc.
+      result[name.gsub /^(?:article|journal|proceedings|conference|book|publisher)_?(.*?)/, '\1'] = params[name] unless params[name].blank?
     end
     result
   end

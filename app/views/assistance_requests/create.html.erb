@@ -1,0 +1,16 @@
+<% if can? :request, :assistance -%>
+  <div class="span12 request-assistance-form">
+    <h4 class="underlined">Please confirm your assistance request</h4>
+    <p>
+      You are about to send a request for a librarian's assistance in finding the material
+      described by the form data you have posted (see below). 
+    </p>
+    <p>
+      Since this will invoke a manual
+      procedure, please review your request and if everything is correct, click "Confirm request" to send it.
+    </p>
+    <%= form_tag assistance_requests_path(:genre => @genre) do %>
+      <%= render @assistance_request.class.name.underscore %>
+    <% end %>
+  </div>
+<% end -%>

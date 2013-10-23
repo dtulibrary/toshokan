@@ -1,0 +1,19 @@
+<div class="section article-section">
+  <h5 class="underlined">
+    <%= t 'toshokan.assistance_requests.forms.sections.article.title' %>
+  </h5>
+  <% if params[:button] == 'create' -%>
+    <%= render :partial => 'submitted_values',
+      :locals => {
+        :field_prefix => 'article_',
+        :fields => ['title', 'author', 'doi']
+      } %>
+  <% else -%>
+    <%= required_text_field 'assistance_request', 'article_title',
+                            t('toshokan.assistance_requests.forms.field_labels.article_title') %>
+    <%= optional_text_field 'assistance_request', 'article_author',
+                            t('toshokan.assistance_requests.forms.field_labels.article_author') %>
+    <%= optional_text_field 'assistance_request', 'article_doi',
+                            t('toshokan.assistance_requests.forms.field_labels.article_doi') %>
+  <% end -%>
+</div>

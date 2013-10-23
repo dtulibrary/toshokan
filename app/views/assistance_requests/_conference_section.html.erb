@@ -1,0 +1,27 @@
+<div class="section conference-section">
+  <h5 class="underlined">
+    <%= t 'toshokan.assistance_requests.forms.sections.conference.title' %>
+  </h5>
+  <% if params[:button] == 'create' %>
+    <%= render :partial => 'submitted_values',
+      :locals => {
+        :field_prefix => 'conference_',
+        :fields => ['title', 'location', 'year', 'number']
+      } %>
+  <% else %>
+    <%= required_text_field 'assistance_request', 'conference_title',
+                            t('toshokan.assistance_requests.forms.field_labels.conference_title') %>
+    <%= optional_text_field 'assistance_request', 'conference_location',
+                            t('toshokan.assistance_requests.forms.field_labels.conference_location') %>
+    <div class="row-fluid">
+      <div class="span6">
+        <%= required_text_field 'assistance_request', 'conference_year', 
+                                t('toshokan.assistance_requests.forms.field_labels.conference_year') %>
+      </div>
+      <div class="span6">
+        <%= optional_text_field 'assistance_request', 'conference_number',
+                                t('toshokan.assistance_requests.forms.field_labels.conference_number') %>
+      </div>
+    </div>
+  <% end %>
+</div>

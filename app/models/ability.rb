@@ -5,9 +5,9 @@ class Ability
     # Apply abilities based on whether user is logged in or not
     if user.authenticated?
       can :logout, User
-      can :view, :search_history
-      can :tag, [Bookmark, Search]
-      can :alert, [:journal, Search]
+      can :view,   :search_history
+      can :tag,    [Bookmark, Search]
+      can :alert,  [:journal, Search]
     else
       can :login, User
       can :search, :public
@@ -17,12 +17,13 @@ class Ability
     case
     when user.dtu?
       # Logged in using DTU CAS
-      can :search, :dtu
-      can :view, :cant_find_forms if user.employee? || user.student?
-      can :view, :my_publications if user.employee?
+      can :search,  :dtu
+      can :request, :assistance      if user.employee? || user.student?
+      can :view,    :my_publications if user.employee?
+      can :select,  :pickup_location if user.student?
     when user.public?
       # Logged in from outside DTU Campus
-      can :search, :public
+      can :search,  :public
     end
 
     # Apply abilities based on user roles
@@ -39,22 +40,20 @@ class Ability
 
     # User can switch back if he is impersonating another user
     if user.impersonating?
-      can :switch_back, User
-      cannot :login, User
-      cannot :logout, User
+      can    :switch_back, User
+      cannot :login,       User
+      cannot :logout,      User
     end
 
 
     # Apply abilities for users on walk-in PC's
     if user.walk_in?
       cannot :search, :public
-      can :search, :dtu
-      can :ask, :librarian
+      can    :search, :dtu
+      can    :ask,    :librarian
     end
 
-    can :order, :article if user.orders_enabled?
-
-    cannot :use_feature, :cant_find_facet
+    can    :order,       :article if user.orders_enabled?
   end
 
 end

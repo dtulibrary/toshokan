@@ -7,11 +7,5 @@
   <% if can? :tag, Bookmark %>
     <%= render_tag_partials %>
   <% end %>
-  <% if can? :use_feature, :cant_find_facet %>
-    <% if can? :view, :cant_find_forms %>
-      <hr>
-      <%= render 'cant_find/search_menu_items' %>
-    <% end %>
-  <% end %>
   </div>
 </div>

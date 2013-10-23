@@ -1,0 +1,16 @@
+<div class="section notes-section">
+  <h5 class="underlined">
+    <%= t 'toshokan.assistance_requests.forms.sections.notes.title' %>
+  </h5>
+  <% if params[:button] == 'create' -%>
+    <%= render :partial => 'submitted_values',
+      :locals => {
+        :field_prefix => '',
+        :fields => ['notes']
+      } %>
+  <% else -%>
+    <%= optional_text_area 'assistance_request', 'notes', 
+                           t('toshokan.assistance_requests.forms.field_labels.notes'), 
+                           :rows => 5 %>
+  <% end -%>
+</div>

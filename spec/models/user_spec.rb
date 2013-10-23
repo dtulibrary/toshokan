@@ -71,6 +71,17 @@ describe User do
                       'lastname'  => 'Lastname',
                       'user_type' => 'dtu_empl',
                       'matrikel_id' => '1234',
+                    },
+                    'address' => {
+                      'line1'    => 'Address line 1',
+                      'line2'    => 'Address line 2',
+                      'line3'    => 'Address line 3',
+                      'line4'    => 'Address line 4',
+                      'line5'    => 'Address line 5',
+                      'line6'    => 'Address line 6',
+                      'zipcode'  => 'ZIP',
+                      'cityname' => 'City',
+                      'country'  => 'Country',
                    }}
       @provider = :cas
     end
@@ -86,6 +97,16 @@ describe User do
       user.email.should eq 'mail@example.com'
       user.name.should eq 'Firstname Lastname'
       user.cwis.should eq '1234'
+
+      user.address['line1'].should eq 'Address line 1'
+      user.address['line2'].should eq 'Address line 2'
+      user.address['line3'].should eq 'Address line 3'
+      user.address['line4'].should eq 'Address line 4'
+      user.address['line5'].should eq 'Address line 5'
+      user.address['line6'].should eq 'Address line 6'
+      user.address['zipcode'].should eq 'ZIP'
+      user.address['cityname'].should eq 'City'
+      user.address['country'].should eq 'Country'
     end
 
     it "should be updated correctly" do
@@ -109,6 +130,8 @@ describe User do
 
       user.email.should be_nil
       user.name.should eq 'Anonymous'
+
+      user.address.should be_nil
     end
   end
 end

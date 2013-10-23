@@ -225,6 +225,10 @@ class ApplicationController < ActionController::Base
     render(:file => 'public/401', :format => :html, :status => :unauthorized, :layout => nil)
   end
 
+  def bad_request
+    raise 'Bad request'
+  end
+
   # Render a 404 response. This should not be called directly. Instead you should call #not_found
   # which will raise exception, rescue it and call this render method
   def render_not_found(exception)

@@ -22,72 +22,6 @@ en:
     confirm: "Confirm"
     cancel: "Cancel"
     read_more: Read more
-    cant_find:
-      title: Unable to find the %{genre} you are looking for?
-      contact_librarian: Contact librarian to order %{genre}
-      about_service: Learn about DTU Library request service.
-      forms:
-        title: Need to contact a librarian?
-        confirm:
-          text: Library staff will try to locate the requested %{genre} for you and deliver it to you.
-          submit: Send request
-          cancel: "Don't send"
-        fields:
-          article_title: Article title
-          author: Author
-          book_title: Book title
-          conference_title: Conference title
-          doi: DOI
-          edition: Edition
-          isbn: ISBN
-          issn: ISSN
-          issue: Iss.
-          journal_title: Journal title
-          notes: Notes
-          number: No.
-          pages: Pages
-          proceedings_isxn: ISSN/ISBN
-          proceedings_title: Proceedings/series title
-          publisher_name: Publisher name
-          volume: Vol.
-          year: Year
-        sections:
-          article: The article
-          book: The book
-          conference: The conference
-          conference_article: The conference article
-          email:
-            title: Email
-            text: For dialog and for material that can be delivered electronically.
-          journal: The journal
-          notes: Notes
-          physical_location:
-            title: Physical location
-            text: For material that can only be delivered physically
-          pickup_location:
-            title: Pick-up location
-            text: For material that can only be delivered physically
-            ballerup_html: <b>Ballerup Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Diplom,+Lautrupvang,+Ballerup&hl=da&sll=55.59332,13.426026&sspn=2.318732,7.13562&oq=dtu+diplom&hq=DTU+Diplom,+Lautrupvang,+Ballerup&t=m&z=16">Map view</a>)<br>Lautrupvang 15<br>2750 Ballerup
-            lyngby_html: <b>Lyngby Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,+Anker+Engelunds+Vej,+Kongens+Lyngby&hl=da&sll=55.73121,12.396566&sspn=0.009025,0.027874&hq=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,&hnear=Anker+Engelunds+Vej,+2800+Kongens+Lyngby&t=m&z=16">Map view</a>)<br>Building 101<br>Anker Engelunds Vej 1<br>2800 Kgs. Lyngby
-          proceedings: Proceedings/series
-          publisher: The publisher
-        submit: Send request to a librarian
-      genres:
-        journal_article: Journal article
-        conference_article: Conference article
-        book: Book
-      tips:
-        title: Some tips from the DTU Library team
-        bibliotek_dk_html:
-          Try Danish national union catalogue <a target="_blank" href="http://www.bibliotek.dk/?lingo=eng">bibliotek.dk</a>
-        google_books_html:
-          Try <a target="_blank" href="http://books.google.com">Google Books</a>
-        google_scholar_html:
-          DTU Findit has a technical scientific focus; other search engines might have a different
-          and broader scope and may assist you. Try <a target="_blank" href="http://scholar.google.com">Google Scholar</a>.
-        refine_search_html:
-          Explore the full search power of DTU Findit. <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=13937966">See what DTU Findit covers</a>
-          and <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=14174533">learn about the powerful search syntax</a>.
     header_links:
       switch_user: "Switch user"
       switch_back: "Switch back"
@@ -229,12 +163,36 @@ en:
           download: Download full articles or order digital copies.
       no_hits:
         title: No results in DTU Findit
-        can_see_forms:
-          text: Try to refine or modify your search.
-          sub_text: For assistance from library staff use the forms below.
-        cant_see_forms:
-          text: Try to refine your search or get help and assistance locating what you are looking for
-        assistance: For assistance from library staff use the form below.
+        text: Your search did not find any records in DTU Findit.
+        tips:
+          broaden_search: Try broadening your search by removing one or more search terms, or by removing one 
+            or more search filters you may have applied. On the result page, you can refine the 
+            search result by using the search filters.
+          for_books_html: 
+            For books, the Danish union catalogue, <a href="http://www.bibliotek.dk" target="_blank">bibliotek.dk</a> or 
+            <a href="http://books.google.com" target="_blank">Google Books</a> might have what you are searching for.
+          for_articles_html:
+            For journal articles and conference articles, 
+            <a href="http://scholar.google.com" target="_blank">Google Scholar</a> might 
+            have what you are searching for.
+          in_general_html:
+            In general, DTU Findit has a technical scientific focus, and if what you are searching 
+            for does not fall into that category, you might find better results in the Danish
+            union catalogue,
+            <a href="http://www.bibliotek.dk" target="_blank">bibliotek.dk</a>;
+            <a href="http://scholar.google.com" target="_blank">Google Scholar</a>; or  
+            <a href="http://books.google.com" target="_blank">Google Books</a>.
+          how_to_search_html:
+            Learn about the <a href="http://api.libguides.com/api_box.php?iid=3935&bid=14174533" target="_blank">search syntax</a> used by DTU Findit.
+          watch_tutorial_html:
+            <a href="http://www.screencast.com/t/L3r4Djb85lS" target="_blank">View screencast</a> on how to search in DTU Findit.
+        need_help:
+          title: Need help from a librarian?
+          common: You can request assistance from a librarian, who will try to find
+            what you are looking for and send it to you.
+          dtu: "Please select the type of material you are looking for:"
+          non_dtu_html: <a href="http://www.dtic.dtu.dk/english/servicemenu/find/industry_public" target="_blank">Learn about the DTU Library Corporate service</a>
+          looking_for: I am looking for a
       display_formats:
         standard_index: 'Standard'
         standard_show: 'Standard'

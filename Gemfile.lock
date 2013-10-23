@@ -138,6 +138,11 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    factory_girl (4.2.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.2.1)
+      factory_girl (~> 4.2.0)
+      railties (>= 3.0.0)
     fastercsv (1.5.5)
     feature_flipper (1.3.0)
     ffi (1.1.5)
@@ -368,6 +373,7 @@ DEPENDENCIES
   debugger
   delayed_job_active_record
   eventmachine (~> 1.0.0.rc4)
+  factory_girl_rails (~> 4.0)
   feature_flipper
   findit_font!
   guard

@@ -10,10 +10,23 @@ input {
     @include focused_field;
   }
   
+  &.required {
+    background-color: #ff9;
+  }
 }
 
 textarea {
   &:focus {
     @include focused_field;
+  }
+  
+  &.required {
+    background-color: #ff9;
+  }
+}
+
+label {
+  &.error {
+    color: #f00;
   }
 }

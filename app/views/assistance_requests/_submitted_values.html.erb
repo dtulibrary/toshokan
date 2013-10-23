@@ -1,0 +1,12 @@
+<% params_with_values(fields.collect {|f| field_prefix + f}, params[:assistance_request]).each do |field, value| %>
+  <%= hidden_field_tag "assistance_request[#{field}]", params[:assistance_request][field] %>
+<% end %>
+
+<% unless params_blank? fields.collect {|f| field_prefix + f}, params[:assistance_request] %>
+  <dl>
+    <% params_with_values(fields.collect {|f,v| field_prefix + f}, params[:assistance_request]).each do |field, value| %>
+      <dt><%= t "toshokan.assistance_requests.forms.field_labels.#{field}" %></dt>
+      <dd><tt><%= value %></tt></dd>
+    <% end %>
+  </dl>
+<% end %>

@@ -3,13 +3,14 @@ require 'spec_helper'
 describe UsersController do
   before do 
     @user = login
+    @ability = FactoryGirl.build :ability
+    controller.stub(:current_ability).and_return @ability
   end
 
   describe '#index' do
     context 'with ability to update users' do
       before do
-        @ability = create_ability :update, User
-        controller.stub(:current_ability).and_return @ability
+        @ability.can :update, User
       end
 
       it 'assigns all users' do
@@ -45,8 +46,7 @@ describe UsersController do
 
     context 'with ability to update users' do
       before do
-        @ability = create_ability :update, User
-        controller.stub(:current_ability).and_return @ability
+        @ability.can :update, User
       end
 
       context 'updating an existing user' do
@@ -109,8 +109,7 @@ describe UsersController do
 
     context 'with ability to update users' do
       before do
-        @ability = create_ability :update, User
-        controller.stub(:current_ability).and_return @ability
+        @ability.can :update, User
       end
 
       context 'when referencing an existing user' do

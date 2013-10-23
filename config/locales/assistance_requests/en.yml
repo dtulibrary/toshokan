@@ -1,0 +1,73 @@
+en:
+  toshokan:
+    assistance_requests:
+      new:
+        title: Request librarian's assistance
+        text_html: 
+          '<p>
+            Please fill out the following form with as much information as you have 
+            about the %{genre} you are looking for
+          </p>
+          <p>
+            A librarian will be assigned to your request.
+          </p>
+          <p style="margin-bottom: 3em">
+            <a href="http://api.libguides.com/api_box.php?iid=3935&bid=15084512" target="_blank">Learn about the DTU Library request service</a>
+          </p>'
+      forms:
+        field_labels:
+          article_title: Title
+          article_author: Author
+          article_doi: DOI
+          journal_title: Title
+          journal_issn: ISSN
+          journal_volume: Volume
+          journal_issue: Issue
+          journal_year: Year
+          journal_pages: Pages
+          notes: Notes
+          proceedings_title: Title
+          proceedings_isxn: ISSN or ISBN
+          proceedings_pages: Pages
+          conference_title: Title
+          conference_location: Location
+          conference_year: Year
+          conference_number: Number
+          book_title: Title
+          book_author: Author
+          book_edition: Edition
+          book_doi: DOI
+          book_isbn: ISBN
+          book_year: Year
+          publisher_name: Publisher
+        sections:
+          article: 
+            title: Article
+          book: 
+            title: Book
+          conference: 
+            title: From conference
+          email:
+            title: Email
+            text: For dialog and for material that can be delivered in digital form.
+          journal: 
+            title: In journal
+          notes: 
+            title: Your notes
+          physical_location:
+            title: Physical location
+            text: For material that can only be delivered in physical form.
+          pickup_location:
+            title: Pick-up location
+            text: For material that can only be delivered in physical form.
+            ballerup_html: <b>Ballerup Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Diplom,+Lautrupvang,+Ballerup&hl=da&sll=55.59332,13.426026&sspn=2.318732,7.13562&oq=dtu+diplom&hq=DTU+Diplom,+Lautrupvang,+Ballerup&t=m&z=16">Map view</a>)<br>Lautrupvang 15<br>2750 Ballerup
+            lyngby_html: <b>Lyngby Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,+Anker+Engelunds+Vej,+Kongens+Lyngby&hl=da&sll=55.73121,12.396566&sspn=0.009025,0.027874&hq=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,&hnear=Anker+Engelunds+Vej,+2800+Kongens+Lyngby&t=m&z=16">Map view</a>)<br>Building 101<br>Anker Engelunds Vej 1<br>2800 Kgs. Lyngby 
+          proceedings: 
+            title: In proceedings/series
+          publisher: 
+            title: Published by
+      genres:
+        journal_article: Journal article
+        conference_article: Conference article
+        book: Book
+

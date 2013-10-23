@@ -1,7 +1,11 @@
 # encoding: utf-8
 
-Given /^I have(?: not|n't) logged in$/ do
+Given /^I(?:'ve not| have(?: not|n't)) logged in$/ do
   # For narrative purposes in features
+end
+
+Given /^I(?:'ve| have) logged in(.*)$/ do |m|
+  step %{I'm logged in#{m}}
 end
 
 Then /^the(?: current)? user should be "(.*?)"$/ do |username|
@@ -90,6 +94,8 @@ def log_in(user)
   within '#util-links' do
     click_link 'Log in'
   end
+
+  @current_user = user
 end
 
 Given /^I log out$/ do
@@ -110,5 +116,24 @@ end
 def mock_dtu_user(identifier, email='fake.email@example.com', user_type='employee', name="Firstname Lastname")
   names = name.split(" ", 2)
   user_type = 'dtu_empl' if user_type == 'employee'
-  mock_user(identifier, email, {:provider => 'dtu', :dtu => {:cwis => '1234', :firstname => names[0], :lastname => names[1], :user_type => user_type}})
+  mock_user(identifier, email, {
+    :provider => 'dtu', 
+    :dtu => {
+      :cwis => '1234', 
+      :firstname => names[0], 
+      :lastname => names[1], 
+      :user_type => user_type
+    },
+    :address => {
+      :line1 => 'Address line 1',
+      :line2 => 'Address line 2',
+      :line3 => 'Address line 3',
+      :line4 => 'Address line 4',
+      :line5 => 'Address line 5',
+      :line6 => 'Address line 6',
+      :zipcode => 'ZIP',
+      :cityname => 'City',
+      :country => 'Country'
+    }
+  })
 end
