@@ -63,7 +63,7 @@ module BlacklightHelper
 
   def render_search_bar
     local_params = params
-    local_params = session[:search].deep_merge(local_params) unless params[:ignore_search]
+    local_params = (session[:search] || {}).deep_merge(local_params) unless params[:ignore_search]
 
     render :partial => 'catalog/search_form', :locals => {:local_params => local_params}
   end

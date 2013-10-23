@@ -14,6 +14,24 @@ module CatalogHelper
     result
   end
 
+  def add_access_filter solr_parameters = {}, user_parameters = {}
+    solr_parameters[:fq] ||= []
+    solr_parameters[:fq] << 'access_ss:dtu' if can? :search, :dtu
+    solr_parameters[:fq] << 'access_ss:dtupub' if can? :search, :public
+    solr_parameters
+  end
+
+  def journal_document_for_issns(issns)
+    response = get_solr_response_for_field_values("issn_ss", issns, add_access_filter({:fq => ['format:journal'], :rows => 1})).first
+    documents = response[:response][:docs]
+    documents.first unless documents.empty?
+  end
+
+  def journal_id_for_issns(issns)
+    document = journal_document_for_issns(issns)
+    document[:cluster_id_ss] if document
+  end
+
   def snip_abstract args
     render_abstract_snippet args[:document]
   end
@@ -29,23 +47,28 @@ module CatalogHelper
 
   def render_journal_info_show args
     document = args[:document]
-    render_journal_info_index args, :show
+    field = args[:field]
+    has_toc  = document[:toc_key_s] && document[:issn_ss]
+    has_journal = document[:toc_key_s] && document[:toc_key_journal_exists] && document[:issn_ss]
+    (link_to_if(has_journal && show_feature?(:toc),
+        document[field].first,
+        catalog_journal_path(:issn => document[:issn_ss], :key => document[:toc_key_s], :ignore_search => '✓'),
+        { :title => I18n.t('toshokan.catalog.toc.open_table_of_contents'), :data => { :toggle => 'tooltip' } }) +
+      ' — ' +
+      link_to_toc_query_if(has_toc && !limit_in_params?(:toc), render_journal_info(document, :show), document[:toc_key_s], document[:journal_title_ts].first) +
+      render_journal_page_info(document, :show)).html_safe
   end
 
   def render_journal_info_index args, format = :index
     document = args[:document]
     field = args[:field]
     has_toc  = document[:toc_key_s] && document[:issn_ss]
-    (link_to_if(has_toc && show_feature?(:toc),
+    (link_to_if(false && has_toc && show_feature?(:toc),  # disabled until we have journal records for all toc-issns
         document[field].first,
         catalog_journal_path(:issn => document[:issn_ss], :key => document[:toc_key_s], :ignore_search => '✓'),
         { :title => I18n.t('toshokan.catalog.toc.open_table_of_contents'), :data => { :toggle => 'tooltip' } }) +
       ' — ' +
-      link_to_if(has_toc,
-        render_journal_info(document, format),
-        catalog_index_path(:l => {
-            :toc => document[:toc_key_s] }),
-        { :title => I18n.t('toshokan.catalog.find_in_issue'), :data => { :toggle => 'tooltip' } }) +
+      link_to_toc_query_if(has_toc && !limit_in_params?(:toc), render_journal_info(document, format), document[:toc_key_s], document[:journal_title_ts].first) +
       render_journal_page_info(document, format)).html_safe
   end
 

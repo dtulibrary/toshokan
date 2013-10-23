@@ -12,7 +12,6 @@ class CatalogController < ApplicationController
   include LimitsHelper
   include AdvancedSearchHelper
   include TocHelper
-  include SolrHelper
 
   before_filter :detect_search_mode
 

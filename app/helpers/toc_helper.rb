@@ -3,6 +3,13 @@ module TocHelper
 
   def toc_for document, params = {}, solr_params = {}
     return nil unless show_feature?(:toc)
+    
+    # FIXME: this is a hack until we have journal records for all toc-issns
+    if document[:format] == 'article' && document[:toc_key_s]      
+      issn, _, _, _ = dissect_toc_key(document[:toc_key_s])
+      document[:toc_key_journal_exists] = (journal_id_for_issns([issn]) != nil)
+    end
+
     return nil unless document[:format] == 'journal'
 
     # get facets counts per year to help us decide how much of the toc to display
@@ -42,7 +49,7 @@ module TocHelper
 
     # get toc entries from toc index
     query = "issn_ss:(#{document[:issn_ss].join(' OR ')})"
-    query << " AND pub_date_tis:(#{query_years.join(' OR ')})" unless query_years.empty? || params[:all]
+    query << " AND pub_date_tis:[#{query_years.last} TO #{query_years.first}]" unless query_years.empty? || params[:all]
     fl    = 'toc_key_s,issn_ss,pub_date_tis,journal_vol_ssf,journal_issue_ssf,journal_part_ssf'
     sort  = 'pub_date_tsort desc, journal_vol_sort desc, journal_issue_sort desc, journal_part_sort asc'
     toc_data = toc_solr.get('select', :params => solr_params.merge({ :q => query, :rows => count, :fl => fl, :sort => sort }))
@@ -56,7 +63,7 @@ module TocHelper
                                :issue => t[:journal_issue_ssf].try(:first).to_i,
                                :part  => t[:journal_part_ssf].try(:first),
                                :key   => t[:toc_key_s]}}
-      .reject{|t| t[:year] < 1000 || t[:vol] == 0}
+      .reject{|t| t[:year] < 1000}
       .sort_by{|t| [-t[:year], -t[:vol], -t[:issue], t[:part] || '']}
 
     toc = { :issues => issues, :truncated => truncated }
@@ -150,6 +157,17 @@ module TocHelper
 
   def render_journal_info_for_issue issue
     render_journal_info_from_parts(issue[:year], issue[:vol], issue[:issue] > 0 && issue[:issue], issue[:part])
+  end
+
+  def link_to_toc_query body, key, title
+    link_to_toc_query_if true, body, key, title
+  end
+
+  def link_to_toc_query_if condition, body, key, title
+    link_to_if(condition,
+      body,
+      set_limit_params_and_redirect(:toc, { :value => key, :title => title}),
+      { :title => I18n.t('toshokan.catalog.find_in_issue'), :data => { :toggle => 'tooltip' } })
   end
 
   def dissect_toc_key(key)

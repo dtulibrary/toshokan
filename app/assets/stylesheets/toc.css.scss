@@ -1,13 +1,14 @@
 .toc {
     .toc_articles {
         list-style-position: inside;
+        list-style-type: none;
         .toc_article {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            em {
-                margin-left: 1em;
-            }
+            padding: 0px 3px;
+            margin-bottom: 0.5ex;
+            border: 1px solid transparent;
         }
     }
 }

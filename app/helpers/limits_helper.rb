@@ -55,12 +55,14 @@ module LimitsHelper
       l_request_params.each_pair do |l|
         limit_name = l.first
         limit_value = l.second
+        if limit_value.is_a? Hash
+          limit_value = limit_value[:value]
+        end
 
         field_config = blacklight_config[:limit_fields][limit_name]
         solr_parameters[:fq] << field_config[:fields].map { |field|
           "#{field}:\"#{limit_value}\""
         }.join(' OR ')
-
       end
 
       solr_parameters
@@ -79,14 +81,23 @@ module LimitsHelper
   end
 
   def toc_limit_display_value(limit, value)
-    issn, year, vol, issue = dissect_toc_key(value)
-    title = journal_title_for_issns([issn])
+    if value.is_a? Hash
+      issn, year, vol, issue = dissect_toc_key(value[:value])
+      title = value[:title] || issn
+    else
+      issn, year, vol, issue = dissect_toc_key(value)
+      title = issn
+    end
     info = []
     info << "<em>#{title}</em>"
     info << year
-    info << "Volume #{vol}" if vol > 0
-    info << "Issue #{issue}"  if issue  > 0
+    info << "Volume #{vol}"   if vol > 0
+    info << "Issue #{issue}"  if issue > 0
     info.join(', ').html_safe
+  end
+
+  def limit_in_params?(limit)
+    params[:l] && params[:l][limit] != nil
   end
 
 end

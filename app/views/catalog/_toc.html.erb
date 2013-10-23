@@ -16,21 +16,26 @@
             |
             <%= link_to_if toc[:next_issue], t('toshokan.catalog.toc.next_issue'), params.merge(:key => toc[:next_issue].try(:fetch, :key)) %>
           </div>
-          <strong><%= link_to render_journal_info_for_issue(toc[:current_issue]), catalog_index_path(:l => {:toc => toc[:current_issue][:key]}), { :class => 'find_in_issue', :title => I18n.t('toshokan.catalog.find_in_issue'), :data => { :toggle => 'tooltip' } }  %></strong>
+          <strong><%= link_to_toc_query render_journal_info_for_issue(toc[:current_issue]), toc[:current_issue][:key], document[:journal_title_ts].first %></strong>
         </p>
-        <ul class="toc_articles">
-          <% toc[:articles].each do |article| %>
-            <li class="toc_article" id="<%= article[:cluster_id_ss].first %>">
-              <%= link_to article[:title_ts].first, catalog_path(:id => article[:cluster_id_ss].first, :ignore_search => '✓'), { :title => article[:title_ts].first } %>
-              <% if article[:author_ts] %>
-                <br/><em><%= render_author_list article[:author_ts], { :suppress_link => true, :max_length => 1, :append => I18n.t('toshokan.catalog.shortened_list.et_al') } %></em>
-              <% end %>
-              <% if article[:journal_page_ssf] %>
-                <div class="pull-right"><%= article[:journal_page_ssf].first %></div>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
+        <div class="well">
+          <ul class="toc_articles">
+            <% toc[:articles].each do |article| %>
+              <li class="toc_article" id="<%= article[:cluster_id_ss].first %>">
+                <%= link_to article[:title_ts].first, catalog_path(:id => article[:cluster_id_ss].first, :ignore_search => '✓'), { :title => article[:title_ts].first } %>
+                <% if article[:journal_page_ssf] || article[:author_ts] %>
+                  <br/>
+                <% end %>
+                <% if article[:journal_page_ssf] %>
+                  <div class="pull-right"><%= article[:journal_page_ssf].first %></div>
+                <% end %>
+                <% if article[:author_ts] %>
+                  <div class="pull-left"><em><%= render_author_list article[:author_ts], { :suppress_link => true, :max_length => 1, :append => I18n.t('toshokan.catalog.shortened_list.et_al') } %></em><div>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
       <% end %>
     </div>
   </div>
