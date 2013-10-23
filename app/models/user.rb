@@ -59,7 +59,7 @@ class User < ActiveRecord::Base
   end
 
   def employee?
-    if impersonating
+    if impersonating.is_a? String
       impersonating == 'employee'
     else
       dtu? && user_data['dtu']['user_type'] == 'dtu_empl'
@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
   end
 
   def student?
-    if impersonating
+    if impersonating.is_a? String
       impersonating == 'student'
     else
       dtu? && user_data['dtu']['user_type'] == 'student'
