@@ -74,5 +74,5 @@ end
 Then /^I should see the no hits page$/ do
   step %{I should see "No results in DTU Findit"}
   step %{I should see "Search tips"}
-  step %{I should see "Need help from a librarian?"}
+  step %{I should see "Need help from a DTU librarian?"}
 end

@@ -165,9 +165,10 @@ en:
         title: No results in DTU Findit
         text: Your search did not find any records in DTU Findit.
         tips:
-          broaden_search: Try broadening your search by removing one or more search terms, or by removing one 
+          broaden_search_html: Try broadening your search by removing one or more search terms, or by removing one 
             or more search filters you may have applied. On the result page, you can refine the 
-            search result by using the search filters.
+            search result by using the search filters. For more information on searching, check out the 
+            <a href="http://api.libguides.com/api_box.php?iid=3935&bid=14174533" target="_blank">General search help</a>.
           for_books_html: 
             For books, the Danish union catalogue, <a href="http://www.bibliotek.dk" target="_blank">bibliotek.dk</a> or 
             <a href="http://books.google.com" target="_blank">Google Books</a> might have what you are searching for.
@@ -187,8 +188,8 @@ en:
           watch_tutorial_html:
             <a href="http://www.screencast.com/t/L3r4Djb85lS" target="_blank">View screencast</a> on how to search in DTU Findit.
         need_help:
-          title: Need help from a librarian?
-          common: You can request assistance from a librarian, who will try to find
+          title: Need help from a DTU librarian?
+          common: You can request assistance from a DTU librarian, who will try to find
             what you are looking for and send it to you.
           dtu: "Please select the type of material you are looking for:"
           non_dtu_html: <a href="http://www.dtic.dtu.dk/english/servicemenu/find/industry_public" target="_blank">Learn about the DTU Library Corporate service</a>
