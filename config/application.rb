@@ -149,11 +149,11 @@ module Toshokan
     }
 
     config.google_analytics = {
-      :tracking_id => nil
+      :tracking_id => nil,
     }
 
     config.alert = {
-      :url => 'http://localhost'
+      :url => 'http://localhost',
     }
 
   end

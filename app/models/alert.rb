@@ -8,7 +8,7 @@ class Alert
 
   base_uri Alert.url
 
-  attr_accessor :frequency, :user_id, :alert_type, :name, :query, :created_at, :updated_at, :id, :reference  
+  attr_accessor :frequency, :user_id, :alert_type, :name, :query, :created_at, :updated_at, :id, :reference
   attr_accessible :alert_type, :query, :name
 
   validates_presence_of :query, :alert_type, :user_id
@@ -51,6 +51,7 @@ class Alert
   end
 
   def self.all(user, type)
+    return [] if Alert.test_mode
     alerts = nil
     begin
       response = self.get("/alerts", :query => {"user_id" => user.identifier, "alert_type" => type})
@@ -68,7 +69,8 @@ class Alert
     alerts
   end
 
-  def self.lookup(id)    
+  def self.lookup(id)
+    return nil if Alert.test_mode
     begin
       response = self.get("/alerts/#{id}")    
       if response.success?
@@ -87,6 +89,7 @@ class Alert
   end
 
   def self.find(user, query_params = {})
+    return nil if Alert.test_mode
     begin
       query_params[:user_id] = user.identifier
       response = self.get("/alerts/find", :query => {:find => query_params})
