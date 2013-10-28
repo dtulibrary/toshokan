@@ -26,7 +26,11 @@ module Configured
   def Configured.included base
     class << base
       def method_missing method, *args
-        Rails.application.config.send(self.name.split(/::/).last.gsub(/([a-z])([A-Z])/, '\1_\2').downcase)[method.to_s.gsub(/\?$/, '').to_sym]
+        if method.to_s.end_with? '='
+          Rails.application.config.send(self.name.split(/::/).last.gsub(/([a-z])([A-Z])/, '\1_\2').downcase)[method.to_s.gsub(/\=$/, '').to_sym] = args.first
+        else
+          Rails.application.config.send(self.name.split(/::/).last.gsub(/([a-z])([A-Z])/, '\1_\2').downcase)[method.to_s.gsub(/\?$/, '').to_sym]
+        end
       end
     end
   end
