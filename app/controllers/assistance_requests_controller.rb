@@ -32,7 +32,7 @@ class AssistanceRequestsController < ApplicationController
         head :bad_request
       end
     else
-      not_found
+      render 'need_to_login'
     end
   end
 

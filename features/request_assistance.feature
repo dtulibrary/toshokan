@@ -27,7 +27,7 @@ Examples:
 Scenario Outline: Non-DTU user views request assistance form
   Given <login_condition>
    When I go to the "request assistance" form
-   Then I should see "The page you were looking for doesn't exist."
+   Then I should see "Restricted Access (DTU only)"
 
 Examples:
   | login_condition                 |

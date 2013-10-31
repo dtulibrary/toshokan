@@ -1,6 +1,12 @@
 en:
   toshokan:
     assistance_requests:
+      need_to_login:
+        title: Restricted Access (DTU only)
+        text: 
+          You have requested a page that is only available to DTU employees and students.
+          If you have the proper credentials, please log in by clicking the log in button
+          in the upper right corner.
       new:
         title: Request librarian's assistance
         text_html: 

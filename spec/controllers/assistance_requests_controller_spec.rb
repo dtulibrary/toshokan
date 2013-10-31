@@ -94,9 +94,9 @@ describe AssistanceRequestsController do
     end
 
     context 'when user cannot request assistance' do
-      it 'returns an HTTP 404' do
+      it 'renders the "need_to_login" template' do
         get :new
-        response.response_code.should == 404
+        should render_template :need_to_login
       end
     end
   end
