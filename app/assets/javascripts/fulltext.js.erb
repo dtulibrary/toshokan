@@ -12,7 +12,7 @@
     var source = new EventSource(url);
     var count = 0;
     source.onmessage = function (event) {
-      layout_func(JSON.parse(event.data));
+      layout_func(JSON.parse(event.data), count);
       count++;
       if(count == 1) {
         stop_spinner_func.call();
@@ -68,7 +68,7 @@
   });
 
 
-  var layout_show = function (elm, data) {
+  var layout_show = function (elm, data, count) {
 
     if(data == null) {      
       elm.after($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
@@ -147,7 +147,11 @@
         item.find(".fulltext-action").before(holdings_item);
       }
 
-      header_elm.after(item);
+      if(count == 0) {
+        header_elm.after(item);
+      } else {
+        $(".fulltext-item").filter(":last").after(item);
+      }      
     }
   };
 
