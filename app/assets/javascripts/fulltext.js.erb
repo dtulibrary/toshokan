@@ -1,3 +1,4 @@
+//= require 'library_info'
 (function ($) {
 
   $.fn.addResource = function(openUrl, id, service_list, layout_func, stop_spinner_func) {
@@ -96,7 +97,8 @@
           "class"       : "fulltext btn btn-primary btn-small dropdown-toggle",
           "title"       : data.tool_tip,
           "href"        : "",
-          "data-toggle" : "dropdown",
+          "data-toggle" : "modal",
+          "data-target" : "#nal-locations-modal",
           "target"      : "_blank"  
         });
         link.append("<span class='caret'></span>");
@@ -104,11 +106,22 @@
         action = $("<div />", {"class" : "btn-group nal"});
         action.append(link);
 
-        var nal_list = $('<ul />', {"class" : "dropdown-menu"});        
-        for(var val in data.url_list) {        
-          nal_list.append($('<li />').append($('<a />', {text : val, "href" : data.url_list[val], "target" : "_blank"})));
-        }
-        action.append(nal_list);
+        $.each(data.urls, function () {
+          if (toshokan.libraries[this.id]) {
+            $('#nal-locations').append(
+              '<div class="nal-location" data-url="' + this.url + '">' + 
+              '  <input type="checkbox" name="' + this.id + '"> <span>' + this.label + '</span>' +
+              '</div>'
+            );
+          }
+        });
+
+        $('#nal-locations input').click(function () {
+          toshokan.nal.updateMap();
+        });
+        toshokan.nal.updateMap();
+        toshokan.nal.showMap();
+
         header_elm = other_header;
 
       } else {

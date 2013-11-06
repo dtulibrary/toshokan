@@ -273,6 +273,8 @@ class CatalogController < ApplicationController
   def show
     @disable_remove_filter = true
     @display_format = current_display_format + '_show'
+    
+    @show_nal_locations = true
 
     # TODO: Fix problem with nested queries getting dropped from search
     #       when using the next and previous links on show page

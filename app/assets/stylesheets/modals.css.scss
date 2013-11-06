@@ -7,6 +7,7 @@
 
   .close {
     color: #fff;
+    margin-top: -2px;
     @include opacity(70);
 
     &:hover {
@@ -20,3 +21,16 @@
 
 }
 
+#nal-locations-modal {
+  input {
+    margin: 0px 0.5em 0px 0px;
+  }
+
+  #nal-map {
+    height: 400px;
+
+    img {
+      max-width: none;
+    }
+  }
+}

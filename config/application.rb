@@ -156,5 +156,11 @@ module Toshokan
       :url => 'http://localhost',
     }
 
+    config.google = {
+      :maps_v3 => {
+        :api_key => '',
+      }
+    }
+
   end
 end

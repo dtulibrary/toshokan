@@ -26,6 +26,7 @@
         <div class="media-body">
           <%= render_document_partial @document, :show %>
         </div>
+        <%= render 'nal_modal' %>
         <%= render :partial => 'tags', :locals => { :document => @document} %>
       </div>
 

@@ -256,4 +256,15 @@ class ApplicationController < ActionController::Base
       @search_history = searches_from_history
     end
   end
+
+  def show_nal_locations?
+    @show_nal_locations
+  end
+
+  helper_method :show_nal_locations?
+
+  def show_nal_locations= value
+    @show_nal_locations = value
+  end
+
 end
