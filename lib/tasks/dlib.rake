@@ -8,27 +8,40 @@ task :import_from_dlib, [:filename] => :environment do |t, args|
   # connect to solr
   solr = RSolr.connect(Blacklight.solr_config)
 
-  # process data
-  dlib.each do |cwis, data| 
-    puts "Processing data for user #{cwis}"
+  ActiveRecord::Base.transaction do
+    begin
+      # process data
+      dlib.each do |cwis, data|
+        puts "Processing data for user #{cwis}"
 
-    user = ensure_user_exists(cwis)
-    next unless user
+        user = ensure_user_exists(cwis)
+        data[:exists] = (user != nil)
+        unless user
+          puts '  - user does not exist'
+          next
+        end
+
+        puts "  - #{user.email}, #{user.name}"
+
+        data['user'] = user.user_data
     
-    puts '  - bookmarks and tags'
-    data[:records].each do |record|
-      create_bookmark_and_tags(user, record, solr)
-    end
+        puts '  - bookmarks and tags'
+        data[:records].each do |record|
+          create_bookmark_and_tags(user, record, solr)
+        end
 
-    puts '  - saved searches'
-    create_saved_searches(user, data[:saved_searches], true, false)
+        puts '  - saved searches'
+        create_saved_searches(user, data[:saved_searches], true, false)
 
-    puts '  - search alerts'
-    create_saved_searches(user, data[:search_alerts], false, true)
+        puts '  - search alerts'
+        create_saved_searches(user, data[:search_alerts], false, true)
 
-    puts '  - journal alerts'
-    data[:journal_alerts].each do |alert|      
-      create_journal_alert(user, alert, solr)
+        puts '  - journal alerts'
+        data[:journal_alerts].each do |alert|
+          create_journal_alert(user, alert, solr)
+        end
+      end
+      File.open('result.yaml', 'w') { |f| f.write dlib.to_yaml }
     end
   end
 end
@@ -55,7 +68,8 @@ end
 
 def create_bookmark_and_tags(user, record, solr)
   document = get_document_for_record(record, solr)
-  
+  record[:found] = (document != nil)
+
   if document
     user.bookmark(document)
     record[:tags].each do |tag|
@@ -66,7 +80,7 @@ def create_bookmark_and_tags(user, record, solr)
 end
 
 def get_document_for_record(record, solr)
-  record_id = record[:id]
+  record_id = record[:id].downcase
   tags      = record[:tags]
   fq = case record[:type]
        when 'article'
@@ -143,15 +157,17 @@ end
 def create_journal_alert(user, dlib_alert, solr)
   
   result = solr.toshokan(
-    :params => {:q => dlib_alert.to_s, :fl => 'title_ts', :fq => 'format:journal', :rows => 1, :facet => false})
+    :params => {:q => dlib_alert['issn'].to_s, :fl => 'title_ts', :fq => 'format:journal', :fq => 'access_ss:dtu', :rows => 1, :facet => false})
 
   if result['response']['numFound'] > 0 
-    params = {:query => dlib_alert, :name => result['response']['docs'].first['title_ts'].first}
+    params = {:query => dlib_alert['issn'], :name => result['response']['docs'].first['title_ts'].first}
     alert = Alert.new(params, user)
     if !alert.save
       puts "Could not save alert #{alert.inspect}"
     end
+    dlib_alert[:found] = true
   else
     puts "ISSN #{dlib_alert} could not be found in index"
+    dlib_alert[:found] = false
   end
 end
