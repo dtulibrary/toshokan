@@ -10,10 +10,10 @@ FeatureFlipper.features do
 
   in_state :staging do
     feature :nal_map, :description => "Show Google Maps for NAL"
-    feature :toc,     :description => "Display table of contents on journal records"
   end
 
   in_state :live do    
+    feature :toc,     :description => "Display table of contents on journal records"
   end
 
 end
