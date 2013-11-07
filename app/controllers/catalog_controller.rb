@@ -124,6 +124,7 @@ class CatalogController < ApplicationController
     config.add_labeled_field :index, 'publisher_ts', :format => ['book', 'journal']
     config.add_labeled_field :index, 'abstract_ts', :helper_method => :snip_abstract
     config.add_labeled_field :index, 'issn_ss', :format => ['journal']
+    config.add_labeled_field :index, 'dissertation_date_ssf', :helper_method => :render_dissertation_date
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
@@ -131,7 +132,7 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'subtitle_ts'
     config.add_labeled_field :show, 'title_abbr_ts'
     config.add_labeled_field :show, 'author_ts', :helper_method => :render_author_links
-    config.add_labeled_field :show, 'affiliation_ts', :helper_method => :render_affiliations
+    config.add_labeled_field :show, 'affiliation_ts', :format => ['book', 'article'], :helper_method => :render_affiliations
     config.add_labeled_field :show, 'editor_ts', :helper_method => :render_author_links
     config.add_labeled_field :show, 'pub_date_tis', :format => ['book']
     config.add_labeled_field :show, 'journal_page_ssf', :format => ['book']
@@ -146,6 +147,8 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'abstract_ts'
     config.add_labeled_field :show, 'keywords_ts', :helper_method => :render_keyword_links
     config.add_labeled_field :show, 'udc_ss'
+    config.add_labeled_field :show, 'dissertation_date_ssf', :helper_method => :render_dissertation_date
+    config.add_labeled_field :show, 'supervisor_ts', :helper_method => :render_author_links
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -228,7 +231,7 @@ class CatalogController < ApplicationController
     config.spell_max = 5
 
     config.add_labeled_field :limit, 'toc', :helper_method => :toc_limit_display_value, :fields => ['toc_key_s']
-    config.add_labeled_field :limit, 'author', :fields => ['author_ts', 'editor_ts']
+    config.add_labeled_field :limit, 'author', :fields => ['author_ts', 'editor_ts', 'supervisor_ts']
     config.add_labeled_field :limit, 'subject', :fields => ['keywords_ts']
 
   end

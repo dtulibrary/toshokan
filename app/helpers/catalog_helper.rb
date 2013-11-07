@@ -153,6 +153,14 @@ module CatalogHelper
     end
   end
 
+  def render_dissertation_date args
+    begin
+      l args[:document][args[:field]].first.to_date, format: :long    
+    rescue ArgumentError
+      args[:document][args[:field]].first
+    end
+  end
+
   def normalize_year year, forward_delta = 2, current_year = Time.now.year
     if year < 100
       current_century = current_year - (current_year % 100)

@@ -210,6 +210,7 @@ en:
         publisher_ts: 'Publisher'
         journal_page_ssf: 'Pages'
         issn_ss: 'ISSN'
+        dissertation_date_ssf: 'Dissertation date'
       show_field_labels:
         abstract_ts: 'Abstract'
         affiliation_ts: 'Affiliations'
@@ -230,6 +231,8 @@ en:
         conf_title_ts: 'Conference title'
         subtitle_ts: 'Subtitle'
         journal_page_ssf: 'Pages'
+        dissertation_date_ssf: 'Dissertation date'
+        supervisor_ts: "Supervisors"
       facet_field_labels:
         author_facet: 'Author'
         format: 'Type'
