@@ -34,7 +34,6 @@ toshokan.nal = (function () {
       
       $('#nal-locations .nal-location').each(function () {
         var url = $(this).attr('data-url');
-        var label = $(this).find('span').text();
 
         $(this).find('input:checkbox:checked').each(function () {
           var id = this.name; 
@@ -45,20 +44,14 @@ toshokan.nal = (function () {
             var markerOptions = {
               map : map,
               position : new google.maps.LatLng(branch.googleMapsInfo.lat, branch.googleMapsInfo.long),
-              title : label + ' - ' + branch.displayName.en
+              title : library.displayName.en + ' - ' + branch.displayName.en
             };
             var marker = new google.maps.Marker(markerOptions);
             var infoWindowContent = [];
             var infoWindowLinks = [];
 
-            infoWindowContent.push('<h4>' + label + '</h4>');
+            infoWindowContent.push('<h4>' + library.displayName.en + '</h4>');
             infoWindowContent.push('<h5>' + branch.displayName.en + '</h5>');
-
-            if (branch.displayAddress) {
-              infoWindowContent.push('<p>' + branch.displayAddress.address1 + '<br>' + 
-                (branch.displayAddress.address2 ? branch.displayAddress.address2 + '<br>' : '') + 
-                branch.displayAddress.zip + ' ' + branch.displayAddress.city + '</p>');
-            }
 
             if (branch.openingHoursInfo) {
               infoWindowLinks.push('<a target="_blank" href="' + branch.openingHoursInfo.url + '">Opening hours</a>');
@@ -68,8 +61,16 @@ toshokan.nal = (function () {
               '">Travel directions</a>'); 
             infoWindowLinks.push('<a target="_blank" href="' + url + '">Online catalog</a>');
 
+            infoWindowContent.push(infoWindowLinks.join(' | '));
+
+            if (branch.displayAddress) {
+              infoWindowContent.push('<p>' + branch.displayAddress.address1 + '<br>' + 
+                (branch.displayAddress.address2 ? branch.displayAddress.address2 + '<br>' : '') + 
+                branch.displayAddress.zip + ' ' + branch.displayAddress.city + '</p>');
+            }
+
             var infoWindow = new google.maps.InfoWindow({
-              content: '<div>' + infoWindowContent.join('\n') + infoWindowLinks.join(' | ') + '</div>'
+              content: '<div>' + infoWindowContent.join('\n') + '</div>'
             });
 
             markers.push(marker);
@@ -98,6 +99,22 @@ toshokan.nal = (function () {
         mapTypeId : google.maps.MapTypeId.ROADMAP
       }); 
       toshokan.nal.setMap(map);
+    });
+
+    $('#select-all-nal-locations').click(function () {
+      $('#nal-locations input').each(function () {
+        this.checked = true;
+      });
+      toshokan.nal.updateMap();
+      return false;
+    });
+
+    $('#select-no-nal-locations').click(function () {
+      $('#nal-locations input').each(function () {
+        this.checked = false;
+      });
+      toshokan.nal.updateMap();
+      return false;
     });
   });
 })(jQuery);

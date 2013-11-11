@@ -76,6 +76,7 @@
     } else {    
       var action;
       var header_elm = elm;
+      var headerSelector;
 
       if(data.subtype.match(/_scan/)) {
         
@@ -92,8 +93,10 @@
         
         var other_header = elm.parent().find(".other-header")
         other_header.show();
+        headerSelector = '.other-header';
+
         link = $("<a />", {
-          text          : data.button_text,
+          text          : 'Map',
           "class"       : "fulltext btn btn-primary btn-small dropdown-toggle",
           "title"       : data.tool_tip,
           "href"        : "",
@@ -101,16 +104,16 @@
           "data-target" : "#nal-locations-modal",
           "target"      : "_blank"  
         });
-        link.append("<span class='caret'></span>");
 
-        action = $("<div />", {"class" : "btn-group nal"});
+        action = $("<div />", {"class" : "btn-group nal pull-right"});
         action.append(link);
 
         $.each(data.urls, function () {
           if (toshokan.libraries[this.id]) {
             $('#nal-locations').append(
               '<div class="nal-location" data-url="' + this.url + '">' + 
-              '  <input type="checkbox" name="' + this.id + '"> <span>' + this.label + '</span>' +
+              '  <input type="checkbox" name="' + this.id + '" checked="checked"> ' +
+              '  <span>' + toshokan.libraries[this.id].displayName.en + '</span>' +
               '</div>'
             );
           }
@@ -123,12 +126,13 @@
         toshokan.nal.showMap();
 
         header_elm = other_header;
+        data.lead_text = data.button_text;
 
       } else {
         
         action = $("<a/>", {
           text          : data.button_text,
-          "class"       : "fulltext btn btn-primary btn-small",
+          "class"       : "fulltext btn btn-primary btn-small pull-right",
           "title"       : data.tool_tip,
           "href"        : data.url,
           "data-toggle" : "tooltip",
@@ -142,7 +146,7 @@
       item.append("<strong><i class='" + data.icon + "'></i>" + data.short_name + "</strong> (" + data.type + ")");
       item.append("<p><small>" + data.short_explanation + "</small></p>");        
       item.append(
-        $("<div />", {"class" : "fulltext-action"}).append(
+        $("<div />", {"class" : "fulltext-action clearfix"}).append(
           $("<div />", {"class" : "leadtext"}),              
           $("<div />").append(action)
         )
@@ -160,11 +164,19 @@
         item.find(".fulltext-action").before(holdings_item);
       }
 
-      if(count == 0) {
-        header_elm.after(item);
+      if (headerSelector) {
+        if ($('#fulltext > ' + headerSelector + ' + .fulltext-item').length > 0) {
+          $(".fulltext-item").filter(":last").after(item);
+        } else {
+          $('#fulltext > ' + headerSelector).after(item);
+        }
       } else {
-        $(".fulltext-item").filter(":last").after(item);
-      }      
+        if(count == 0) {
+          header_elm.after(item);
+        } else {
+          $(".fulltext-item").filter(":last").after(item);
+        }      
+      }
     }
   };
 
