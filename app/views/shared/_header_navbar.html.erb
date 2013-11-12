@@ -67,7 +67,7 @@
     </div>
     <div class="modal-footer">
       <a href="http://libguides.dtu.dk/loader.php?type=d&id=937880" class="btn" target="_blank">Read more</a>
-      <%= link_to new_user_session_path(:url => request.fullpath), :class => "btn btn-primary" do %>
+      <%= link_to new_user_session_path(:url => request.fullpath, :only_dtu => true), :class => "btn btn-primary" do %>
         <%= t('toshokan.header_links.login') %>
       <% end %>
     </div>
