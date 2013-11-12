@@ -17,9 +17,9 @@ FactoryGirl.define do
 
   factory :conference_article_assistance_request do
     article_title     'How to increase your testability'
-    proceedings_pages '12'
     conference_title  'Annual Conference on Testing Methods'
     conference_year   '2009'
+    conference_pages  '12'
   end
 
   factory :conference_article_assistance_request_form_post, :class => Hash do

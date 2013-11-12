@@ -1,13 +1,9 @@
 <div class="row">
   <div class="span3">
     <%= render 'article_section' %>
-    <%= render 'proceedings_section' %>
   </div>
   <div class="span3">
     <%= render 'conference_section' %>
-  </div>
-  <div class="span3">
-    <%= render 'notes_section' %>
   </div>
   <div class="span3">
     <%= render 'email_section' %>
@@ -16,6 +12,9 @@
     <% else %>
       <%= render 'physical_location_section' %>
     <% end %>
+  </div>
+  <div class="span3">
+    <%= render 'notes_section' %>
     <%= render 'submit_section' %>
   </div>
 </div>

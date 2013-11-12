@@ -2,7 +2,7 @@ en:
   toshokan:
     assistance_requests:
       need_to_login:
-        title: Restricted Access (DTU only)
+        title: Restricted access (DTU only)
         text: 
           You have requested a page that is only available to DTU employees and students.
           If you have the proper credentials, please log in by clicking the log in button
@@ -33,19 +33,19 @@ en:
           journal_pages: Pages
           notes: Notes
           proceedings_title: Title
-          proceedings_isxn: ISSN or ISBN
-          proceedings_pages: Pages
           conference_title: Title
           conference_location: Location
           conference_year: Year
           conference_number: Number
+          conference_isxn: ISSN or ISBN
+          conference_pages: Pages
           book_title: Title
           book_author: Author
           book_edition: Edition
           book_doi: DOI
           book_isbn: ISBN
           book_year: Year
-          publisher_name: Publisher
+          book_publisher: Publisher
         sections:
           article: 
             title: Article
@@ -68,10 +68,6 @@ en:
             text: For material that can only be delivered in physical form.
             ballerup_html: <b>Ballerup Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Diplom,+Lautrupvang,+Ballerup&hl=da&sll=55.59332,13.426026&sspn=2.318732,7.13562&oq=dtu+diplom&hq=DTU+Diplom,+Lautrupvang,+Ballerup&t=m&z=16">Map view</a>)<br>Lautrupvang 15<br>2750 Ballerup
             lyngby_html: <b>Lyngby Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,+Anker+Engelunds+Vej,+Kongens+Lyngby&hl=da&sll=55.73121,12.396566&sspn=0.009025,0.027874&hq=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,&hnear=Anker+Engelunds+Vej,+2800+Kongens+Lyngby&t=m&z=16">Map view</a>)<br>Building 101<br>Anker Engelunds Vej 1<br>2800 Kgs. Lyngby 
-          proceedings: 
-            title: In proceedings/series
-          publisher: 
-            title: Published by
       genres:
         journal_article: Journal article
         conference_article: Conference article

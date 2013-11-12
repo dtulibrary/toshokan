@@ -6,15 +6,15 @@
     <%= render 'journal_section' %>
   </div>
   <div class="span3">
-    <%= render 'notes_section' %>
-  </div>
-  <div class="span3">
     <%= render 'email_section' %>
     <% if can? :select, :pickup_location %>
       <%= render 'pickup_location_section' %>
     <% else %>
       <%= render 'physical_location_section' %>
     <% end %>
+  </div>
+  <div class="span3">
+    <%= render 'notes_section' %>
     <%= render 'submit_section' %>
   </div>
 </div>

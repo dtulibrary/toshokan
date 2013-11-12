@@ -20,19 +20,12 @@ class AssistanceRequestsController < ApplicationController
       
       if @genre
         @assistance_request = assistance_request_from(params) || assistance_request_for(@genre)
-        
-        if @assistance_request
-          flash.now[:alert] = %q{
-            Requesting a librarian's assistance will invoke <b>manual procedures</b>. 
-            Please review your request before sending it.}.html_safe
-        else
-          head :bad_argument 
-        end
+        head :bad_argument and return unless @assistance_request
       else
         head :bad_request
       end
     else
-      render 'need_to_login'
+      render 'cant_request_assistance'
     end
   end
 

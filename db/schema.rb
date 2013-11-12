@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131009071157) do
+ActiveRecord::Schema.define(:version => 20131111123049) do
 
   create_table "assistance_requests", :force => true do |t|
     t.string   "type"
@@ -25,26 +25,24 @@ ActiveRecord::Schema.define(:version => 20131009071157) do
     t.text     "journal_issue"
     t.text     "journal_year"
     t.text     "journal_pages"
-    t.text     "proceedings_title"
-    t.text     "proceedings_isxn"
-    t.text     "proceedings_pages"
     t.text     "conference_title"
     t.text     "conference_location"
     t.text     "conference_year"
-    t.text     "conference_number"
     t.text     "book_title"
     t.text     "book_author"
     t.text     "book_edition"
     t.text     "book_doi"
     t.text     "book_isbn"
     t.text     "book_year"
-    t.text     "publisher_name"
     t.text     "notes"
     t.text     "email"
     t.text     "pickup_location"
     t.text     "physical_location"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.text     "conference_isxn"
+    t.text     "conference_pages"
+    t.text     "book_publisher"
   end
 
   create_table "bookmarks", :force => true do |t|

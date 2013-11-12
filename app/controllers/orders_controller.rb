@@ -258,16 +258,19 @@ class OrdersController < ApplicationController
         @order.order_events << OrderEvent.new(:name => 'delivery_confirmed')
         @order.save!
       when :cancel
-        @order.order_events << OrderEvent.new(:name => 'delivery_cancelled')
-        @order.save!
 
         # Only cancel in DIBS if order was paid for
         PayIt::Dibs.delay.cancel @order if @order.payment_status
 
         if @order.user.dtu? && @order.user.employee?
+          @order.order_events << OrderEvent.new(:name => 'delivery_manual')
+          @order.save!
+
           # Send mail to delivery support 
           SendIt.delay.send_failed_automatic_request_mail @order, params[:reason]
         else
+          @order.order_events << OrderEvent.new(:name => 'delivery_cancelled')
+          @order.save!
           SendIt.delay.send_cancellation_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
         end
       end

@@ -22,16 +22,12 @@ class AssistanceRequest < ActiveRecord::Base
       'notes' => [
         {:name => 'notes'}
       ],  
-      'proceedings' => [
-        {:name => 'proceedings_title'},
-        {:name => 'proceedings_isxn'},
-        {:name => 'proceedings_pages', :required => true}
-      ],  
       'conference' => [
         {:name => 'conference_title', :required => true},
         {:name => 'conference_location'},
         {:name => 'conference_year', :required => true},
-        {:name => 'conference_number'}
+        {:name => 'conference_isxn'},
+        {:name => 'conference_pages', :required => true}
       ],  
       'book' => [
         {:name => 'book_title', :required => true},
@@ -39,10 +35,8 @@ class AssistanceRequest < ActiveRecord::Base
         {:name => 'book_edition'},
         {:name => 'book_doi'},
         {:name => 'book_isbn'},
-        {:name => 'book_year', :required => true}
-      ],  
-      'publisher' => [
-        {:name => 'publisher_name'}
+        {:name => 'book_year', :required => true},
+        {:name => 'book_publisher'}
       ]   
     }
   end

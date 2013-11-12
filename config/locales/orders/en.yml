@@ -18,6 +18,7 @@ en:
         delivery_cancelled: Article delivery cancelled
         delivery_confirmed: Article delivery confirmed
         delivery_done: Article delivered
+        delivery_manual: Manual processing
         delivery_requested: Article ordered
         payment_authorized: Payment authorized
         payment_cancelled: Payment cancelled

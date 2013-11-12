@@ -2,28 +2,40 @@
   <h5 class="underlined">
     <%= t 'toshokan.assistance_requests.forms.sections.book.title' %>
   </h5>
-  <% if params[:button] == 'create' %>
-    <%= render :partial => 'submitted_values',
-      :locals => {
-        :field_prefix => 'book_',
-        :fields => ['title', 'author', 'edition', 'doi', 'isbn', 'year']
-      } %>
-  <% else %>
-    <%= required_text_field 'assistance_request', 'book_title', 
-                            t('toshokan.assistance_requests.forms.field_labels.book_title') %>
-    <%= optional_text_field 'assistance_request', 'book_author',
-                            t('toshokan.assistance_requests.forms.field_labels.book_author') %>
-    <%= optional_text_field 'assistance_request', 'book_edition',
-                            t('toshokan.assistance_requests.forms.field_labels.book_edition') %>
-    <%= optional_text_field 'assistance_request', 'book_doi',
-                            t('toshokan.assistance_requests.forms.field_labels.book_doi') %>
-    <%= optional_text_field 'assistance_request', 'book_isbn',
-                            t('toshokan.assistance_requests.forms.field_labels.book_isbn') %>
-    <div class="row-fluid">
-      <div class="span6 offset6">
+  <div class="row">
+    <div class="span3">
+      <% if params[:button] == 'create' %>
+        <%= render :partial => 'submitted_values',
+          :locals => {
+            :field_prefix => 'book_',
+            :fields => ['title', 'year', 'author', 'edition']
+          } %>
+      <% else %>
+        <%= required_text_field 'assistance_request', 'book_title', 
+                                t('toshokan.assistance_requests.forms.field_labels.book_title') %>
         <%= required_text_field 'assistance_request', 'book_year',
                                 t('toshokan.assistance_requests.forms.field_labels.book_year') %>
-      </div>
+        <%= optional_text_field 'assistance_request', 'book_author',
+                                t('toshokan.assistance_requests.forms.field_labels.book_author') %>
+        <%= optional_text_field 'assistance_request', 'book_edition',
+                                t('toshokan.assistance_requests.forms.field_labels.book_edition') %>
+      <% end %>
     </div>
-  <% end %>
+    <div class="span3">
+      <% if params[:button] == 'create' %>
+        <%= render :partial => 'submitted_values',
+          :locals => {
+            :field_prefix => 'book_',
+            :fields => ['doi', 'isbn', 'publisher']
+          } %>
+      <% else %>
+        <%= optional_text_field 'assistance_request', 'book_doi',
+                                t('toshokan.assistance_requests.forms.field_labels.book_doi') %>
+        <%= optional_text_field 'assistance_request', 'book_isbn',
+                                t('toshokan.assistance_requests.forms.field_labels.book_isbn') %>
+        <%= optional_text_field 'assistance_request', 'book_publisher',
+                                t('toshokan.assistance_requests.forms.field_labels.book_publisher') %>
+      <% end %>
+    </div>
+  </div>
 </div>

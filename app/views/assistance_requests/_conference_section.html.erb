@@ -6,21 +6,23 @@
     <%= render :partial => 'submitted_values',
       :locals => {
         :field_prefix => 'conference_',
-        :fields => ['title', 'location', 'year', 'number']
+        :fields => ['title', 'location', 'isxn', 'year', 'pages']
       } %>
   <% else %>
     <%= required_text_field 'assistance_request', 'conference_title',
                             t('toshokan.assistance_requests.forms.field_labels.conference_title') %>
     <%= optional_text_field 'assistance_request', 'conference_location',
                             t('toshokan.assistance_requests.forms.field_labels.conference_location') %>
+    <%= optional_text_field 'assistance_request', 'conference_isxn',
+                            t('toshokan.assistance_requests.forms.field_labels.conference_isxn') %>
     <div class="row-fluid">
       <div class="span6">
         <%= required_text_field 'assistance_request', 'conference_year', 
                                 t('toshokan.assistance_requests.forms.field_labels.conference_year') %>
       </div>
       <div class="span6">
-        <%= optional_text_field 'assistance_request', 'conference_number',
-                                t('toshokan.assistance_requests.forms.field_labels.conference_number') %>
+        <%= required_text_field 'assistance_request', 'conference_pages',
+                                t('toshokan.assistance_requests.forms.field_labels.conference_pages') %>
       </div>
     </div>
   <% end %>

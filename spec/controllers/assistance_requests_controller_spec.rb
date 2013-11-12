@@ -96,7 +96,7 @@ describe AssistanceRequestsController do
     context 'when user cannot request assistance' do
       it 'renders the "need_to_login" template' do
         get :new
-        should render_template :need_to_login
+        should render_template :cant_request_assistance
       end
     end
   end

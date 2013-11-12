@@ -27,7 +27,7 @@ Examples:
 Scenario Outline: Non-DTU user views request assistance form
   Given <login_condition>
    When I go to the "request assistance" form
-   Then I should see "Restricted Access (DTU only)"
+   Then I should see "Need help from a DTU librarian?"
 
 Examples:
   | login_condition                 |
@@ -79,8 +79,7 @@ Scenario Outline: DTU user submits invalid request assistance form for conferenc
    Then I should see the "request assistance" form for "conference article"
     And I should see "One or more required fields are empty"
     And I should see an error in the "Title" field in the "article" form section
-    And I should see an error in the "Pages" field in the "proceedings" form section
-    And I should see errors in the "Title" and "Year" fields in the "conference" form section
+    And I should see errors in the "Title", "Pages" and "Year" fields in the "conference" form section
 
 Examples:
   | user_type |

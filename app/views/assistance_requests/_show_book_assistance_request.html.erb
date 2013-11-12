@@ -1,20 +1,15 @@
 <div class="row">
-  <div class="span3">
+  <div class="span6">
     <div class="section book-section">
       <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.book.title' %></h5>
-      <%= render_section_fields ['title', 'author', 'edition', 'doi', 'isbn', 'year'], @assistance_request, 'book_' %>
-    </div>
-  </div>
-  <div class="span3">
-    <div class="section publisher-section">
-      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.publisher.title' %></h5>
-      <%= render_section_fields ['publisher_name'], @assistance_request %>
-    </div>
-  </div>
-  <div class="span3">
-    <div class="section notes-section">
-      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.notes.title' %></h5>
-      <%= render_section_fields ['notes'], @assistance_request %>
+      <div class="row">
+        <div class="span3">
+          <%= render_section_fields ['title', 'year', 'author', 'edition'], @assistance_request, 'book_' %>
+        </div>
+        <div class="span3">
+          <%= render_section_fields ['doi', 'isbn', 'publisher'], @assistance_request, 'book_' %>
+        </div>
+      </div>
     </div>
   </div>
   <div class="span3">
@@ -42,5 +37,11 @@
         <% end %>
       </div>
     <% end %>
+  </div>
+  <div class="span3">
+    <div class="section notes-section">
+      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.notes.title' %></h5>
+      <%= render_section_fields ['notes'], @assistance_request %>
+    </div>
   </div>
 </div>

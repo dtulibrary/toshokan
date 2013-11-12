@@ -1,8 +1,11 @@
 <% if can? :request, :assistance -%>
   <div class="span12 request-assistance-form">
-    <h4 class="underlined">Request librarian's assistance</h4>
-    <%= t 'toshokan.assistance_requests.new.text_html', 
-          :genre => t("toshokan.assistance_requests.genres.#{@genre}").downcase %>
+    <h4>Have DTU Library get the 
+      <%= t("toshokan.assistance_requests.genres.#{@genre}").downcase %> for you
+      <span style="font-size: 0.8em; font-weight: normal">
+        [<a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=15084512">What's this?</a>]
+      </span>
+    </h4>
     <%= form_tag assistance_requests_path(:genre => @genre) do %>
       <%= render @assistance_request.class.name.underscore %>
     <% end %>

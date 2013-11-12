@@ -12,12 +12,6 @@
     </div>
   </div>
   <div class="span3">
-    <div class="section notes-section">
-      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.notes.title' %></h5>
-      <%= render_section_fields ['notes'], @assistance_request %>
-    </div>
-  </div>
-  <div class="span3">
     <div class="section email-section">
       <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.email.title' %></h5>
       <p><%= t 'toshokan.assistance_requests.forms.sections.email.text' %></p>
@@ -42,5 +36,11 @@
         <% end %>
       </div>
     <% end %>
+  </div>
+  <div class="span3">
+    <div class="section notes-section">
+      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.notes.title' %></h5>
+      <%= render_section_fields ['notes'], @assistance_request %>
+    </div>
   </div>
 </div>

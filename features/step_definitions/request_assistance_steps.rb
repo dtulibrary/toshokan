@@ -9,8 +9,8 @@ end
 
 { 
   'journal article'    => ['article', 'journal', 'notes'],
-  'conference article' => ['article', 'proceedings', 'conference', 'notes'],
-  'book'               => ['book', 'publisher', 'notes']
+  'conference article' => ['article', 'conference', 'notes'],
+  'book'               => ['book', 'notes']
 }.each do |genre, sections|
   Given %r{^I(?:'ve| have) submitted a valid assistance request for "#{genre}"$} do 
     step %{I'm on the "request assistance" form for "#{genre}"}
@@ -28,7 +28,6 @@ end
   end
 
   Then %r{^I should(n't| not)? see the "request assistance" form for "#{genre}"$} do |negate|
-    step %{I should#{negate} see "Request librarian's assistance"}
     check_form_correctness sections, negate
     step %{I should see the "Send request" and "Clear" buttons}
   end
@@ -71,7 +70,7 @@ Then /^I should see the (".*") sections with the submitted data$/ do |sections|
   end
 end
 
-['article', 'journal', 'notes', 'proceedings', 'conference', 'book', 'publisher'].each do |section|
+['article', 'journal', 'notes', 'conference', 'book', 'publisher'].each do |section|
   When %r{^I fill in the "#{section}" form section with valid data$} do
     submitted_data[section] = valid_section_data[section]
     fill_in_section section, submitted_data[section]
@@ -130,7 +129,7 @@ Then /^I should(?:n't| not) see the "(.*?)" section$/ do |section|
   page.should_not have_sections([section])
 end
 
-Then /^I should see the "(article|journal|notes|proceedings|conference|book|publisher)" section$/ do |section|
+Then /^I should see the "(article|journal|notes|conference|book|publisher)" section$/ do |section|
   within locator_for_section(section) do
     section_fields[section].each do |field_label|
       step %{I should see "#{field_label}"}
@@ -234,8 +233,8 @@ end
 def form_sections
   {
     'journal article'    => ['article', 'journal', 'notes'],
-    'conference article' => ['article', 'proceedings', 'conference', 'notes'],
-    'book'               => ['book', 'publisher', 'notes']
+    'conference article' => ['article', 'conference', 'notes'],
+    'book'               => ['book', 'notes']
   }
 end
 
@@ -259,24 +258,21 @@ def valid_section_data
     },
     'proceedings' => {
       'Title'     => 'Proceedings on conference on stuff',
-      'ISSN or ISBN' => '1234567890123',
-      'Pages'     => '13-14'
     },
     'conference' => {
-      'Title'    => 'Conference on stuff',
-      'Location' => 'London',
-      'Year'     => '2001',
-      'Number'   => '2'
+      'Title'        => 'Conference on stuff',
+      'Location'     => 'London',
+      'Year'         => '2001',
+      'ISSN or ISBN' => '1234567890123',
+      'Pages'        => '13-14'
     },
     'book' => {
-      'Title'   => 'Stuff: The super bible',
-      'Author'  => 'Dude that wrote a book',
-      'Edition' => '2',
-      'DOI'     => '10.1000/12345678',
-      'ISBN'    => '1234567890123',
-      'Year'    => '1999'
-    },
-    'publisher' => {
+      'Title'     => 'Stuff: The super bible',
+      'Author'    => 'Dude that wrote a book',
+      'Edition'   => '2',
+      'DOI'       => '10.1000/12345678',
+      'ISBN'      => '1234567890123',
+      'Year'      => '1999',
       'Publisher' => 'Stuffed Publishers Ltd.'
     }
   }
@@ -300,26 +296,20 @@ def _section_fields
     'notes' => [
       {:title => 'Notes', :required => false}
     ],
-    'proceedings' => [
-      {:title => 'Title',     :required => false},
-      {:title => 'ISSN or ISBN', :required => false},
-      {:title => 'Pages',     :required => true}
-    ],
     'conference' => [
-      {:title => 'Title',    :required => true},
-      {:title => 'Location', :required => false},
-      {:title => 'Year',     :required => true},
-      {:title => 'Number',   :required => false}
+      {:title => 'Title',        :required => true},
+      {:title => 'Location',     :required => false},
+      {:title => 'Year',         :required => true},
+      {:title => 'ISSN or ISBN', :required => false},
+      {:title => 'Pages',        :required => true}
     ],
     'book' => [
-      {:title => 'Title',   :required => true},
-      {:title => 'Author',  :required => false},
-      {:title => 'Edition', :required => false},
-      {:title => 'DOI',     :required => false},
-      {:title => 'ISBN',    :required => false},
-      {:title => 'Year',    :required => true}
-    ],
-    'publisher' => [
+      {:title => 'Title',     :required => true},
+      {:title => 'Author',    :required => false},
+      {:title => 'Edition',   :required => false},
+      {:title => 'DOI',       :required => false},
+      {:title => 'ISBN',      :required => false},
+      {:title => 'Year',      :required => true},
       {:title => 'Publisher', :required => false}
     ]
   }
