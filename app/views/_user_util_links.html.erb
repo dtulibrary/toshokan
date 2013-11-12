@@ -8,7 +8,7 @@
     <%= link_to new_user_session_path(:url => request.fullpath) do %>
       <i class='icon-signin'></i> <%= t('toshokan.header_links.login') %>
     <% end %>
-    <% if !cookies[:shunt_hint] && !current_user.walk_in? %>
+    <% if !cookies[:shunt_hint] && !current_user.walk_in? && !params[:dlib] %>
       <div id="login-popover" class="popover fade bottom in">
         <div class="arrow"></div>
         <div class="popover-inner">
@@ -25,7 +25,7 @@
           </div>
         </div>
       </div>
-    <% end %>
+    <% end %>    
   <% end %>
   <% if current_user.authenticated? || current_user.impersonating? %>
     <div class="dropdown" id="header-menu">

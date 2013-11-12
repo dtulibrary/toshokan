@@ -40,15 +40,36 @@
     </div>
   </div>
 </div>
+
 <%= link_to '', feedback_path, :class => 'feedback', :'data-toggle' => 'modal', :'data-target' => '#feedback-modal' %>
 
 <div id="feedback-modal" class="modal fade">
   <div class="modal-header">
     <h4>
       <%= t 'toshokan.modals.feedback.title' %>
-      <a class="close" class="pull-right" data-dismiss="modal" data-target="#feedback-modal">&times;</a>
+      <a class="close pull-right" data-dismiss="modal" data-target="#feedback-modal">&times;</a>
     </h4>
   </div>
   <div class="modal-body">
   </div>
 </div>
+
+<% if !cookies[:shunt_hint] && params[:dlib] %>
+  <div id="dlib-modal" class="modal fade">
+    <div class="modal-header">
+      <h4>
+        DTU Findit has replaced DTU Digital Library
+        <a class="close pull-right" data-dismiss="modal">&times;</a>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <p>It is important that you sign in as a DTU user to take full advantage of DTU Findit. Your browser will remember your initial choice.</p>
+    </div>
+    <div class="modal-footer">
+      <a href="http://libguides.dtu.dk/loader.php?type=d&id=937880" class="btn" target="_blank">Read more</a>
+      <%= link_to new_user_session_path(:url => request.fullpath), :class => "btn btn-primary" do %>
+        <%= t('toshokan.header_links.login') %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

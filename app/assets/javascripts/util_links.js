@@ -9,5 +9,9 @@
             $('#login-popover').offset(offset);
         }
     });
+
+    $(function() {
+      $('#dlib-modal').modal();
+    });
     
 })(jQuery);
