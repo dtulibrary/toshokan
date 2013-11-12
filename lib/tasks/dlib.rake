@@ -157,7 +157,7 @@ end
 def create_journal_alert(user, dlib_alert, solr)
   
   result = solr.toshokan(
-    :params => {:q => dlib_alert['issn'].to_s, :fl => 'title_ts', :fq => 'format:journal', :fq => 'access_ss:dtu', :rows => 1, :facet => false})
+    :params => {:q => dlib_alert['issn'].to_s, :fl => 'title_ts', :fq => ['format:journal', 'access_ss:dtu'], :rows => 1, :facet => false})
 
   if result['response']['numFound'] > 0 
     params = {:query => dlib_alert['issn'], :name => result['response']['docs'].first['title_ts'].first}
