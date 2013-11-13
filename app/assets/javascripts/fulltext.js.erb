@@ -122,8 +122,10 @@
         $('#nal-locations input').click(function () {
           toshokan.nal.updateMap();
         });
-        toshokan.nal.updateMap();
-        toshokan.nal.showMap();
+
+        $('#nal-locations-modal').on('shown', function () {
+          toshokan.nal.updateMap();
+        });
 
         header_elm = other_header;
         data.lead_text = data.button_text;

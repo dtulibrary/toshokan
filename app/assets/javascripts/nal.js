@@ -16,11 +16,11 @@ toshokan.nal = (function () {
     },
 
     showMap : function () {
-      $('#nal-map').show();
+      $('#nal-locations-modal').modal('show');//show();
     },
 
     hideMap : function () {
-      $('#nal-map').hide();
+      $('#nal-locations-modal').modal('hide');//hide();
     },
 
     updateMap : function () {
@@ -82,9 +82,9 @@ toshokan.nal = (function () {
         });
       }); 
 
-      map.setCenter(new google.maps.LatLng(center.lat, center.long));
       map.setZoom(zoom);
       google.maps.event.trigger(map, 'resize');
+      map.setCenter(new google.maps.LatLng(center.lat, center.long));
     }
   };
 })();
