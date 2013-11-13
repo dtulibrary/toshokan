@@ -96,7 +96,7 @@
         headerSelector = '.other-header';
 
         link = $("<a />", {
-          text          : 'Map',
+          text          : '<%= I18n.t 'toshokan.tools.nal.map' %>',
           "class"       : "fulltext btn btn-primary btn-small dropdown-toggle",
           "title"       : data.tool_tip,
           "href"        : "",
@@ -105,7 +105,7 @@
           "target"      : "_blank"  
         });
 
-        action = $("<div />", {"class" : "btn-group nal pull-right"});
+        action = $("<div />", {"class" : "btn-group nal"});
         action.append(link);
 
         $.each(data.urls, function () {
@@ -132,7 +132,7 @@
         
         action = $("<a/>", {
           text          : data.button_text,
-          "class"       : "fulltext btn btn-primary btn-small pull-right",
+          "class"       : "fulltext btn btn-primary btn-small",
           "title"       : data.tool_tip,
           "href"        : data.url,
           "data-toggle" : "tooltip",
@@ -146,7 +146,7 @@
       item.append("<strong><i class='" + data.icon + "'></i>" + data.short_name + "</strong> (" + data.type + ")");
       item.append("<p><small>" + data.short_explanation + "</small></p>");        
       item.append(
-        $("<div />", {"class" : "fulltext-action clearfix"}).append(
+        $("<div />", {"class" : "fulltext-action"}).append(
           $("<div />", {"class" : "leadtext"}),              
           $("<div />").append(action)
         )

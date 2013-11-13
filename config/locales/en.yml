@@ -121,7 +121,9 @@ en:
       fulltext: "Get it"
       coverage: "Coverage"
       not_available: "Not available"
-      nal: "On-site use at other libraries"
+      nal:
+        title: 'On-site use at other libraries'
+        map: 'Map'
       order:
         rd_html: Order Scan
         dtu_html: Order Scan<br>DTU Print Collection
