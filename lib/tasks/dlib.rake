@@ -86,7 +86,7 @@ def get_document_for_record(record, solr)
        when 'article'
          ["member_id_ss:#{record_id}"]
        when 'journal'
-         ["issn_ss:#{record_id}"]
+         ["issn_ss:#{record_id}", "format:journal"]
        when 'book'
          ["member_id_ss:#{record_id}"]
        end
