@@ -156,7 +156,7 @@ module CatalogHelper
   def render_dissertation_date args
     begin
       l args[:document][args[:field]].first.to_date, format: :long    
-    rescue ArgumentError
+    rescue ArgumentError, NoMethodError
       args[:document][args[:field]].first
     end
   end
