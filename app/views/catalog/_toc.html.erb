@@ -16,7 +16,7 @@
             |
             <%= link_to_if toc[:next_issue], t('toshokan.catalog.toc.next_issue'), params.merge(:key => toc[:next_issue].try(:fetch, :key)) %>
           </div>
-          <strong><%= link_to_toc_query render_journal_info_for_issue(toc[:current_issue]), toc[:current_issue][:key], document[:journal_title_ts].first %></strong>
+          <strong><%= link_to_toc_query render_journal_info_for_issue(toc[:current_issue]), toc[:current_issue][:key], document[:title_ts].first %></strong>
         </p>
         <div class="well">
           <ul class="toc_articles">
