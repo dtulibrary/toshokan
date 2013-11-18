@@ -16,7 +16,7 @@ en:
         you_must_accept_terms: You must accept DTU's terms of service
       events:
         delivery_cancelled: Article delivery cancelled
-        delivery_confirmed: Article delivery confirmed
+        delivery_confirmed: Article order confirmed
         delivery_done: Article delivered
         delivery_manual: Manual processing
         delivery_requested: Article ordered
