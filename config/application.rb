@@ -169,5 +169,10 @@ module Toshokan
       }
     }
 
+    config.rsolr = {
+      :retries => 3,
+      :retry_delay => 0.1,
+    }
+
   end
 end

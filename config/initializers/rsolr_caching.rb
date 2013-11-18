@@ -1,10 +1,31 @@
 module RSolr
   class Connection
-    alias_method :execute_without_rails_caching, :execute
+    alias_method :execute_without_rails_caching_and_retries, :execute
+
+    def try_request(h, request, options = {})
+      options = {
+        :retries => 0,
+        :retry_delay => 0.1,
+        :retry_on => [500, 502, 503, 504]
+      }.merge(options)
+
+      (options[:retries]).downto(0) do |retries_left|
+        response = h.request request
+        charset = response.type_params["charset"]
+        response = {:status => response.code.to_i, :headers => response.to_hash, :body => force_charset(response.body, charset)}
+        if (retries_left == 0) || options[:retry_on].exclude?(response[:status])
+          return response, options[:retries] - retries_left
+        else
+          Rails.logger.warn("Solr returned HTTP #{response[:status]} for #{request.method} #{request.path}. Retrying request. #{retries_left} retries left.")
+          sleep(options[:retry_delay])
+        end
+      end
+
+    end
 
     def execute client, request_context
-      if not [:get, :head].include? request_context[:method]
-        return execute_without_rails_caching client, request_context
+      if [:get, :head].exclude? request_context[:method]
+        return execute_without_rails_caching_and_retries client, request_context
       end
 
       bench_start = Time.now
@@ -21,12 +42,12 @@ module RSolr
 
       begin
         cache_hit = false
-        # execute request
-        response = h.request request
-        charset = response.type_params["charset"]
-        response = {:status => response.code.to_i, :headers => response.to_hash, :body => force_charset(response.body, charset)}
 
-        if     304 == response[:status]
+        # execute request
+        retry_options = (Rails.application.config.respond_to?(:rsolr) && Rails.application.config.rsolr) || {}
+        response, retries = try_request h, request, retry_options
+
+        if 304 == response[:status]
           # read response from cache if code if 304 Not Modified
           cache_hit = true
           response = cache_entry[:response]
@@ -36,7 +57,7 @@ module RSolr
         end
 
         # log request and statistics in json format
-        log_message = {:status => response[:status], :cache => (cache_hit ? :hit : :miss ), :params => params, :time => '%.1f ms' % ((Time.now.to_f - bench_start.to_f)*1000)}
+        log_message = {:status => response[:status], :cache => (cache_hit ? :hit : :miss ), :params => params, :time => '%.1f ms' % ((Time.now.to_f - bench_start.to_f)*1000), :retries => retries}
         Rails.logger.info("RSolr#execute #{log_message.to_json}")
 
         # TODO: send statistics to ganglia
