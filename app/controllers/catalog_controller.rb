@@ -255,6 +255,12 @@ class CatalogController < ApplicationController
   end
 
   def index
+    # Ensure that all responses that renders a search result has /(en|da)/catalog in the url
+    # Why: because we want to disallow crawlers from search results but allow crawlers on the index page
+    unless (request.path == catalog_index_path) || params.except(:controller, :action, :locale).empty?
+      redirect_to catalog_index_path(params)
+    end
+
     @display_format = current_display_format + '_index'
     orig_q = params[:q];
 
