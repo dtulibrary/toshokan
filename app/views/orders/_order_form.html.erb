@@ -1,4 +1,4 @@
-<%= form_tag create_order_path, :class => 'order-form' do %>
+<%= form_tag orders_path, :class => 'order-form' do %>
   <% if @order.flow.fields.include? :email %>
     <%= label_tag :email, t("toshokan.orders.form.#{ @order.flow.fields.include?(:payment) ? 'email_html' : 'email_without_invoice'}_html") %>
     <%= text_field_tag :email, params[:email] || current_user.email %>

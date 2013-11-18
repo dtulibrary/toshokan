@@ -15,39 +15,33 @@ Toshokan::Application.routes.draw do
     match '/cover_images/:id',        :to => 'cover_images#show',        :as => 'cover_images'
     match '/advanced',                :to => 'catalog#advanced',         :as => 'advanced'
 
-    # Show form for order creation
-    match '/orders/',                 :to => 'orders#new',               :as => 'new_order',            :via => :get
+    # Order creation
+    resources :orders, :only => [:new, :create, :update]
 
-    # Create a new order
-    match '/orders/',                 :to => 'orders#create',            :as => 'create_order',         :via => :post
+    # DIBS callbacks - receipt doubles as DIBS callback and DIBS receipt
+    post '/orders/:uuid/cancel',   :to => 'orders#cancel',   :as => 'order_cancel'
+    post '/orders/:uuid/receipt',  :to => 'orders#receipt',  :as => 'order_receipt'
+    get  '/orders/:uuid/receipt',  :to => 'orders#receipt',  :as => 'order_receipt'
 
-    # Update an order
-    match '/orders/',                 :to => 'orders#update',            :as => 'update_order',         :via => :put
+    # DocDel callback
+    get  '/orders/:uuid/delivery', :to => 'orders#delivery', :as => 'order_delivery'
 
-    # View order
-
-    # For DIBS callback upon cancel
-    match '/orders/:uuid/cancel',       :to => 'orders#cancel',            :as => 'order_cancel'
-
-    # For DIBS callback upon successful authorization
-    match '/orders/:uuid/receipt',      :to => 'orders#receipt',          :as => 'order_receipt'
-
-    # For DocDel callback about delivery status
-    match '/orders/:uuid/delivery',     :to => 'orders#delivery',          :as => 'order_delivery'
-
-    # For order status
-    match '/orders/:uuid/status',       :to => 'orders#status',            :as => 'order_status',       :via => :get
-
+    # Status and reordering
+    get  '/orders/:uuid/status',   :to => 'orders#status',   :as => 'order_status'
+    get  '/orders/:uuid/reorder',  :to => 'orders#reorder',  :as => 'order_reorder'
+    
     # Payment page for testing - it just redirects to its callback parameter
-    match '/test_payment',              :to => 'payment#credit_card',      :as => 'payment',            :via => :post
+    post '/test_payment',              :to => 'payment#credit_card',      :as => 'payment'
 
     # Temp fix since BL 4.1 removed the POST route to feedback (but BL's code still seems to rely on it).
-    match '/feedback',                  :to => 'feedback#show',            :as => 'feedback',             :via => :post
+    post '/feedback',                  :to => 'feedback#show',            :as => 'feedback'
 
     # Resolver (populates can't find forms on zero hits)
-    match '/resolve',                   :to => 'resolver#index',           :as => 'resolve',            :via => :get
+    get '/resolve',                   :to => 'resolver#index',           :as => 'resolve'
 
     resources :assistance_requests, :only => [:index, :new, :create, :show]
+
+    # Redirect old can't find links to assistance request links
     get   '/cant_find/:genre',          :to => redirect('/assistance_requests/new?genre=%{genre}')
 
     resources :documents, :only => [] do

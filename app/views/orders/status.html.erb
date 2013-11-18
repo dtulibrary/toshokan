@@ -2,12 +2,30 @@
   <div class="span6">
     <h4><%= t 'toshokan.orders.order_status' %></h4>
 
-    <dl class="dl-horizontal dl-invert">
-      <%- @order.order_events.reject {|e| e.name == 'payment_authorized'}.each do |event| -%>
-        <dt><%= l event.created_at, :format => :long %></dt>
-        <dd><%= t "toshokan.orders.events.#{event.name}" %></dd>
-      <%- end -%>
+    <dl>
+    <%- @order.order_events.each do |event| %>
+      <% if can?(:reorder, Order) || !@restricted_events.include?(event.name) %>
+          <dt><%= l event.created_at, :format => :long %></dt>
+          <dd><%= t "toshokan.orders.events.#{event.name}" %></dd>
+          <% unless event.data.blank? %>
+            <dd class="event-data">
+              <% case event.name %>
+              <% when 'reordered' %>
+                <%= t 'toshokan.orders.reordered_by', :name => event.data %>
+              <% when 'payment_authorized' %>
+                <%= t 'toshokan.orders.paid_with_card', :card_no => event.data %>
+              <% else %>
+                <%= event.data %>
+              <% end %>
+            </dd>
+          <% end %>
+      <% end %>
+    <%- end -%>
     </dl>
+
+    <% if can? :reorder, Order %>
+      <p><%= link_to t('toshokan.orders.reorder'), order_reorder_path(@order.uuid) %></p>
+    <% end %>
   </div>
   <div class="span6">
     <%= render 'order_summary' %>

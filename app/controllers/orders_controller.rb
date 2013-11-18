@@ -211,7 +211,7 @@ class OrdersController < ApplicationController
           @order.payment_status = :authorized
           @order.dibs_transaction_id = params[:transact]
           @order.masked_card_number = params[:cardnomask]
-          @order.order_events << OrderEvent.new(:name => :payment_authorized)
+          @order.order_events << OrderEvent.new(:name => :payment_authorized, :data => params[:cardnomask])
           @order.save!
         else
           head :bad_request and return
@@ -240,6 +240,7 @@ class OrdersController < ApplicationController
       case delivery_status
       when :deliver
         logger.error "No 'url' parameter on delivery event for order #{@order.dibs_order_id}" unless params[:url]
+        is_redelivery = @order.delivery_status == :reordered
 
         @order.order_events << OrderEvent.new(:name => 'delivery_done', :data => params[:url])
         @order.delivery_status = delivery_status
@@ -247,15 +248,19 @@ class OrdersController < ApplicationController
         @order.save!
 
         SendIt.delay.send_delivery_mail @order, :url => params[:url], :order => {:status_url => order_status_url(@order.uuid)}
-        unless @order.user && @order.user.employee?
-          # Do not send receipt mails to DTU staff
+        unless (@order.user && @order.user.employee?) || is_redelivery
+          # Do not send receipt mails to DTU staff or when order has been reordered
           SendIt.delay.send_receipt_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
         end
 
-        # Only capture amounts for orders that were paid for
-        PayIt::Dibs.delay.capture @order if @order.payment_status
+        # Only capture amounts for orders that were paid for and that weren't reordered
+        PayIt::Dibs.delay.capture @order if @order.payment_status && !is_redelivery
       when :confirm
-        @order.order_events << OrderEvent.new(:name => 'delivery_confirmed')
+        if @order.delivery_status == :reordered
+          @order.order_events << OrderEvent.new(:name => 'reorder_confirmed')
+        else
+          @order.order_events << OrderEvent.new(:name => 'delivery_confirmed')
+        end
         @order.save!
       when :cancel
 
@@ -284,6 +289,24 @@ class OrdersController < ApplicationController
 
   def status
     @order = Order.find_by_uuid params[:uuid]
+    @restricted_events = ['payment_authorized', 'reordered', 'reorder_confirmed']
   end
 
+  def reorder
+    order = Order.find_by_uuid params[:uuid]
+
+    if can? :reorder, Order
+      if order
+        DocDel.delay.request_delivery order, order_delivery_url(order.uuid), :timecap_base => Time.now.iso8601 if DocDel.enabled?
+        order.delivery_status = :reordered      
+        order.order_events << OrderEvent.new(:name => 'reordered', :data => current_user.to_s)
+        order.save!
+        flash[:notice] = I18n.t 'toshokan.orders.flash_messages.reordered'
+      else
+        flash[:error] = I18n.t 'toshokan.orders.flash_messages.error_reordering'
+      end
+    end
+
+    redirect_to order_status_path order.uuid
+  end
 end

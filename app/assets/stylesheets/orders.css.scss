@@ -6,6 +6,17 @@
     margin-bottom: 20px;
     border-bottom: 2px solid $dtu_red;
   }
+
+  dt {
+    margin-top: 1em;
+    color: $dtu_grey;
+    font-weight: normal;
+  }
+
+  dd.event-data {
+    font-size: 0.9em;
+    color: $dtu_grey;
+  }
 }
 
 .requirements {

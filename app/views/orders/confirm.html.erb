@@ -18,7 +18,7 @@
             <%= button_tag t('toshokan.orders.form.continue'), :class => 'btn btn-primary' %>
           <% end %>
         <% end %>
-        <%= form_tag create_order_path, :style => 'display:inline' do %>
+        <%= form_tag orders_path, :style => 'display:inline' do %>
           <%= button_tag t('toshokan.orders.form.back'), :name => 'button', :value => 'back', :class => 'btn' %>
         <% end %>
       </div>

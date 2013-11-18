@@ -20,9 +20,13 @@ en:
         delivery_done: Article delivered
         delivery_manual: Manual processing
         delivery_requested: Article ordered
+        reordered: Article reordered
         payment_authorized: Payment authorized
         payment_cancelled: Payment cancelled
         payment_captured: Payment completed
+      flash_messages:
+        reordered: The article has been reordered
+        error_reordering: Error reordering article - the existing order was not found
       form:
         back: Back
         cancel: Cancel
@@ -52,6 +56,7 @@ en:
         dtu_html: Order Scan<br>DTU Print Collection 
         rd_html: Order Scan
       order_status: Order Status
+      paid_with_card: Using credit card %{card_no}
       pay: Pay
       price: Price
       price_excl_vat: Price (excl. VAT)
@@ -68,6 +73,8 @@ en:
         <p>
           <b>Thank you for your order!</b>
         </p>
+      reorder: Reorder article
+      reordered_by: Reordered by %{name}
       requirements_html: 
         <h5>Requirements and Restrictions</h5>
         <p>

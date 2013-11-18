@@ -35,7 +35,11 @@ class Ability
       end
 
       can :update, User if user.roles.include? Role.find_by_code('ADM')
-      can :switch, User if user.roles.include?(Role.find_by_code('SUP')) && !user.impersonating?
+
+      if user.roles.include? Role.find_by_code('SUP')
+        can :switch, User if !user.impersonating?
+        can :reorder, Order
+      end
     end
 
     # User can switch back if he is impersonating another user
