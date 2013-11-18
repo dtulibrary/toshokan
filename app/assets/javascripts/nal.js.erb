@@ -16,11 +16,11 @@ toshokan.nal = (function () {
     },
 
     showMap : function () {
-      $('#nal-locations-modal').modal('show');//show();
+      $('#nal-locations-modal').modal('show');
     },
 
     hideMap : function () {
-      $('#nal-locations-modal').modal('hide');//hide();
+      $('#nal-locations-modal').modal('hide');
     },
 
     updateMap : function () {
@@ -54,12 +54,12 @@ toshokan.nal = (function () {
             infoWindowContent.push('<h5>' + branch.displayName.en + '</h5>');
 
             if (branch.openingHoursInfo) {
-              infoWindowLinks.push('<a target="_blank" href="' + branch.openingHoursInfo.url + '">Opening hours</a>');
+              infoWindowLinks.push('<a target="_blank" href="' + branch.openingHoursInfo.url + '"><%= I18n.t 'toshokan.tools.nal.opening_hours' %></a>');
             }
             infoWindowLinks.push('<a target="_blank" href="http://www.rejseplanen.dk/bin/query.exe/mn?ZADR=1&Z=' +
               encodeURIComponent(branch.travelPlanInfo.street + ', ' + branch.travelPlanInfo.city) + 
-              '">Travel directions</a>'); 
-            infoWindowLinks.push('<a target="_blank" href="' + url + '">Online catalog</a>');
+              '"><%= I18n.t 'toshokan.tools.nal.travel_directions' %></a>'); 
+            infoWindowLinks.push('<a target="_blank" href="' + url + '"><%= I18n.t 'toshokan.tools.nal.online_catalog' %></a>');
 
             infoWindowContent.push(infoWindowLinks.join(' | '));
 

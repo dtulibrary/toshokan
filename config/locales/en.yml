@@ -124,6 +124,9 @@ en:
       nal:
         title: 'On-site use at other libraries'
         map: 'Map'
+        opening_hours: 'Opening hours'
+        travel_directions: 'Travel directions'
+        online_catalog: 'Online catalog'
       order:
         rd_html: Order Scan
         dtu_html: Order Scan<br>DTU Print Collection
@@ -141,6 +144,9 @@ en:
         title: "Switch User"
       feedback:
         title: 'Feedback on DTU Findit'
+      nal:
+        title: 'Availability on-site in Denmark'
+        text: 'The material is available at the following libraries (check to show on map):'
     feedback:
       label: 'Feedback'
       success_html: Your feedback has been sent. Thank you for taking the time to help us improve DTU Findit. <a href="#" data-dismiss="modal">Close this dialog</a>
