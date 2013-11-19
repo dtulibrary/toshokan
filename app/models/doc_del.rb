@@ -25,8 +25,8 @@ class DocDel
     response = HTTParty.post DocDel.url, :body => params
 
     if response.code == 200
-      # Update order status
-      order.delivery_status = :requested
+      is_redelivery = order.delivery_status == :reordered
+      order.delivery_status = is_redelivery ? :redelivery_requested : :delivery_requested
       order.save!
     else
       Rails.logger.error "Error communicating with DocDel:\nRequest: #{request_url}\nResponse: HTTP #{response.code}\n#{response.body}"

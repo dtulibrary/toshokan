@@ -240,7 +240,7 @@ class OrdersController < ApplicationController
       case delivery_status
       when :deliver
         logger.error "No 'url' parameter on delivery event for order #{@order.dibs_order_id}" unless params[:url]
-        is_redelivery = @order.delivery_status == :reordered
+        is_redelivery = [:reordered, :redelivery_requested].include? @order.delivery_status
 
         @order.order_events << OrderEvent.new(:name => is_redelivery ? 'redelivery_done' : 'delivery_done', :data => params[:url])
         @order.delivery_status = delivery_status
