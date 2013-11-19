@@ -4,7 +4,7 @@
 
     <dl>
     <%- @order.order_events.each do |event| %>
-      <% if can?(:reorder, Order) || !@restricted_events.include?(event.name) %>
+      <% if can?(:view, :extended_info) || !@restricted_events.include?(event.name) %>
           <dt><%= l event.created_at, :format => :long %></dt>
           <dd><%= t "toshokan.orders.events.#{event.name}" %></dd>
           <% unless event.data.blank? %>

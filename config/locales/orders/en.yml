@@ -18,6 +18,7 @@ en:
         delivery_cancelled: Article delivery cancelled
         delivery_confirmed: Article order confirmed
         delivery_done: Article delivered
+        redelivery_done: Article redelivered
         delivery_manual: Manual processing
         delivery_requested: Article ordered
         reordered: Article reordered

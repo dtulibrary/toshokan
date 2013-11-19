@@ -41,6 +41,7 @@ module PayIt
         Rails.logger.debug "DIBS responded with HTTP #{response.code}:\n#{response.body}"
         if response.code == 200 && response.body =~ /status=ACCEPTED/
           order.order_events << OrderEvent.new(:name => 'payment_captured')
+          order.payment_status = :payment_captured
           order.save!
         else
           Rails.logger.error "DIBS responded with HTTP #{response.code}:\n#{response.body}"

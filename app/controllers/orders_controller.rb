@@ -242,19 +242,21 @@ class OrdersController < ApplicationController
         logger.error "No 'url' parameter on delivery event for order #{@order.dibs_order_id}" unless params[:url]
         is_redelivery = @order.delivery_status == :reordered
 
-        @order.order_events << OrderEvent.new(:name => 'delivery_done', :data => params[:url])
+        @order.order_events << OrderEvent.new(:name => is_redelivery ? 'redelivery_done' : 'delivery_done', :data => params[:url])
         @order.delivery_status = delivery_status
         @order.delivered_at = Time.now
         @order.save!
-
+        
         SendIt.delay.send_delivery_mail @order, :url => params[:url], :order => {:status_url => order_status_url(@order.uuid)}
+        
+        # Do not send receipt mails to DTU staff or when order has been reordered
         unless (@order.user && @order.user.employee?) || is_redelivery
-          # Do not send receipt mails to DTU staff or when order has been reordered
           SendIt.delay.send_receipt_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
         end
 
         # Only capture amounts for orders that were paid for and that weren't reordered
         PayIt::Dibs.delay.capture @order if @order.payment_status && !is_redelivery
+
       when :confirm
         if @order.delivery_status == :reordered
           @order.order_events << OrderEvent.new(:name => 'reorder_confirmed')
@@ -262,8 +264,8 @@ class OrdersController < ApplicationController
           @order.order_events << OrderEvent.new(:name => 'delivery_confirmed')
         end
         @order.save!
-      when :cancel
 
+      when :cancel
         # Only cancel in DIBS if order was paid for
         PayIt::Dibs.delay.cancel @order if @order.payment_status
 

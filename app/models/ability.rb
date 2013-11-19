@@ -39,6 +39,7 @@ class Ability
       if user.roles.include? Role.find_by_code('SUP')
         can :switch, User if !user.impersonating?
         can :reorder, Order
+        can :view, :extended_info
       end
     end
 
