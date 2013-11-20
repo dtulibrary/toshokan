@@ -65,51 +65,12 @@
 
 }
 
-.advanced-search-link {
-  line-height: 30px;
-  margin-left: 0.5em;
-}
-
 #more_options_toggle {
   &.disabled {
     color: #999;
     cursor: default;
     text-decoration: none;
   }
-}
-
-.advanced-search {
-  margin-bottom: 20px;
-
-  input {
-    @include input-block-level;
-    margin: 0px 0px 5px 0px;
-  }
-
-  .btn-group {
-    margin-top: 5px;
-  }
-}
-
-.advanced-search-actions {
-  min-height: 20px;
-  padding: 19px;
-
-  h5 {
-    margin: 0px;
-    font-weight: normal;
-  }
-
-  a {
-    margin-left: 1em;
-    margin-top: -4px;
-    color: $dtu_red;
-
-    &:hover, &:active {
-      color: $dtu_red
-    }
-  }
-
 }
 
 .start-over-link {

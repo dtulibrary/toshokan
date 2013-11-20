@@ -1,32 +1,27 @@
 <%= form_tag search_action_url, :method => :get, :class => 'search-query-form form-inline clearfix' do %>
   <%= search_as_hidden_fields(:omit_keys => [:q, :search_field, :qt, :page, :ignore_search, :key]).html_safe %> 
 
-  <% unless session[:advanced_search] %>
-    <% unless search_fields.empty? %>
-      <div class="pull-left hide">
-        <label for="search_field" class="hide-text"><%= t('blacklight.search.form.search_field.label') %></label>
-        <%= select_tag(:search_field, options_for_select(search_fields, h(local_params[:search_field])), :title => t('blacklight.search.form.search_field.title'), :class=>"search_field input-small") %>
-        <span class="hide-text"><%= t('blacklight.search.form.search_field.post_label') %></span>
-      </div>
-    <% end %>
-    <div class="text-field-with-icons">
-      <div class="icons">
-        <a title="Show search help" id="toggle-search-syntax" href="#"><i class="icon-question-sign"></i></a>
-        <a title="Clear search field" id="search-clear" href="#"><i class="icon-remove"></i></a>
-        <a title="Undo clear" id="undo-clear" href="#" class="hide"><i class="icon-repeat"></i></a>
-        <a title="More options" id="more-options" href="#"><i class="icon-chevron-down"></i></a>
-        <a title="Less options" id="less-options" href="#" class="hide"><i class="icon-chevron-up"></i></a>
-      </div>
-      <%= text_field_tag :q, local_params[:q], :class => "search_q q", :id => "q"%>
-    </div>
-    <button type="submit" class="btn btn-primary search-btn" id="search">
-      <span class="submit-search-text hidden-tablet"><%=t('blacklight.search.form.submit')%></span>
-      <i class="icon-search hidden-desktop"></i>
-    </button>
-    <div class="hide">
-      <%= render_advanced_search_link t('toshokan.catalog.advanced_search') %>
+  <% unless search_fields.empty? %>
+    <div class="pull-left hide">
+      <label for="search_field" class="hide-text"><%= t('blacklight.search.form.search_field.label') %></label>
+      <%= select_tag(:search_field, options_for_select(search_fields, h(local_params[:search_field])), :title => t('blacklight.search.form.search_field.title'), :class=>"search_field input-small") %>
+      <span class="hide-text"><%= t('blacklight.search.form.search_field.post_label') %></span>
     </div>
   <% end %>
+  <div class="text-field-with-icons">
+    <div class="icons">
+      <a title="Show search help" id="toggle-search-syntax" href="#"><i class="icon-question-sign"></i></a>
+      <a title="Clear search field" id="search-clear" href="#"><i class="icon-remove"></i></a>
+      <a title="Undo clear" id="undo-clear" href="#" class="hide"><i class="icon-repeat"></i></a>
+      <a title="More options" id="more-options" href="#"><i class="icon-chevron-down"></i></a>
+      <a title="Less options" id="less-options" href="#" class="hide"><i class="icon-chevron-up"></i></a>
+    </div>
+    <%= text_field_tag :q, local_params[:q], :class => "search_q q", :id => "q"%>
+  </div>
+  <button type="submit" class="btn btn-primary search-btn" id="search">
+    <span class="submit-search-text hidden-tablet"><%=t('blacklight.search.form.submit')%></span>
+    <i class="icon-search hidden-desktop"></i>
+  </button>
 <% end %>
 <%= render 'catalog/search_help' %>
 <%= render 'catalog/search_options' %>

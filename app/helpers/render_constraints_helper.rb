@@ -14,20 +14,12 @@ module RenderConstraintsHelper
 
   def query_has_constraints?(localized_params = params)
     localized_params = search_params localized_params
-    super or !(localized_params[:t].blank?) or !(localized_params[:l].blank?) or query_has_advanced_search_constraints?(localized_params)
-  end
-
-  def query_has_advanced_search_constraints? localized_params = params
-    result = false
-    advanced_search_fields.each do |field_name, field|
-      result ||= !(localized_params[field_name].blank?)
-    end
-    result
+    super or !(localized_params[:t].blank?) or !(localized_params[:l].blank?)
   end
 
   def render_constraints(localized_params = params)
     localized_params = search_params localized_params
-    (render_constraints_filters(localized_params) + render_constraints_limits(localized_params) + render_constraints_tags(localized_params) + render_advanced_search_constraints(localized_params)).html_safe
+    (render_constraints_filters(localized_params) + render_constraints_limits(localized_params) + render_constraints_tags(localized_params)).html_safe
   end
 
   def render_constraints_limits(localized_params = params)
@@ -48,25 +40,6 @@ module RenderConstraintsHelper
     end
 
     return content.flatten.join("\n").html_safe
-  end
-
-  def render_advanced_search_constraints localized_params = params
-    content = []
-    advanced_search_fields.each do |field_name, field|
-      unless localized_params[field_name].blank?
-        content << render_advanced_search_constraint(field_name, params)
-      end
-    end
-    content.flatten.join("\n").html_safe
-  end
-
-  def render_advanced_search_constraint field_name, localized_params = params
-    logger.debug "field name = #{field_name}"
-    render_constraint_element(I18n.t("toshokan.catalog.search_field_labels.#{field_name}"), 
-      field_name == 'format' ? I18n.t("toshokan.catalog.formats.#{localized_params[field_name]}") : localized_params[field_name],
-      :remove => url_for(:controller => 'catalog', :action => 'index', :params => localized_params.reject { |k,v| k == field_name }),
-      :classes => ['filter']
-    )
   end
 
   def render_tag_element(tag_name, localized_params)

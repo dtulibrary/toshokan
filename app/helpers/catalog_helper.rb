@@ -3,15 +3,7 @@ module CatalogHelper
   include Blacklight::CatalogHelperBehavior
 
   def has_search_parameters? 
-    result = super || !params[:t].blank? || !params[:l].blank? || has_advanced_search_parameters?
-  end
-
-  def has_advanced_search_parameters? local_params = params || {}
-    result = false
-    advanced_search_fields.each do |field_name, field|
-      result ||= !local_params[field_name.to_sym].blank?
-    end
-    result
+    result = super || !params[:t].blank? || !params[:l].blank?
   end
 
   def add_access_filter solr_parameters = {}, user_parameters = {}
@@ -134,16 +126,6 @@ module CatalogHelper
   def render_affiliations args
     affiliations = args[:document][args[:field]]
     affiliations.collect { |affiliation| content_tag(:span, affiliation)}.join('<br>').html_safe
-  end
-
-  def render_advanced_search_link label = 'More options'
-    local_params = {}
-    advanced_search_fields.each do |field_name, field|
-      if params[field_name] && !params[field_name].blank?
-        local_params[field_name] = params[field_name]
-      end
-    end
-    link_to label, advanced_path(local_params), :id => 'more_options_toggle'
   end
 
   def render_journal_rank(document)

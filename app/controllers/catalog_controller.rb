@@ -10,10 +10,7 @@ class CatalogController < ApplicationController
 
   include TagsHelper
   include LimitsHelper
-  include AdvancedSearchHelper
   include TocHelper
-
-  before_filter :detect_search_mode
 
   self.solr_search_params_logic += [:add_tag_fq_to_solr]
   self.solr_search_params_logic += [:add_limit_fq_to_solr]
@@ -244,15 +241,6 @@ class CatalogController < ApplicationController
     display_format
   end
 
-  def advanced
-    session[:advanced_search] = true
-    index
-  end
-
-  def detect_search_mode
-    session[:advanced_search] ||= params[:advanced_search]
-    session.delete :advanced_search if params[:simple_search] || request.fullpath == '/'
-  end
 
   def index
     # Ensure that all responses that renders a search result has /(en|da)/catalog in the url
@@ -262,21 +250,12 @@ class CatalogController < ApplicationController
     end
 
     @display_format = current_display_format + '_index'
-    orig_q = params[:q];
-
-    params.merge! advanced_query_params if advanced_search?
 
     if params[:range] && params[:range][:pub_date_tsort]
       params[:range][:pub_date_tsort] = normalize_year_range(params[:range][:pub_date_tsort])
     end
 
     super
-
-    # Restore params
-    params[:q] = orig_q
-
-    # If user is in advanced search mode then show the advanced search form
-    render 'advanced' if !has_search_parameters? && advanced_search?
   end
 
   def show
@@ -284,10 +263,6 @@ class CatalogController < ApplicationController
     @display_format = current_display_format + '_show'
     
     @show_nal_locations = true
-
-    # TODO: Fix problem with nested queries getting dropped from search
-    #       when using the next and previous links on show page
-    params.merge! advanced_query_params if advanced_search?
 
     # override super#show to add access filters to request
     # and to add toc data to response
@@ -315,38 +290,6 @@ class CatalogController < ApplicationController
   def journal
     id = journal_id_for_issns(params[:issn]) or not_found
     redirect_to catalog_path :id => id, :key => params[:key], :ignore_search => params[:ignore_search]
-  end
-
-  # Definition of solr local parameter references that are not
-  # defined in the solr search handler used for searching.
-  # NOTE: These should NOT be prefixed by '$' here.
-  # TODO: As these go into solr config they should be removed from here
-  def solr_referenced_parameters
-    { 
-      'numbers_qf' => 'issn_ss isbn_ss doi_ss',
-      'journal_title_qf' => 'journal_title_ts'
-    }
-  end
-
-  def solr_search_params local_params = params || {}
-    result = super
-    user_queries = {}
-    advanced_search_fields.each do |field_name, field|
-      if local_params[field_name] && !local_params[field_name].blank?
-        user_queries[field_name] = local_params[field_name]
-      end
-    end
-    result.merge(user_queries).merge solr_referenced_parameters
-  end
-
-  def setup_document_by_counter counter
-    return if counter < 1
-
-    if has_advanced_search_parameters? session[:search]
-      get_single_doc_via_search counter, session[:search].merge(advanced_query_params session[:search])
-    else
-      super
-    end
   end
 
   # Saves the current search (if it does not already exist) as a models/search object

@@ -6,7 +6,6 @@ Toshokan::Application.routes.draw do
     Blacklight.add_routes(self)
     get   '/journal',                           :to => 'catalog#journal',               :as => 'catalog_journal'
     get   '/cover_images/:id',                  :to => 'cover_images#show',             :as => 'cover_images'
-    get   '/advanced',                          :to => 'catalog#advanced',              :as => 'advanced'
 
 
     # Authentication
