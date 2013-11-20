@@ -165,9 +165,7 @@ en:
         subtitle: Search millions of academic articles
         features:
           coverage: Complete coverage of published articles from all major STM publishers.
-          search:
-            dtu: Search 170 million articles, journals and books.
-            public: Search more than 70 million articles, journals and books.
+          search: Search %{count} articles, journals and books.
           download: Download full articles or order digital copies.
       no_hits:
         title: No results in DTU Findit
