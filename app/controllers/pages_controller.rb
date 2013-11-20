@@ -9,4 +9,8 @@ class PagesController < ApplicationController
     render("pages/searchbox_styled", :layout => "external_page")
   end
 
+  def about
+    render("pages/about")
+  end
+
 end
