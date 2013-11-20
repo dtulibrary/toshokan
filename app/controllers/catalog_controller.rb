@@ -230,7 +230,6 @@ class CatalogController < ApplicationController
     config.add_labeled_field :limit, 'toc', :helper_method => :toc_limit_display_value, :fields => ['toc_key_s']
     config.add_labeled_field :limit, 'author', :fields => ['author_ts', 'editor_ts', 'supervisor_ts']
     config.add_labeled_field :limit, 'subject', :fields => ['keywords_ts']
-
   end
 
   def current_display_format
@@ -245,8 +244,8 @@ class CatalogController < ApplicationController
   def index
     # Ensure that all responses that renders a search result has /(en|da)/catalog in the url
     # Why: because we want to disallow crawlers from search results but allow crawlers on the index page
-    unless (request.path == catalog_index_path) || params.except(:controller, :action, :locale).empty?
-      redirect_to catalog_index_path(params)
+    unless request.path.starts_with?(catalog_index_path) || params.except(:controller, :action, :locale).empty?
+      redirect_to catalog_index_path(params) and return
     end
 
     @display_format = current_display_format + '_index'
