@@ -124,7 +124,7 @@ class CatalogController < ApplicationController
     config.add_labeled_field :index, 'publisher_ts', :format => ['book', 'journal']
     config.add_labeled_field :index, 'abstract_ts', :helper_method => :snip_abstract
     config.add_labeled_field :index, 'issn_ss', :format => ['journal']
-    config.add_labeled_field :index, 'dissertation_date_ssf', :helper_method => :render_dissertation_date
+    config.add_labeled_field :index, 'dissertation_date_ssf', :helper_method => :render_dissertation_date, :format => ['thesis']
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display
@@ -147,7 +147,7 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'abstract_ts'
     config.add_labeled_field :show, 'keywords_ts', :helper_method => :render_keyword_links
     config.add_labeled_field :show, 'udc_ss'
-    config.add_labeled_field :show, 'dissertation_date_ssf', :helper_method => :render_dissertation_date
+    config.add_labeled_field :show, 'dissertation_date_ssf', :helper_method => :render_dissertation_date, :format => ['thesis']
     config.add_labeled_field :show, 'supervisor_ts', :helper_method => :render_author_links
 
     # "fielded" search configuration. Used by pulldown among other places.
