@@ -181,6 +181,7 @@ class OrdersController < ApplicationController
 
     if !@order.payment_status
       @order.payment_status = :cancelled
+      @order.delivery_status = :cancelled
       @order.order_events << OrderEvent.new(:name => :payment_cancelled)
       @order.save!
       session.delete :order
@@ -268,18 +269,19 @@ class OrdersController < ApplicationController
       when :cancel
         # Only cancel in DIBS if order was paid for
         PayIt::Dibs.delay.cancel @order if @order.payment_status
+        @order.delivery_status = :cancelled
 
-        if @order.user.dtu? && @order.user.employee?
+        if @order.user && @order.user.dtu? && @order.user.employee?
           @order.order_events << OrderEvent.new(:name => 'delivery_manual')
-          @order.save!
 
           # Send mail to delivery support 
           SendIt.delay.send_failed_automatic_request_mail @order, params[:reason]
         else
           @order.order_events << OrderEvent.new(:name => 'delivery_cancelled')
-          @order.save!
           SendIt.delay.send_cancellation_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
         end
+
+        @order.save!
       end
 
       head :ok
@@ -297,7 +299,7 @@ class OrdersController < ApplicationController
   def reorder
     order = Order.find_by_uuid params[:uuid]
 
-    if can? :reorder, Order
+    if can?(:reorder, Order) && !order.cancelled?
       if order
         DocDel.delay.request_delivery order, order_delivery_url(order.uuid), :timecap_base => Time.now.iso8601 if DocDel.enabled?
         order.delivery_status = :reordered      

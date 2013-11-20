@@ -23,7 +23,7 @@
     <%- end -%>
     </dl>
 
-    <% if can? :reorder, Order %>
+    <% if can?(:reorder, Order) && !@order.cancelled? %>
       <p><%= link_to t('toshokan.orders.reorder'), order_reorder_path(@order.uuid) %></p>
     <% end %>
   </div>

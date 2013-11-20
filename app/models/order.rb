@@ -83,4 +83,8 @@ class Order < ActiveRecord::Base
   def drm?
     !(user && user.dtu?)
   end
+
+  def cancelled?
+    delivery_status == :cancelled
+  end
 end
