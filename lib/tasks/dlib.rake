@@ -80,11 +80,16 @@ def create_bookmark_and_tags(user, record, solr)
 end
 
 def get_document_for_record(record, solr)
-  record_id = record[:id].downcase
+  record_id  = record[:id].downcase
+  cluster_id = record[:dedup]
   tags      = record[:tags]
   fq = case record[:type]
        when 'article'
-         ["member_id_ss:#{record_id}"]
+         if cluster_id.blank?
+           ["member_id_ss:#{record_id}"]
+         else
+           ["cluster_id_ss:#{cluster_id}"]
+         end
        when 'journal'
          ["issn_ss:#{record_id}", "format:journal"]
        when 'book'
@@ -118,7 +123,7 @@ def create_saved_searches(user, searches, saved, alerted)
     unless disallowed_syntax(search["query"])
   
       params = {}
-      params[:q] = transform_syntax(search["query"])
+      params[:q] = search["transformed_query"] = transform_syntax(search["query"])
 
       if search["type"] != "all"
         # remove plural from type (articles => article)
@@ -148,10 +153,15 @@ def disallowed_syntax(query)
 end
 
 def transform_syntax(query)
-  # remove exact match
-  query.gsub!(/(journaltitle|jo)=/, '\1:')
-
+  # replace exact search
+  # replace single character wildcard with truncation
+  # replace plus characters
+  # remove truncation at end of word
   query
+    .gsub(/(journaltitle|jo)=/, '\1:')
+    .gsub(/\?/, '*')
+    .gsub(/\+/, ' ')
+    .gsub(/([[[:word:]]])\*([^[[:word:]]]|$)/, '\1\2')
 end
 
 def create_journal_alert(user, dlib_alert, solr)
