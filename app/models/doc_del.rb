@@ -29,7 +29,7 @@ class DocDel
       order.delivery_status = is_redelivery ? :redelivery_requested : :delivery_requested
       order.save!
     else
-      Rails.logger.error "Error communicating with DocDel:\nRequest: #{request_url}\nResponse: HTTP #{response.code}\n#{response.body}"
+      Rails.logger.error "Error communicating with DocDel for order #{order.dibs_order_id}:\nResponse: HTTP #{response.code}\nResponse body:\n#{response.body}"
       raise "Error communicating with DocDel"
     end
   end
