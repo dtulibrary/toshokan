@@ -77,6 +77,15 @@ class ApplicationController < ActionController::Base
     redirect_to new_user_session_path(params)
   end
 
+  def require_authentication
+    logger.info "Require authentication for params:#{params}. cookies[:shunt]:#{cookies[:shunt]}, cookies[:shunt_hint]:#{cookies[:shunt_hint]}"
+    if cookies[:shunt]
+      force_authentication
+    else
+      redirect_to authentication_required_path(:url => request.url, :dlib => params[:dlib])
+    end
+  end
+
   # Disable rendering the searchbar in the header
   def disable_header_searchbar
     @disable_header_searchbar = true

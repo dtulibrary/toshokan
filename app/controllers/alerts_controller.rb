@@ -49,7 +49,7 @@ class AlertsController < ApplicationController
   private
 
   def require_alert_ability
-    not_found unless can? :alert, :journal
+    require_authentication unless can? :alert, :journal
   end
 
 end

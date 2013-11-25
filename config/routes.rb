@@ -64,6 +64,7 @@ Toshokan::Application.routes.draw do
     # Semi-static pages
     get   '/pages/searchbox',                   :to => 'pages#searchbox',               :as => 'searchbox'
     get   '/pages/search_homepage',             :to => 'pages#searchbox_styled',        :as => 'searchbox_styled'
+    get   '/pages/authentication_required',     :to => 'pages#authentication_required', :as => 'authentication_required'
     get   '/about',                             :to => 'pages#about'
 
 

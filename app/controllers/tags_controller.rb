@@ -70,7 +70,7 @@ class TagsController < ApplicationController
   private
 
   def require_tag_ability
-    not_found unless can? :tag, Bookmark
+    require_authentication unless can? :tag, Bookmark
   end
 
 end

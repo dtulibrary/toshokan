@@ -146,7 +146,7 @@ class SearchHistoryController < ApplicationController
   private
 
   def require_search_history_ability
-    not_found unless can? :view, :search_history
+    require_authentication unless can? :view, :search_history
   end
 
   # define/alias methods so that pagination (on a Solr result) on search page can be reused
