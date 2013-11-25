@@ -156,21 +156,21 @@ def transform_syntax(query)
   # replace exact search
   # replace single character wildcard with truncation
   # replace plus characters
-  # remove truncation at end of word
+  # don't(!) remove truncation at end of word
   query
     .gsub(/(journaltitle|jo)=/, '\1:')
     .gsub(/\?/, '*')
     .gsub(/\+/, ' ')
-    .gsub(/([[[:word:]]])\*([^[[:word:]]]|$)/, '\1\2')
+    #.gsub(/([[[:word:]]])\*([^[[:word:]]]|$)/, '\1\2')
 end
 
 def create_journal_alert(user, dlib_alert, solr)
   
   result = solr.toshokan(
-    :params => {:q => dlib_alert['issn'].to_s, :fl => 'title_ts', :fq => ['format:journal', 'access_ss:dtu'], :rows => 1, :facet => false})
+    :params => {:q => dlib_alert['issn'].to_s.downcase, :fl => 'title_ts', :fq => ['format:journal', 'access_ss:dtu'], :rows => 1, :facet => false})
 
   if result['response']['numFound'] > 0 
-    params = {:query => dlib_alert['issn'], :name => result['response']['docs'].first['title_ts'].first}
+    params = {:query => dlib_alert['issn'].to_s.downcase, :name => result['response']['docs'].first['title_ts'].first}
     alert = Alert.new(params, user)
     if !alert.save
       puts "Could not save alert #{alert.inspect}"
