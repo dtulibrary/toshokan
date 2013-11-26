@@ -114,6 +114,7 @@ class CatalogController < ApplicationController
     #   The ordering of the field names is the order of the display
     config.add_labeled_field :index, 'author_ts', :helper_method => :render_shortened_author_links
     config.add_labeled_field :index, 'journal_title_ts', :format => ['article'], :helper_method => :render_journal_info_index
+    config.add_labeled_field :index, 'conf_title_ts', :format => ['article'], :helper_method => :render_conference_info_index, :suppressed_by => ['journal_title_ts']
     config.add_labeled_field :index, 'pub_date_tis', :format => ['book']
     config.add_labeled_field :index, 'journal_page_ssf', :format => ['book']
     config.add_labeled_field :index, 'format', :helper_method => :render_type

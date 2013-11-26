@@ -143,6 +143,12 @@ module CatalogHelper
     end
   end
 
+  def render_conference_info_index args
+    (args[:document][args[:field]].first + ', ' + 
+      render_journal_info(args[:document], :index) + 
+      render_journal_page_info(args[:document], :index)).html_safe
+  end
+
   def normalize_year year, forward_delta = 2, current_year = Time.now.year
     if year < 100
       current_century = current_year - (current_year % 100)
