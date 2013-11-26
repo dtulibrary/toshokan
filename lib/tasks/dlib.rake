@@ -133,15 +133,29 @@ def create_saved_searches(user, searches, saved, alerted)
       # hack to not set default search_field keyword      
       params[:search_field] = "all_fields"
 
+      # set blacklight params
+      params[:locale] = "en"
+      params[:controller] = "catalog"
+      params[:action] = "index"
+
       new_search = Search.create(:query_params => params)      
       if search.has_key?("title") && search["title"] != search["query"]
         new_search.title = search["title"]
       end
-      
-      # TODO should controller, action and locale be set?
+            
       new_search.saved = saved
-      new_search.alerted = alerted
-      user.searches << new_search
+            
+      if alerted
+        params = {:alert_type => "search", :query => new_search.query_params, :reference => new_search.id}
+        alert = Alert.new(params, user)
+        if alert.save
+          new_search.alerted = alerted
+        else 
+          puts "Could not save alert #{alert.inspect}"
+        end        
+      end
+        
+      user.searches << new_search  
     end
   end    
   user.save
