@@ -151,7 +151,7 @@ module CatalogHelper
 
   def render_conference_info_show args
     if args[:document]['journal_title_ts']
-      args[:document][args[:field]].html_safe
+      args[:document][args[:field]].first.html_safe
     else
       render_conference_info_index args
     end

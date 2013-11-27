@@ -222,6 +222,7 @@ en:
         abstract_ts: 'Abstract'
         affiliation_ts: 'Affiliations'
         author_ts: 'Authors'
+        editor_ts: 'Editors'
         doi_ss: 'DOI'
         format: 'Format'
         isbn_ss: 'ISBN'
