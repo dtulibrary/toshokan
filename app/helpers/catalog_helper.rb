@@ -144,9 +144,17 @@ module CatalogHelper
   end
 
   def render_conference_info_index args
-    (args[:document][args[:field]].first + ', ' + 
+    (args[:document][args[:field]].first + ' &mdash; ' + 
       render_journal_info(args[:document], :index) + 
       render_journal_page_info(args[:document], :index)).html_safe
+  end
+
+  def render_conference_info_show args
+    if args[:document]['journal_title_ts']
+      args[:document][args[:field]].html_safe
+    else
+      render_conference_info_index args
+    end
   end
 
   def normalize_year year, forward_delta = 2, current_year = Time.now.year

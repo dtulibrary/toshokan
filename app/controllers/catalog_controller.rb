@@ -135,7 +135,7 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'pub_date_tis', :format => ['book']
     config.add_labeled_field :show, 'journal_page_ssf', :format => ['book']
     config.add_labeled_field :show, 'journal_title_ts', :format => ['article'], :helper_method => :render_journal_info_show
-    config.add_labeled_field :show, 'conf_title_ts'
+    config.add_labeled_field :show, 'conf_title_ts', :helper_method => :render_conference_info_show
     config.add_labeled_field :show, 'format', :helper_method => :render_type
     config.add_labeled_field :show, 'publisher_ts'
     config.add_labeled_field :show, 'isbn_ss'

@@ -68,14 +68,21 @@ module BlacklightHelper
     render :partial => 'catalog/search_form', :locals => {:local_params => local_params}
   end
 
-  # Extended to support rendering of a field being suppressed by the presence of another field.
   def should_render_index_field? document, solr_field
+    !field_suppressed?(document, solr_field) && super
+  end
+
+  def should_render_show_field? document, solr_field
+    !field_suppressed?(document, solr_field) && super
+  end
+
+  def field_suppressed? document, solr_field
     suppressed = false
     if solr_field.suppressed_by
       solr_field.suppressed_by.each do |field_name|
         suppressed ||= document[field_name]
       end
     end
-    !suppressed && super
+    suppressed
   end
 end
