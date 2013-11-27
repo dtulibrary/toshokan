@@ -35,9 +35,9 @@ describe TagsController do
     end
 
     context 'without ability to tag' do
-      it 'returns an HTTP 404' do
+      it 'redirects to Authentication Required' do
         get :manage
-        response.response_code.should == 404
+        response.should redirect_to authentication_required_url(:url => manage_tags_url)
       end
     end
   end
@@ -55,9 +55,9 @@ describe TagsController do
     end
 
     context 'without ability to tag' do
-      it 'returns an HTTP 404' do
+      it 'redirects to Authentication Required' do
         get :new, document_id: existing_bookmark.document_id
-        response.response_code.should == 404
+        response.should redirect_to authentication_required_url(:url => new_document_tag_url)
       end
     end
   end
@@ -103,9 +103,9 @@ describe TagsController do
     end
 
     context 'without ability to tag' do
-      it 'returns an HTTP 404' do
+      it 'redirects to Authentication Required' do
         post :create, document_id: existing_bookmark.document_id, tag_name: 'the_tag', return_url: root_path
-        response.response_code.should == 404
+        response.should be_redirect
       end
     end
   end
@@ -152,17 +152,17 @@ describe TagsController do
         end
 
         context 'when tag does not exist' do
-          it 'returns an HTTP 404' do
+          it 'is not found' do
             post :destroy, :id => 12345, :return_url => root_path
-            response.response_code.should == 404
+            response.should be_not_found
           end
         end
       end
 
       context 'without ability to tag' do
-        it 'returns an HTTP 404' do
+        it 'redirects to Authentication Required' do
           post :destroy, :id => 12345, :return_url => root_path
-          response.response_code.should == 404
+          response.should be_redirect
         end
       end
     end
@@ -191,18 +191,18 @@ describe TagsController do
         end
 
         context 'when tag does not exist' do
-          it 'returns an HTTP 404' do
+          it 'is not found' do
             get :edit, :id => '12345'
-            response.response_code.should == 404
+            response.should be_not_found
           end
         end
 
       end
 
       context 'without ability to tag' do
-        it 'returns an HTTP 404' do
+        it 'redirects to Authentication Required' do
           get :edit, :id => '12345'
-          response.response_code.should == 404
+          response.should be_redirect
         end
       end
     end
@@ -249,25 +249,25 @@ describe TagsController do
           end
 
           context 'without tag_name parameter' do
-            it 'returns an HTTP 404' do
+            it 'redirects to Authentication Required' do
       	      put :update, :id => tag.id
-              response.response_code.should == 404
+              response.should be_not_found
             end
           end
         end
 
         context 'when tag does not exist' do
-          it 'returns an HTTP 404' do
+          it 'is not found' do
             put :update, :id => '12345'
-            response.response_code.should == 404
+            response.should be_not_found
           end
         end
       end
 
       context 'without ability to tag' do
-        it 'returns an HTTP 404' do
+        it 'redirects to Authentication Required' do
           put :update, :id => '12345'
-          response.response_code.should == 404
+          response.should be_redirect
         end
       end
     end

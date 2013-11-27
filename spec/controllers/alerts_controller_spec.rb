@@ -57,9 +57,9 @@ describe AlertsController do
     end
 
     context "without ability to alert" do
-      it "returns 404" do
+      it "redirects to Authentication Required" do
         get :index
-        response.response_code.should == 404
+        response.should redirect_to authentication_required_url(:url => alerts_url)
       end
     end
   end
@@ -104,9 +104,9 @@ describe AlertsController do
     end
 
     context "without ability to alert" do
-      it "returns 404" do
+      it 'redirects to Authentication Required' do
         get :show, id: 1
-        response.response_code.should == 404
+        response.should redirect_to authentication_required_url(:url => alert_url(:id => 1))
       end
     end
   end
@@ -131,9 +131,9 @@ describe AlertsController do
     end
 
     context "without ability to alert" do
-      it "returns 404" do
+      it 'redirects to Authentication Required' do
         post :create, alert: nil
-        response.response_code.should == 404
+        response.should be_redirect
       end
     end    
   end
@@ -163,9 +163,9 @@ describe AlertsController do
     end
 
     context 'without ability to alert' do
-      it 'returns an HTTP 404' do
+      it 'redirects to Authentication Required' do
         delete :destroy, :id => 12345
-        response.response_code.should == 404
+        response.should be_redirect
       end
     end
   end

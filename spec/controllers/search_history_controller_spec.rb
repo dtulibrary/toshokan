@@ -31,9 +31,9 @@ describe SearchHistoryController do
     end
 
     context "without ability to view search history" do
-      it "returns 404" do
+      it 'redirects to Authentication Required' do
         get :index
-        response.response_code.should == 404
+        response.should redirect_to authentication_required_url(:url => search_history_url)
       end
     end
   end
@@ -53,9 +53,9 @@ describe SearchHistoryController do
     end
 
     context "without ability to view search history" do
-      it "returns 404" do
+      it 'redirects to Authentication Required' do
         post :save, :id => 1
-        response.response_code.should == 404
+        response.should be_redirect
       end
     end
   end
@@ -75,9 +75,9 @@ describe SearchHistoryController do
     end
 
     context "without ability to view search history" do
-      it "returns 404" do
+      it 'redirects to Authentication Required' do
         delete :forget, :id => 1
-        response.response_code.should == 404
+        response.should be_redirect
       end
     end
   end
@@ -105,9 +105,9 @@ describe SearchHistoryController do
     end
 
     context "without ability to view search history" do
-      it "returns 404" do
+      it 'redirects to Authentication Required' do
         put :alert, :id => 1
-        response.response_code.should == 404
+        response.should be_redirect
       end
     end
   end
@@ -136,9 +136,9 @@ describe SearchHistoryController do
     end
 
     context "without ability to view search history" do
-      it "returns 404" do
+      it 'redirects to Authentication Required' do
         delete :forget_alert, :id => 1
-        response.response_code.should == 404
+        response.should be_redirect
       end
     end
   end
@@ -166,9 +166,9 @@ describe SearchHistoryController do
     end
 
     context "without ability to view search history" do
-      it "returns 404" do
+      it 'redirects to Authentication Required' do
         delete :destroy, :id => 1
-        response.response_code.should == 404
+        response.should be_redirect
       end
     end
   end
