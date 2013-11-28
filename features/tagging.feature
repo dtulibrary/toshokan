@@ -24,10 +24,14 @@ Scenario: Bookmarking a document in document view
      And I bookmark the document
     Then the document should be bookmarked
 
-Scenario: Filtering by "All" should list bookmarked documents
+Scenario: Filtering by All should list bookmarked documents
     When I bookmark the document with title "A cohomology theory for colored tangles"
      And I filter by tag "All"
     Then I should see "A cohomology theory for colored tangles"
+
+Scenario: Filtering by All when no documents are bookmarked should render 'No hits for tag'
+    When I filter by tag "All"
+    Then I should see "No saved references match the filter(s) you applied."
 
 Scenario: Bookmark constraints should be displayed above the search result
     When I bookmark the document with title "A cohomology theory for colored tangles"

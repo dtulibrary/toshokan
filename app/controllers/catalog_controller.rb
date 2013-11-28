@@ -249,6 +249,11 @@ class CatalogController < ApplicationController
       redirect_to catalog_index_path(params) and return
     end
 
+    # Require authentication if request has tag parameters
+    if any_tag_in_params?
+      require_authentication unless can? :tag, Bookmark
+    end
+
     @display_format = current_display_format + '_index'
 
     if params[:range] && params[:range][:pub_date_tsort]

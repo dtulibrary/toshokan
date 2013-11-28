@@ -200,6 +200,9 @@ en:
           dtu: "Please select the type of material you are looking for:"
           non_dtu_html: <a href="http://www.dtic.dtu.dk/english/servicemenu/find/industry_public" target="_blank">Learn about the DTU Library Corporate service</a>
           looking_for: I am looking for a
+        tags:
+          title: No saved references match the filter(s) you applied.
+          broaden_html: Please remove <b>Bookmarks</b> or <b>Tag</b> filter(s) below the search box to expand your search.
       display_formats:
         standard_index: 'Standard'
         standard_show: 'Standard'

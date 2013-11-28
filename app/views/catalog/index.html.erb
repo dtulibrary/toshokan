@@ -21,7 +21,11 @@
             <%= render :partial => 'did_you_mean' %>
 
       <% if @document_list.empty? %>
-        <%= render 'no_hits' %>
+        <% if any_tag_in_params? %>
+          <%= render 'no_hits_for_tag' %>
+        <% else %>
+          <%= render 'no_hits' %>
+        <% end %>
       <% else %>
         <h2 class="hide-text"><%= t('blacklight.search.search_results') %></h2>
         <%= render_document_index %>
