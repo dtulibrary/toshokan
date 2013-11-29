@@ -14,6 +14,21 @@ class OrdersController < ApplicationController
   # - Make more user friendly error screens
   # - Put more of the logic into model objects where appropriate
 
+  def index
+    if can? :view_any, Order
+      @orders = Order.order('created_at desc').page(params[:page] || 1).per(50)
+      @display_order = @orders.collect {|o| o.created_at.to_date}.uniq
+      @orders_by_date = {}
+      @orders.each do |order|
+        date = order.created_at.to_date
+        @orders_by_date[date] ||= []
+        @orders_by_date[date] << order
+      end
+    else
+      not_found
+    end
+  end
+
   # Create a new order based on URL parameters "open_url" and "supplier"
   def new 
     # User might have logged in or out on any of the order creation pages

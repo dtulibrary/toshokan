@@ -41,6 +41,7 @@ en:
         yes_please_non_dtu_html: Yes please &mdash; I'm not from DTU. 
         yes_please_dtu_html: Yes please &mdash; I'm from DTU.
         no_thanks: "No thanks."
+      orders: "Orders"
     tags:
       all: "All"
       untagged: "Untagged"
@@ -242,6 +243,8 @@ en:
         conf_title_ts: 'Proceedings'
         subtitle_ts: 'Subtitle'
         journal_page_ssf: 'Pages'
+        journal_vol_ssf: 'Volume'
+        journal_issue_ssf: 'Issue'
         dissertation_date_ssf: 'Dissertation date'
         supervisor_ts: "Supervisors"
       facet_field_labels:

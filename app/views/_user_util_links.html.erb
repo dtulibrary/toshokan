@@ -86,6 +86,14 @@
             <% end %>
           </li>
         <% end %>
+        <% if can? :view_any, Order %>
+          <li>
+            <%= link_to orders_path do %>
+              <i class="icon-time"></i> <%= t 'toshokan.header_links.orders' %>
+            <% end %>
+          </li>
+        <% elsif can? :view, Order %>
+        <% end %>
         <% if can? :logout, User %>
           <li>
             <%= link_to destroy_user_session_path(:return_url => root_path) do %>

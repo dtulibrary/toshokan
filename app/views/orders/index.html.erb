@@ -1,0 +1,80 @@
+<div class="order">
+  <div class="span3">
+    <h4>Orders</h4>
+  </div>
+  <div class="span9">
+    <%= paginate @orders %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Order info</th>
+          <th>Article</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @display_order.each do |date| %>
+          <tr>
+            <td style="background: whitesmoke" class="dtu-grey" colspan="2">
+              <%= l date.to_date, :format => :long %>
+            </td>
+          </tr>
+          <% @orders_by_date[date].each do |order| %>
+            <tr>
+              <td>
+                <%= link_to order.dibs_order_id, order_status_path(order.uuid), :title => 'Go to order status page' %>
+                <% if order.payment_status %>
+                  <span style="background: #ff9">DIBS transaction</span>
+                <% end %>
+                <br>
+                <div class="dtu-grey" style="font-size: 0.8em">
+                  <%= order.email %>
+                  <% if order.user %>
+                    <% if order.user.dtu? %>
+                      <% if order.user.employee? %>
+                        (DTU employee: CWIS: <%= order.user.user_data['dtu']['matrikel_id'] %>)
+                      <% elsif order.user.student? %>
+                        (DTU student: CWIS: <%= order.user.user_data['dtu']['matrikel_id'] %>)
+                      <% end %>
+                    <% else %>
+                      (Public user: ID: <%= order.user.identifier %>)
+                    <% end %>
+                  <% else %>
+                    (Anonymous user)
+                  <% end %>
+                  <br>
+                  <%= l order.created_at, :format => :long %><br>
+                  <% order.order_events.each do |order_event| %>
+                    <% if order_event.name == 'delivery_done' %>
+                      <span class="dtu-grey"><%= order_event.data %></span>
+                    <% end %>
+                  <% end %>
+                </div>
+              </td>
+              <td>
+                <span><%= order.document['title_ts'].first %></span>
+                <div class="dtu-grey" style="font-size: 0.8em">
+                  <% unless order.document['author_ts'].blank? %>
+                    By <%= order.document['author_ts'].first %><br>
+                  <% end %>
+                  <% unless order.document['journal_title_ts'].blank? %>
+                    In <i style="text-transform: uppercase"><%= order.document['journal_title_ts'].first %></i>
+                    <% unless ['pub_date_tis', 'journal_vol_ssf', 'journal_issue_ssf', 'journal_page_ssf']
+                                .all? {|s| order.document[s].blank?} %>
+                      &mdash;
+                      <%= ['journal_vol_ssf', 'journal_issue_ssf', 'journal_page_ssf']
+                            .reject {|s| order.document[s].blank?}
+                            .collect {|s| "#{t "toshokan.catalog.show_field_labels.#{s}"} #{order.document[s].first}"}
+                            .join ', ' %>
+                    <% end %>
+                    <br>
+                  <% end %>
+                </div>
+              </td>
+            </li>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @orders %>
+  </div>
+</div>

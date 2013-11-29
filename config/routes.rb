@@ -18,7 +18,7 @@ Toshokan::Application.routes.draw do
 
 
     # Orders
-    resources :orders, :only => [:new, :create, :update]
+    resources :orders, :only => [:index, :new, :create, :update]
     get  '/orders/:uuid/status',                :to => 'orders#status',                 :as => 'order_status'
     get  '/orders/:uuid/reorder',               :to => 'orders#reorder',                :as => 'order_reorder'
     post '/orders/:uuid/cancel',                :to => 'orders#cancel',                 :as => 'order_cancel'   # DIBS callback
