@@ -8,7 +8,6 @@ task :import_from_dlib, [:filename] => :environment do |t, args|
   # connect to solr
   solr = RSolr.connect(Blacklight.solr_config)
 
-    begin
       # process data
       dlib.each do |cwis, data|
       ActiveRecord::Base.transaction do
@@ -41,9 +40,8 @@ task :import_from_dlib, [:filename] => :environment do |t, args|
           create_journal_alert(user, alert, solr)
         end
       end
-      File.open('result.yaml', 'w') { |f| f.write dlib.to_yaml }
-    end
   end
+  File.open('result.yaml', 'w') { |f| f.write dlib.to_yaml }
 end
 
 def load_user_data(path)
