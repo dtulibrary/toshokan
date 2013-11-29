@@ -8,10 +8,10 @@ task :import_from_dlib, [:filename] => :environment do |t, args|
   # connect to solr
   solr = RSolr.connect(Blacklight.solr_config)
 
-  ActiveRecord::Base.transaction do
     begin
       # process data
       dlib.each do |cwis, data|
+      ActiveRecord::Base.transaction do
         puts "Processing data for user #{cwis}"
 
         user = ensure_user_exists(cwis)
