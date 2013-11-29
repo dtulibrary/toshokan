@@ -82,7 +82,11 @@ module CatalogHelper
   end
 
   def render_journal_page_info document, format
-    ", #{I18n.t('toshokan.catalog.toc.page')} #{document['journal_page_ssf'].first}" if document['journal_page_ssf']
+    if document['journal_page_ssf']
+      ", #{I18n.t('toshokan.catalog.toc.page')} #{document['journal_page_ssf'].first}"
+    else
+      ''
+    end
   end
 
   def render_doi_link args
