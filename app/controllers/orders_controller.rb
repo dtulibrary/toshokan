@@ -15,7 +15,7 @@ class OrdersController < ApplicationController
   # - Put more of the logic into model objects where appropriate
 
   def index
-    not_found unless can? :view, Order
+    not_found # unless can? :view, Order
 
     @orders = Order.order('created_at desc')
 
