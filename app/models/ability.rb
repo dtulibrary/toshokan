@@ -5,7 +5,7 @@ class Ability
     # Apply abilities based on whether user is logged in or not
     if user.authenticated?
       can :logout, User
-      can :view,   :search_history
+      can :view,   [:search_history, Order]
       can :tag,    [Bookmark, Search]
       can :alert,  [:journal, Search]
     else

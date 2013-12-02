@@ -15,17 +15,60 @@ class OrdersController < ApplicationController
   # - Put more of the logic into model objects where appropriate
 
   def index
-    if can? :view_any, Order
-      @orders = Order.order('created_at desc').page(params[:page] || 1).per(50)
-      @display_order = @orders.collect {|o| o.created_at.to_date}.uniq
-      @orders_by_date = {}
-      @orders.each do |order|
-        date = order.created_at.to_date
-        @orders_by_date[date] ||= []
-        @orders_by_date[date] << order
+    not_found unless can? :view, Order
+
+    @orders = Order.order('created_at desc')
+
+    unless can? :view_any, Order
+      @orders = @orders.where('user_id = ?', current_user.id)
+    end
+
+    # Translate query and facet fields to valid model fields/functions
+    sql_map = {
+      :date      => 'date(created_at)',
+      :q_email   => 'email',
+      :q_orderid => 'id',
+    }
+
+    # Translate certain query params to the form used in the model
+    value_map = {
+      :q_orderid => lambda {|v| %r{^#{Orders.order_id_prefix}0*(\d+)$}.match(v).try :[], 1},
+    }
+
+    # Apply query params.
+    # Don't wrap value in "%...%" for values returned by a value mapper.
+    [:q_email, :q_orderid].each do |q|
+      if params[q] && !params[q].blank?
+        value = params[q].strip
+        @orders = @orders.where "#{sql_map[q] || q} LIKE '#{(value_map[q] && value_map[q].(params[q])) || "%#{params[q]}%"}'"
       end
-    else
-      not_found
+    end
+
+    @filter_queries = {}
+
+    # Apply filter queries
+    [:email, :date].each do |facet|
+      if params[facet] && !params[facet].blank?
+        @orders = @orders.where "#{sql_map[facet] || facet} = '#{params[facet]}'"
+        @filter_queries[facet] = params[facet]
+      end
+    end
+
+    # Create facets
+    @facets = {
+      :email => @orders.group('email').reorder('email asc').count,
+      :date  => @orders.group('date(created_at)').limit(30).count,
+    }.reject {|k,v| v.size < 2 && !v.keys.include?(params[k])}
+
+    @orders         = @orders.page(params[:page] || 1).per(50)
+    @display_order  = @orders.collect {|o| o.created_at.to_date}.uniq
+    @orders_by_date = {}
+
+    # Group orders by date
+    @orders.each do |order|
+      date = order.created_at.to_date
+      @orders_by_date[date] ||= []
+      @orders_by_date[date] << order
     end
   end
 

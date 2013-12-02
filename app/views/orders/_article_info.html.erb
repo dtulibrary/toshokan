@@ -1,0 +1,18 @@
+<span><%= order.document['title_ts'].first %></span>
+<div class="dtu-grey" style="font-size: 0.8em">
+  <% unless order.document['author_ts'].blank? %>
+    By <%= order.document['author_ts'].first %><br>
+  <% end %>
+  <% unless order.document['journal_title_ts'].blank? %>
+    In <i style="text-transform: uppercase"><%= order.document['journal_title_ts'].first %></i>
+    <% unless ['pub_date_tis', 'journal_vol_ssf', 'journal_issue_ssf', 'journal_page_ssf']
+                .all? {|s| order.document[s].blank?} %>
+      &mdash;
+      <%= ['journal_vol_ssf', 'journal_issue_ssf', 'journal_page_ssf']
+            .reject {|s| order.document[s].blank?}
+            .collect {|s| "#{t "toshokan.catalog.show_field_labels.#{s}"} #{order.document[s].first}"}
+            .join ', ' %>
+    <% end %>
+    <br>
+  <% end %>
+</div>

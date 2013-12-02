@@ -1,80 +1,81 @@
 <div class="order">
-  <div class="span3">
-    <h4>Orders</h4>
+  <div id="sidebar" class="span3">
+    <h5 style="margin: 8px 15px">Find orders</h5>
+    <div class="well" style="padding: 15px">
+      <form class="clearfix">
+        <% if can? :view_any, Order %>
+          <label for="q_email">Email</label>
+          <input class="input-block-level" type="text" id="q_email" name="q_email" value="<%= params[:q_email] %>">
+        <% end %>
+        <label for="q_orderid">Order ID</label>
+        <input class="input-block-level" type="text" id="q_orderid" name="q_orderid" value="<%= params[:q_orderid] %>">
+        <button class="btn btn-primary pull-right">Search</button>
+      </form>
+    </div>
+    <% unless @facets.empty? %>
+      <h5 style="margin: 8px 15px">Filter result</h5>
+      <div id="facets" class="facets sidenav">
+        <div class="facets-collapse">
+          <% @facets.each do |type, values| %>
+            <div class="facet_limit blacklight-format">
+              <h5 class="twiddle">
+                <%= t "toshokan.orders.facets.#{type}" %>
+                <i class="icon-chevron"></i>
+              </h5>
+              <ul>
+                <% values.each do |term, count| %>
+                  <% if @filter_queries[type] == term %>
+                    <li>
+                      <%= term %> <%= link_to '<i class="icon-remove"></i>'.html_safe, orders_path(@filter_queries.except type) %> 
+                      <span class="count"><%= count %></span>
+                    </li>
+                  <% else %>
+                    <li>
+                      <%= link_to term, orders_path(@filter_queries.merge type => term), :class => 'facet_select' %>
+                      <span class="count"><%= count %></span>
+                    </li>
+                  <% end %>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
   <div class="span9">
-    <%= paginate @orders %>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Order info</th>
-          <th>Article</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @display_order.each do |date| %>
+    <% if @orders.empty? %>
+      There are no orders that match your query.
+    <% else %>
+      <%= paginate @orders %>
+      <table class="table">
+        <thead>
           <tr>
-            <td style="background: whitesmoke" class="dtu-grey" colspan="2">
-              <%= l date.to_date, :format => :long %>
-            </td>
+            <th>Order info</th>
+            <th>Article</th>
           </tr>
-          <% @orders_by_date[date].each do |order| %>
+        </thead>
+        <tbody>
+          <% @display_order.each do |date| %>
             <tr>
-              <td>
-                <%= link_to order.dibs_order_id, order_status_path(order.uuid), :title => 'Go to order status page' %>
-                <% if order.payment_status %>
-                  <span style="background: #ff9">DIBS transaction</span>
-                <% end %>
-                <br>
-                <div class="dtu-grey" style="font-size: 0.8em">
-                  <%= order.email %>
-                  <% if order.user %>
-                    <% if order.user.dtu? %>
-                      <% if order.user.employee? %>
-                        (DTU employee: CWIS: <%= order.user.user_data['dtu']['matrikel_id'] %>)
-                      <% elsif order.user.student? %>
-                        (DTU student: CWIS: <%= order.user.user_data['dtu']['matrikel_id'] %>)
-                      <% end %>
-                    <% else %>
-                      (Public user: ID: <%= order.user.identifier %>)
-                    <% end %>
-                  <% else %>
-                    (Anonymous user)
-                  <% end %>
-                  <br>
-                  <%= l order.created_at, :format => :long %><br>
-                  <% order.order_events.each do |order_event| %>
-                    <% if order_event.name == 'delivery_done' %>
-                      <span class="dtu-grey"><%= order_event.data %></span>
-                    <% end %>
-                  <% end %>
-                </div>
+              <td style="background: whitesmoke" class="dtu-grey" colspan="2">
+                <%= l date.to_date, :format => :long %>
               </td>
-              <td>
-                <span><%= order.document['title_ts'].first %></span>
-                <div class="dtu-grey" style="font-size: 0.8em">
-                  <% unless order.document['author_ts'].blank? %>
-                    By <%= order.document['author_ts'].first %><br>
-                  <% end %>
-                  <% unless order.document['journal_title_ts'].blank? %>
-                    In <i style="text-transform: uppercase"><%= order.document['journal_title_ts'].first %></i>
-                    <% unless ['pub_date_tis', 'journal_vol_ssf', 'journal_issue_ssf', 'journal_page_ssf']
-                                .all? {|s| order.document[s].blank?} %>
-                      &mdash;
-                      <%= ['journal_vol_ssf', 'journal_issue_ssf', 'journal_page_ssf']
-                            .reject {|s| order.document[s].blank?}
-                            .collect {|s| "#{t "toshokan.catalog.show_field_labels.#{s}"} #{order.document[s].first}"}
-                            .join ', ' %>
-                    <% end %>
-                    <br>
-                  <% end %>
-                </div>
-              </td>
-            </li>
+            </tr>
+            <% @orders_by_date[date].each do |order| %>
+              <tr>
+                <td>
+                  <%= render :partial => 'order_info', :locals => {:order => order} %>
+                </td>
+                <td>
+                  <%= render :partial => 'article_info', :locals => {:order => order} %>
+                </td>
+              </li>
+            <% end %>
           <% end %>
-        <% end %>
-      </tbody>
-    </table>
-    <%= paginate @orders %>
+        </tbody>
+      </table>
+      <%= paginate @orders %>
+    <% end %>
   </div>
 </div>

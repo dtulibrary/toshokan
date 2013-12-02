@@ -1,0 +1,28 @@
+<%= link_to order.dibs_order_id, order_status_path(order.uuid), :title => 'Go to order status page' %>
+<% if order.payment_status %>
+  <span style="background: #ff9">DIBS transaction</span>
+<% end %>
+<br>
+<div class="dtu-grey" style="font-size: 0.8em">
+  <%= order.email %>
+  <% if order.user %>
+    <% if order.user.dtu? %>
+      <% if order.user.employee? %>
+        (DTU employee: CWIS: <%= order.user.user_data['dtu']['matrikel_id'] %>) 
+      <% elsif order.user.student? %>
+        (DTU student: CWIS: <%= order.user.user_data['dtu']['matrikel_id'] %>) 
+      <% end %>
+    <% else %>
+      (Public user: ID: <%= order.user.identifier %>) 
+    <% end %>
+  <% else %>
+    (Anonymous user)
+  <% end %>
+  <br>
+  <%= l order.created_at, :format => :long %><br>
+  <% order.order_events.each do |order_event| %>
+    <% if order_event.name == 'delivery_done' %>
+      <span class="dtu-grey"><%= order_event.data %></span>
+    <% end %>
+  <% end %>
+</div>

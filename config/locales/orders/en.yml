@@ -25,6 +25,9 @@ en:
         payment_authorized: Payment authorized
         payment_cancelled: Payment cancelled
         payment_captured: Payment completed
+      facets:
+        email: Email
+        date: Date
       flash_messages:
         reordered: The article has been reordered
         error_reordering: Error reordering article - the existing order was not found
