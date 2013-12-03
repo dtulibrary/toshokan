@@ -40,7 +40,7 @@ class OrdersController < ApplicationController
     [:q_email, :q_orderid].each do |q|
       if params[q] && !params[q].blank?
         value = params[q].strip
-        @orders = @orders.where "#{sql_map[q] || q} LIKE '#{(value_mappers[q] && value_mappers[q].(params[q])) || "%#{params[q]}%"}'"
+        @orders = @orders.where "#{sql_map[q] || q} LIKE ?", (value_mappers[q] && value_mappers[q].(params[q])) || "%#{params[q]}%"
       end
     end
 
@@ -49,7 +49,7 @@ class OrdersController < ApplicationController
     # Apply filter queries
     [:email, :date].each do |facet|
       if params[facet] && !params[facet].blank?
-        @orders = @orders.where "#{sql_map[facet] || facet} = '#{params[facet]}'"
+        @orders = @orders.where "#{sql_map[facet] || facet} = ?", params[facet]
         @filter_queries[facet] = params[facet]
       end
     end
