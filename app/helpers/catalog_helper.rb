@@ -161,6 +161,30 @@ module CatalogHelper
     end
   end
 
+  def render_issn args, separator = ', '
+    args[:document][args[:field]].collect {|issn| issn.sub /^(.{4})/, '\1-'}.join(separator).html_safe
+  end
+
+  def render_isbn args, separator = ', '
+    args[:document][args[:field]].collect {|isbn| (Lisbn.new(isbn).parts || [isbn]).join '-'}.join(separator).html_safe
+  end
+
+  def render_issn_index args
+    render_issn args
+  end
+
+  def render_issn_show args
+    render_issn args, '<br>'
+  end
+
+  def render_isbn_index args
+    render_isbn args
+  end
+
+  def render_isbn_show args
+    render_isbn args, '<br>'
+  end
+
   def normalize_year year, forward_delta = 2, current_year = Time.now.year
     if year < 100
       current_century = current_year - (current_year % 100)

@@ -67,7 +67,7 @@ class OrdersController < ApplicationController
     # Create facets
     @facets = {
       :email => @orders.group('email').reorder('email asc').count,
-      :date  => @orders.select('date(created_at)').group('date(created_at)').reorder('date(created_at)').limit(30).count
+      :date  => @orders.select('date(created_at)').group('date(created_at)').reorder('date(created_at) desc').limit(30).count
     }
 
     # Reject facets that have 1 or less values and are not selected

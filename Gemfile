@@ -28,6 +28,7 @@ gem 'delayed_job_active_record'
 gem 'uuidtools'
 gem 'feature_flipper'
 gem 'kaminari'
+gem 'lisbn'
 
 # Gems used only for assets and not required
 # in production environments by default.
