@@ -5,7 +5,7 @@ class Ability
     # Apply abilities based on whether user is logged in or not
     if user.authenticated?
       can :logout, User
-      can :view,   :search_history
+      can :view,   [:search_history, Order]
       can :tag,    [Bookmark, Search]
       can :alert,  [:journal, Search]
     else
@@ -39,7 +39,7 @@ class Ability
       if user.roles.include? Role.find_by_code('SUP')
         can :switch, User if !user.impersonating?
         can :reorder, Order
-        # can :view_any, Order
+        can :view_any, Order
         can :view, :extended_info
       end
     end

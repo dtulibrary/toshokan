@@ -15,12 +15,12 @@ class OrdersController < ApplicationController
   # - Put more of the logic into model objects where appropriate
 
   def index
-    not_found # unless can? :view, Order
+    not_found unless can? :view, Order
 
     @orders = Order.order('created_at desc')
 
     unless can? :view_any, Order
-      @orders = @orders.where('user_id = ?', current_user.id)
+      @orders = @orders.where 'user_id = ?', current_user.id
     end
 
     # Translate query and facet fields to valid model fields/functions
@@ -31,7 +31,7 @@ class OrdersController < ApplicationController
     }
 
     # Translate certain query params to the form used in the model
-    value_map = {
+    value_mappers = {
       :q_orderid => lambda {|v| %r{^#{Orders.order_id_prefix}0*(\d+)$}.match(v).try :[], 1},
     }
 
@@ -40,7 +40,7 @@ class OrdersController < ApplicationController
     [:q_email, :q_orderid].each do |q|
       if params[q] && !params[q].blank?
         value = params[q].strip
-        @orders = @orders.where "#{sql_map[q] || q} LIKE '#{(value_map[q] && value_map[q].(params[q])) || "%#{params[q]}%"}'"
+        @orders = @orders.where "#{sql_map[q] || q} LIKE '#{(value_mappers[q] && value_mappers[q].(params[q])) || "%#{params[q]}%"}'"
       end
     end
 
@@ -55,10 +55,29 @@ class OrdersController < ApplicationController
     end
 
     # Create facets
-    @facets = {
-      :email => @orders.group('email').reorder('email asc').count,
-      :date  => @orders.group('date(created_at)').limit(30).count,
-    }.reject {|k,v| v.size < 2 && !v.keys.include?(params[k])}
+    @facets = {}
+
+    if can? :view_any, Order
+      @facets[:email] = Order.select('email')
+                             .group('email')
+                             .order('email asc')
+                             .count
+      @facets[:date]  = Order.select('date(created_at)')
+                             .group('date(created_at)')
+                             .order('date(created_at) desc')
+                             .limit(30)
+                             .count
+    else
+      @facets[:date]  = Order.select('date(created_at)')
+                             .where('user_id = ?', current_user.id)
+                             .group('date(created_at)')
+                             .order('date(created_at) desc')
+                             .limit(30)
+                             .count
+    end
+
+    # Reject facets that have 1 or less values and are not selected
+    @facets.reject! {|k,v| v.size < 2 && !v.keys.include?(params[k])}
 
     @orders         = @orders.page(params[:page] || 1).per(50)
     @display_order  = @orders.collect {|o| o.created_at.to_date}.uniq
