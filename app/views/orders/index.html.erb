@@ -29,7 +29,7 @@
                 <% values.each do |term, count| %>
                   <% if @filter_queries[type] == term %>
                     <li>
-                      <%= term %> <%= link_to '<i class="icon-remove"></i>'.html_safe, orders_path(params.except type) %> 
+                      <span class="selected"><%= term %></span> <%= link_to '<i class="icon-remove"></i>'.html_safe, orders_path(params.except type) %> 
                       <span class="count"><%= count %></span>
                     </li>
                   <% else %>
