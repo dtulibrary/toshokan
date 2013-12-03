@@ -2,18 +2,18 @@
   <div id="sidebar" class="span3">
     <h5 style="margin: 8px 15px">Find orders</h5>
     <div class="well" style="padding: 15px">
-      <form class="clearfix">
+      <%= form_tag orders_path, :class => 'clearfix', :method => :get do %>
         <% [:email, :date].each do |facet_type| %>
           <%= hidden_field_tag facet_type, params[facet_type] unless params[facet_type].blank? %>
         <% end %>
         <% if can? :view_any, Order %>
-          <label for="q_email">Email</label>
-          <input class="input-block-level" type="text" id="q_email" name="q_email" value="<%= params[:q_email] %>">
+          <%= label_tag :q_email, 'Email' %>
+          <%= text_field_tag :q_email, params[:q_email], :class => 'input-block-level' %>
         <% end %>
-        <label for="q_orderid">Order ID</label>
-        <input class="input-block-level" type="text" id="q_orderid" name="q_orderid" value="<%= params[:q_orderid] %>">
-        <button class="btn btn-primary pull-right">Search</button>
-      </form>
+        <%= label_tag :q_orderid, 'Order ID' %>
+        <%= text_field_tag :q_orderid, params[:q_orderid], :class => 'input-block-level' %>
+        <%= button_tag 'Search', :class => 'btn btn-primary pull-right' %>
+      <% end %>
     </div>
     <% unless @facets.empty? %>
       <h5 style="margin: 8px 15px">Filter result</h5>
@@ -29,12 +29,16 @@
                 <% values.each do |term, count| %>
                   <% if @filter_queries[type] == term %>
                     <li>
-                      <span class="selected"><%= term %></span> <%= link_to '<i class="icon-remove"></i>'.html_safe, orders_path(params.except type) %> 
+                      <span class="selected"><%= term %></span> 
+                      <%= link_to '<i class="icon-remove"></i>'.html_safe, 
+                                  orders_path(params.except type), 
+                                  :title => 'Remove filter' %> 
                       <span class="count"><%= count %></span>
                     </li>
                   <% else %>
                     <li>
-                      <%= link_to term, orders_path(params.merge type => term), :class => 'facet_select' %>
+                      <%= link_to term, orders_path(params.merge type => term), 
+                                  :class => 'facet_select', :title => 'Add filter' %>
                       <span class="count"><%= count %></span>
                     </li>
                   <% end %>

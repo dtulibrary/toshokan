@@ -30,6 +30,10 @@ class OrdersController < ApplicationController
       :q_orderid => 'id',
     }
 
+    sql_operator_map = {
+      :q_orderid => '=',
+    }
+
     # Translate certain query params to the form used in the model
     value_mappers = {
       :q_orderid => lambda {|v| %r{^#{Orders.order_id_prefix}0*(\d+)$}.match(v).try :[], 1},
@@ -40,7 +44,8 @@ class OrdersController < ApplicationController
     [:q_email, :q_orderid].each do |q|
       if params[q] && !params[q].blank?
         value = params[q].strip
-        @orders = @orders.where "#{sql_map[q] || q} LIKE ?", (value_mappers[q] && value_mappers[q].(params[q])) || "%#{params[q]}%"
+        @orders = @orders.where "#{sql_map[q] || q} #{sql_operator_map[q] || 'LIKE'} ?", 
+                                (value_mappers[q] && value_mappers[q].(params[q])) || "%#{params[q]}%"
       end
     end
 
