@@ -31,13 +31,13 @@
                     <li>
                       <span class="selected"><%= term %></span> 
                       <%= link_to '<i class="icon-remove"></i>'.html_safe, 
-                                  orders_path(params.except type), 
+                                  orders_path(params.except type, :page), 
                                   :title => 'Remove filter' %> 
                       <span class="count"><%= count %></span>
                     </li>
                   <% else %>
                     <li>
-                      <%= link_to term, orders_path(params.merge type => term), 
+                      <%= link_to term, orders_path(params.except(:page).merge type => term), 
                                   :class => 'facet_select', :title => 'Add filter' %>
                       <span class="count"><%= count %></span>
                     </li>
