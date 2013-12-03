@@ -55,26 +55,10 @@ class OrdersController < ApplicationController
     end
 
     # Create facets
-    @facets = {}
-
-    if can? :view_any, Order
-      @facets[:email] = Order.select('email')
-                             .group('email')
-                             .order('email asc')
-                             .count
-      @facets[:date]  = Order.select('date(created_at)')
-                             .group('date(created_at)')
-                             .order('date(created_at) desc')
-                             .limit(30)
-                             .count
-    else
-      @facets[:date]  = Order.select('date(created_at)')
-                             .where('user_id = ?', current_user.id)
-                             .group('date(created_at)')
-                             .order('date(created_at) desc')
-                             .limit(30)
-                             .count
-    end
+    @facets = {
+      :email => @orders.group('email').reorder('email asc').count,
+      :date  => @orders.select('date(created_at)').group('date(created_at)').reorder('date(created_at)').limit(30).count
+    }
 
     # Reject facets that have 1 or less values and are not selected
     @facets.reject! {|k,v| v.size < 2 && !v.keys.include?(params[k])}
