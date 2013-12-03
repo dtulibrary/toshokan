@@ -17,7 +17,12 @@ class OrdersController < ApplicationController
   def index
     not_found unless can? :view, Order
 
-    @orders = Order.order('created_at desc')
+    # Only show orders where delivery has been requested.
+    # This is done to filter "dead" orders from the result.
+    # Dead orders can occur when user goes back in the order flow
+    # and refreshes a page in the flow that lies before the order
+    # enters the database.
+    @orders = Order.where('delivery_status is not null').order('created_at desc')
 
     unless can? :view_any, Order
       @orders = @orders.where 'user_id = ?', current_user.id
