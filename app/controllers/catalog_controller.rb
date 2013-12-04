@@ -121,7 +121,7 @@ class CatalogController < ApplicationController
     config.add_labeled_field :index, 'doi_ss'
     config.add_labeled_field :index, 'publisher_ts', :format => ['book', 'journal']
     config.add_labeled_field :index, 'abstract_ts', :helper_method => :snip_abstract
-    config.add_labeled_field :index, 'issn_ss', :format => ['journal'], :helper_method => :render_issn_index
+    config.add_labeled_field :index, 'issn_ss', :format => ['journal']
     config.add_labeled_field :index, 'dissertation_date_ssf', :helper_method => :render_dissertation_date, :format => ['thesis']
 
     # solr fields to be displayed in the show (single result) view
@@ -138,8 +138,8 @@ class CatalogController < ApplicationController
     config.add_labeled_field :show, 'conf_title_ts', :helper_method => :render_conference_info_show
     config.add_labeled_field :show, 'format', :helper_method => :render_type
     config.add_labeled_field :show, 'publisher_ts'
-    config.add_labeled_field :show, 'isbn_ss', :helper_method => :render_isbn_show
-    config.add_labeled_field :show, 'issn_ss', :helper_method => :render_issn_show
+    config.add_labeled_field :show, 'isbn_ss'
+    config.add_labeled_field :show, 'issn_ss'
     config.add_labeled_field :show, 'doi_ss'
     config.add_labeled_field :show, 'language_ss'
     config.add_labeled_field :show, 'abstract_ts'
