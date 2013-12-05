@@ -4,8 +4,9 @@
       <div class="text-field-with-icons">
         <%= text_field_tag :q, params[:q], :class => "search_q q", :id => "q", :placeholder => t('blacklight.search.form.q')%>
       </div>
-      <button type="submit" class="btn btn-primary" id="search">
-        <%=t('blacklight.search.form.submit')%>
+      <button type="submit" class="btn btn-primary search-btn" id="search">
+        <span class="submit-search-text"><%=t('blacklight.search.form.submit')%></span>
+        <i class="icon-search"></i>
       </button>
     </form>
   </div>

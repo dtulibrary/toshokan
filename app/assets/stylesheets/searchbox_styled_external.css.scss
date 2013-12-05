@@ -24,9 +24,16 @@
 
       #search {
         width: auto;
+
+        .icon-search {
+          display: none;
+        }
+        .submit-search-text {
+          display: inherit;
+        }
       }
     }
-  }  
+  }
 
   @media (max-width: 400px) {
     #searchbar {
@@ -35,12 +42,19 @@
       }
 
       #q {
-        width: 290px;
+        width: 245px;
       }
 
       #search {
         width: auto;
+
+        .icon-search {
+          display: inherit;
+        }
+        .submit-search-text {
+          display: none;
+        }
       }
     }
-  }  
+  }
 }
