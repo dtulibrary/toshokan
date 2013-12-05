@@ -1,0 +1,7 @@
+<div class="section email-section">
+  <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.email.title' %></h5>
+  <p><%= t 'toshokan.assistance_requests.forms.sections.email.text' %></p>
+  <% section_fields(['email'], @assistance_request) do |label, value| %>
+    <p class="indented"><tt><%= value %></tt></p>
+  <% end %>
+</div>

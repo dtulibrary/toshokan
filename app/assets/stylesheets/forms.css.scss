@@ -1,4 +1,5 @@
-.pickup-location-section {
+.radio-group {
+  @include clearfix;
 
   input[type = 'radio'] {
     clear: left;
@@ -10,3 +11,4 @@
     margin-left: 1em;
   }
 }
+

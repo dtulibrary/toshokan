@@ -105,6 +105,7 @@ class SendIt
     local_params.deep_merge! book_params params
     local_params.deep_merge! publisher_params params
     local_params.deep_merge! notes_params params
+    local_params.deep_merge! automatic_cancellation_params params
 
     if params[:pickup_location].blank?
       local_params[:user].deep_merge! ({:address => user.address})
@@ -169,6 +170,17 @@ class SendIt
 
   def self.notes_params params
     extract_params ['notes'], params
+  end
+
+  def self.automatic_cancellation_params params
+    case params['auto_cancel']
+    when '14'
+      { :auto_cancel => Time.now.to_date + 14 }
+    when '30'
+      { :auto_cancel => Time.now.to_date + 30 }
+    else
+      {}
+    end
   end
 
   def self.extract_params names, params

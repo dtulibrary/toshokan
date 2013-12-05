@@ -8,9 +8,9 @@ Given /^I(?:'m| am) on the "request assistance" form for "(.*?)"$/ do |genre|
 end
 
 { 
-  'journal article'    => ['article', 'journal', 'notes'],
-  'conference article' => ['article', 'conference', 'notes'],
-  'book'               => ['book', 'notes']
+  'journal article'    => ['article', 'journal', 'automatic cancellation', 'notes'],
+  'conference article' => ['article', 'conference', 'automatic cancellation', 'notes'],
+  'book'               => ['book', 'automatic cancellation', 'notes']
 }.each do |genre, sections|
   Given %r{^I(?:'ve| have) submitted a valid assistance request for "#{genre}"$} do 
     step %{I'm on the "request assistance" form for "#{genre}"}
@@ -53,8 +53,15 @@ end
 
 When /^I select pickup location "(.*?)"$/ do |location|
   within locator_for_section('pickup-location') do
-    check(location)
-    submitted_data['pickup_location'] = location
+    choose(location)
+    submitted_data['pickup_location'] = value
+  end
+end
+
+When /^I select automatic cancellation "(.*?)"$/ do |value|
+  within locator_for_section('automatic-cancellation') do
+    choose(value)
+    submitted_data['automatic cancellation'] = value
   end
 end
 
@@ -94,6 +101,10 @@ end
   end
 end
 
+When /^I fill in the "automatic cancellation" form section with valid data$/ do
+  step %{I select automatic cancellation "14 days"}
+end
+
 Then /^I should see the "physical location" section with the submitted data$/ do
   within locator_for_section('physical-location') do
     @current_user.user_data['address'].reject {|k,v| v.blank? || k == 'country'}.each do |k,v|
@@ -106,6 +117,13 @@ Then /^I should see the "pickup location" section with the submitted data$/ do
   within locator_for_section('pickup-location') do
     step %{I should see "Pick-up location"}
     step %{I should see "#{submitted_data['pickup_location']}"}
+  end
+end
+
+Then /^I should see the "automatic cancellation" section with the submitted data$/ do
+  within locator_for_section('automatic-cancellation') do
+    step %{I should see "Automatic cancellation"}
+    step %{I should see "#{submitted_data['auto_cancel']}"}
   end
 end
 
@@ -156,6 +174,14 @@ Then /^I should see the "pickup location" section$/ do
   end
 end
 
+Then /^I should see the "automatic cancellation" section$/ do
+  within '.automatic-cancellation-section' do
+    ['Never cancel', '14 days', '30 days'].each do |text|
+      step %{I should see "#{text}"}
+    end
+  end
+end
+
 Then /^I should see the proper required fields in the "(.*?)" section$/ do |section|
   (required_section_fields[section] || []).each do |required_field|
     within locator_for_section(section) do
@@ -191,9 +217,13 @@ end
 
 Then /^I should see the submitted data$/ do
   submitted_data.each do |section, fields|
-    fields.each do |field, value|
-      step %{I should see "#{field}"}
-      step %{I should see "#{value}"}
+    if fields.is_a? Hash
+      fields.each do |field, value|
+        step %{I should see "#{field}"}
+        step %{I should see "#{value}"}
+      end
+    else
+      step %{I should see "#{fields}"}
     end
   end
 end
@@ -274,7 +304,7 @@ def valid_section_data
       'ISBN'      => '1234567890123',
       'Year'      => '1999',
       'Publisher' => 'Stuffed Publishers Ltd.'
-    }
+    },
   }
 end
 
@@ -292,6 +322,9 @@ def _section_fields
       {:title => 'Issue',  :required => true},
       {:title => 'Year',   :required => true},
       {:title => 'Pages',  :required => true}
+    ],
+    'auto-cancel' => [
+      {:title => 'Automatic cancellation', :required => true}
     ],
     'notes' => [
       {:title => 'Notes', :required => false}

@@ -1,47 +1,17 @@
 <div class="row">
   <div class="span6">
-    <div class="section book-section">
-      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.book.title' %></h5>
-      <div class="row">
-        <div class="span3">
-          <%= render_section_fields ['title', 'year', 'author', 'edition'], @assistance_request, 'book_' %>
-        </div>
-        <div class="span3">
-          <%= render_section_fields ['doi', 'isbn', 'publisher'], @assistance_request, 'book_' %>
-        </div>
-      </div>
-    </div>
+    <%= render 'show_book_section' %>
   </div>
   <div class="span3">
-    <div class="section email-section">
-      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.email.title' %></h5>
-      <p><%= t 'toshokan.assistance_requests.forms.sections.email.text' %></p>
-      <% section_fields(['email'], @assistance_request) do |label, value| %>
-        <p class="indented"><tt><%= value %></tt></p>
-      <% end %>
-    </div>
+    <%= render 'show_email_section' %>
     <% if @assistance_request.pickup_location %>
-      <div class="section pickup-location-section">
-        <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.pickup_location.title' %></h5>
-        <p><%= t 'toshokan.assistance_requests.forms.sections.pickup_location.text' %></p>
-        <% section_fields(['pickup_location'], @assistance_request) do |label, value| %>
-          <p class="indented"><%= t "toshokan.assistance_requests.forms.sections.pickup_location.#{value}_html" %></p>
-        <% end %>
-      </div>
+      <%= render 'show_pickup_location_section' %>
     <% else %>
-      <div class="section physical-location-section">
-        <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.physical_location.title' %></h5>
-        <p><%= t 'toshokan.assistance_requests.forms.sections.physical_location.text' %></p>
-        <% section_fields(['physical_location'], @assistance_request) do |label, value| %>
-          <p class="indented"><tt><%= render :partial => 'user_address', :locals => {:address => value} %></tt></p>
-        <% end %>
-      </div>
+      <%= render 'show_physical_location_section' %>
     <% end %>
   </div>
   <div class="span3">
-    <div class="section notes-section">
-      <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.notes.title' %></h5>
-      <%= render_section_fields ['notes'], @assistance_request %>
-    </div>
+    <%= render 'show_automatic_cancellation_section' %>
+    <%= render 'show_notes_section' %>
   </div>
 </div>

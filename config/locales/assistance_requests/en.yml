@@ -49,6 +49,13 @@ en:
         sections:
           article: 
             title: Article
+          automatic_cancellation:
+            title: Automatic cancellation
+            text: Automatically cancel this order after
+            values:
+              never: Never cancel
+              '14': "14 days"
+              '30': "30 days"
           book: 
             title: Book
           conference: 
@@ -66,8 +73,9 @@ en:
           pickup_location:
             title: Pick-up location
             text: For material that can only be delivered in physical form.
-            ballerup_html: <b>Ballerup Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Diplom,+Lautrupvang,+Ballerup&hl=da&sll=55.59332,13.426026&sspn=2.318732,7.13562&oq=dtu+diplom&hq=DTU+Diplom,+Lautrupvang,+Ballerup&t=m&z=16">Map view</a>)<br>Lautrupvang 15<br>2750 Ballerup
-            lyngby_html: <b>Lyngby Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,+Anker+Engelunds+Vej,+Kongens+Lyngby&hl=da&sll=55.73121,12.396566&sspn=0.009025,0.027874&hq=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,&hnear=Anker+Engelunds+Vej,+2800+Kongens+Lyngby&t=m&z=16">Map view</a>)<br>Building 101<br>Anker Engelunds Vej 1<br>2800 Kgs. Lyngby 
+            values:
+              ballerup_html: <b>Ballerup Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Diplom,+Lautrupvang,+Ballerup&hl=da&sll=55.59332,13.426026&sspn=2.318732,7.13562&oq=dtu+diplom&hq=DTU+Diplom,+Lautrupvang,+Ballerup&t=m&z=16">Map view</a>)<br>Lautrupvang 15<br>2750 Ballerup
+              lyngby_html: <b>Lyngby Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,+Anker+Engelunds+Vej,+Kongens+Lyngby&hl=da&sll=55.73121,12.396566&sspn=0.009025,0.027874&hq=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,&hnear=Anker+Engelunds+Vej,+2800+Kongens+Lyngby&t=m&z=16">Map view</a>)<br>Building 101<br>Anker Engelunds Vej 1<br>2800 Kgs. Lyngby 
       genres:
         journal_article: Journal article
         conference_article: Conference article
