@@ -40,9 +40,14 @@ class OrdersController < ApplicationController
     }
 
     # Translate certain query params to the form used in the model
-    value_mappers = {
-      :q_orderid => lambda {|v| %r{^#{Orders.order_id_prefix}0*(\d+)$}.match(v).try :[], 1},
-    }
+    value_mappers = {}
+
+    value_mappers[:q_orderid] = lambda do |v| 
+      # Either match a full DIBS order id like F00001234
+      %r{^#{Orders.order_id_prefix}0*(\d+)$}.match(v).try(:[], 1) ||
+      # or a DB id like 1234
+      /^(\d+)$/.match(v).try(:[], 1)
+    end
 
     # Apply query params.
     # Don't wrap value in "%...%" for values returned by a value mapper.
@@ -50,7 +55,7 @@ class OrdersController < ApplicationController
       if params[q] && !params[q].blank?
         value = params[q].strip
         @orders = @orders.where "#{sql_map[q] || q} #{sql_operator_map[q] || 'LIKE'} ?", 
-                                (value_mappers[q] && value_mappers[q].(params[q])) || "%#{params[q]}%"
+                                (value_mappers[q] && value_mappers[q].(value)) || "%#{value}%"
       end
     end
 
@@ -342,7 +347,7 @@ class OrdersController < ApplicationController
         PayIt::Dibs.delay.cancel @order if @order.payment_status
         @order.delivery_status = :cancelled
 
-        if @order.user && @order.user.dtu? && @order.user.employee?
+        if @order.user && (@order.user.employee? || @order.user.student?)
           @order.order_events << OrderEvent.new(:name => 'delivery_manual')
 
           # Send mail to delivery support 
