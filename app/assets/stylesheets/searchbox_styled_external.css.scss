@@ -13,6 +13,17 @@
   }
 
   @media (min-width: 400px) {
+
+    .logo {
+      float: left;
+    }
+
+    .external-searchbox {
+      p {
+        display: inherit;
+      }
+    }
+
     #searchbar {
       .text-field-with-icons {
         width: 320px;
@@ -36,6 +47,17 @@
   }
 
   @media (max-width: 400px) {
+
+    .logo {
+      float: none;      
+    }
+
+    .external-searchbox {
+      p {
+        display: none;
+      }
+    }
+
     #searchbar {
       .text-field-with-icons {
         width: 250px;
