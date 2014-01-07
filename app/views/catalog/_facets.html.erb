@@ -7,7 +7,7 @@
     <hr/>
     <%= render_tag_partials %>
   <% end %>
-  <% if has_search_parameters? %>
+  <% if has_search_parameters? && (current_user.student? || current_user.employee?)%>
     <hr>
     <%= render 'cant_find_links' %>
   <% end %>
