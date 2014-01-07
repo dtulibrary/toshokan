@@ -1,6 +1,8 @@
 en:
   toshokan:
     assistance_requests:
+      menu_item:
+        title: "Can't find it?"
       need_to_login:
         title: Restricted access (DTU only)
         text: 

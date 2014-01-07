@@ -52,3 +52,7 @@ Then /^I should see the no hits page$/ do
   step %{I should see "Search tips"}
   step %{I should see "Need help from a DTU librarian?"}
 end
+
+Then /^I should(n't| not)? see the "can't find it\?" links$/ do |negate|
+  page.send(negate ? :should_not : :should, have_selector('.cant-find-links')) 
+end

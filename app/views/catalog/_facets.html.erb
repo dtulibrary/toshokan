@@ -3,9 +3,13 @@
 
   <div class="facets-collapse">
   <%= render_facet_partials %>
-  <hr/>
   <% if can? :tag, Bookmark %>
+    <hr/>
     <%= render_tag_partials %>
+  <% end %>
+  <% if has_search_parameters? %>
+    <hr>
+    <%= render 'cant_find_links' %>
   <% end %>
   </div>
 </div>

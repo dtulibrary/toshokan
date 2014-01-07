@@ -5,11 +5,12 @@ Scenario Outline: User search for something
    When I search for "<query>"
    Then I should see the result page
     And I should see <results> documents
+    And I <should_form> see the "can't find it?" links
 
 Examples:
-	| query    | results |
-	| *:*	     | 10      |
-	| dlasjdkl | 0       |
+	| query    | results | should_form |
+	| *:*	     | 10      | should      |
+	| dlasjdkl | 0       | should not  |
 
 Scenario Outline: User does a zero-hit search
  Given <login_condition>
@@ -25,3 +26,4 @@ Examples:
   | I've logged in as a public user  | should not  |
   | I've logged in as a DTU employee | should      |
   | I've logged in as a DTU student  | should      |
+
