@@ -1,24 +1,37 @@
 module AssistanceRequestsHelper
   
-  def required_text_field object_name, field_name, field_label
+  # Renders a label and a text field. 
+  # Add :required => true to make the field required
+  def labeled_text_field object_name, field_name, field_label, options = {}
     param_name = "#{object_name}[#{field_name}]"
-    cssClass = 'required'
-    if @assistance_request.errors.messages.has_key? field_name.to_sym
-      cssClass += ' error'
+    if options[:required]
+      cssClass = 'required'
+      if @assistance_request.errors.messages.has_key? field_name.to_sym
+        cssClass += ' error'
+      end
+      options[:class] += ' ' if options[:class]
+      options[:class] = (options[:class] || '') + cssClass
     end
-    label_tag(param_name, (field_label + ' (<i>required</i>)').html_safe, :class => cssClass) +
-    text_field_tag(param_name, params[object_name] && params[object_name][field_name], :class => cssClass)
+    label_for(param_name, object_name, field_name, field_label, options) +
+    text_field_tag(param_name, params[object_name] && params[object_name][field_name], options)
   end
 
-  def optional_text_field object_name, field_name, field_label
-    param_name = "#{object_name}[#{field_name}]"
-    label_tag(param_name, field_label) +
-    text_field_tag(param_name, params[object_name] && params[object_name][field_name])
+  def label_for param_name, object_name, field_name, field_label, options = {}
+    if options[:required]
+      cssClass = 'required'
+      if @assistance_request.errors.messages.has_key? field_name.to_sym
+        cssClass += ' error'
+      end
+      label_tag(param_name, "#{field_label} <span class=\"required-label\">(<i>required</i>)</span>".html_safe, :class => cssClass)
+    else 
+      label_tag(param_name, "#{field_label} <span class=\"required-label hide\">(<i>required</i>)</span>".html_safe)
+    end
   end
 
-  def optional_text_area object_name, field_name, field_label, options = {}
+  def labeled_text_area object_name, field_name, field_label, options = {}
     param_name = "#{object_name}[#{field_name}]"
-    label_tag(param_name, field_label) +
+    options[:class] = 'required' if options[:required]
+    label_for(param_name, object_name, field_name, field_label, options) + 
     text_area_tag(param_name, params[object_name] && params[object_name][field_name], options)
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131204105803) do
+ActiveRecord::Schema.define(:version => 20140107124219) do
 
   create_table "assistance_requests", :force => true do |t|
     t.string   "type"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(:version => 20131204105803) do
     t.text     "conference_pages"
     t.text     "book_publisher"
     t.text     "auto_cancel",         :default => "never"
+    t.boolean  "book_suggest",        :default => false
   end
 
   create_table "bookmarks", :force => true do |t|
@@ -99,8 +100,12 @@ ActiveRecord::Schema.define(:version => 20131204105803) do
     t.integer  "user_id"
     t.text     "open_url"
     t.string   "masked_card_number"
+    t.text     "supplier_order_id"
+    t.text     "docdel_order_id"
   end
 
+  add_index "orders", ["docdel_order_id"], :name => "index_orders_on_docdel_order_id"
+  add_index "orders", ["supplier_order_id"], :name => "index_orders_on_supplier_order_id"
   add_index "orders", ["user_id"], :name => "index_orders_on_user_id"
   add_index "orders", ["uuid"], :name => "index_orders_on_uuid"
 

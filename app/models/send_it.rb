@@ -151,7 +151,7 @@ class SendIt
   def self.book_params params
     result = {}
     if params['book_title']
-      result[:book] = extract_params ['book_title', 'book_author', 'book_edition', 'book_doi', 'book_isbn'], params
+      result[:book] = extract_params ['book_title', 'book_author', 'book_edition', 'book_doi', 'book_isbn', 'book_suggest'], params
     end
     result
   end

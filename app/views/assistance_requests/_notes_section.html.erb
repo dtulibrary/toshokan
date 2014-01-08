@@ -9,8 +9,9 @@
         :fields => ['notes']
       } %>
   <% else -%>
-    <%= optional_text_area 'assistance_request', 'notes', 
-                           t('toshokan.assistance_requests.forms.field_labels.notes'), 
-                           :rows => 3 %>
+    <%= labeled_text_area 'assistance_request', 'notes',
+      t('toshokan.assistance_requests.forms.field_labels.notes'),
+      :required => @assistance_request.book_suggest,
+      :rows => 3 %>
   <% end -%>
 </div>

@@ -9,20 +9,23 @@
         :fields => ['title', 'location', 'isxn', 'year', 'pages']
       } %>
   <% else %>
-    <%= required_text_field 'assistance_request', 'conference_title',
-                            t('toshokan.assistance_requests.forms.field_labels.conference_title') %>
-    <%= optional_text_field 'assistance_request', 'conference_location',
-                            t('toshokan.assistance_requests.forms.field_labels.conference_location') %>
-    <%= optional_text_field 'assistance_request', 'conference_isxn',
-                            t('toshokan.assistance_requests.forms.field_labels.conference_isxn') %>
+    <%= labeled_text_field 'assistance_request', 'conference_title',
+                            t('toshokan.assistance_requests.forms.field_labels.conference_title'),
+                            :required => true %>
+    <%= labeled_text_field 'assistance_request', 'conference_location',
+                           t('toshokan.assistance_requests.forms.field_labels.conference_location') %>
+    <%= labeled_text_field 'assistance_request', 'conference_isxn',
+                           t('toshokan.assistance_requests.forms.field_labels.conference_isxn') %>
     <div class="row-fluid">
       <div class="span6">
-        <%= required_text_field 'assistance_request', 'conference_year', 
-                                t('toshokan.assistance_requests.forms.field_labels.conference_year') %>
+        <%= labeled_text_field 'assistance_request', 'conference_year', 
+                               t('toshokan.assistance_requests.forms.field_labels.conference_year'),
+                               :required => true %>
       </div>
       <div class="span6">
-        <%= required_text_field 'assistance_request', 'conference_pages',
-                                t('toshokan.assistance_requests.forms.field_labels.conference_pages') %>
+        <%= labeled_text_field 'assistance_request', 'conference_pages',
+                               t('toshokan.assistance_requests.forms.field_labels.conference_pages'),
+                               :required => true %>
       </div>
     </div>
   <% end %>

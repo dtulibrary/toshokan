@@ -1,7 +1,12 @@
-.radio-group {
+.radio-group, .checkbox-group {
   @include clearfix;
 
   input[type = 'radio'] {
+    clear: left;
+    float: left;
+  }
+
+  input[type = 'checkbox'] {
     clear: left;
     float: left;
   }

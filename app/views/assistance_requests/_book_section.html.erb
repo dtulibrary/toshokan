@@ -11,14 +11,16 @@
             :fields => ['title', 'year', 'author', 'edition']
           } %>
       <% else %>
-        <%= required_text_field 'assistance_request', 'book_title', 
-                                t('toshokan.assistance_requests.forms.field_labels.book_title') %>
-        <%= required_text_field 'assistance_request', 'book_year',
-                                t('toshokan.assistance_requests.forms.field_labels.book_year') %>
-        <%= optional_text_field 'assistance_request', 'book_author',
-                                t('toshokan.assistance_requests.forms.field_labels.book_author') %>
-        <%= optional_text_field 'assistance_request', 'book_edition',
-                                t('toshokan.assistance_requests.forms.field_labels.book_edition') %>
+        <%= labeled_text_field 'assistance_request', 'book_title', 
+                               t('toshokan.assistance_requests.forms.field_labels.book_title'),
+                               :required => true %>
+        <%= labeled_text_field 'assistance_request', 'book_year',
+                               t('toshokan.assistance_requests.forms.field_labels.book_year'),
+                               :required => true %>
+        <%= labeled_text_field 'assistance_request', 'book_author',
+                               t('toshokan.assistance_requests.forms.field_labels.book_author') %>
+        <%= labeled_text_field 'assistance_request', 'book_edition',
+                               t('toshokan.assistance_requests.forms.field_labels.book_edition') %>
       <% end %>
     </div>
     <div class="span3">
@@ -28,13 +30,26 @@
             :field_prefix => 'book_',
             :fields => ['doi', 'isbn', 'publisher']
           } %>
+        <% if params[:assistance_request][:book_suggest] %>
+          <%= hidden_field_tag 'assistance_request[book_suggest]', params[:assistance_request][:book_suggest] %>
+          <div>Suggested for purchase.</div>
+        <% end %>
       <% else %>
-        <%= optional_text_field 'assistance_request', 'book_doi',
-                                t('toshokan.assistance_requests.forms.field_labels.book_doi') %>
-        <%= optional_text_field 'assistance_request', 'book_isbn',
-                                t('toshokan.assistance_requests.forms.field_labels.book_isbn') %>
-        <%= optional_text_field 'assistance_request', 'book_publisher',
-                                t('toshokan.assistance_requests.forms.field_labels.book_publisher') %>
+        <%= labeled_text_field 'assistance_request', 'book_doi',
+                               t('toshokan.assistance_requests.forms.field_labels.book_doi') %>
+        <%= labeled_text_field 'assistance_request', 'book_isbn',
+                               t('toshokan.assistance_requests.forms.field_labels.book_isbn') %>
+        <%= labeled_text_field 'assistance_request', 'book_publisher',
+                               t('toshokan.assistance_requests.forms.field_labels.book_publisher') %>
+        <div class="checkbox-group">
+          <%= check_box_tag 'assistance_request[book_suggest]' %>
+          <%= label_tag 'assistance_request[book_suggest]', 'Suggest for purchase' %>
+        </div>
+        <p class="dtu-grey" style="margin-left: 2em;">
+          <span style="font-size: 0.9em" class="dtu-grey">
+            Please state in the note field, why you think DTU Library should purchase this book.
+          </span>
+        </p>
       <% end %>
     </div>
   </div>

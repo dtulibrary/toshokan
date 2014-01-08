@@ -9,11 +9,12 @@
         :fields => ['title', 'author', 'doi']
       } %>
   <% else -%>
-    <%= required_text_field 'assistance_request', 'article_title',
-                            t('toshokan.assistance_requests.forms.field_labels.article_title') %>
-    <%= optional_text_field 'assistance_request', 'article_author',
-                            t('toshokan.assistance_requests.forms.field_labels.article_author') %>
-    <%= optional_text_field 'assistance_request', 'article_doi',
-                            t('toshokan.assistance_requests.forms.field_labels.article_doi') %>
+    <%= labeled_text_field 'assistance_request', 'article_title',
+                           t('toshokan.assistance_requests.forms.field_labels.article_title'),
+                           :required => true %>
+    <%= labeled_text_field 'assistance_request', 'article_author',
+                           t('toshokan.assistance_requests.forms.field_labels.article_author') %>
+    <%= labeled_text_field 'assistance_request', 'article_doi',
+                           t('toshokan.assistance_requests.forms.field_labels.article_doi') %>
   <% end -%>
 </div>

@@ -9,28 +9,33 @@
         :fields => ['title', 'issn', 'volume', 'issue', 'year', 'pages']
       } %>
   <% else -%>
-    <%= required_text_field 'assistance_request', 'journal_title',
-                            t('toshokan.assistance_requests.forms.field_labels.journal_title') %>
-    <%= optional_text_field 'assistance_request', 'journal_issn',
-                            t('toshokan.assistance_requests.forms.field_labels.journal_issn') %>
+    <%= labeled_text_field 'assistance_request', 'journal_title',
+                           t('toshokan.assistance_requests.forms.field_labels.journal_title'),
+                           :required => true %>
+    <%= labeled_text_field 'assistance_request', 'journal_issn',
+                           t('toshokan.assistance_requests.forms.field_labels.journal_issn') %>
     <div class="row-fluid">
       <div class="span6">
-        <%= required_text_field 'assistance_request', 'journal_volume',
-                                t('toshokan.assistance_requests.forms.field_labels.journal_volume') %>
+        <%= labeled_text_field 'assistance_request', 'journal_volume',
+                               t('toshokan.assistance_requests.forms.field_labels.journal_volume'),
+                               :required => true %>
       </div>
       <div class="span6">
-        <%= required_text_field 'assistance_request', 'journal_issue',
-                                t('toshokan.assistance_requests.forms.field_labels.journal_issue') %>
+        <%= labeled_text_field 'assistance_request', 'journal_issue',
+                               t('toshokan.assistance_requests.forms.field_labels.journal_issue'),
+                               :required => true %>
       </div>
     </div>
     <div class="row-fluid">
       <div class="span6">
-        <%= required_text_field 'assistance_request', 'journal_year',
-                                t('toshokan.assistance_requests.forms.field_labels.journal_year') %>
+        <%= labeled_text_field 'assistance_request', 'journal_year',
+                               t('toshokan.assistance_requests.forms.field_labels.journal_year'),
+                               :required => true %>
       </div>
       <div class="span6">
-        <%= required_text_field 'assistance_request', 'journal_pages',
-                                t('toshokan.assistance_requests.forms.field_labels.journal_pages') %>
+        <%= labeled_text_field 'assistance_request', 'journal_pages',
+                               t('toshokan.assistance_requests.forms.field_labels.journal_pages'),
+                               :required => true %>
       </div>
     </div>
   <% end -%>
