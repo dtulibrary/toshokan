@@ -7,7 +7,7 @@
     <div class="span3">
       <%= render_section_fields ['doi', 'isbn', 'publisher'], @assistance_request, 'book_' %>
       <% if @assistance_request.book_suggest %>
-        <div>Suggested for purchase.</div>
+        <div><%= t 'toshokan.assistance_requests.forms.sections.book.suggested_for_purchase' %></div>
       <% end %>
     </div>
   </div>

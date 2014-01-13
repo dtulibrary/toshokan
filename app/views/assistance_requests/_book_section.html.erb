@@ -32,7 +32,7 @@
           } %>
         <% if params[:assistance_request][:book_suggest] %>
           <%= hidden_field_tag 'assistance_request[book_suggest]', params[:assistance_request][:book_suggest] %>
-          <div>Suggested for purchase.</div>
+          <div><%= t 'toshokan.assistance_requests.forms.sections.book.suggested_for_purchase' %></div>
         <% end %>
       <% else %>
         <%= labeled_text_field 'assistance_request', 'book_doi',
@@ -43,12 +43,13 @@
                                t('toshokan.assistance_requests.forms.field_labels.book_publisher') %>
         <div class="checkbox-group">
           <%= check_box_tag 'assistance_request[book_suggest]' %>
-          <%= label_tag 'assistance_request[book_suggest]', 'Suggest for purchase' %>
+          <%= label_tag 'assistance_request[book_suggest]', 
+                        t('toshokan.assistance_requests.forms.sections.book.suggest_for_purchase.title') %>
         </div>
-        <p class="dtu-grey" style="margin-left: 2em;">
-          <span style="font-size: 0.9em" class="dtu-grey">
-            Please state in the note field, why you think DTU Library should purchase this book.
-          </span>
+        <p class="indented">
+          <small class="dtu-grey">
+            <%= t 'toshokan.assistance_requests.forms.sections.book.suggest_for_purchase.text' %>
+          </small>
         </p>
       <% end %>
     </div>
