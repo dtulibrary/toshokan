@@ -61,9 +61,11 @@ en:
           book: 
             title: Book
             suggest_for_purchase:
-              title: Suggest for purchase
-              text: Please state in the note field, why DTU Library should purchase this book.
-            suggested_for_purchase: Suggested for purchase.
+              title: Suggest for acquisition
+              text_html: 
+                'Please state in the note field, why DTU Library should acquire this book.<br>
+                <a target="_blank" href="http://www.dtic.dtu.dk/english/servicemenu/find/borrow/suggest/criteria">Criteria for acquisition</a>'
+            suggested_for_purchase: Suggested for acquisition.
           conference: 
             title: From conference
           email:
