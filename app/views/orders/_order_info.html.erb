@@ -22,7 +22,7 @@
   <%= l order.created_at, :format => :long %><br>
   <% order.order_events.each do |order_event| %>
     <% if order_event.name == 'delivery_done' %>
-      <span class="dtu-grey"><%= order_event.data %></span>
+      <div class="dtu-grey"><%= order_event.data %></div>
     <% end %>
   <% end %>
 </div>

@@ -44,7 +44,7 @@ class OrdersController < ApplicationController
 
     value_mappers[:q_orderid] = lambda do |v| 
       # Either match a full DIBS order id like F00001234
-      %r{^#{Orders.order_id_prefix}0*(\d+)$}.match(v).try(:[], 1) ||
+      %r{^#{Orders.order_id_prefix.downcase}0*(\d+)$}.match(v.downcase).try(:[], 1) ||
       # or a DB id like 1234
       /^(\d+)$/.match(v).try(:[], 1)
     end
@@ -55,7 +55,7 @@ class OrdersController < ApplicationController
       if params[q] && !params[q].blank?
         value = params[q].strip
         @orders = @orders.where "#{sql_map[q] || q} #{sql_operator_map[q] || 'LIKE'} ?", 
-                                (value_mappers[q] && value_mappers[q].(value)) || "%#{value}%"
+                                value_mappers[q].try(:call, value) || "%#{value}%"
       end
     end
 
@@ -340,6 +340,7 @@ class OrdersController < ApplicationController
         else
           @order.order_events << OrderEvent.new(:name => 'delivery_confirmed')
         end
+        @order.supplier_order_id = params[:supplier_order_id] if params[:supplier_order_id]
         @order.save!
 
       when :cancel

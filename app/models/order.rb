@@ -32,7 +32,7 @@ class Order < ActiveRecord::Base
       }   
 
       open_url.scan /([^&=]+)=([^&]*)/ do |k,v|
-        @document[field_map[k]].try :<<, URI.unescape(v.gsub '+', '%20')
+        @document[field_map[k]].try :<<, URI.decode_www_form_component(v)
       end 
     end
 
