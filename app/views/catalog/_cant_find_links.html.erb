@@ -1,14 +1,16 @@
-<div class="facet_limit cant-find-links">
-  <h5 class="twiddle">
-    <%= t 'toshokan.assistance_requests.menu_item.title' %>
-    <i class="icon-chevron"></i>
-  </h5>
-  <ul>
-    <% [:journal_article, :conference_article, :book].each do |genre| %>
-      <li>
-        <span class="selected hidden"></span>
-        <%= link_to t("toshokan.assistance_requests.genres.#{genre}"), new_assistance_request_path(:genre => genre) %>
-      </li>
-    <% end %>
-  </ul>
-</div>
+<% if show_feature? :cant_find_it %>
+  <div class="facet_limit cant-find-links">
+    <h5 class="twiddle">
+      <%= t 'toshokan.assistance_requests.menu_item.title' %>
+      <i class="icon-chevron"></i>
+    </h5>
+    <ul>
+      <% [:journal_article, :conference_article, :book].each do |genre| %>
+        <li>
+          <span class="selected hidden"></span>
+          <%= link_to t("toshokan.assistance_requests.genres.#{genre}"), new_assistance_request_path(:genre => genre) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

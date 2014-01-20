@@ -2,7 +2,9 @@
 FeatureFlipper.features do
   
   in_state :development do
-    feature :alert,   :description => "Journal and search alerts"
+    feature :alert,        :description => "Journal and search alerts"
+    feature :book_suggest, :description => 'Enable users to suggest books for acquistion'
+    feature :cant_find_it, :description => 'Display sidebar links to Cant find forms'
   end
 
   in_state :unstable do
