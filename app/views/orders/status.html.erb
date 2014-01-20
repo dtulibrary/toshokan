@@ -7,9 +7,11 @@
       <% if can?(:view, :extended_info) || !@restricted_events.include?(event.name) %>
           <dt><%= l event.created_at, :format => :long %></dt>
           <dd><%= t "toshokan.orders.events.#{event.name}" %></dd>
-          <% unless event.data.blank? %>
+          <% unless event.data.blank? || cannot?(:view, :extended_info) %>
             <dd class="event-data">
               <% case event.name %>
+              <% when /.*confirmed$/ %>
+                <%= t "toshokan.orders.suppliers.#{@order.supplier}" %> order ID: <%= @order.supplier_order_id %>
               <% when 'reordered' %>
                 <%= t 'toshokan.orders.reordered_by', :name => event.data %>
               <% when 'payment_authorized' %>

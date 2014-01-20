@@ -4,6 +4,11 @@
 <% end %>
 <br>
 <div class="dtu-grey" style="font-size: 0.8em">
+  <% if can?(:view, :extended_info) && order.supplier_order_id %>
+    <div>
+      <%= t "toshokan.orders.suppliers.#{order.supplier}" %> ID: <%= order.supplier_order_id %>
+    </div>
+  <% end %>
   <%= order.email %>
   <% if order.user %>
     <% if order.user.dtu? %>

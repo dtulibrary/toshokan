@@ -12,6 +12,10 @@
         <% end %>
         <%= label_tag :q_orderid, 'Order ID' %>
         <%= text_field_tag :q_orderid, params[:q_orderid], :class => 'input-block-level' %>
+        <% if can? :view, :extended_info %>
+          <%= label_tag :q_supplier_order_id, 'Supplier order ID' %>
+          <%= text_field_tag :q_supplier_order_id, params[:q_supplier_order_id], :class => 'input-block-level' %>
+        <% end %>
         <%= button_tag 'Search', :class => 'btn btn-primary pull-right' %>
       <% end %>
     </div>

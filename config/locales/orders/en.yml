@@ -101,6 +101,8 @@ en:
         email: Deliver to email
         mobile: Notify via SMS to
         paid_with_card: Pay with credit card
+      suppliers:
+        rd: Reprints Desk
       terms_of_service: Terms and conditions
       text:
         dtu_html: 

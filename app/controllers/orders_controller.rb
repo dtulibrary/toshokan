@@ -30,9 +30,10 @@ class OrdersController < ApplicationController
 
     # Translate query and facet fields to valid model fields/functions
     sql_map = {
-      :date      => 'date(created_at)',
-      :q_email   => 'email',
-      :q_orderid => 'id',
+      :date                => 'date(created_at)',
+      :q_email             => 'email',
+      :q_orderid           => 'id',
+      :q_supplier_order_id => 'supplier_order_id'
     }
 
     sql_operator_map = {
@@ -42,7 +43,7 @@ class OrdersController < ApplicationController
     # Translate certain query params to the form used in the model
     value_mappers = {}
 
-    value_mappers[:q_orderid] = lambda do |v| 
+    value_mappers[:q_orderid] = -> v do 
       # Either match a full DIBS order id like F00001234
       %r{^#{Orders.order_id_prefix.downcase}0*(\d+)$}.match(v.downcase).try(:[], 1) ||
       # or a DB id like 1234
@@ -51,7 +52,7 @@ class OrdersController < ApplicationController
 
     # Apply query params.
     # Don't wrap value in "%...%" for values returned by a value mapper.
-    [:q_email, :q_orderid].each do |q|
+    [:q_email, :q_orderid, :q_supplier_order_id].each do |q|
       if params[q] && !params[q].blank?
         value = params[q].strip
         @orders = @orders.where "#{sql_map[q] || q} #{sql_operator_map[q] || 'LIKE'} ?", 
@@ -336,9 +337,9 @@ class OrdersController < ApplicationController
 
       when :confirm
         if @order.delivery_status == :reordered
-          @order.order_events << OrderEvent.new(:name => 'reorder_confirmed')
+          @order.order_events << OrderEvent.new(:name => 'reorder_confirmed', :data => params[:supplier_order_id])
         else
-          @order.order_events << OrderEvent.new(:name => 'delivery_confirmed')
+          @order.order_events << OrderEvent.new(:name => 'delivery_confirmed', :data => params[:supplier_order_id])
         end
         @order.supplier_order_id = params[:supplier_order_id] if params[:supplier_order_id]
         @order.save!
