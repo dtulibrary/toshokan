@@ -12,6 +12,7 @@ FeatureFlipper.features do
 
   in_state :staging do
     feature :nal_map, :description => "Show Google Maps for NAL"
+    feature :cant_find_it, :description => 'Display sidebar links to Cant find forms'
   end
 
   in_state :live do    
