@@ -49,7 +49,6 @@ class CatalogController < ApplicationController
       end
     end
 
-
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       :qt => '/toshokan',
@@ -69,6 +68,9 @@ class CatalogController < ApplicationController
     #  # :rows => 1
     #  # :q => '{!raw f=id v=$id}'
     }
+
+    # Set per page options
+    config.per_page = [10, 20, 50]
 
     # solr field configuration for search results/index views
     config.index.show_link = 'title_ts'
