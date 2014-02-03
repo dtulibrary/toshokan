@@ -40,14 +40,17 @@ class OrdersController < ApplicationController
       :q_orderid => '=',
     }
 
-    # Translate certain query params to the form used in the model
+    # Translate certain query params to the form used in the model.
+    # This can be something like extracting an integer id from a string or similar.
     value_mappers = {}
 
     value_mappers[:q_orderid] = -> v do 
       # Either match a full DIBS order id like F00001234
       %r{^#{Orders.order_id_prefix.downcase}0*(\d+)$}.match(v.downcase).try(:[], 1) ||
       # or a DB id like 1234
-      /^(\d+)$/.match(v).try(:[], 1)
+      /^(\d+)$/.match(v).try(:[], 1) ||
+      # Default to an id that will not match any order.
+      0
     end
 
     # Apply query params.
