@@ -70,9 +70,9 @@ class ApplicationController < ActionController::Base
     can?(:login, User) && (cookies[:shunt] == 'dtu') || (!cookies[:shunt_hint] && campus_request? && !params[:dlib])
   end
 
-  def force_authentication
+  def force_authentication(params = {})
     logger.info "Forcing authentication: cookies[:shunt]:#{cookies[:shunt]}, cookies[:shunt_hint]:#{cookies[:shunt_hint]}, campus_request?:#{campus_request?}"
-    params = { :url => request.url }
+    params[:url] = request.url
     logger.info "params: #{params}"
     redirect_to new_user_session_path(params)
   end

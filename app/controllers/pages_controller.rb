@@ -4,7 +4,7 @@ class PagesController < ApplicationController
   def searchbox
     render("pages/searchbox", :layout => nil)
   end
-  
+
   def searchbox_styled
     render("pages/searchbox_styled", :layout => "external_page")
   end
@@ -16,8 +16,12 @@ class PagesController < ApplicationController
     render :status => :forbidden
   end
 
+  def authentication_required_catalog
+    render :status => :forbidden
+  end
+
   def about
-    render("pages/about")
+    render "pages/about"
   end
 
 end

@@ -277,6 +277,25 @@ class CatalogController < ApplicationController
       @response, @document = get_solr_response_for_doc_id nil, add_access_filter
       @toc = toc_for @document, params, add_access_filter
 
+    rescue Blacklight::Exceptions::InvalidSolrID      
+
+      # check whether document is available for dtu users if the user does not already have dtu search rights
+      if can? :search, :public        
+        @response, @document = get_solr_response_for_doc_id nil, {:fq => ['access_ss:dtu']}
+        if @document.nil?
+          not_found
+        else
+          if current_user.authenticated?
+            redirect_to authentication_required_catalog_path(:url => request.url)
+          else
+            # anonymous user, send to DTU login      
+            force_authentication({:only_dtu => true})
+          end
+        end
+      else
+        not_found
+      end
+    else  
       respond_to do |format|
         format.html {setup_next_and_previous_documents unless params[:ignore_search]}
 
@@ -286,11 +305,8 @@ class CatalogController < ApplicationController
           # It's important that the argument to send be a symbol;
           # if it's a string, it makes Rails unhappy for unclear reasons. 
           format.send(format_name.to_sym) { render :text => @document.export_as(format_name), :layout => false }
-        end
-        
+        end        
       end
-    rescue Blacklight::Exceptions::InvalidSolrID
-      not_found
     end
   end
 

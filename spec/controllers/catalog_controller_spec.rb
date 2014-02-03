@@ -3,9 +3,6 @@ require 'spec_helper'
 require 'cancan/matchers'
 
 describe CatalogController do
-  let!(:user) {
-    login
-  }
 
   let!(:ability) {
     ability = Object.new
@@ -15,6 +12,10 @@ describe CatalogController do
   }
 
   describe "#index" do
+
+    let!(:user) {
+      login
+    }
 
     context 'with tag parameters' do
       let(:params) {
@@ -41,4 +42,51 @@ describe CatalogController do
 
   end
 
+  describe "#show" do
+
+    context "when the document exists" do
+
+      let(:params) {{ :id => "183644425" }}
+
+      context "with access" do
+
+        before do
+          ability.can :search, :dtu
+        end
+
+        it "renders the document page" do
+          get :show, params
+          response.should render_template('catalog/show')
+        end
+      end
+
+      context "without access" do
+
+        before do
+          ability.can :search, :public
+        end
+
+        it "redirects to dtu login for anonymous users" do
+          get :show, params
+          response.should redirect_to new_user_session_path(:url => catalog_url(params), :only_dtu => true)
+        end
+
+        it "redirects to authentication required for public users" do
+          user = login
+          (user.public?).should be_true
+          get :show, params
+          response.should redirect_to authentication_required_catalog_url(:url => catalog_url(params))
+        end
+      end
+    end
+
+    context "when document does not exist" do
+
+      it "is not found" do
+        params = {:id => "123456789"}
+        get :show, params
+        response.should be_not_found
+      end
+    end
+  end
 end
