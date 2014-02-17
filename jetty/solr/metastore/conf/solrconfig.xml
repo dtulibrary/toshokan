@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
-    <luceneMatchVersion>LUCENE_45</luceneMatchVersion>
+    <luceneMatchVersion>LUCENE_46</luceneMatchVersion>
     <dataDir>${solr.data.dir:}</dataDir>
     <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
 
     <indexConfig>
         <useCompoundFile>false</useCompoundFile>
-        <ramBufferSizeMB>2048</ramBufferSizeMB>
+        <ramBufferSizeMB>128</ramBufferSizeMB>
         <maxBufferedDocs>1073741824</maxBufferedDocs>
-        <maxIndexingThreads>12</maxIndexingThreads>
+        <maxIndexingThreads>8</maxIndexingThreads>
         <unlockOnStartup>false</unlockOnStartup>
         <reopenReaders>true</reopenReaders>
         <maxFieldLength>32768</maxFieldLength>
@@ -20,7 +20,7 @@
         <mergePolicy class="org.apache.lucene.index.TieredMergePolicy">
             <int name="maxMergeAtOnceExplicit">30</int>
             <int name="maxMergeAtOnce">10</int>
-            <double name="segmentsPerTier">20</double>
+            <double name="segmentsPerTier">10</double>
             <double name="maxMergedSegmentMB">20000</double>
         </mergePolicy>
 
@@ -108,8 +108,6 @@
 
             <str name="defType">dtic_edismax</str>
             <str name="echoParams">explicit</str>
-
-            <str name="fq">access_ss:dtu</str>
 
             <str name="q.alt">*:*</str>
             <str name="q.op">AND</str>
@@ -230,6 +228,11 @@
 
             <str name="f.alert_timestamp.qf">alert_timestamp_dt</str>
         </lst>
+
+        <lst name="appends">
+            <str name="fq">access_ss:dtu</str>
+        </lst>
+
     </requestHandler>
 
     <requestHandler name="/toshokan" class="solr.SearchHandler" default="false">
@@ -400,8 +403,6 @@
             <str name="defType">edismax</str>
             <str name="echoParams">explicit</str>
 
-            <str name="fq">format:article</str>
-
             <str name="mm">100%</str>
             <str name="q.op">AND</str>
 
@@ -452,6 +453,8 @@
             <str name="f.facet_lang.qf">iso_language_ss</str>
 
             <str name="facet">true</str>
+            <str name="facet.limit">20</str>
+            <str name="facet.threads">4</str>
             <str name="facet.field">{!key=creationdate}pub_date_tsort</str>
             <str name="facet.field">{!key=creator}author_facet</str>
             <str name="facet.field">{!key=jtitle}journal_title_facet</str>
@@ -459,6 +462,9 @@
             <str name="facet.field">{!key=topic}keywords_facet</str>
             <str name="facet.field">{!key=lang}iso_language_ss</str>
             <str name="facet.mincount">1</str>
+        </lst>
+        <lst name="appends">
+            <str name="fq">format:article</str>
         </lst>
     </requestHandler>
 

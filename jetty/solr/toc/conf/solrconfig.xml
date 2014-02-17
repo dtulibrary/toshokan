@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
-    <luceneMatchVersion>LUCENE_45</luceneMatchVersion>
+    <luceneMatchVersion>LUCENE_46</luceneMatchVersion>
     <dataDir>${solr.data.dir:}</dataDir>
     <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
 
     <indexConfig>
         <useCompoundFile>false</useCompoundFile>
-        <ramBufferSizeMB>1024</ramBufferSizeMB>
+        <ramBufferSizeMB>128</ramBufferSizeMB>
         <maxBufferedDocs>1073741824</maxBufferedDocs>
-        <maxIndexingThreads>12</maxIndexingThreads>
+        <maxIndexingThreads>8</maxIndexingThreads>
         <unlockOnStartup>false</unlockOnStartup>
         <reopenReaders>true</reopenReaders>
         <maxFieldLength>32768</maxFieldLength>
@@ -20,7 +20,7 @@
         <mergePolicy class="org.apache.lucene.index.TieredMergePolicy">
             <int name="maxMergeAtOnceExplicit">30</int>
             <int name="maxMergeAtOnce">10</int>
-            <double name="segmentsPerTier">20</double>
+            <double name="segmentsPerTier">10</double>
             <double name="maxMergedSegmentMB">20000</double>
         </mergePolicy>
 

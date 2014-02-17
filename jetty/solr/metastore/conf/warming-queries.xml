@@ -54,4 +54,14 @@
         <str name="stats">true</str>
         <str name="stats.field">pub_date_tsort</str>
     </lst>
+    <lst>
+        <str name="qt">/primo</str>
+        <str name="q">*:*</str>
+        <str name="fq">access_ss:dtupub</str>
+    </lst>
+    <lst>
+        <str name="qt">/primo</str>
+        <str name="q">*:*</str>
+        <str name="fq">access_ss:eth</str>
+    </lst>
 </arr>
