@@ -3,7 +3,7 @@
     <div class="span8 offset2">
       <div class="well clearfix">
         <h3>The page you requested requires that you log in with a DTU account</h3>
-          <p>Please log in again with a DTU account in order to get access</p>
+          <p>Please <%= link_to("log in with a DTU account", logout_login_as_dtu_path(:redirect_url => params[:redirect_url])) %> in order to get access</p>
       </div>
     </div>
   </div>

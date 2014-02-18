@@ -13,6 +13,7 @@ Toshokan::Application.routes.draw do
     get   '/auth/:provider/callback',               :to => 'users/sessions#create',                 :as => 'create_user_session'
     get   '/auth/:provider/setup',                  :to => 'users/sessions#setup',                  :as => 'setup_user_session'
     get   '/logout',                                :to => 'users/sessions#destroy',                :as => 'destroy_user_session'
+    get   '/logout_login_as_dtu',                   :to => 'users/sessions#logout_login_as_dtu',    :as => 'logout_login_as_dtu'
     get   '/user/switch',                           :to => 'users/sessions#switch',                 :as => 'switch_user'
     put   '/user/session',                          :to => 'users/sessions#update',                 :as => 'user_session'
 

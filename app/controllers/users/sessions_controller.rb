@@ -100,14 +100,18 @@ class Users::SessionsController < ApplicationController
   end
 
   def destroy
-    order = session[:order]
-    reset_session
-    # Keep order in session and let orders_controller decide what to do with it
-    session[:order] = order if order
-
-    cookies.delete :shunt
-
+    destroy_session
     redirect_to logout_url, :notice => 'You are now logged out', :only_path => false
+  end
+
+  def logout_login_as_dtu
+    destroy_session
+    redirect_to logout_login_as_dtu_url
+  end
+
+  def logout_login_as_dtu_url
+    service ={:service => new_user_session_url({:url => params[:url], :only_dtu => true})}
+    "#{Rails.application.config.auth[:cas_url]}/logout?#{service.to_query}"
   end
 
   def omniauth_path(provider, options = {})
@@ -201,5 +205,15 @@ class Users::SessionsController < ApplicationController
     redirect_to root_path
   end
 
+  private
+
+  def destroy_session
+    order = session[:order]
+    reset_session
+    # Keep order in session and let orders_controller decide what to do with it
+    session[:order] = order if order
+
+    cookies.delete :shunt
+  end
 
 end

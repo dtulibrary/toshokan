@@ -252,7 +252,7 @@ describe Users::SessionsController do
     end
 
     it "should allow access for a user that has \"User Support\" role" do
-      @user.roles << Role.find_by_code('SUP') 
+      @user.roles << Role.find_by_code('SUP')
       get :switch
       response.response_code.should eq 200
     end
@@ -358,4 +358,11 @@ describe Users::SessionsController do
 
   end
 
+  describe "#logout_login_as_dtu" do
+
+    it "redirects the user to logout with redirect params to login" do
+      get :logout_login_as_dtu
+      response.should redirect_to controller.logout_login_as_dtu_url
+    end
+  end
 end
