@@ -26,8 +26,41 @@ en:
         payment_cancelled: Payment cancelled
         payment_captured: Payment completed
       facets:
-        email: Email
-        date: Date
+        email: 
+          title: Email
+        org_unit: 
+          title: Institute
+          values:
+            '41': DTU Mechanical Engineering
+            'stud': Students
+            '11': DTU Civil Engineering
+            '23': DTU Food
+            '42': DTU Management Engineering
+            '28': DTU Chemical Engineering
+            '31': DTU Electrical Engineering
+            '12': DTU Environment
+            '27': DTU Systems Biology
+            '25': DTU Aqua
+            '33': DTU Nanotech
+            '46': DTU Wind Energy
+            '47': DTU Energy Conversion
+            '1': DTU Compute
+            '26': DTU Chemistry
+            '34': DTU Fotonik
+            '24': DTU Vet
+            '13': DTU Transport
+            '10': DTU Physics
+            '48': DTU Nutech
+            '30': DTU Space
+            '59': DTU Cen
+            '54': DTU Executive School of Business
+        year: 
+          title: Year
+        supplier:
+          title: Supplier
+          values:
+            rd: Reprints Desk
+            dtu: DTU Local scan
       flash_messages:
         reordered: The article has been reordered
         error_reordering: Error reordering article - the existing order was not found

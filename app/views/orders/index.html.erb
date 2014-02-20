@@ -26,14 +26,14 @@
           <% @facets.each do |type, values| %>
             <div class="facet_limit blacklight-format">
               <h5 class="twiddle">
-                <%= t "toshokan.orders.facets.#{type}" %>
+                <%= t "toshokan.orders.facets.#{type}.title" %>
                 <i class="icon-chevron"></i>
               </h5>
               <ul>
                 <% values.each do |term, count| %>
                   <% if @filter_queries[type] == term %>
                     <li>
-                      <span class="selected"><%= term %></span> 
+                      <span class="selected"><%= t "toshokan.orders.facets.#{type}.values.#{term}", :default => term %></span> 
                       <%= link_to '<i class="icon-remove"></i>'.html_safe, 
                                   orders_path(params.except type, :page), 
                                   :title => 'Remove filter' %> 
@@ -41,7 +41,7 @@
                     </li>
                   <% else %>
                     <li>
-                      <%= link_to term, orders_path(params.except(:page).merge type => term), 
+                      <%= link_to t("toshokan.orders.facets.#{type}.values.#{term}", :default => term), orders_path(params.except(:page).merge type => term), 
                                   :class => 'facet_select', :title => 'Add filter' %>
                       <span class="count"><%= count %></span>
                     </li>

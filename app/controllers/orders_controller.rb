@@ -65,22 +65,51 @@ class OrdersController < ApplicationController
 
     @filter_queries = {}
 
-    # Apply filter queries
-    [:email, :date].each do |facet|
-      if params[facet] && !params[facet].blank?
-        @orders = @orders.where "#{sql_map[facet] || facet} = ?", params[facet]
-        @filter_queries[facet] = params[facet]
-      end
+    # Apply email filter query
+    if params[:email] && !params[:email].blank?
+      @orders = @orders.where "email = ?", params[:email]
+      @filter_queries[:email] = params[:email]
+    end
+
+    # Apply year filter query
+    if params[:year] && !params[:year].blank?
+      t1 = Time.new params[:year]
+      t2 = Time.new(t1.year + 1)
+      @orders = @orders.where :created_at => t1..t2
+      @filter_queries[:year] = params[:year]
+    end
+
+    # Apply org_unit filter query
+    if params[:org_unit] && !params[:org_unit].blank?
+      @orders = @orders.where :org_unit => params[:org_unit]
+      @filter_queries[:org_unit] = params[:org_unit]
+    end
+
+    # Apply supplier filter query
+    if params[:supplier] && !params[:supplier].blank?
+      @orders = @orders.where :supplier => params[:supplier]
+      @filter_queries[:supplier] = params[:supplier]
     end
 
     # Create facets
     @facets = {
       :email => @orders.group('email').reorder('email asc').count,
-      :date  => @orders.select('date(created_at)').group('date(created_at)').reorder('date(created_at) desc').limit(30).count
+      :org_unit => @orders.where('org_unit is not null').group('org_unit').reorder('count_all desc').count,
+      :supplier => @orders.group('supplier').reorder('count_all desc').count
     }
 
-    # Reject facets that have 1 or less values and are not selected
-    @facets.reject! {|k,v| v.size < 2 && !v.keys.include?(params[k])}
+    @facets[:year] = ActiveSupport::OrderedHash.new
+
+    # Since SQLite doesn't support extract(year from created_at) we have to wiggle a bit
+    # Group by date and sum up counts per year
+    @orders.select('date(created_at)').group('date(created_at)').reorder('date(created_at) desc').count.each do |date, count|
+      year = date[0..3]
+      @facets[:year][year] ||= 0
+      @facets[:year][year] += count
+    end
+    
+    # Reject facets that have 0 values and are not selected
+    @facets.reject! {|k,v| v.size < 1 && !v.keys.include?(params[k])}
 
     @orders         = @orders.page(params[:page] || 1).per(50)
     @display_order  = @orders.collect {|o| o.created_at.to_date}.uniq
