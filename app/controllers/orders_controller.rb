@@ -64,58 +64,72 @@ class OrdersController < ApplicationController
     end
 
     @filter_queries = {}
+    @facets = {}
+  
+    if can? :view_any, Order # Perhaps this should be can? :view, :orders_facets
+      # Apply email filter query
+      if params[:email] && !params[:email].blank?
+        @orders = @orders.where "email = ?", params[:email]
+        @filter_queries[:email] = params[:email]
+      end
 
-    # Apply email filter query
-    if params[:email] && !params[:email].blank?
-      @orders = @orders.where "email = ?", params[:email]
-      @filter_queries[:email] = params[:email]
-    end
+      # Apply year filter query
+      if params[:year] && !params[:year].blank?
+        t1 = Time.new params[:year]
+        t2 = Time.new(t1.year + 1)
+        # In theory this is not entirely correct, since an order could be placed
+        # at the very first second of the new year.
+        @orders = @orders.where :created_at => t1..t2
+        @filter_queries[:year] = params[:year]
+      end
 
-    # Apply year filter query
-    if params[:year] && !params[:year].blank?
-      t1 = Time.new params[:year]
-      t2 = Time.new(t1.year + 1)
-      @orders = @orders.where :created_at => t1..t2
-      @filter_queries[:year] = params[:year]
-    end
+      # Apply org_unit filter query
+      if params[:org_unit] && !params[:org_unit].blank?
+        @orders = @orders.where :org_unit => params[:org_unit]
+        @filter_queries[:org_unit] = params[:org_unit]
+      end
 
-    # Apply org_unit filter query
-    if params[:org_unit] && !params[:org_unit].blank?
-      @orders = @orders.where :org_unit => params[:org_unit]
-      @filter_queries[:org_unit] = params[:org_unit]
-    end
+      # Apply supplier filter query
+      if params[:supplier] && !params[:supplier].blank?
+        @orders = @orders.where :supplier => params[:supplier]
+        @filter_queries[:supplier] = params[:supplier]
+      end
+  
+      # Create facets
+      @facets[:email]    = @orders.group('email')
+                                  .reorder('count_all desc')
+                                  .count
 
-    # Apply supplier filter query
-    if params[:supplier] && !params[:supplier].blank?
-      @orders = @orders.where :supplier => params[:supplier]
-      @filter_queries[:supplier] = params[:supplier]
-    end
+      @facets[:org_unit] = @orders.where('org_unit is not null')
+                                  .group('org_unit')
+                                  .reorder('count_all desc')
+                                  .count
 
-    # Create facets
-    @facets = {
-      :email => @orders.group('email').reorder('email asc').count,
-      :org_unit => @orders.where('org_unit is not null').group('org_unit').reorder('count_all desc').count,
-      :supplier => @orders.group('supplier').reorder('count_all desc').count
-    }
+      @facets[:supplier] = @orders.group('supplier')
+                                  .reorder('count_all desc')
+                                  .count
 
-    @facets[:year] = ActiveSupport::OrderedHash.new
-
-    # Since SQLite doesn't support extract(year from created_at) we have to wiggle a bit
-    # Group by date and sum up counts per year
-    @orders.select('date(created_at)').group('date(created_at)').reorder('date(created_at) desc').count.each do |date, count|
-      year = date[0..3]
-      @facets[:year][year] ||= 0
-      @facets[:year][year] += count
+      # Since SQLite doesn't support extract(year from created_at) we have to wiggle a bit for the year facet
+      # Group by date and sum up counts per year
+      @facets[:year] = ActiveSupport::OrderedHash.new
+      @orders.select('date(created_at)').group('date(created_at)').reorder('date(created_at) desc').count.each do |date, count|
+        year = date[0..3]
+        @facets[:year][year] ||= 0
+        @facets[:year][year] += count
+      end
     end
     
-    # Reject facets that have 0 values and are not selected
-    @facets.reject! {|k,v| v.size < 1 && !v.keys.include?(params[k])}
+    # Reject facets with no terms
+    @facets.reject! {|k,v| v.empty?}
 
     @orders         = @orders.page(params[:page] || 1).per(50)
     @display_order  = @orders.collect {|o| o.created_at.to_date}.uniq
     @orders_by_date = {}
 
     # Group orders by date
+    # This is used to visualize date crossing in the result set so
+    # when listing orders and the date changes, a line can be inserted
+    # to indicate that.
     @orders.each do |order|
       date = order.created_at.to_date
       @orders_by_date[date] ||= []
@@ -156,6 +170,7 @@ class OrdersController < ApplicationController
         :vat => PayIt::Prices.vat(price),
         :currency => :DKK
       })
+      @order.org_unit = current_user.user_data["dtu"]["org_units"].first if current_user.dtu?
       @order.user = current_user if current_user.authenticated?
       @order.flow = OrderFlow.new current_user, @supplier
       session[:order] = @order

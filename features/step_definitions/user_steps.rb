@@ -122,7 +122,8 @@ def mock_dtu_user(identifier, email='fake.email@example.com', user_type='employe
       :cwis => '1234', 
       :firstname => names[0], 
       :lastname => names[1], 
-      :user_type => user_type
+      :user_type => user_type,
+      :org_units => ['58']
     },
     :address => {
       :line1 => 'Address line 1',

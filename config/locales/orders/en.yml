@@ -54,6 +54,19 @@ en:
             '30': DTU Space
             '59': DTU Cen
             '54': DTU Executive School of Business
+            'NNFCB': Novo Nordisk Foundation Center for Biosustainability
+            'IHK': DTU Diplom
+            '58': DTU Library
+            '85': HR
+            'Danchip': Danchip
+            'Myndig': Office for Innovation and Sector Service
+            '86': Campus Service
+            'ADMAPK': Office for Research and Relations
+            '83': Office for Study Programmes and Student Affairs
+            '6': IPU
+            '60': DTU Adgangskursus
+            'KME': Copenhagen School of Marine Engineering and Technology Management
+            'ADMIT': IT Service
         year: 
           title: Year
         supplier:
