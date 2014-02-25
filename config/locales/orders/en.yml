@@ -74,6 +74,17 @@ en:
           values:
             rd: Reprints Desk
             dtu: DTU Local scan
+        event:
+          title: Order event
+          values:
+            delivery_done: Delivery done
+            delivery_requested: Delivery requested
+            delivery_confirmed: Delivery confirmed
+            delivery_manual: Manual processing
+            delivery_cancelled: Delivery cancelled
+            payment_cancelled: Payment cancelled
+            payment_authorized: Payment authorized
+            payment_captured: Payment done (captured)
       flash_messages:
         reordered: The article has been reordered
         error_reordering: Error reordering article - the existing order was not found

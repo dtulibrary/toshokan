@@ -50,6 +50,13 @@ namespace :orders do
       puts "Missing argument: DTUBASE_URL"
     end
   end
+
+  task :fix_delivery_status => :environment do
+    Order.where(:delivery_status => :requested).each do |order|
+      order.delivery_status = :delivery_requested
+      order.save!
+    end
+  end
 end
 
 def fetch_account matrikel_id, url

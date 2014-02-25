@@ -68,37 +68,45 @@ class OrdersController < ApplicationController
   
     if can? :view_any, Order # Perhaps this should be can? :view, :orders_facets
       # Apply email filter query
-      if params[:email] && !params[:email].blank?
-        @orders = @orders.where "email = ?", params[:email]
-        @filter_queries[:email] = params[:email]
-      end
+#      if params[:email] && !params[:email].blank?
+#        @orders = @orders.where "email = ?", params[:email]
+#        @filter_queries[:email] = params[:email]
+#      end
 
       # Apply year filter query
       if params[:year] && !params[:year].blank?
-        t1 = Time.new params[:year]
+        t1 = Time.new params[:year].first
         t2 = Time.new(t1.year + 1)
         # In theory this is not entirely correct, since an order could be placed
         # at the very first second of the new year.
         @orders = @orders.where :created_at => t1..t2
-        @filter_queries[:year] = params[:year]
+        @filter_queries[:year] = [params[:year]].flatten
       end
 
       # Apply org_unit filter query
       if params[:org_unit] && !params[:org_unit].blank?
-        @orders = @orders.where :org_unit => params[:org_unit]
-        @filter_queries[:org_unit] = params[:org_unit]
+        @orders = @orders.where :org_unit => params[:org_unit].first
+        @filter_queries[:org_unit] = [params[:org_unit]].flatten
       end
 
       # Apply supplier filter query
       if params[:supplier] && !params[:supplier].blank?
-        @orders = @orders.where :supplier => params[:supplier]
-        @filter_queries[:supplier] = params[:supplier]
+        @orders = @orders.where :supplier => params[:supplier].first
+        @filter_queries[:supplier] = [params[:supplier]].flatten
       end
   
+      # Apply status filter query (multi-valued)
+      if params[:event] && !params[:event].blank?
+        events = [params[:event]].flatten
+        where_clause = (['orders.id in (select order_id from order_events where name = ?)'] * events.size).join ' and '
+        @orders = @orders.where where_clause, *events
+        @filter_queries[:event] = events
+      end
+
       # Create facets
-      @facets[:email]    = @orders.group('email')
-                                  .reorder('count_all desc')
-                                  .count
+#      @facets[:email]    = @orders.group('email')
+#                                  .reorder('count_all desc')
+#                                  .count
 
       @facets[:org_unit] = @orders.where('org_unit is not null')
                                   .group('org_unit')
@@ -106,6 +114,11 @@ class OrdersController < ApplicationController
                                   .count
 
       @facets[:supplier] = @orders.group('supplier')
+                                  .reorder('count_all desc')
+                                  .count
+
+      @facets[:event]    = @orders.joins(:order_events)
+                                  .group(:name)
                                   .reorder('count_all desc')
                                   .count
 
@@ -122,6 +135,7 @@ class OrdersController < ApplicationController
     # Reject facets with no terms
     @facets.reject! {|k,v| v.empty?}
 
+    @count          = @orders.count
     @orders         = @orders.page(params[:page] || 1).per(50)
     @display_order  = @orders.collect {|o| o.created_at.to_date}.uniq
     @orders_by_date = {}
