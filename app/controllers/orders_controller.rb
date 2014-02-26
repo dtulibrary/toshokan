@@ -30,10 +30,10 @@ class OrdersController < ApplicationController
 
     # Translate query and facet fields to valid model fields/functions
     sql_map = {
-      :date                => 'date(created_at)',
-      :q_email             => 'email',
-      :q_orderid           => 'id',
-      :q_supplier_order_id => 'supplier_order_id'
+      :date                => 'date(orders.created_at)',
+      :q_email             => 'orders.email',
+      :q_orderid           => 'orders.id',
+      :q_supplier_order_id => 'orders.supplier_order_id'
     }
 
     sql_operator_map = {
