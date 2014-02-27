@@ -135,6 +135,7 @@ module Toshokan
       :url => '',
       :delay_jobs => true,
       :delivery_support_mail => '',
+      :book_suggest_mail => '',
     }
 
     config.delay_jobs = true
