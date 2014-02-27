@@ -253,6 +253,8 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
+    rack-utf8_sanitizer (1.1.0)
+      rack (~> 1.0)
     rails (3.2.17)
       actionmailer (= 3.2.17)
       actionpack (= 3.2.17)
@@ -402,6 +404,7 @@ DEPENDENCIES
   openurl
   paint
   pg
+  rack-utf8_sanitizer (~> 1.1.0)
   rails (= 3.2.17)
   rails-footnotes
   rails_best_practices

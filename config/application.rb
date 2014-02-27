@@ -2,6 +2,8 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
+
+
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups(:assets => %w(development test)))
@@ -65,6 +67,10 @@ module Toshokan
     # Enable I18n fallbacks
     config.i18n.fallbacks = true
     config.i18n.load_path += Dir[File.join(Rails.root, 'config', 'locales', '**', '*.{rb,yml}')]
+
+    # Sanitize UTF8 input
+    config.middleware.insert_before "Rack::Runtime", Rack::UTF8Sanitizer
+
 
     # Config to be overriden by local settings
     config.time_zone = 'CET'
