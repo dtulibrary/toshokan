@@ -16,7 +16,9 @@
         <span class="pull-right hidden-phone">
           <% if can? :tag, Bookmark %>
           <div class="documentFunctions">
-            <%= render_tag_control @document %>
+            <% if params[:resolve].blank? %>
+              <%= render_tag_control @document %>
+            <% end %>
           </div>
           <% end %>
 
@@ -37,9 +39,7 @@
       <% end %>
 
     </div>
-
   </div>
-
 </div>
 
 <div id="sidebar" class="span3">

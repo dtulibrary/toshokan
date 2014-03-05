@@ -1,8 +1,8 @@
   <ul id="fulltext" class="nav nav-list">
     <li class="nav-header fulltext-header"><%= t('toshokan.tools.fulltext') %></li>
 
-    <% if can? :order, :article %>
-      <% # Quick-fix for getting conf title to DocDel when no journal title is available.  
+    <% if (can? :order, :article)  && (params[:resolve].blank? || (params[:resolve] && (can? :search, :dtu))) %>
+      <% # Quick-fix for getting conf title to DocDel when no journal title is available.
          open_url = @document.export_as_openurl_ctx_kev
          open_url += "&rft.jtitle=#{URI.encode_www_form_component @document['conf_title_ts'].first}" if @document['conf_title_ts'] && !@document['journal_title_ts'] %>
       <li class="order-rd-scan order-scan hide">
@@ -12,10 +12,10 @@
         <%= render :partial => 'order_scan_form', :locals => { :supplier => :dtu, :open_url => open_url, :index => false } %>
       </li>
     <% end %>
-    
+
     <% show = (@document['pubmed_url_ssf'] || @document['isi_url_ssf'] || @document['orbit_id_ssf']) %>
     <%= content_tag :li, t('toshokan.availability.other'), class: "nav-header other-header #{'hide' if !show}" -%>
-    
+
     <% if(@document['pubmed_url_ssf']) %>
       <li><%=link_to "<i class='icon-pubmed'></i> #{t('toshokan.source_url.pubmed')}".html_safe, "#{@document['pubmed_url_ssf'].first}" %></li>
     <% end %>

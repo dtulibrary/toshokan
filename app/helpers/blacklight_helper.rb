@@ -44,7 +44,7 @@ module BlacklightHelper
 
     # do not show keywords from iel in public version
     filters << Proc.new do |field, document|
-      !(field.field == "keywords_ts" && document["source_ss"].include?("iel") && (can? :search, :public))
+      !(field.field == "keywords_ts" && document.has_key?("source_ss") && document["source_ss"].include?("iel") && (can? :search, :public))
     end
 
     filters

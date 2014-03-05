@@ -2,14 +2,20 @@
 module CatalogHelper
   include Blacklight::CatalogHelperBehavior
 
-  def has_search_parameters? 
-    result = super || !params[:t].blank? || !params[:l].blank?
+  def has_search_parameters?
+    result = super || !params[:t].blank? || !params[:l].blank? || !params[:resolve].blank?
   end
 
   def add_access_filter solr_parameters = {}, user_parameters = {}
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] << 'access_ss:dtu' if can? :search, :dtu
     solr_parameters[:fq] << 'access_ss:dtupub' if can? :search, :public
+    solr_parameters
+  end
+
+  def add_inclusive_access_filter solr_parameters = {}, user_parameters = {}
+    solr_parameters[:fq] ||= []
+    solr_parameters[:fq] << 'access_ss:(dtu OR dtupub)'
     solr_parameters
   end
 
@@ -135,21 +141,21 @@ module CatalogHelper
   def render_journal_rank(document)
     issn = document['issn_ss'].first || nil
     unless issn.nil? || /^x/ =~ issn
-      render :partial => 'catalog/journal_rank', :locals => {:url => Rails.application.config.scopus_url % issn}       
+      render :partial => 'catalog/journal_rank', :locals => {:url => Rails.application.config.scopus_url % issn}
     end
   end
 
   def render_dissertation_date args
     begin
-      l args[:document][args[:field]].first.to_date, format: :long    
+      l args[:document][args[:field]].first.to_date, format: :long
     rescue Exception
       args[:document][args[:field]].first
     end
   end
 
   def render_conference_info_index args
-    (args[:document][args[:field]].first + ' &mdash; ' + 
-      render_journal_info(args[:document], :index) + 
+    (args[:document][args[:field]].first + ' &mdash; ' +
+      render_journal_info(args[:document], :index) +
       render_journal_page_info(args[:document], :index)).html_safe
   end
 
@@ -225,4 +231,19 @@ module CatalogHelper
     normalized_range
   end
 
+  # needed for synthesized records via resolver
+
+  def render_link_rel_alternates
+    params[:resolve].blank? ? super : ""
+  end
+
+  def extra_body_classes
+    controller_name = controller.controller_name
+    controller_action = controller.action_name
+    unless params[:resolve].blank?
+      controller_name = CatalogController.controller_name
+      controller_action = "show"
+    end
+    @extra_body_classes ||= ['blacklight-' + controller_name, 'blacklight-' + [controller_name, controller_action].join('-')]
+  end
 end

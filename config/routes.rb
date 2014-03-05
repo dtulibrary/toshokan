@@ -32,7 +32,10 @@ Toshokan::Application.routes.draw do
     # Assistance (Can't Find) forms
     resources :assistance_requests,                 :only => [:index, :new, :create, :show]
     get   '/cant_find/:genre',                      :to => redirect('/assistance_requests/new?genre=%{genre}')
-    get   '/resolve',                               :to => 'resolver#index',                        :as => 'resolve'
+
+
+    # OpenURL resolver
+    get   '/resolve',                               :to => 'resolver#index',                :as => 'resolve'
 
 
     # Tags and Bookmarks

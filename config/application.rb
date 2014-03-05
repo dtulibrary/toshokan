@@ -174,5 +174,9 @@ module Toshokan
       :retry_delay => 0.1,
     }
 
+    config.resolve = {
+      :sfx_url => 'http://sfx.cvt.dk/sfx_local'
+    }
+
   end
 end

@@ -84,7 +84,7 @@
         <lst name="defaults">
             <str name="echoParams">explicit</str>
             <str name="fl">*</str>
-            <str name="sort">pub_date_tsort desc,journal_vol_sort desc,journal_issue_sort asc</str>
+            <str name="sort">pub_date_tsort desc,journal_vol_tsort desc,journal_issue_tsort asc</str>
         </lst>
     </requestHandler>
 
@@ -101,7 +101,7 @@
         <lst name="defaults">
             <str name="echoParams">explicit</str>
             <str name="fl">*</str>
-            <str name="sort">pub_date_tsort desc,journal_vol_sort desc,journal_issue_sort asc</str>
+            <str name="sort">pub_date_tsort desc,journal_vol_tsort desc,journal_issue_tsort asc</str>
         </lst>
     </requestHandler>
 

@@ -4,6 +4,7 @@
     <luceneMatchVersion>LUCENE_46</luceneMatchVersion>
     <dataDir>${solr.data.dir:}</dataDir>
     <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
+    <codecFactory name="CodecFactory" class="solr.SchemaCodecFactory" />
 
     <indexConfig>
         <useCompoundFile>false</useCompoundFile>
@@ -93,13 +94,63 @@
         </lst>
     </requestHandler>
 
-
     <requestHandler name="/ping" class="solr.SearchHandler" default="false">
         <lst name="defaults">
             <str name="echoParams">explicit</str>
             <str name="q">*:*</str>
             <str name="rows">0</str>
             <str name="fl">*,score</str>
+        </lst>
+    </requestHandler>
+
+    <requestHandler name="/resolve" class="dk.dtu.dtic.solr.OpenUrlResolverPlugin" default="false">
+
+        <lst name="defaults">
+
+            <str name="defType">dtic_edismax</str>
+            <str name="mm">100%</str>
+
+            <!-- required, but not used as only fielded search is used  -->
+            <str name="qf">title_ts</str>
+
+            <str name="f.title.qf"        >title_ts</str>
+            <str name="f.author.qf"       >author_ts^2 editor_ts</str>
+            <str name="f.editor.qf"       >editor_ts</str>
+            <str name="f.affiliation.qf"  >affiliation_ts</str>
+            <str name="f.abstract.qf"     >abstract_ts</str>
+            <str name="f.journaltitle.qf" >journal_title_ts^2 title_abbr_ts title_orig_ts</str>
+            <str name="f.publisher.qf"    >publisher_ts</str>
+            <str name="f.keyword.qf"      >keywords_ts</str>
+            <str name="f.doi.qf"          >doi_ss</str>
+            <str name="f.isbn.qf"         >isbn_ss</str>
+            <str name="f.issn.qf"         >issn_ss</str>
+            <str name="f.year.qf"         >pub_date_tis</str>
+            <str name="f.volume.qf"       >journal_vol_tsort</str>
+            <str name="f.issue.qf"        >journal_issue_tsort</str>
+            <str name="f.page.qf"         >journal_page_start_tsort</str>
+            <str name="f.source_id.qf"    >source_id_ss</str>
+
+            <!-- OpenURL mapping -->
+            <str name="dtic.rft.issn">issn</str>
+            <str name="dtic.rft.isbn">isbn</str>
+            <str name="dtic.rft.date">year</str>
+            <str name="dtic.rft.volume">volume</str>
+            <str name="dtic.rft.issue">issue</str>
+            <str name="dtic.rft.atitle">title</str>
+            <str name="dtic.rft.btitle">title</str>
+            <str name="dtic.rft.doi">doi</str>
+            <str name="dtic.rft.spage">page</str>
+            <str name="dtic.rft.au">author</str>
+            <str name="dtic.rft.aulast">author</str>
+            <str name="dtic.rft.jtitle">journaltitle</str>
+            <str name="dtic.rft.series">journaltitle</str>
+            <str name="dtic.rft.title">journaltitle</str>
+            <str name="dtic.rft.pub">publisher</str>
+
+            <!-- Other plugin configuration values -->
+            <str name="dtic.source_id">source_id_ss</str>
+            <str name="dtic.pure.dtu">orbit</str>
+
         </lst>
     </requestHandler>
 
@@ -124,6 +175,7 @@
             <str name="fl">editor:editor_ts</str>
             <str name="fl">affiliation:affiliation_ts</str>
             <str name="fl">source:source_ss</str>
+            <str name="fl">source_id:source_id_ss</str>
             <str name="fl">year:pub_date_tis</str>
             <str name="fl">doi:doi_ss</str>
             <str name="fl">issn:issn_ss</str>
@@ -132,9 +184,12 @@
             <str name="fl">journal_volume:journal_vol_ssf</str>
             <str name="fl">journal_issue:journal_issue_ssf</str>
             <str name="fl">journal_part:journal_part_ssf</str>
+            <str name="fl">journal_page:journal_page_ssf</str>
+            <str name="fl">journal_page_start:journal_page_start_tsort</str>
             <str name="fl">language:language_ss</str>
             <str name="fl">iso_language:isolanguage_ss</str>
             <str name="fl">alert_timestamp:alert_timestamp_dt</str>
+            <str name="fl">update_timestamp:update_timestamp_dt</str>
 
             <str name="qf">
                 title_ts^10
@@ -151,10 +206,10 @@
                 title_orig_ts
                 publisher_ts
                 pub_date_tis
-                journal_vol_sort
-                journal_issue_sort
+                journal_vol_tsort
+                journal_issue_tsort
                 journal_part_sort
-                journal_page_start_sort
+                journal_page_start_tsort
                 doi_ss
             </str>
             <str name="pf">
@@ -172,10 +227,10 @@
                 title_orig_ts
                 publisher_ts
                 pub_date_tis
-                journal_vol_sort
-                journal_issue_sort
+                journal_vol_tsort
+                journal_issue_tsort
                 journal_part_sort
-                journal_page_start_sort
+                journal_page_start_tsort
                 doi_ss
             </str>
 
@@ -217,12 +272,12 @@
 
             <str name="f.y.qf"              >pub_date_tis</str>
             <str name="f.year.qf"           >pub_date_tis</str>
-            <str name="f.v.qf"              >journal_vol_sort</str>
-            <str name="f.vol.qf"            >journal_vol_sort</str>
-            <str name="f.volume.qf"         >journal_vol_sort</str>
-            <str name="f.i.qf"              >journal_issue_sort</str>
-            <str name="f.iss.qf"            >journal_issue_sort</str>
-            <str name="f.issue.qf"          >journal_issue_sort</str>
+            <str name="f.v.qf"              >journal_vol_tsort</str>
+            <str name="f.vol.qf"            >journal_vol_tsort</str>
+            <str name="f.volume.qf"         >journal_vol_tsort</str>
+            <str name="f.i.qf"              >journal_issue_tsort</str>
+            <str name="f.iss.qf"            >journal_issue_tsort</str>
+            <str name="f.issue.qf"          >journal_issue_tsort</str>
             <str name="f.p.qf"              >journal_page_start_tsort</str>
             <str name="f.page.qf"           >journal_page_start_tsort</str>
 
@@ -259,10 +314,10 @@
                 title_orig_ts
                 publisher_ts
                 pub_date_tis
-                journal_vol_sort
-                journal_issue_sort
+                journal_vol_tsort
+                journal_issue_tsort
                 journal_part_sort
-                journal_page_start_sort
+                journal_page_start_tsort
                 doi_ss
             </str>
             <str name="pf">
@@ -280,10 +335,10 @@
                 title_orig_ts
                 publisher_ts
                 pub_date_tis
-                journal_vol_sort
-                journal_issue_sort
+                journal_vol_tsort
+                journal_issue_tsort
                 journal_part_sort
-                journal_page_start_sort
+                journal_page_start_tsort
                 doi_ss
             </str>
             <str name="author_qf">
@@ -355,12 +410,12 @@
 
             <str name="f.y.qf"            >pub_date_tis</str>
             <str name="f.year.qf"         >pub_date_tis</str>
-            <str name="f.v.qf"            >journal_vol_sort</str>
-            <str name="f.vol.qf"          >journal_vol_sort</str>
-            <str name="f.volume.qf"       >journal_vol_sort</str>
-            <str name="f.i.qf"            >journal_issue_sort</str>
-            <str name="f.iss.qf"          >journal_issue_sort</str>
-            <str name="f.issue.qf"        >journal_issue_sort</str>
+            <str name="f.v.qf"            >journal_vol_tsort</str>
+            <str name="f.vol.qf"          >journal_vol_tsort</str>
+            <str name="f.volume.qf"       >journal_vol_tsort</str>
+            <str name="f.i.qf"            >journal_issue_tsort</str>
+            <str name="f.iss.qf"          >journal_issue_tsort</str>
+            <str name="f.issue.qf"        >journal_issue_tsort</str>
             <str name="f.p.qf"            >journal_page_start_tsort</str>
             <str name="f.page.qf"         >journal_page_start_tsort</str>
 
@@ -450,7 +505,7 @@
             <str name="f.facet_topic.qf">keywords_facet</str>
             <str name="f.facet_jtitle.qf">journal_title_facet</str>
             <str name="f.facet_creationdate.qf">pub_date_tsort</str>
-            <str name="f.facet_lang.qf">iso_language_ss</str>
+            <str name="f.facet_lang.qf">isolanguage_facet</str>
 
             <str name="facet">true</str>
             <str name="facet.limit">20</str>
@@ -460,7 +515,7 @@
             <str name="facet.field">{!key=jtitle}journal_title_facet</str>
             <str name="facet.field">{!key=type}format</str>
             <str name="facet.field">{!key=topic}keywords_facet</str>
-            <str name="facet.field">{!key=lang}iso_language_ss</str>
+            <str name="facet.field">{!key=lang}isolanguage_facet</str>
             <str name="facet.mincount">1</str>
         </lst>
         <lst name="appends">

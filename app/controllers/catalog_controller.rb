@@ -268,7 +268,7 @@ class CatalogController < ApplicationController
   def show
     @disable_remove_filter = true
     @display_format = current_display_format + '_show'
-    
+
     @show_nal_locations = true
 
     # override super#show to add access filters to request
@@ -277,10 +277,10 @@ class CatalogController < ApplicationController
       @response, @document = get_solr_response_for_doc_id nil, add_access_filter
       @toc = toc_for @document, params, add_access_filter
 
-    rescue Blacklight::Exceptions::InvalidSolrID      
+    rescue Blacklight::Exceptions::InvalidSolrID
 
       # check whether document is available for dtu users if the user does not already have dtu search rights
-      if can? :search, :public        
+      if can? :search, :public
         @response, @document = get_solr_response_for_doc_id nil, {:fq => ['access_ss:dtu']}
         if @document.nil?
           not_found
@@ -288,14 +288,14 @@ class CatalogController < ApplicationController
           if current_user.authenticated?
             redirect_to authentication_required_catalog_path(:url => request.url)
           else
-            # anonymous user, send to DTU login      
+            # anonymous user, send to DTU login
             force_authentication({:only_dtu => true})
           end
         end
       else
         not_found
       end
-    else  
+    else
       respond_to do |format|
         format.html {setup_next_and_previous_documents unless params[:ignore_search]}
 
@@ -303,9 +303,9 @@ class CatalogController < ApplicationController
         # export formats.
         @document.export_formats.each_key do | format_name |
           # It's important that the argument to send be a symbol;
-          # if it's a string, it makes Rails unhappy for unclear reasons. 
+          # if it's a string, it makes Rails unhappy for unclear reasons.
           format.send(format_name.to_sym) { render :text => @document.export_as(format_name), :layout => false }
-        end        
+        end
       end
     end
   end
@@ -318,14 +318,14 @@ class CatalogController < ApplicationController
   # Saves the current search (if it does not already exist) as a models/search object
   # then adds the id of the search object to session[:history] (if not logged in) or
   # add the search to the users searches
-  def save_current_search_params    
+  def save_current_search_params
     # If it's got anything other than controller, action, total, we
     # consider it an actual search to be saved. Can't predict exactly
     # what the keys for a search will be, due to possible extra plugins.
-    return if (search_session.keys - [:controller, :action, :total, :counter, :commit, :locale]) == [] 
+    return if (search_session.keys - [:controller, :action, :total, :counter, :commit, :locale]) == []
     params_copy = search_session.clone # don't think we need a deep copy for this
-    params_copy.delete(:page)        
-    params_copy.delete(:s_id)        
+    params_copy.delete(:page)
+    params_copy.delete(:s_id)
 
     # don't save default 'empty' search
     unless params[:q].blank? && params[:f].blank? && params[:l].blank? && params[:t].blank?
@@ -339,10 +339,10 @@ class CatalogController < ApplicationController
 
         if can? :view, :search_history
           current_user.searches << new_search
-          current_user.save      
-        else  
+          current_user.save
+        else
           session[:history].unshift(new_search.id)
-          # Only keep most recent X searches in history, for performance. 
+          # Only keep most recent X searches in history, for performance.
           # both database (fetching em all), and cookies (session is in cookie)
           session[:history] = session[:history].slice(0, Blacklight::Catalog::SearchHistoryWindow)
         end

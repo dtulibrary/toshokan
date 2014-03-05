@@ -31,7 +31,7 @@
       <% end %>
     <% end %>
 
-    <% if @document[:format] == "journal" %>
+    <% if @document[:format] == "journal" && params[:resolve].blank? %>
 
       <% if can? :view, :search_history %>
         <li class="nav-header journal-alert-header"><i class="icon-bell"></i><%= t('toshokan.alerts.title') %></li>
@@ -40,7 +40,7 @@
         </li>
       <% end %>
 
-      <%= render_journal_rank @document %>      
+      <%= render_journal_rank @document %>
     <% end %>
 
   </ul>

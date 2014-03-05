@@ -2,7 +2,7 @@
 require 'citeproc'
 require 'openurl'
 
-class SolrDocument 
+class SolrDocument
   include Configured
   include Blacklight::Solr::Document
 
@@ -15,28 +15,28 @@ class SolrDocument
   def initialize *args
     super
     @citation_styles = [:mla, :apa, :'chicago-author-date']
-  end  
+  end
 
   def id
     id = self[self.class.unique_key]
     id.kind_of?(Array) ? id.first : id
   end
-  
+
   # DublinCore uses the semantic field mappings below to assemble an OAI-compliant Dublin Core document
   # Semantic mappings of solr stored fields. Fields may be multi or
   # single valued. See Blacklight::Solr::Document::ExtendableClassMethods#field_semantics
   # and Blacklight::Solr::Document#to_semantic_values
   # Recommendation: Use field names from Dublin Core
-  use_extension( Blacklight::Solr::Document::DublinCore)    
-  field_semantics.merge!(    
-                         # DC, BibTeX, Ris 
+  use_extension( Blacklight::Solr::Document::DublinCore)
+  field_semantics.merge!(
+                         # DC, BibTeX, Ris
                          :title => "title_ts",
                          :language => "language_ss",
                          :format => "format",
                          :publisher => "publisher_ts",
                          # DC
                          :subject => "keywords_ts",
-                         :description => "abstract_ts", 
+                         :description => "abstract_ts",
                          :creator => "author_ts",
                          :date => "pub_date_ti",
                          :identifier => "doi_s",
@@ -53,40 +53,103 @@ class SolrDocument
                          :abstract => "abstract_ts",
                          :doi => "doi_ss",
                          :keywords => "keywords_ts",
-                         # COinS
-                         :open_url => "open_url_sf"
+                         # OpenURL
+                         :genre => "format",
+                         :atitle => "title_ts",
+                         :btitle => "title_ts",
+                         :au => "author_ts",
+                         :spage => "journal_page_ssf",
+                         :jtitle => "journal_title_ts",
+                         :volume => "journal_vol_ssf",
+                         :issue => "journal_issue_ssf",
+                         :date => "pub_date_tis"
+                         # issn, isbn shared with BibTex & Ris
                          )
 
   def export_as_openurl_ctx_kev(format = nil)
     @context_object ||= create_openurl
-    @context_object.kev     
+    @context_object.kev
   end
 
   def export_as_citation_txt(style_name)
-    CiteProc.process self.to_bibtex.to_citeproc, :style => style_name.to_sym  
+    CiteProc.process self.to_bibtex.to_citeproc, :style => style_name.to_sym
   end
 
   def has_citation_style(style)
     @citation_styles.include? style.to_sym
   end
 
+  # used for synthesizing a record from a reference
+  def self.create_from_openURL(context_object)
+
+    solr_doc = {}
+    context_object.referent.metadata.each do |metadata|
+      if self.field_semantics.has_key?(metadata.first.to_sym)
+        if [:format, :genre].include?(metadata.first.to_sym)
+          solr_doc[self.field_semantics[metadata.first.to_sym]] = metadata.last
+        # page element
+        elsif metadata.first.to_sym == :spage
+          page_info = metadata.last
+          unless context_object.referent.metadata["epage"].nil?
+            page_info += "-#{context_object.referent.metadata['epage']}"
+          end
+          solr_doc[self.field_semantics[metadata.first.to_sym]] = [page_info]
+        else
+          solr_doc[self.field_semantics[metadata.first.to_sym]] = [metadata.last]
+        end
+      end
+    end
+
+    # set title for journals
+    if solr_doc["format"] && solr_doc["format"] == "journal" && solr_doc["journal_title_ts"]
+      solr_doc["title_ts"] = solr_doc["journal_title_ts"]
+    end
+
+    # set additional ids which are not included in metatdata
+    unless context_object.referent.identifiers.nil?
+      context_object.referent.identifiers.each do |id|
+        if m = id.match(/(urn|info):([^:]*):(.*)/)
+          ou_field = m[2].to_sym
+          if self.field_semantics.has_key?(ou_field)
+            solr_doc[self.field_semantics[ou_field]] = [] if solr_doc[self.field_semantics[ou_field]].nil?
+            solr_doc[self.field_semantics[ou_field]] << m[3] unless solr_doc[self.field_semantics[ou_field]].include?(m[3])
+          end
+        end
+      end
+    end
+
+    # set fake id
+    solr_doc[:id] = 0
+
+    doc = SolrDocument.new(solr_doc)
+
+    # override more_like_this which depends on a solr response being set
+    doc.define_singleton_method(:more_like_this) { [] }
+
+    doc
+  end
+
   private
 
-  def create_openurl    
+  def create_openurl
+    # Note that multiple values for a metadata key (i.e. rft.au) is currently not supported
+    # (not supported by the OpenURL gem)
+
     @context_object = OpenURL::ContextObject.new
+    @context_object.referrer.add_identifier('info:sid/findit.dtu.dk')
     format = self[:format]
     genre  = self[:format]
-    format = "journal" if format == "article"        
+    format = "journal" if format == "article"
     @context_object.referent.set_format(format)
-    @context_object.referent.set_metadata('genre', genre)    
+    @context_object.referent.set_metadata('genre', genre)
     self.to_semantic_values.each do |field, value|
       case field
       when :title
-        key = "atitle"        
+        key = "atitle"
         if genre == "book"
-          key = "btitle" 
+          key = "btitle"
         elsif genre == "journal"
-          key = "jtitle" 
+          key = "jtitle"
         end
         @context_object.referent.set_metadata(key, value.first)
       when :journal
@@ -102,8 +165,8 @@ class SolrDocument
           @context_object.referent.set_metadata("spage", "#{$1}")
           @context_object.referent.set_metadata("epage", "#{$2}")
         end
-      when :year 
-        @context_object.referent.set_metadata("date", value.first.to_s)        
+      when :year
+        @context_object.referent.set_metadata("date", value.first.to_s)
       when :doi
         @context_object.referent.set_metadata("doi", "#{value.first}")
         @context_object.referent.add_identifier("info:doi/#{value.first}")

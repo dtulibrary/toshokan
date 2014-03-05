@@ -19,18 +19,26 @@
 <schema name="metastore" version="1.5">
 
     <fields>
-        <field name="_version_" type="long" indexed="true" stored="true" multiValued="false"/>
+        <field name="_version_" type="long" indexed="true" stored="true" multiValued="false" required="true"/> <!-- change to use docValues on Solr 4.7 -->
 
         <!-- static fields -->
-        <field name="id"              type="string" indexed="true"  stored="true" multiValued="false" required="true" />
-        <field name="timestamp"       type="date"   indexed="true"  stored="true" multiValued="false" default="NOW"/>
-        <field name="format"          type="string" indexed="true"  stored="true" multiValued="false" required="true" docValues="true"/>
+        <field name="id"              type="string"               indexed="true"  stored="true" multiValued="false" required="true" />
+        <field name="timestamp"       type="date"                 indexed="true"  stored="true" multiValued="false" default="NOW"/>
+        <field name="format"          type="ondisk_docval_string" indexed="true"  stored="true" multiValued="false" required="true" docValues="true"/>
 
         <field name="spell" type="textSpell" indexed="true" stored="false" multiValued="true"/>
 
+        <!-- specialized fields (mainly to configure docValues on selected fields) -->
+        <field name="pub_date_tsort"            type="ondisk_docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+        <field name="journal_vol_tsort"         type="ondisk_docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+        <field name="journal_issue_tsort"       type="ondisk_docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+        <field name="journal_page_start_tsort"  type="ondisk_docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+        <field name="title_sort"                type="ondisk_docval_string" indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+        <field name="author_sort"               type="ondisk_docval_string" indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+
         <!-- dynamic fields -->
-        <dynamicField name="*_s"  type="string"  indexed="true"  stored="true" />
-        <dynamicField name="*_ss" type="string"  indexed="true"  stored="true" multiValued="true"/>
+        <dynamicField name="*_s"   type="string"  indexed="true" stored="true" />
+        <dynamicField name="*_ss"  type="string"  indexed="true" stored="true" multiValued="true"/>
         <dynamicField name="*_sf"  type="string" indexed="false" stored="true" />
         <dynamicField name="*_ssf" type="string" indexed="false" stored="true" multiValued="true"/>
 
@@ -55,7 +63,7 @@
         <dynamicField name="*_sort"  type="lowercase" indexed="true" stored="false" multiValued="false" />
         <dynamicField name="*_tsort" type="tint"      indexed="true" stored="false" multiValued="false" />
 
-        <dynamicField name="*_facet" type="string" indexed="true" stored="true" multiValued="true" docValues="true" />
+        <dynamicField name="*_facet" type="string" indexed="true" stored="true" multiValued="true" docValues="false" />
 
         <!-- Type used to index the lat and lon components for the "location" FieldType -->
         <dynamicField name="*_coordinate" type="tdouble" indexed="true"  stored="false" />
@@ -83,12 +91,19 @@
     <copyField source="author_ts"        dest="author_facet" />
     <copyField source="journal_title_ts" dest="journal_title_facet" />
     <copyField source="keywords_ts"      dest="keywords_facet" />
+    <copyField source="isolanguage_ss"   dest="isolanguage_facet" />
 
     <!-- spelling -->
     <copyField source="*_t" dest="spell" />
     <copyField source="*_ts" dest="spell" />
 
     <types>
+        <!-- specialized types for on-disk docValues -->
+
+        <fieldType name="ondisk_docval_tlong" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0" docValuesFormat="Disk"/>
+        <fieldType name="ondisk_docval_tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0" docValuesFormat="Disk"/>
+        <fieldType name="ondisk_docval_string" class="solr.StrField" sortMissingLast="true" omitNorms="true" docValuesFormat="Disk"/>
+
         <!-- field type definitions. The "name" attribute is
            just a label to be used by field definitions.  The "class"
            attribute and any other attributes determine the real
@@ -114,7 +129,7 @@
         </fieldType>
 
         <!-- The StrField type is not analyzed, but indexed/stored verbatim. -->
-        <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+        <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true" />
 
         <!-- boolean type: "true" or "false" -->
         <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
@@ -153,7 +168,7 @@
          indexed per value, slightly larger index size, and faster range queries.
          A precisionStep of 0 disables indexing at different precision levels.
         -->
-        <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0"/>
+        <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0" />
         <fieldType name="tfloat" class="solr.TrieFloatField" precisionStep="8" positionIncrementGap="0"/>
         <fieldType name="tlong" class="solr.TrieLongField" precisionStep="8" positionIncrementGap="0"/>
         <fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" positionIncrementGap="0"/>

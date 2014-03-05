@@ -5,10 +5,10 @@
     var base = $(this);
     var customData = encodeURIComponent(JSON.stringify({"id" : id}));
     var url = [toshokan.getit.url,
-               "/resolve?" + openUrl,                
+               "/resolve?" + openUrl,
                "&rft_dat=" + customData,
                "&req_id=" + userType,
-               "&svc_dat=" + service_list].join("");        
+               "&svc_dat=" + service_list].join("");
 
     var source = new EventSource(url);
     var count = 0;
@@ -21,8 +21,8 @@
     }
     source.onerror = function(event) {
       stop();
-    }    
-    source.addEventListener("close", function(event) {      
+    }
+    source.addEventListener("close", function(event) {
       stop();
     }, false);
 
@@ -38,18 +38,18 @@
   };
 
   $(function () {
-    if($('body.blacklight-catalog-index').length) {      
+    if($('body.blacklight-catalog-index').length) {
 
       $('.document').each(function() {
         var openUrl = $(this).find(".Z3988").attr("title");
         var id = $(this).attr("id");
-        var fulltext = $(this).find('.getit-item');        
-                
-        if(fulltext.length) {          
+        var fulltext = $(this).find('.getit-item');
+
+        if(fulltext.length) {
           var spinner = $("<li />");
           fulltext.before(spinner.spin());
           spinner.spin({length: 3, width: 2, radius: 4, left: 5, top: -12 });
-          fulltext.addResource(openUrl, id, "fulltext_info", partial(layout_index, fulltext), 
+          fulltext.addResource(openUrl, id, "fulltext_info", partial(layout_index, fulltext),
             function() { spinner.spin(false); spinner.remove(); });
         }
       });
@@ -58,11 +58,11 @@
       var openUrl = $(".Z3988").attr("title");
       var id = $("input[name=id]").val();
       var fulltext = $(".fulltext-header");
-      
-      if(fulltext.length) {          
-        fulltext.spin({length: 4, width: 3, radius: 5, top: 0});      
 
-        fulltext.addResource(openUrl, id, "fulltext", partial(layout_show, fulltext), 
+      if(fulltext.length) {
+        fulltext.spin({length: 4, width: 3, radius: 5, top: 0});
+
+        fulltext.addResource(openUrl, id, "fulltext", partial(layout_show, fulltext),
           function() { fulltext.spin(false); });
       }
     }
@@ -71,26 +71,31 @@
 
   var layout_show = function (elm, data, count) {
 
-    if(data == null) {      
+    if(data == null) {
       elm.after($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
-    } else {    
-      var action;
+    } else {
+      var action = null;
       var header_elm = elm;
       var headerSelector;
 
       if(data.subtype.match(/_scan/)) {
-        
-        if(data.subtype == "rd_scan") {
-          action = $("li.order-rd-scan > form");
+
+        if($(".order-scan").length > 0) {
+
+          if(data.subtype == "rd_scan") {
+            action = $("li.order-rd-scan > form");
+          } else {
+            action = $("li.order-dtu-scan > form");
+          }
+
+          $(action).find("button").text(data.button_text);
+          data.lead_text = action.attr("data-price");
         } else {
-          action = $("li.order-dtu-scan > form");
+          elm.after($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
         }
-        
-        $(action).find("button").text(data.button_text);
-        data.lead_text = action.attr("data-price");
 
       } else if(data.subtype.match(/nal/)) {
-        
+
         var other_header = elm.parent().find(".other-header")
         other_header.show();
         headerSelector = '.other-header';
@@ -102,7 +107,7 @@
           "href"        : "",
           "data-toggle" : "modal",
           "data-target" : "#nal-locations-modal",
-          "target"      : "_blank"  
+          "target"      : "_blank"
         });
 
         action = $("<div />", {"class" : "btn-group nal"});
@@ -111,7 +116,7 @@
         $.each(data.urls, function () {
           if (toshokan.libraries[this.id]) {
             $('#nal-locations').append(
-              '<div class="nal-location" data-url="' + this.url + '">' + 
+              '<div class="nal-location" data-url="' + this.url + '">' +
               '  <input type="checkbox" name="' + this.id + '" checked="checked"> ' +
               '  <span>' + toshokan.libraries[this.id].displayName.en + '</span>' +
               '</div>'
@@ -131,7 +136,7 @@
         data.lead_text = data.button_text;
 
       } else {
-        
+
         action = $("<a/>", {
           text          : data.button_text,
           "class"       : "fulltext btn btn-primary btn-small",
@@ -140,44 +145,47 @@
           "data-toggle" : "tooltip",
           "target"      : "_blank"
         });
-
-      }
-      $(action).tooltip();
-
-      var item = $("<li />", { "class" : "fulltext-item"});
-      item.append("<strong><i class='" + data.icon + "'></i>" + data.short_name + "</strong> (" + data.type + ")");
-      item.append("<p><small>" + data.short_explanation + "</small></p>");        
-      item.append(
-        $("<div />", {"class" : "fulltext-action"}).append(
-          $("<div />", {"class" : "leadtext"}),              
-          $("<div />").append(action)
-        )
-      );
-      lead_text = item.find(".leadtext");
-      if (data.lead_text) {
-        $(lead_text).append($("<div />").append("<strong>" + data.lead_text + "</strong>"));
-      }
-      if (data.explanation) {
-        $(lead_text).append($("<div />").append("<small>" + data.explanation + "</small>")); 
       }
 
-      if(data.holdings_list) {
-        holdings_item = format_holdings_list(data.holdings_list);
-        item.find(".fulltext-action").before(holdings_item);
-      }
+      if(action != null) {
 
-      if (headerSelector) {
-        if ($('#fulltext > ' + headerSelector + ' + .fulltext-item').length > 0) {
-          $(".fulltext-item").filter(":last").after(item);
-        } else {
-          $('#fulltext > ' + headerSelector).after(item);
+        $(action).tooltip();
+
+        var item = $("<li />", { "class" : "fulltext-item"});
+        item.append("<strong><i class='" + data.icon + "'></i>" + data.short_name + "</strong> (" + data.type + ")");
+        item.append("<p><small>" + data.short_explanation + "</small></p>");
+        item.append(
+          $("<div />", {"class" : "fulltext-action"}).append(
+            $("<div />", {"class" : "leadtext"}),
+            $("<div />").append(action)
+          )
+        );
+        lead_text = item.find(".leadtext");
+        if (data.lead_text) {
+          $(lead_text).append($("<div />").append("<strong>" + data.lead_text + "</strong>"));
         }
-      } else {
-        if(count == 0) {
-          header_elm.after(item);
+        if (data.explanation) {
+          $(lead_text).append($("<div />").append("<small>" + data.explanation + "</small>"));
+        }
+
+        if(data.holdings_list) {
+          holdings_item = format_holdings_list(data.holdings_list);
+          item.find(".fulltext-action").before(holdings_item);
+        }
+
+        if (headerSelector) {
+          if ($('#fulltext > ' + headerSelector + ' + .fulltext-item').length > 0) {
+            $(".fulltext-item").filter(":last").after(item);
+          } else {
+            $('#fulltext > ' + headerSelector).after(item);
+          }
         } else {
-          $(".fulltext-item").filter(":last").after(item);
-        }      
+          if(count == 0) {
+            header_elm.after(item);
+          } else {
+            $(".fulltext-item").filter(":last").after(item);
+          }
+        }
       }
     }
   };
@@ -188,7 +196,7 @@
     var item = $("<div />", {"class" : "coverage"});
     item.append("<p><small><%= I18n.t('toshokan.tools.coverage') %>:</small></p>");
     for(var i=0; i<holdings_list.length; i++) {
-      h = holdings_list[i];      
+      h = holdings_list[i];
 
       from = "";
       if(h.fromyear) {
@@ -209,9 +217,9 @@
         if(h.toissue) {
           to += " iss. " + h.toissue
         }
-      }      
+      }
       item.append("<p><small>" + from + " &mdash; " + to + "</small></p>");
-    }    
+    }
     return item;
   }
 

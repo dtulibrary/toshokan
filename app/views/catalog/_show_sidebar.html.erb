@@ -3,10 +3,12 @@
   <%= render :partial => 'show_fulltext' %>
 </div><!--/well -->
 
+<% if params[:resolve].blank? %>
 <div class="well tools" id="sidebar-nav">
   <%= render :partial => 'show_tools' %>
 </div><!--/well -->
-  
+<% end %>
+
 <% unless @document.more_like_this.empty? %>
 <div class="well" id="sidebar-mlt">
   <ul class="nav nav-list">

@@ -2,7 +2,6 @@
 FeatureFlipper.features do
   
   in_state :development do
-    feature :alert,        :description => "Journal and search alerts"
   end
 
   in_state :unstable do
