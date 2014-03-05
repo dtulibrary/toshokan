@@ -1,0 +1,6 @@
+Order ID, CWIS, Initials, Institute, Order date, ISSN, Journal title, Article title
+<% @orders.each do |order| -%>
+<% if order.user.dtu? -%>
+<%= order.id %>, <%= order.user.user_data["dtu"]["matrikel_id"] %>, <%= order.user.user_data["dtu"]["initials"] %>, <%= t "toshokan.orders.facets.org_unit.values.#{order.org_unit}" %>, <%= order.created_at %>, "<%= order.document['issn_ss'].first %>", <%= order.document['journal_title_ts'].first.try :gsub, /[;,']/, ' ' %>, <%= order.document['title_ts'].first.try :gsub, /[;,']/, ' ' %>
+<% end -%>
+<% end -%>

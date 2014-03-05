@@ -26,6 +26,10 @@ en:
         payment_cancelled: Payment cancelled
         payment_captured: Payment completed
       facets:
+        order_price:
+          title: Order price (in DKK excl. VAT)
+        user:
+          title: User (top 20)
         email: 
           title: Email
         org_unit: 

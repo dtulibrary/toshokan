@@ -33,7 +33,13 @@
                 <% values.each do |term, count| %>
                   <% if @filter_queries[type].try :include?, term %>
                     <li>
-                      <span class="selected"><%= t "toshokan.orders.facets.#{type}.values.#{term}", :default => term %></span> 
+                      <span class="selected">
+                        <% if @facet_labels[type].try :[], term %>
+                          <%= @facet_labels[type][term] %>
+                        <% else %>
+                          <%= t "toshokan.orders.facets.#{type}.values.#{term}", :default => term %>
+                        <% end %>
+                      </span>
                       <%= link_to '<i class="icon-remove"></i>'.html_safe, 
                                   orders_path(params.except(:page).merge({ type => @filter_queries[type].reject {|e| e == term}})), 
                                   :title => 'Remove filter' %> 
@@ -41,9 +47,15 @@
                     </li>
                   <% else %>
                     <li>
-                      <%= link_to t("toshokan.orders.facets.#{type}.values.#{term}", :default => term), 
-                                  orders_path(params.except(:page).merge({ type => ((@filter_queries[type] || []) + [term]) })),
-                                  :class => 'facet_select', :title => 'Add filter' %>
+                      <% if @facet_labels[type].try :[], term %>
+                        <%= link_to @facet_labels[type][term], 
+                                    orders_path(params.except(:page).merge({ type => ((@filter_queries[type] || []) + [term]) })),
+                                    :class => 'facet_select', :title => 'Add filter' %>
+                      <% else %>
+                        <%= link_to t("toshokan.orders.facets.#{type}.values.#{term}", :default => term), 
+                                    orders_path(params.except(:page).merge({ type => ((@filter_queries[type] || []) + [term]) })),
+                                    :class => 'facet_select', :title => 'Add filter' %>
+                      <% end %>
                       <span class="count"><%= number_with_delimiter count %></span>
                     </li>
                   <% end %>
@@ -59,6 +71,11 @@
     <% if @orders.empty? %>
       There are no orders that match your query.
     <% else %>
+      <% if can? :view, :extended_info %>
+        <div class="pull-right">
+          <%= link_to 'Export as CSV', orders_path(params.merge :format => :csv) %>
+        </div>
+      <% end %>
       <table class="table">
         <thead>
           <tr>

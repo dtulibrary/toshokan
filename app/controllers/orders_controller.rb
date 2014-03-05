@@ -64,7 +64,7 @@ class OrdersController < ApplicationController
     end
 
     @filter_queries = {}
-    @facets = {}
+    @facets = ActiveSupport::OrderedHash.new
   
     if can? :view_any, Order # Perhaps this should be can? :view, :orders_facets
       # Apply email filter query
@@ -72,6 +72,12 @@ class OrdersController < ApplicationController
 #        @orders = @orders.where "email = ?", params[:email]
 #        @filter_queries[:email] = params[:email]
 #      end
+
+      # Apply user filter query
+      if params[:user] && !params[:user].blank?
+        @orders = @orders.where :user_id => params[:user].first
+        @filter_queries[:user] = [params[:user]].flatten
+      end
 
       # Apply year filter query
       if params[:year] && !params[:year].blank?
@@ -87,6 +93,12 @@ class OrdersController < ApplicationController
       if params[:org_unit] && !params[:org_unit].blank?
         @orders = @orders.where :org_unit => params[:org_unit].first
         @filter_queries[:org_unit] = [params[:org_unit]].flatten
+      end
+
+      # Apply order price filter query
+      if params[:order_price] && !params[:order_price].blank?
+        @orders = @orders.where :price => params[:order_price].first
+        @filter_queries[:order_price] = [params[:order_price]].flatten
       end
 
       # Apply supplier filter query
@@ -108,20 +120,48 @@ class OrdersController < ApplicationController
 #                                  .reorder('count_all desc')
 #                                  .count
 
+      # User facet
+      @facets[:user] = ActiveSupport::OrderedHash.new
+      @facet_labels = {}
+      @facet_labels[:user] = {}
+      @orders.where('user_id is not null').group('user_id').reorder('count_all desc').limit(20).count.each do |user_id, count|
+        user_id = user_id.to_s
+        @facets[:user][user_id] = count
+        user = User.find user_id
+        if user.dtu?
+          @facet_labels[:user][user_id] = "#{user} (CWIS: #{user.user_data["dtu"]["matrikel_id"]})"
+        else
+          @facet_labels[:user][user_id] = user.to_s
+        end
+      end
+
+      # Institute facet
       @facets[:org_unit] = @orders.where('org_unit is not null')
                                   .group('org_unit')
                                   .reorder('count_all desc')
                                   .count
 
-      @facets[:supplier] = @orders.group('supplier')
-                                  .reorder('count_all desc')
-                                  .count
+      # Order price facet
+      @facets[:order_price] = ActiveSupport::OrderedHash.new
+      @facet_labels[:order_price] = {}
+      @orders.group('price').reorder('count_all desc').count.each do |price, count|
+        price = price.to_s
+        @facets[:order_price][price] = count
+        @facet_labels[:order_price][price] = (price.to_i / 100).to_s
+      end
 
-      @facets[:event]    = @orders.joins(:order_events)
-                                  .group(:name)
-                                  .reorder('count_all desc')
-                                  .count
+      # Supplier facet
+      @facets[:supplier]    = @orders.group('supplier')
+                                     .reorder('count_all desc')
+                                     .count
 
+      # Order event facet
+      @facets[:event]       = @orders.joins(:order_events)
+                                     .group(:name)
+                                     .reorder('count_all desc')
+                                     .count
+
+      # Year facet
       # Since SQLite doesn't support extract(year from created_at) we have to wiggle a bit for the year facet
       # Group by date and sum up counts per year
       @facets[:year] = ActiveSupport::OrderedHash.new
@@ -131,7 +171,7 @@ class OrdersController < ApplicationController
         @facets[:year][year] += count
       end
     end
-    
+   
     # Reject facets with no terms
     @facets.reject! {|k,v| v.empty?}
 
