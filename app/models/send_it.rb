@@ -114,7 +114,7 @@ class SendIt
     end
 
     send_mail 'library_assistance', local_params
-    send_mail 'library_assistance', local_params.merge({ :to => SendIt.book_suggest_mail }) if params[:book_suggest] && !Sendit.book_suggest_mail.blank?
+    send_mail 'library_assistance', local_params.merge({ :to => SendIt.book_suggest_mail }) if params[:book_suggest] && !SendIt.book_suggest_mail.blank?
   end
 
   def self.article_params params
