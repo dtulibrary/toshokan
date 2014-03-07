@@ -195,31 +195,50 @@
     holdings_list.sort(function(a, b) { return a.fromyear - b.fromyear; }).reverse;
     var item = $("<div />", {"class" : "coverage"});
     item.append("<p><small><%= I18n.t('toshokan.tools.coverage') %>:</small></p>");
+    var embargo = "";
     for(var i=0; i<holdings_list.length; i++) {
       h = holdings_list[i];
 
-      from = "";
-      if(h.fromyear) {
-        from = h.fromyear;
-        if(h.fromvolume) {
-          from += " vol. " + h.fromvolume
+      if(h.embargo) {
+
+        unit = h.embargo[0];
+        period = h.embargo[1];
+        if(period > 1) {
+          unit = " " + unit + "s";
+        } else {
+          period = "";
         }
-        if(h.fromissue) {
-          from += " iss. " + h.fromissue
+
+        embargo = "Last " + period + unit + " not available";
+      } else {
+
+        from = "";
+        if(h.fromyear) {
+          from = h.fromyear;
+          if(h.fromvolume) {
+            from += " vol. " + h.fromvolume;
+          }
+          if(h.fromissue) {
+            from += " iss. " + h.fromissue;
+          }
         }
+        to = "";
+        if(h.toyear) {
+          to = h.toyear;
+          if(h.tovolume) {
+            to += " vol. " + h.tovolume;
+          }
+          if(h.toissue) {
+            to += " iss. " + h.toissue;
+          }
+        }
+        item.append("<p><small>" + from + " &mdash; " + to + "</small></p>");
       }
-      to = "";
-      if(h.toyear) {
-        to = h.toyear;
-        if(h.tovolume) {
-          to += " vol. " + h.tovolume
-        }
-        if(h.toissue) {
-          to += " iss. " + h.toissue
-        }
-      }
-      item.append("<p><small>" + from + " &mdash; " + to + "</small></p>");
     }
+    if(embargo != "") {
+      item.append("<p><small>" + embargo + "</small></p>");
+    }
+
     return item;
   }
 
