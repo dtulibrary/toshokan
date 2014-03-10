@@ -51,7 +51,7 @@ module TocHelper
     query = "issn_ss:(#{document[:issn_ss].join(' OR ')})"
     query << " AND pub_date_tis:[#{query_years.last} TO #{query_years.first}]" unless query_years.empty? || params[:all]
     fl    = 'toc_key_s,issn_ss,pub_date_tis,journal_vol_ssf,journal_issue_ssf,journal_part_ssf'
-    sort  = 'pub_date_tsort desc, journal_vol_sort desc, journal_issue_sort desc, journal_part_sort asc'
+    sort  = 'pub_date_tsort desc, journal_vol_tsort desc, journal_issue_tsort desc, journal_part_sort asc'
     toc_data = toc_solr.get('select', :params => solr_params.merge({ :q => query, :rows => count, :fl => fl, :sort => sort }))
     toc_docs = toc_data.with_indifferent_access[:response][:docs]
 

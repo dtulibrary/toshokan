@@ -221,8 +221,8 @@ class CatalogController < ApplicationController
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
     # except in the relevancy case).
-    config.add_labeled_field :sort, 'score desc, pub_date_tsort desc, journal_vol_sort asc, journal_issue_sort desc, journal_page_start_tsort asc, title_sort asc', :field_name => 'relevance'
-    config.add_labeled_field :sort, 'pub_date_tsort desc, journal_vol_sort asc, journal_issue_sort desc, journal_page_start_tsort asc, title_sort asc', :field_name => 'year'
+    config.add_labeled_field :sort, 'score desc, pub_date_tsort desc, journal_vol_tsort desc, journal_issue_tsort desc, journal_page_start_tsort asc, title_sort asc', :field_name => 'relevance'
+    config.add_labeled_field :sort, 'pub_date_tsort desc, journal_vol_tsort desc, journal_issue_tsort desc, journal_page_start_tsort asc, title_sort asc', :field_name => 'year'
     config.add_labeled_field :sort, 'author_sort asc, title_sort asc', :field_name => 'author'
     config.add_labeled_field :sort, 'title_sort asc, pub_date_tsort desc', :field_name => 'title'
 
