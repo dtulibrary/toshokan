@@ -3,6 +3,7 @@ require 'uuidtools'
 class OrdersController < ApplicationController
   
   before_filter :disable_header_searchbar
+  before_filter :require_authentication, :only => [:index]
 
   # Delivery is called from DocDel
   skip_before_filter :authenticate, :only => [:delivery]
@@ -107,7 +108,7 @@ class OrdersController < ApplicationController
         @filter_queries[:supplier] = [params[:supplier]].flatten
       end
   
-      # Apply status filter query (multi-valued)
+      # Apply status filter query
       if params[:event] && !params[:event].blank?
         events = [params[:event]].flatten
         where_clause = (['orders.id in (select order_id from order_events where name = ?)'] * events.size).join ' and '
@@ -451,10 +452,8 @@ class OrdersController < ApplicationController
         @order.delivery_status = :cancelled
 
         if @order.user && (@order.user.employee? || @order.user.student?)
-          @order.order_events << OrderEvent.new(:name => 'delivery_manual')
-
-          # Send mail to delivery support 
-          SendIt.delay.send_failed_automatic_request_mail @order, params[:reason]
+          # Create library support issue
+          LibrarySupport.delay.submit_failed_request @order, params[:reason]
         else
           @order.order_events << OrderEvent.new(:name => 'delivery_cancelled')
           SendIt.delay.send_cancellation_mail @order, :order => {:status_url => order_status_url(@order.uuid)}

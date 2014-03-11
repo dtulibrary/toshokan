@@ -70,6 +70,36 @@ class SendIt
     send_order_mail 'findit_delivery', order, params
   end
 
+  def self.send_book_suggestion user, params
+    if SendIt.book_suggest_mail.blank?
+      logger.info "config.send_it.book_suggest_mail is missing or blank. Sending mail aborted."
+      return
+    end
+
+    mail_params = {
+      :to    => SendIt.book_suggest_mail,
+      :from  => user.email,
+      :book  => {
+      },
+      :notes => params[:notes],
+      :user  => {
+        :name => user.to_s,
+      }
+    }
+
+    [:title, :year, :author, :edition, :doi, :isbn, :publisher].each do |field|
+      mail_params[:book][field] = params["book_#{field}"] unless params["book_#{field}"].blank?
+    end
+
+    mail_params[:user][:cwis]    = user.user_data["dtu"]["matrikel_id"] if user.dtu?
+    mail_params[:user][:address] = user.user_data["address"] unless user.user_data["address"].blank?
+
+    mail_params.deep_merge! params
+
+    logger.debug "Sending book suggestion:\n#{mail_params}"
+    send_mail 'book_suggestion', mail_params
+  end
+
   def self.send_request_assistance_mail genre, user, params = {}
     title = ''
 

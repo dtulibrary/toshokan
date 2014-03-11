@@ -144,6 +144,32 @@ module Toshokan
       :book_suggest_mail => '',
     }
 
+    config.library_support = {
+      :url         => '',
+      :api_key     => '',
+      :reply_to    => '',
+      :project_ids => {
+        :journal_article    => '',
+        :conference_article => '',
+        :book               => '',
+        :failed_requests    => '',
+      },
+      # TODO: When the library support Redmine instance is updated
+      #       to version >= 2.4, the custom fields should be retrieved
+      #       dynamically from Redmine instead of this hard config.
+      #       See #1591
+      :custom_fields => {
+        :dtu_unit => {
+          :id   => '1',
+          :name => 'DTU Unit',
+        },
+        :failed_from => {
+          :id   => '10',
+          :name => 'Failed from',
+        },
+      },
+    }
+
     config.delay_jobs = true
 
     config.scopus_url = "http://www.scimagojr.com/journalsearch.php?q=%s&tip=iss"
