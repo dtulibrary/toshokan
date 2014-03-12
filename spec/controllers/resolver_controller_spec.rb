@@ -72,7 +72,7 @@ describe ResolverController do
         open_url = Rack::Utils.parse_nested_query(open_url)
 
         get :index, open_url
-        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}")
+        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
       end
 
       it "redirects if the request contains a SFX request id" do
@@ -80,7 +80,7 @@ describe ResolverController do
         open_url = Rack::Utils.parse_nested_query(open_url)
 
         get :index, open_url
-        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}")
+        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
       end
 
       it "redirects if its an image based linking request" do
@@ -88,14 +88,14 @@ describe ResolverController do
         open_url = Rack::Utils.parse_nested_query(open_url)
 
         get :index, open_url
-        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}")
+        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
       end
 
       it "redirects if it can't create an OpenURL from the request parameters" do
         open_url = Rack::Utils.parse_nested_query("somerandomthing=randomthing")
 
         get :index, open_url
-        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}")
+        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
       end
     end
   end
