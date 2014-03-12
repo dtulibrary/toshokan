@@ -13,7 +13,7 @@ class ResolverController < CatalogController
 
       log_resolver_request("Redirecting request to SFX, #{msg}", openurl_params, request)
       Rails.logger.info "Redirect to #{Rails.application.config.resolve[:sfx_url]}?#{openurl_params.to_query}"
-      redirect_to "#{Rails.application.config.resolve[:sfx_url]}?#{openurl_params.to_query}"
+      redirect_to "#{Rails.application.config.resolve[:sfx_url]}?#{openurl_params.to_query}&fromfindit=true"
     else
 
       context_object = to_open_url(openurl_params)
@@ -21,7 +21,7 @@ class ResolverController < CatalogController
       if context_object.nil?
         log_resolver_request("Resolver could not create a valid openURL, redirecting request to SFX", openurl_params, request)
         Rails.logger.info "Redirect to #{Rails.application.config.resolve[:sfx_url]}?#{openurl_params.to_query}"
-        redirect_to "#{Rails.application.config.resolve[:sfx_url]}?#{openurl_params.to_query}"
+        redirect_to "#{Rails.application.config.resolve[:sfx_url]}?#{openurl_params.to_query}&fromfindit=true"
       else
 
         (count, @response, @document) = get_resolver_result(context_object.to_hash.merge!({"mm" => "90%"}))
