@@ -233,7 +233,7 @@ module CatalogHelper
 
   # needed for synthesized records via resolver
 
-  def render_link_rel_alternates
+  def render_link_rel_alternates(document=@document, options = {})
     params[:resolve].blank? ? super : ""
   end
 
@@ -246,4 +246,5 @@ module CatalogHelper
     end
     @extra_body_classes ||= ['blacklight-' + controller_name, 'blacklight-' + [controller_name, controller_action].join('-')]
   end
+
 end

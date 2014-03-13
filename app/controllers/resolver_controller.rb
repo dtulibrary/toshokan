@@ -49,6 +49,10 @@ class ResolverController < CatalogController
     end
   end
 
+  def search_action_url
+    catalog_index_url
+  end
+
   private
 
   def redirect_to_sfx(params)
