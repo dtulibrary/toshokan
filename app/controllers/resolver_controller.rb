@@ -9,6 +9,9 @@ class ResolverController < CatalogController
     openurl_params.delete(:controller)
     openurl_params.delete(:action)
 
+    # remove context object params
+    params.slice!(:controller, :action)
+
     if(msg = redirect_to_sfx(openurl_params))
 
       log_resolver_request("Redirecting request to SFX, #{msg}", openurl_params, request)
