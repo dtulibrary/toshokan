@@ -53,8 +53,7 @@ class AssistanceRequestsController < ApplicationController
             if assistance_request.valid?
               assistance_request.save!
               LibrarySupport.delay.submit_assistance_request current_user, assistance_request
-              SendIt.delay.send_book_suggestion current_user, params[:assistance_request]
-              #SendIt.delay.send_request_assistance_mail genre, current_user, params[:assistance_request]
+              SendIt.delay.send_book_suggestion current_user, params[:assistance_request] if assistance_request.book_suggest
               flash[:notice] = 'Your request was sent to a librarian'
               redirect_to assistance_request_path(assistance_request)
             else

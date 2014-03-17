@@ -3,7 +3,6 @@ require 'uuidtools'
 class OrdersController < ApplicationController
   
   before_filter :disable_header_searchbar
-  before_filter :require_authentication, :only => [:index]
 
   # Delivery is called from DocDel
   skip_before_filter :authenticate, :only => [:delivery]
@@ -177,7 +176,7 @@ class OrdersController < ApplicationController
     @facets.reject! {|k,v| v.empty?}
 
     @count          = @orders.count
-    @orders         = @orders.page(params[:page] || 1).per(50)
+    @orders         = @orders.page(params[:page] || 1).per(50) unless request.format == 'text/csv'
     @display_order  = @orders.collect {|o| o.created_at.to_date}.uniq
     @orders_by_date = {}
 

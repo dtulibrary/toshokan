@@ -29,16 +29,12 @@ class LibrarySupport
       :subject       => "#{order.user} requests \"#{order.document['title_ts'].first}\"",
       :description   => issue_description.join("\n"),
       :custom_fields => [
-        {
-          :id    => LibrarySupport.custom_fields[:failed_from][:id],
-          :name  => LibrarySupport.custom_fields[:failed_from][:name],
+        LibrarySupport.custom_fields[:failed_from].merge({
           :value => failed_from_for(order.supplier),
-        },
-        {
-          :id    => LibrarySupport.custom_fields[:dtu_unit][:id],
-          :name  => LibrarySupport.custom_fields[:dtu_unit][:name],
+        }),
+        LibrarySupport.custom_fields[:dtu_unit].merge({
           :value => dtu_unit_for(order.user),
-        },
+        }),
       ]
     }
 
@@ -78,11 +74,12 @@ class LibrarySupport
       :description   => issue_description.join("\n\n"),
       :subject       => "#{user} requests \"#{title}\"",
       :custom_fields => [
-        {
-          :id    => LibrarySupport.custom_fields[:dtu_unit][:id],
-          :name  => LibrarySupport.custom_fields[:dtu_unit][:name],
+        LibrarySupport.custom_fields[:dtu_unit].merge({
           :value => dtu_unit_for(user),
-        }
+        }),
+        LibrarySupport.custom_fields[:book_suggest].merge({
+          :value => (assistance_request.book_suggest ? 'Yes' : 'No'),
+        }),
       ],
     }
 

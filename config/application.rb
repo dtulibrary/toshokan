@@ -167,6 +167,10 @@ module Toshokan
           :id   => '10',
           :name => 'Failed from',
         },
+        :book_suggest => {
+          :id    => '13',
+          :name  => 'Books Suggestion',
+        },
       },
     }
 
