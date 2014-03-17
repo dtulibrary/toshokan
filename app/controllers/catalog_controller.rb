@@ -41,6 +41,11 @@ class CatalogController < ApplicationController
       end
     end
 
+    # Set resolver params
+    config.resolver_params = {
+      "mm" => "90%"
+    }
+
     # Add support for :limit field type. Used by ToC filters. See also LimitsHelper.
     config[:limit_fields] = {}
     class << config
@@ -262,8 +267,25 @@ class CatalogController < ApplicationController
       params[:range][:pub_date_tsort] = normalize_year_range(params[:range][:pub_date_tsort])
     end
 
-    super
+    extra_head_content << view_context.auto_discovery_link_tag(:rss, url_for(params.merge(:format => 'rss')), :title => t('blacklight.search.rss_feed') )
+    extra_head_content << view_context.auto_discovery_link_tag(:atom, url_for(params.merge(:format => 'atom')), :title => t('blacklight.search.atom_feed') )
+
+    extra_search_params = {}
+    if params[:from_resolver]
+      extra_search_params = blacklight_config[:resolver_params]
+      params.delete :from_resolver
+    end
+
+    (@response, @document_list) = get_search_results(params, extra_search_params)
+    @filters = params[:f] || []
+
+    respond_to do |format|
+      format.html { save_current_search_params }
+      format.rss  { render :layout => false }
+      format.atom { render :layout => false }
+    end
   end
+
 
   def show
     @disable_remove_filter = true

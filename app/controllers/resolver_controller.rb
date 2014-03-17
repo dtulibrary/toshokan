@@ -27,7 +27,7 @@ class ResolverController < CatalogController
         redirect_to "#{Rails.application.config.resolve[:sfx_url]}?#{openurl_params.to_query}&fromfindit=true"
       else
 
-        (count, @response, @document) = get_resolver_result(context_object.to_hash.merge!({"mm" => "90%"}))
+        (count, @response, @document) = get_resolver_result(context_object.to_hash)
 
         Rails.logger.info "context_object #{context_object.kev}"
 
@@ -45,6 +45,7 @@ class ResolverController < CatalogController
         else
           # More records are found from the reference
           catalog_params = solr_params_to_blacklight_query(@response['responseHeader']['params'])
+          catalog_params[:from_resolver] = true
           log_resolver_request("Found search result #{catalog_params} with #{@response['response']['numFound']} results", openurl_params, request)
           redirect_to catalog_index_path catalog_params and return
         end

@@ -26,6 +26,7 @@ describe ResolverController do
       query_params = {}
       query_params[:q] = "journaltitle:(Journal of Xenobiotics)"
       query_params[:f] = {"format" => ["article"]}
+      query_params[:from_resolver] = true
 
       get :index, open_url
       response.should redirect_to(catalog_index_path(query_params))

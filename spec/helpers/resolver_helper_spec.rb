@@ -11,7 +11,7 @@ describe ResolverHelper do
     it "accepts a chemical abstracts url" do
       chem_abs_url = "sid=CAS:CAPLUS&issn=0365-9496&volume=14&coden=BDCGAS&genre=article&spage=1643&title=Berichte der Deutschen Chemischen Gesellschaft&stitle=Ber.&atitle=Barbituric acid&aulast=Guthzeit&aufirst=M&pid=<authfull>Guthzeit, M.</authfull><source>Berichte der Deutschen Chemischen Gesellschaft 14, 1643-5. From: J. Chem. Soc., Abstr. 40, 1033 1881. CODEN:BDCGAS ISSN:0365-9496.</source>"
       ou = helper.to_open_url(Rack::Utils.parse_query(chem_abs_url))
-      ou.referent.metadata['title'].should eq "Berichte der Deutschen Chemischen Gesellschaft"
+      ou.referent.metadata['jtitle'].should eq "Berichte der Deutschen Chemischen Gesellschaft"
     end
 
     it "accepts an isi url " do
@@ -34,6 +34,11 @@ describe ResolverHelper do
       ou.referent.metadata["title"].should be nil
     end
 
+    it "accepts a Scopus url" do
+      scopus_url = "sid=Elsevier:Scopus&_service_type=getFullTxt&issn=09594388&isbn=&volume=23&issue=1&spage=43&epage=51&pages=43-51&artnum=&date=2013&id=doi:10.1016%252fj.conb.2012.11.006&title=Current+Opinion+in+Neurobiology&atitle=Decoding+the+genetics+of+speech+and+language&aufirst=S.A.&auinit=S.A.&auinit1=S&aulast=Graham"
+      ou = helper.to_open_url(Rack::Utils.parse_query(scopus_url))
+      ou.referent.metadata["genre"].should eq "article"
+    end
   end
 
   describe "#solr_params_to_blacklight_query" do

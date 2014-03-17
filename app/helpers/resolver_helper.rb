@@ -8,7 +8,7 @@ module ResolverHelper
     if params.has_key?("url_ver") || params.has_key?("sid")
 
       # convert some fields from Google Scholar format
-      if params.has_key?("sid") && (params["sid"] == "google" || params["sid"] == "pure.atira.dk:pure")
+      if params.has_key?("sid")
 
         # set journal title
         if params.has_key?("title") && params.has_key?("atitle")
@@ -17,7 +17,13 @@ module ResolverHelper
         end
       end
 
-      OpenURL::ContextObject.new_from_form_vars(params)
+      ou = OpenURL::ContextObject.new_from_form_vars(params)
+
+      if ou.referent.metadata["genre"].blank? && ou.referent.format == "journal" && !ou.referent.metadata["atitle"].blank?
+        ou.referent.metadata["genre"] = "article"
+      end
+
+      ou
     else
       Rails.logger.debug "This does not look like an OpenURL: #{params.inspect}"
       nil
@@ -25,7 +31,8 @@ module ResolverHelper
   end
 
   def get_resolver_result(params)
-    params.merge!({:qt => '/resolve', :rows => 2, :echoParams => 'all'})
+
+    params.merge!({:qt => '/resolve', :rows => 2, :echoParams => 'all'}).merge!(blacklight_config[:resolver_params])
 
     res = blacklight_solr.send_and_receive(blacklight_config.solr_path, :params => add_inclusive_access_filter(params))
     solr_response = Blacklight::SolrResponse.new(force_to_utf8(res), params)
@@ -56,7 +63,7 @@ module ResolverHelper
     blacklight_config[:facet_fields].keys.each do |facet_field|
       if m = /(#{facet_field}:(\S+))/.match(q)
         new_params = add_facet_params(facet_field, m[2], new_params)
-        q = q.sub(m[1], "").strip!
+        q.sub!(m[1], "").strip!
       end
     end
 
