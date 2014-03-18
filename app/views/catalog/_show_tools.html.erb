@@ -12,6 +12,10 @@
     <% if @document[:format] != "journal" %>
       <li class="nav-header"><%= t('toshokan.tools.cite_and_export') %></li>
 
+      <li>
+        <%= link_to t('toshokan.tools.mendeley'), '#', :class => 'save-to-mendeley' %>
+      </li>
+
       <% if (!@document.citation_styles.empty?) %>
         <li class="cite">
         <%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :name => 'citation', :class => 'lightboxLink'} %>

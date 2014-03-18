@@ -121,6 +121,7 @@ en:
       ris: "Export to RIS"
       fulltext: "Get it"
       coverage: "Coverage"
+      mendeley: "Save to Mendeley"
       not_available: "Not available"
       nal:
         title: 'On-site use at other libraries'
