@@ -70,15 +70,12 @@ class LibrarySupport
     issue_description << "<pre>\n#{item_description}\n</pre>"
 
     issue = {
-      :project_id    => LibrarySupport.project_ids[genre],
+      :project_id    => LibrarySupport.project_ids[assistance_request.book_suggest ? :book_suggestions : genre],
       :description   => issue_description.join("\n\n"),
       :subject       => "#{user} requests \"#{title}\"",
       :custom_fields => [
         LibrarySupport.custom_fields[:dtu_unit].merge({
           :value => dtu_unit_for(user),
-        }),
-        LibrarySupport.custom_fields[:book_suggest].merge({
-          :value => (assistance_request.book_suggest ? 'Yes' : 'No'),
         }),
       ],
     }
