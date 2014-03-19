@@ -38,14 +38,14 @@ class LibrarySupport
       ]
     }
 
-    logger.debug "Creating redmine issue:\n#{issue}"
+    Rails.logger.debug "Creating redmine issue:\n#{issue}"
     response = redmine.create_issue issue
 
     if response.try :[], "issue"
       order.order_events << OrderEvent.new(:name => 'delivery_manual', :data => response['issue']['id'])
       order.save!
     else
-      logger.error "Error submitting failed order to library support Redmine. Redmine response:\n#{response || 'nil'}"
+      Rails.logger.error "Error submitting failed order to library support Redmine. Redmine response:\n#{response || 'nil'}"
       raise
     end
   end
@@ -88,7 +88,6 @@ class LibrarySupport
     end
 
     response = redmine.create_issue issue
-    logger.debug "Redmine response:\n#{response}"
     if response
       assistance_request.library_support_issue = response['issue']['id']
       assistance_request.save!
@@ -127,7 +126,7 @@ class LibrarySupport
           :book => [:title, :year, :author, :edition, :doi, :isbn, :publisher],
         }
       else
-        logger.error "Unknown assistance request genre: #{genre || 'nil'}"
+        Rails.logger.error "Unknown assistance request genre: #{genre || 'nil'}"
         raise ArgumentError.new "genre should be one of :journal_article, :conference_article or :book, but was #{genre || 'nil'}"
       end
 

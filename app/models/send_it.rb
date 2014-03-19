@@ -72,7 +72,7 @@ class SendIt
 
   def self.send_book_suggestion user, params
     if SendIt.book_suggest_mail.blank?
-      logger.info "config.send_it.book_suggest_mail is missing or blank. Sending mail aborted."
+      Rails.logger.info "config.send_it.book_suggest_mail is missing or blank. Sending mail aborted."
       return
     end
 
@@ -96,7 +96,6 @@ class SendIt
 
     mail_params.deep_merge! params
 
-    logger.debug "Sending book suggestion:\n#{mail_params}"
     send_mail 'book_suggestion', mail_params
   end
 
