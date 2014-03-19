@@ -41,6 +41,24 @@ describe Pubmed do
       doc[fields[:affiliation]].last.should match /Nuffield Department of Surgical Sciences, University of Oxford/
       doc[fields[:pages]].should be nil
     end
+
+    it "should create a valid OpenURL from another pubmed response" do
+      fields = SolrDocument.field_semantics
+      stub_request(:get, /.*/).to_return(File.new("spec/fixtures/pubmed3.xml"))
+      doc = Pubmed.get_solr_document("24618352")
+      doc[fields[:format]].should eq "article"
+      doc[fields[:title]].should eq "Long-term, serial screening for intracranial aneurysms in individuals with a family history of aneurysmal subarachnoid haemorrhage: a cohort study."
+      doc[fields[:issn]].first.should eq "1474-4465"
+      doc[fields[:year]].should eq "2014"
+      doc[fields[:jtitle]].first.should eq "Lancet neurology"
+      doc[fields[:doi]].should eq "10.1016/S1474-4422(14)70021-3"
+      doc[fields[:abstract]].should match /Individuals with two or more first-degree relatives who have had aneurysmal subarachnoid haemorrhage/
+      doc[fields[:author]].length.should eq 4
+      doc[fields[:author]].first.should eq "Bor, A Stijntje E"
+      doc[fields[:affiliation]].length.should eq 4
+      doc[fields[:affiliation]].first.should match /Department of Neurology and Neurosurgery, Brain Center Rudolf Magnus, University Medical Center Utrecht, Utrecht, Netherlands./
+      doc[fields[:pages]].should be nil
+    end
   end
 
   describe ".get" do

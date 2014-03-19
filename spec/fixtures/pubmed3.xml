@@ -1,0 +1,125 @@
+HTTP/1.1 200 OK
+Date: Wed, 19 Mar 2014 14:13:19 GMT
+Server: Apache
+Access-Control-Allow-Origin: *
+Cache-Control: private
+NCBI-SID: 9DFD1258329A5FF1_0861SID
+Content-Type: text/xml; charset=UTF-8
+Set-Cookie: ncbi_sid=9DFD1258329A5FF1_0861SID; domain=.nih.gov; path=/; expires=Thu, 19 Mar 2015 14:13:19 GMT
+X-UA-Compatible: IE=Edge
+Transfer-Encoding: chunked
+
+<?xml version="1.0"?>
+<!DOCTYPE PubmedArticleSet PUBLIC "-//NLM//DTD PubMedArticle, 1st January 2014//EN" "http://www.ncbi.nlm.nih.gov/corehtml/query/DTD/pubmed_140101.dtd">
+<PubmedArticleSet>
+<PubmedArticle>
+    <MedlineCitation Status="Publisher" Owner="NLM">
+        <PMID Version="1">24618352</PMID>
+        <DateCreated>
+            <Year>2014</Year>
+            <Month>3</Month>
+            <Day>12</Day>
+        </DateCreated>
+        <Article PubModel="Print-Electronic">
+            <Journal>
+                <ISSN IssnType="Electronic">1474-4465</ISSN>
+                <JournalIssue CitedMedium="Internet">
+                    <PubDate>
+                        <Year>2014</Year>
+                        <Month>Mar</Month>
+                        <Day>4</Day>
+                    </PubDate>
+                </JournalIssue>
+                <Title>Lancet neurology</Title>
+                <ISOAbbreviation>Lancet Neurol</ISOAbbreviation>
+            </Journal>
+            <ArticleTitle>Long-term, serial screening for intracranial aneurysms in individuals with a family history of aneurysmal subarachnoid haemorrhage: a cohort study.</ArticleTitle>
+            <Pagination>
+                <MedlinePgn/>
+            </Pagination>
+            <ELocationID EIdType="pii">S1474-4422(14)70021-3</ELocationID>
+            <ELocationID EIdType="doi">10.1016/S1474-4422(14)70021-3</ELocationID>
+            <Abstract>
+                <AbstractText Label="BACKGROUND" NlmCategory="BACKGROUND">Individuals with two or more first-degree relatives who have had aneurysmal subarachnoid haemorrhage (aSAH) have an increased risk of aneurysms and aSAH. We investigated the yield of long-term serial screening for intracranial aneurysms in these individuals.</AbstractText>
+                <AbstractText Label="METHODS" NlmCategory="METHODS">In a cohort study, we reviewed the results of screening of individuals with a positive family history of aSAH (two or more first-degree relatives who had had aSAH or unruptured intracranial aneurysms) done at the University Medical Centre Utrecht (Utrecht, Netherlands) between April 1, 1993, and April 1, 2013. Magnetic resonance angiography or CT angiography was done from age 16-18 years to 65-70 years. After a negative screen, we advised individuals to contact us after 5 years, but did not actively call them for repeated screening. We recorded familial history of ruptured and unruptured intracranial aneurysms, smoking history, hypertension, previous aneurysms, screening dates, and screening results. We identified risk factors for positive initial and follow-up screens with univariable and multivariable regression analysis.</AbstractText>
+                <AbstractText Label="FINDINGS" NlmCategory="RESULTS">We identified aneurysms in 51 (11%, 95% CI 9-14) of 458 individuals at first screening, in 21 (8%, 5-12) of 261 at second screening, in seven (5%, 2-11) of 128 at third screening, and three (5%, 1-14) of 63 at fourth screening. Five (3%, 95% CI 1-6) of 188 individuals without a history of aneurysms and with two negative screens had a de-novo aneurysm in a follow-up screen. Smoking (odds ratio 2·7, 95% CI 1·2-5·9), history of previous aneurysms (3·9, 1·2-12·7), and familial history of aneurysms (3·5, 1·6-8·1) were significant risk factors for aneurysms at first screening in the multivariable analysis. History of previous aneurysms was the only significant risk factor for aneurysms at follow-up screening (hazard ratio 4·5, 1·1-18·7). Aneurysms were identified in six (5%, 95% CI 2-10) of 129 individuals who were screened before age 30 years. One patient developed a de-novo aneurysm that ruptured 3 years after the last negative screen.</AbstractText>
+                <AbstractText Label="INTERPRETATION" NlmCategory="CONCLUSIONS">In individuals with a family history of aSAH, the yield of long-term screening is substantial even after more than 10 years of follow-up and two initial negative screens. We advocate long-term serial screening in these individuals, although the risk of aSAH within screening intervals is not eliminated.</AbstractText>
+                <AbstractText Label="FUNDING" NlmCategory="BACKGROUND">The Dutch Heart Foundation.</AbstractText>
+                <CopyrightInformation>Copyright © 2014 Elsevier Ltd. All rights reserved.</CopyrightInformation>
+            </Abstract>
+            <AuthorList>
+                <Author>
+                    <LastName>Bor</LastName>
+                    <ForeName>A Stijntje E</ForeName>
+                    <Initials>AS</Initials>
+                    <Affiliation>Department of Neurology and Neurosurgery, Brain Center Rudolf Magnus, University Medical Center Utrecht, Utrecht, Netherlands. Electronic address: a.s.e.bor@umcutrecht.nl.</Affiliation>
+                </Author>
+                <Author>
+                    <LastName>Rinkel</LastName>
+                    <ForeName>Gabriel J E</ForeName>
+                    <Initials>GJ</Initials>
+                    <Affiliation>Department of Neurology and Neurosurgery, Brain Center Rudolf Magnus, University Medical Center Utrecht, Utrecht, Netherlands.</Affiliation>
+                </Author>
+                <Author>
+                    <LastName>van Norden</LastName>
+                    <ForeName>Jeroen</ForeName>
+                    <Initials>J</Initials>
+                    <Affiliation>Department of Neurology and Neurosurgery, Brain Center Rudolf Magnus, University Medical Center Utrecht, Utrecht, Netherlands.</Affiliation>
+                </Author>
+                <Author>
+                    <LastName>Wermer</LastName>
+                    <ForeName>Marieke J H</ForeName>
+                    <Initials>MJ</Initials>
+                    <Affiliation>Department of Neurology, Leiden University Medical Center, Leiden, Netherlands.</Affiliation>
+                </Author>
+            </AuthorList>
+            <Language>ENG</Language>
+            <PublicationTypeList>
+                <PublicationType>JOURNAL ARTICLE</PublicationType>
+            </PublicationTypeList>
+            <ArticleDate DateType="Electronic">
+                <Year>2014</Year>
+                <Month>3</Month>
+                <Day>4</Day>
+            </ArticleDate>
+        </Article>
+        <MedlineJournalInfo>
+            <MedlineTA>Lancet Neurol</MedlineTA>
+            <NlmUniqueID>101139309</NlmUniqueID>
+            <ISSNLinking>1474-4422</ISSNLinking>
+        </MedlineJournalInfo>
+    </MedlineCitation>
+    <PubmedData>
+        <History>
+            <PubMedPubDate PubStatus="entrez">
+                <Year>2014</Year>
+                <Month>3</Month>
+                <Day>13</Day>
+                <Hour>6</Hour>
+                <Minute>0</Minute>
+            </PubMedPubDate>
+            <PubMedPubDate PubStatus="pubmed">
+                <Year>2014</Year>
+                <Month>3</Month>
+                <Day>13</Day>
+                <Hour>6</Hour>
+                <Minute>0</Minute>
+            </PubMedPubDate>
+            <PubMedPubDate PubStatus="medline">
+                <Year>2014</Year>
+                <Month>3</Month>
+                <Day>13</Day>
+                <Hour>6</Hour>
+                <Minute>0</Minute>
+            </PubMedPubDate>
+        </History>
+        <PublicationStatus>aheadofprint</PublicationStatus>
+        <ArticleIdList>
+            <ArticleId IdType="pii">S1474-4422(14)70021-3</ArticleId>
+            <ArticleId IdType="doi">10.1016/S1474-4422(14)70021-3</ArticleId>
+            <ArticleId IdType="pubmed">24618352</ArticleId>
+        </ArticleIdList>
+    </PubmedData>
+</PubmedArticle>
+
+</PubmedArticleSet>
