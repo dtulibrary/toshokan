@@ -19,6 +19,7 @@ class ResolverController < CatalogController
       redirect_to "#{Rails.application.config.resolve[:sfx_url]}?#{openurl_params.to_query}&fromfindit=true"
     else
 
+      openurl_params.each {|key,val| openurl_params[key] = URI.unescape(val.to_s) }
       context_object = to_open_url(openurl_params)
 
       if context_object.nil?
