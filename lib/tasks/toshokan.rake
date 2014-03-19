@@ -1,9 +1,13 @@
 require 'fileutils'
 
-task :default => [:spec, :cucumber] 
+task :default => [:spec, :cucumber]
+
+if Rails.env == "test"
+  WebMock.disable_net_connect!(allow_localhost: true)
+end
 
 namespace :orders do
-  task :retrofit_org_units => :environment do 
+  task :retrofit_org_units => :environment do
     if ENV['DTUBASE_URL']
       counter = {
         :dtu_primary_org_unit => 0,
@@ -33,7 +37,7 @@ namespace :orders do
             counter[:dtu_no_org_unit] += 1
           end
           puts "Processed #{counter[:total]} orders" if counter[:total] % 50 == 0
-        else 
+        else
           counter[:non_dtu] += 1
         end
         counter[:total] += 1
