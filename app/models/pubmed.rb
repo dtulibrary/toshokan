@@ -74,7 +74,7 @@ class Pubmed
         end
 
         if article.has_key?("Pagination") && article["Pagination"].has_key?("MedlinePgn")
-          doc[fields[:pages]] = [article["Pagination"]["MedlinePgn"]]
+          doc[fields[:pages]] = [article["Pagination"]["MedlinePgn"]] unless article["Pagination"]["MedlinePgn"].nil?
         end
 
         if article.has_key?("ELocationID")
@@ -92,7 +92,9 @@ class Pubmed
         if article.has_key?("AuthorList") && article["AuthorList"].has_key?("Author")
           doc[fields[:author]] = []
           doc[fields[:affiliation]] = []
-          article["AuthorList"]["Author"].each do |author|
+          authors = article["AuthorList"]["Author"]
+          authors = [authors] if authors.is_a?(Hash)
+          authors.each do |author|
             if author.has_key?("LastName") && author.has_key?("ForeName")
               doc[fields[:author]] << "#{author['LastName']}, #{author['ForeName']}"
             end

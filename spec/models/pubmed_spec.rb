@@ -24,6 +24,23 @@ describe Pubmed do
       doc[fields[:affiliation]].length.should eq 5
       doc[fields[:affiliation]].last.should eq "Kaiser Permanente Division of Research, Oakland, CA, USA."
     end
+
+    it "should create a valid OpenURL from another pubmed response" do
+      fields = SolrDocument.field_semantics
+      stub_request(:get, /.*/).to_return(File.new("spec/fixtures/pubmed2.xml"))
+      doc = Pubmed.get_solr_document("24618353")
+      doc[fields[:format]].should eq "article"
+      doc[fields[:title]].should eq "Is screening of relatives for cerebral aneurysms justified?"
+      doc[fields[:issn]].first.should eq "1474-4465"
+      doc[fields[:year]].should eq "2014"
+      doc[fields[:jtitle]].first.should eq "Lancet neurology"
+      doc[fields[:doi]].should eq "10.1016/S1474-4422(13)70309-0"
+      doc[fields[:author]].length.should eq 1
+      doc[fields[:author]].first.should eq "Molyneux, Andrew J"
+      doc[fields[:affiliation]].length.should eq 1
+      doc[fields[:affiliation]].last.should match /Nuffield Department of Surgical Sciences, University of Oxford/
+      doc[fields[:pages]].should be nil
+    end
   end
 
   describe ".get" do
