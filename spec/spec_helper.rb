@@ -18,10 +18,12 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 
+require 'webmock/rspec'
+
 RSpec.configure do |config|
-  
+
   config.before(:suite) do
-    require File.dirname(__FILE__) + '/../db/seeds.rb'    
+    require File.dirname(__FILE__) + '/../db/seeds.rb'
   end
 
   # ## Mock Framework
@@ -45,6 +47,7 @@ RSpec.configure do |config|
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
 
+  WebMock.disable_net_connect!(allow_localhost: true)
 end
 
 # Requires supporting ruby files with custom matchers and macros, etc,

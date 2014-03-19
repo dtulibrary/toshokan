@@ -20,6 +20,10 @@ require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumb
 require 'cucumber/rails/rspec'
 require 'cucumber/rails'
 
+require 'webmock/cucumber'
+
+WebMock.disable_net_connect!(allow_localhost: true)
+
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
 # prefer to use XPath just remove this line and adjust any selectors in your

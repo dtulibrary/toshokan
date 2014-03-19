@@ -51,6 +51,7 @@ group :test do
   gem 'capybara'
   gem 'launchy'
   gem 'factory_girl_rails', "~> 4.0"
+  gem 'webmock'
 end
 
 group :test, :development do

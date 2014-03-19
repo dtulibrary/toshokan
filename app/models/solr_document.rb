@@ -38,7 +38,7 @@ class SolrDocument
                          :subject => "keywords_ts",
                          :description => "abstract_ts",
                          :creator => "author_ts",
-                         :date => "pub_date_ti",
+                         :date => "pub_date_tis",
                          :identifier => "doi_s",
                          # BibTeX, Ris
                          :author => "author_ts",
@@ -62,8 +62,10 @@ class SolrDocument
                          :jtitle => "journal_title_ts",
                          :volume => "journal_vol_ssf",
                          :issue => "journal_issue_ssf",
-                         :date => "pub_date_tis"
+                         :date => "pub_date_tis",
                          # issn, isbn shared with BibTex & Ris
+                         # Other
+                         :affiliation => "affiliation_ts"
                          )
 
   def export_as_openurl_ctx_kev(format = nil)
@@ -118,10 +120,14 @@ class SolrDocument
       end
     end
 
-    # set fake id
-    solr_doc[:id] = 0
+    create_synthesized_record(solr_doc)
+  end
 
-    doc = SolrDocument.new(solr_doc)
+  def self.create_synthesized_record(data)
+    # set fake id
+    data[:id] = 0
+
+    doc = SolrDocument.new(data)
 
     # override more_like_this which depends on a solr response being set
     doc.define_singleton_method(:more_like_this) { [] }

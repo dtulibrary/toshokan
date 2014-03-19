@@ -1,0 +1,132 @@
+HTTP/1.1 200 OK
+Date: Tue, 18 Mar 2014 10:37:04 GMT
+Server: Apache
+Access-Control-Allow-Origin: *
+Cache-Control: private
+NCBI-SID: 08DD0AD232821D01_0007SID
+Content-Type: text/xml; charset=UTF-8
+Set-Cookie: ncbi_sid=08DD0AD232821D01_0007SID; domain=.nih.gov; path=/; expires=Wed, 18 Mar 2015 10:37:04 GMT
+X-UA-Compatible: IE=Edge
+Transfer-Encoding: chunked
+
+<?xml version="1.0"?>
+<!DOCTYPE PubmedArticleSet PUBLIC "-//NLM//DTD PubMedArticle, 1st January 2014//EN" "http://www.ncbi.nlm.nih.gov/corehtml/query/DTD/pubmed_140101.dtd">
+<PubmedArticleSet>
+<PubmedArticle>
+    <MedlineCitation Status="Publisher" Owner="NLM">
+        <PMID Version="1">24622755</PMID>
+        <DateCreated>
+            <Year>2014</Year>
+            <Month>3</Month>
+            <Day>13</Day>
+        </DateCreated>
+        <Article PubModel="Print-Electronic">
+            <Journal>
+                <ISSN IssnType="Electronic">2213-8595</ISSN>
+                <JournalIssue CitedMedium="Internet">
+                    <Volume>2</Volume>
+                    <Issue>3</Issue>
+                    <PubDate>
+                        <Year>2014</Year>
+                        <Month>Mar</Month>
+                    </PubDate>
+                </JournalIssue>
+                <Title>The lancet. Diabetes &amp; endocrinology</Title>
+                <ISOAbbreviation>Lancet Diabetes Endocrinol</ISOAbbreviation>
+            </Journal>
+            <ArticleTitle>Dementia and cognitive decline in type 2 diabetes and prediabetic stages: towards targeted interventions.</ArticleTitle>
+            <Pagination>
+                <MedlinePgn>246-255</MedlinePgn>
+            </Pagination>
+            <ELocationID EIdType="pii">S2213-8587(13)70088-3</ELocationID>
+            <ELocationID EIdType="doi">10.1016/S2213-8587(13)70088-3</ELocationID>
+            <Abstract>
+                <AbstractText NlmCategory="UNLABELLED">Type 2 diabetes is associated with dementia, and also with more slight cognitive decrements. In this Review we discuss trajectories from normal cognition to dementia in people with type 2 diabetes, and explore opportunities for treatment. Slight diabetes-associated cognitive decrements and dementia affect different age groups and show a different evolution. These cognitive entities should therefore not be regarded as a continuum, although their effects might be additive. Vascular damage is a key underlying process in both entities. Glucose-mediated processes and other metabolic disturbances might also have a role. No treatment has been established, but management of vascular risk factors and optimisation of glycaemic control could have therapeutic benefit. We identify possible opportunities for intervention to improve cognitive outcomes in people with type 2 diabetes, and suggest how treatment can be tailored to individual risk profiles and comorbidities.</AbstractText>
+                <CopyrightInformation>Copyright © 2014 Elsevier Ltd. All rights reserved.</CopyrightInformation>
+            </Abstract>
+            <AuthorList>
+                <Author>
+                    <LastName>Biessels</LastName>
+                    <ForeName>Geert Jan</ForeName>
+                    <Initials>GJ</Initials>
+                    <Affiliation>Department of Neurology, Brain Center Rudolf Magnus, University Medical Center Utrecht, Utrecht, Netherlands. Electronic address: g.j.biessels@umcutrecht.nl.</Affiliation>
+                </Author>
+                <Author>
+                    <LastName>Strachan</LastName>
+                    <ForeName>Mark W J</ForeName>
+                    <Initials>MW</Initials>
+                    <Affiliation>Metabolic Unit, Western General Hospital, Edinburgh, UK.</Affiliation>
+                </Author>
+                <Author>
+                    <LastName>Visseren</LastName>
+                    <ForeName>Frank L J</ForeName>
+                    <Initials>FL</Initials>
+                    <Affiliation>Department of Vascular Medicine, University Medical Center Utrecht, Utrecht, Netherlands.</Affiliation>
+                </Author>
+                <Author>
+                    <LastName>Kappelle</LastName>
+                    <ForeName>L Jaap</ForeName>
+                    <Initials>LJ</Initials>
+                    <Affiliation>Department of Neurology, Brain Center Rudolf Magnus, University Medical Center Utrecht, Utrecht, Netherlands.</Affiliation>
+                </Author>
+                <Author>
+                    <LastName>Whitmer</LastName>
+                    <ForeName>Rachel A</ForeName>
+                    <Initials>RA</Initials>
+                    <Affiliation>Kaiser Permanente Division of Research, Oakland, CA, USA.</Affiliation>
+                </Author>
+            </AuthorList>
+            <Language>ENG</Language>
+            <PublicationTypeList>
+                <PublicationType>REVIEW</PublicationType>
+            </PublicationTypeList>
+            <ArticleDate DateType="Electronic">
+                <Year>2013</Year>
+                <Month>10</Month>
+                <Day>18</Day>
+            </ArticleDate>
+        </Article>
+        <MedlineJournalInfo>
+            <MedlineTA>Lancet Diabetes Endocrinol</MedlineTA>
+            <NlmUniqueID>101618821</NlmUniqueID>
+        </MedlineJournalInfo>
+    </MedlineCitation>
+    <PubmedData>
+        <History>
+            <PubMedPubDate PubStatus="aheadofprint">
+                <Year>2013</Year>
+                <Month>10</Month>
+                <Day>18</Day>
+            </PubMedPubDate>
+            <PubMedPubDate PubStatus="entrez">
+                <Year>2014</Year>
+                <Month>3</Month>
+                <Day>14</Day>
+                <Hour>6</Hour>
+                <Minute>0</Minute>
+            </PubMedPubDate>
+            <PubMedPubDate PubStatus="pubmed">
+                <Year>2014</Year>
+                <Month>3</Month>
+                <Day>14</Day>
+                <Hour>6</Hour>
+                <Minute>0</Minute>
+            </PubMedPubDate>
+            <PubMedPubDate PubStatus="medline">
+                <Year>2014</Year>
+                <Month>3</Month>
+                <Day>14</Day>
+                <Hour>6</Hour>
+                <Minute>0</Minute>
+            </PubMedPubDate>
+        </History>
+        <PublicationStatus>ppublish</PublicationStatus>
+        <ArticleIdList>
+            <ArticleId IdType="pii">S2213-8587(13)70088-3</ArticleId>
+            <ArticleId IdType="doi">10.1016/S2213-8587(13)70088-3</ArticleId>
+            <ArticleId IdType="pubmed">24622755</ArticleId>
+        </ArticleIdList>
+    </PubmedData>
+</PubmedArticle>
+
+</PubmedArticleSet>

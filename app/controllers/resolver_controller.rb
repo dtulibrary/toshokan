@@ -34,9 +34,17 @@ class ResolverController < CatalogController
         case count
         when 0
           # Reference can not be found, create synthesized solr document from OpenURL
-          log_resolver_request("Creating synthesized record", openurl_params, request)
+
+          # In case of Pubmed where url metadata are quite sparse try to get more info via Pubmed API
+          if openurl_params.has_key?("sid") && openurl_params["sid"] == "Entrez:PubMed" && openurl_params.has_key?("id") && m = openurl_params["id"].match(/pmid:(\d*)/)
+            doc = Pubmed.get_solr_document(openurl_params["id"].match(m[1]))
+            @document = SolrDocument.create_synthesized_record(doc)
+          end
+
+          @document ||= SolrDocument.create_from_openURL(context_object)
+
+          log_resolver_request("Creating synthesized record", doc || openurl_params, request)
           params[:resolve] = true
-          @document = SolrDocument.create_from_openURL(context_object)
           render('catalog/show') and return
         when 1
           # One record is found from the reference
