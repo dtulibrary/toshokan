@@ -14,11 +14,16 @@ module ResolverHelper
         if params.has_key?("title") && params.has_key?("atitle")
           params["jtitle"] = params["title"]
           params.delete("title")
+        elsif params.has_key?("stitle") && params.has_key?("atitle")
+          params["jtitle"] = params["stitle"]
+          params.delete("stitle")
         end
 
         # make sure format is set before creating OpenURL
-        # currently only article handled
-        if params.has_key?("atitle")
+        if params.has_key?("genre") && params["genre"] == "book"
+          params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:journal"
+          params["rft.genre"] = "book"
+        elsif params.has_key?("atitle")
           params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:journal"
           params["rft.genre"] = "article"
         end
