@@ -24,6 +24,12 @@ module ResolverHelper
         end
       end
 
+      # work around for OpenURLs where jtitle is set to title
+      if params.has_key?("rft.title") && params.has_key?("rft.atitle")
+        params["rft.jtitle"] = params["rft.title"]
+        params.delete("rft.title")
+      end
+
       ou = OpenURL::ContextObject.new_from_form_vars(params)
 
       # handle multiple authors (otherwise lost)
