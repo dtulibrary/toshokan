@@ -17,7 +17,7 @@
     <%= content_tag :li, t('toshokan.availability.other'), class: "nav-header other-header #{'hide' if !show}" -%>
 
     <% if(@document['pubmed_url_ssf']) %>
-      <li><%=link_to "<i class='icon-pubmed'></i> #{t('toshokan.source_url.pubmed')}".html_safe, "#{@document['pubmed_url_ssf'].first}" %></li>
+      <li><%=link_to "<i class='icon-pubmed'></i> #{t('toshokan.source_url.pubmed')}".html_safe, "#{@document['pubmed_url_ssf'].first}?otool=#{Rails.application.config.pubmed[:dtu_id]}" %></li>
     <% end %>
     <% if(@document['isi_url_ssf']) %>
       <li><%=link_to "<i class='icon-isi'></i> #{t('toshokan.source_url.isi')}".html_safe, "#{@document['isi_url_ssf'].first}" %></li>

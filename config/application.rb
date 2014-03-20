@@ -211,7 +211,8 @@ module Toshokan
     config.pubmed = {
       :url => "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?id=%<id>s&db=pubmed&retmode=xml&tool=%<tool>s&email=%<email>s",
       :tool => '',
-      :email => ''
+      :email => '',
+      :dtu_id => ''
     }
 
   end
