@@ -15,9 +15,50 @@ module ResolverHelper
           params["jtitle"] = params["title"]
           params.delete("title")
         end
+
+        # make sure format is set before creating OpenURL
+        # currently only article handled
+        if params.has_key?("atitle")
+          params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:journal"
+          params["rft.genre"] = "article"
+        end
       end
 
       ou = OpenURL::ContextObject.new_from_form_vars(params)
+
+      # handle multiple authors (otherwise lost)
+      if params.has_key?("rft.au") || params.has_key?("au") || params.has_key?("rft.aulast") || params.has_key?("aulast")
+
+        # clear authors
+        ou.referent.authors.each {|author| ou.referent.remove_author(author) }
+
+        # note params[non-existing-key] returns [], not nil
+        if params.has_key?("rft.aulast") || params.has_key?("aulast")
+          author = OpenURL::Author.new
+          author.aulast = params.has_key?("rft.aulast") ? params["rft.aulast"] : params["aulast"]
+          if params.has_key?("rft.aufirst")
+            author.aufirst = params["rft.aufirst"]
+          elsif params.has_key?("aufirst")
+            author.aufirst = params["aufirst"]
+          end
+          if params.has_key?("rft.auinit")
+            author.auinit = params["rft.auinit"]
+          elsif params.has_key?("auinit")
+            author.auinit = params["auinit"]
+          end
+          ou.referent.add_author(author)
+        end
+
+        if params.has_key?("rft.au") || params.has_key?("au")
+          authors = params.has_key?("rft.au") ? params["rft.au"] : params["au"]
+          authors = [authors] if authors.is_a? String
+          authors.each do |author|
+            ou_author = OpenURL::Author.new
+            ou_author.au = author
+            ou.referent.add_author(ou_author)
+          end
+        end
+      end
 
       if ou.referent.metadata["genre"].blank? && ou.referent.format == "journal" && !ou.referent.metadata["atitle"].blank?
         ou.referent.metadata["genre"] = "article"

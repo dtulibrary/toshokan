@@ -102,6 +102,23 @@ class SolrDocument
       end
     end
 
+    # set other author elements
+    if context_object.referent.authors && context_object.referent.authors.length > 0
+      solr_doc[self.field_semantics[:author]] = []
+      context_object.referent.authors.each do |author|
+        solr_doc[self.field_semantics[:author]] << author.au if author.au
+        if author.aulast
+          au = author.aulast
+          if author.aufirst
+            au = "#{au}, #{author.aufirst}"
+          elsif author.auinit
+            au = "#{au}, #{author.auinit}"
+          end
+          solr_doc[self.field_semantics[:author]] << au
+        end
+      end
+    end
+
     # set title for journals
     if solr_doc["format"] && solr_doc["format"] == "journal" && solr_doc["journal_title_ts"]
       solr_doc["title_ts"] = solr_doc["journal_title_ts"]

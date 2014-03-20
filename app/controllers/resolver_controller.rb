@@ -4,13 +4,17 @@ class ResolverController < CatalogController
 
   def index
 
-    # Remove rails routing params
-    openurl_params = params.dup
-    openurl_params.delete(:controller)
-    openurl_params.delete(:action)
+    # get params from request query string to maintain multiple values with the same key
+    openurl_params = CGI::parse(request.query_string)
 
-    # remove context object params
-    params.slice!(:controller, :action)
+    # extra url decode in case of double encoding
+    openurl_params.each do |key, val|
+      if val.length == 1
+        openurl_params[key] = URI.unescape(val.first.to_s)
+      else
+        val.map! {|v| URI.unescape(v.to_s) }
+      end
+    end
 
     if(msg = redirect_to_sfx(openurl_params))
 
@@ -19,7 +23,6 @@ class ResolverController < CatalogController
       redirect_to "#{Rails.application.config.resolve[:sfx_url]}?#{openurl_params.to_query}&fromfindit=true"
     else
 
-      openurl_params.each {|key,val| openurl_params[key] = URI.unescape(val.to_s) }
       context_object = to_open_url(openurl_params)
 
       if context_object.nil?
@@ -45,6 +48,8 @@ class ResolverController < CatalogController
           @document ||= SolrDocument.create_from_openURL(context_object)
 
           log_resolver_request("Creating synthesized record", doc || openurl_params, request)
+          # remove context object params in order to not include in search form hidden fields
+          params.slice!(:controller, :action)
           params[:resolve] = true
           render('catalog/show') and return
         when 1
