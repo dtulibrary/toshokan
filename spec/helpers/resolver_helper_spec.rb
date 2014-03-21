@@ -52,11 +52,11 @@ describe ResolverHelper do
     end
 
     it "leaves a plain query unchanged" do
-      helper.solr_params_to_blacklight_query({:q => "foo:bar"}).should include(:q => 'foo:bar')
+      helper.solr_params_to_blacklight_query({:unescaped_q => "foo:bar"}).should include(:q => 'foo:bar')
     end
 
     it "extracts facet queries from the query" do
-      params = helper.solr_params_to_blacklight_query({:q => "facet:abc foo:bar"})
+      params = helper.solr_params_to_blacklight_query({:unescaped_q => "facet:abc foo:bar"})
       params[:q].should eq "foo:bar"
       params[:f].should include("facet" => ["abc"])
     end

@@ -108,7 +108,7 @@ module ResolverHelper
   def solr_params_to_blacklight_query(params)
 
     new_params = {}
-    q = params[:q] || ""
+    q = params[:unescaped_q] || ""
 
     # if any of the facet fields configured in Blacklight is set in the query field,
     # convert it to a facet parameter
