@@ -31,9 +31,9 @@ class ResolverController < CatalogController
         redirect_to "#{Rails.application.config.resolve[:sfx_url]}?#{openurl_params.to_query}&fromfindit=true"
       else
 
-        (count, @response, @document) = get_resolver_result(context_object.to_hash)
-
         Rails.logger.info "context_object #{context_object.kev}"
+
+        (count, @response, @document) = get_resolver_result(context_object.to_hash)
 
         case count
         when 0

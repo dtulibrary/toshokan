@@ -43,7 +43,7 @@ class CatalogController < ApplicationController
 
     # Set resolver params
     config.resolver_params = {
-      "mm" => "90%"
+      "mm" => "3<90%"
     }
 
     # Add support for :limit field type. Used by ToC filters. See also LimitsHelper.

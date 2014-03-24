@@ -85,10 +85,16 @@ class SolrDocument
   def self.create_from_openURL(context_object)
 
     solr_doc = {}
+
+    solr_doc[self.field_semantics[:format]] = context_object.referent.format
+    if context_object.referent.format == "journal" && context_object.referent.metadata.has_key?("atitle")
+      solr_doc[self.field_semantics[:format]] = "article"
+    end
+
     context_object.referent.metadata.each do |metadata|
       if self.field_semantics.has_key?(metadata.first.to_sym)
-        if [:format, :genre].include?(metadata.first.to_sym)
-          solr_doc[self.field_semantics[metadata.first.to_sym]] = metadata.last
+        if metadata.first.to_sym == :genre
+          # match to subformats when available
         # page element
         elsif metadata.first.to_sym == :spage
           page_info = metadata.last
@@ -161,7 +167,8 @@ class SolrDocument
     @context_object = OpenURL::ContextObject.new
     @context_object.referrer.add_identifier('info:sid/findit.dtu.dk')
     format = self[:format]
-    genre  = self[:format]
+    genre  = self[:genre]
+    genre ||= self[:format]
     format = "journal" if format == "article"
     @context_object.referent.set_format(format)
     @context_object.referent.set_metadata('genre', genre)
@@ -169,9 +176,9 @@ class SolrDocument
       case field
       when :title
         key = "atitle"
-        if genre == "book"
+        if format == "book"
           key = "btitle"
-        elsif genre == "journal"
+        elsif format == "journal"
           key = "jtitle"
         end
         @context_object.referent.set_metadata(key, value.first)

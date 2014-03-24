@@ -20,9 +20,9 @@ module ResolverHelper
         end
 
         # make sure format is set before creating OpenURL
-        if params.has_key?("genre") && params["genre"] == "book"
-          params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:journal"
-          params["rft.genre"] = "book"
+        if params.has_key?("genre") && (params["genre"] == "book" || params["genre"] == "bookitem")
+          params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:book"
+          params["rft.genre"] = params["genre"]
         elsif params.has_key?("atitle")
           params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:journal"
           params["rft.genre"] = "article"
