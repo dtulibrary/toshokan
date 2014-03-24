@@ -88,10 +88,14 @@ class Pubmed
         if article.has_key?("Abstract") && article["Abstract"].has_key?("AbstractText")
           abstract = ""
           abstracts = article["Abstract"]["AbstractText"]
-          abstracts = [abstracts] if abstracts.is_a?(Hash)
+          abstracts = [abstracts] if abstracts.is_a?(Hash) || abstracts.is_a?(String)
           abstracts.each do |ab|
-            abstract << "#{ab['Label']}: " if ab.has_key?("Label")
-            abstract << "#{ab['__content__']}\n"
+            if ab.is_a?(Hash)
+              abstract << "#{ab['Label']}: " if ab.has_key?("Label")
+              abstract << "#{ab['__content__']}\n"
+            else
+              abstract << "#{ab}\n"
+            end
           end
           doc[fields[:abstract]] = abstract
         end
