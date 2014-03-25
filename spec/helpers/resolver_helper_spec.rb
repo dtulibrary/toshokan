@@ -38,6 +38,14 @@ describe ResolverHelper do
       scopus_url = "sid=Elsevier:Scopus&_service_type=getFullTxt&issn=09594388&isbn=&volume=23&issue=1&spage=43&epage=51&pages=43-51&artnum=&date=2013&id=doi:10.1016%252fj.conb.2012.11.006&title=Current+Opinion+in+Neurobiology&atitle=Decoding+the+genetics+of+speech+and+language&aufirst=S.A.&auinit=S.A.&auinit1=S&aulast=Graham"
       ou = helper.to_open_url(Rack::Utils.parse_query(scopus_url))
       ou.referent.metadata["genre"].should eq "article"
+      ou.referent.metadata['date'].should eq "2013"
+    end
+
+    it "accepts a Proquest url" do
+      proquest_url = "url_ver=Z39.88-2004&rft_val_fmt=info:ofi/fmt:kev:mtx:book&genre=report&sid=ProQ:Aquatic+Science+%2526+Fisheries+Abstracts+%2528ASFA%2529+1%253A+Biological+Sciences+%2526+Living+Resources&atitle=&title=Experiments+in+freezing+of+shrimps.+The+effects+of+vacuum-packing+and+storage+with+use+of+carbon+dioxide+gas.&issn=0078186X&date=1961-01-01&volume=&issue=&spage=10&au=Karsti%252C+O%253BHakvaag%252C+D&isbn=&jtitle=&btitle=Experiments+in+freezing+of+shrimps.+The+effects+of+vacuum-packing+and+storage+with+use+of+carbon+dioxide+gas.&rft_id=info:eric/"
+      ou = helper.to_open_url(Rack::Utils.parse_query(proquest_url))
+      ou.referent.format.should eq "book"
+      ou.referent.metadata['date'].should eq "1961"
     end
   end
 

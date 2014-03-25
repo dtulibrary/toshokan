@@ -20,22 +20,28 @@ module ResolverHelper
         end
 
         # make sure format is set before creating OpenURL
-        if params.has_key?("genre") && (params["genre"] == "book" || params["genre"] == "bookitem")
+        if params.has_key?("genre") && (params["genre"] == "book" || params["genre"] == "bookitem") && !params.has_key?('rft_val_fmt')
           params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:book"
           params["rft.genre"] = params["genre"]
-        elsif params.has_key?("atitle")
+        elsif params.has_key?("atitle") && !params["atitle"].blank?
           params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:journal"
           params["rft.genre"] = "article"
         end
       end
 
       # work around for OpenURLs where jtitle is set to title
-      if params.has_key?("rft.title") && params.has_key?("rft.atitle")
+      if params.has_key?("rft.title") && params.has_key?("rft.atitle") && !params["rft.atitle"].blank?
         params["rft.jtitle"] = params["rft.title"]
         params.delete("rft.title")
       end
 
       ou = OpenURL::ContextObject.new_from_form_vars(params)
+
+      if ou.referent.metadata.has_key?("date") && m = /^(\d{4})?+(-\d{2}){1,2}*$/.match(ou.referent.metadata["date"])
+        ou.referent.set_metadata("date", m[1])
+      elsif ou.referent.metadata.has_key?("date")
+        ou.referent.metadata.delete("date")
+      end
 
       # handle multiple authors (otherwise lost)
       if params.has_key?("rft.au") || params.has_key?("au") || params.has_key?("rft.aulast") || params.has_key?("aulast")
