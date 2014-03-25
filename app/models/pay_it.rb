@@ -2,7 +2,7 @@ require 'digest'
 require 'httparty'
 
 module PayIt
-  
+
   class Dibs
     include Configured
 
@@ -29,13 +29,13 @@ module PayIt
         :amount => (order.price + order.vat),
         :md5key => md5_key({
           :merchant => Dibs.merchant_id,
-          :orderid => order.dibs_order_id, 
-          :transact => order.dibs_transaction_id, 
+          :orderid => order.dibs_order_id,
+          :transact => order.dibs_transaction_id,
           :amount => (order.price + order.vat)
         })
       }
 
-      Rails.logger.info "Capturing payment from DIBS for order id = #{order.dibs_order_id}." 
+      Rails.logger.info "Capturing payment from DIBS for order id = #{order.dibs_order_id}."
       begin
         response = HTTParty.post Dibs.capture_url, :body => params
         Rails.logger.debug "DIBS responded with HTTP #{response.code}:\n#{response.body}"
@@ -68,11 +68,11 @@ module PayIt
 
       begin
         Rails.logger.info "Cancelling order with order id = #{order.dibs_order_id} in DIBS."
-        
+
         response = HTTParty.post Dibs.cancel_url, {
-          :body => params, 
+          :body => params,
           :basic_auth => {
-            :username => Dibs.username, 
+            :username => Dibs.username,
             :password => Dibs.password
           }
         }
@@ -144,53 +144,61 @@ module PayIt
   class Prices
 
     def self.price_matrix
-      {   
+      {
         :dtu_staff => {
           :rd => {
             :DKK => 0
-          },  
+          },
           :dtu => {
             :DKK => 0
-          }   
-        },  
+          }
+        },
         :dtu_student => {
-          :rd => { 
-            :DKK => 4000 
-          },  
+          :rd => {
+            :DKK => 4000
+          },
           :dtu => {
             :DKK => 0
-          }   
-        },  
+          }
+        },
         :public => {
           :rd => {
             :DKK => 24000
-          },  
+          },
           :dtu => {
             :DKK => 24000
-          }   
-        }   
-      }   
-    end 
+          }
+        },
+        :dtu_expense => {
+          :rd => {
+            :DKK => 18000
+          },
+          :dtu => {
+            :DKK => 0
+          }
+        }
+      }
+    end
 
     def self.prices user
       price_matrix[user.type]
-    end 
+    end
 
     def self.price user, supplier, currency = :DKK
       price_matrix[user.type] ? price_matrix[user.type][supplier][currency] : price_matrix[:public][supplier][currency]
-    end 
+    end
 
     def self.price_with_vat user, supplier, currency = :DKK
       amount = self.price user, supplier, currency
       amount + self.vat(amount)
-    end 
-    
+    end
+
     def self.vat amount
       (0.25 * amount).floor
     end
 
     def self.discount_type_matrix
-      {   
+      {
         :dtu_staff => :dtu_staff_discount,
         :dtu_student => :dtu_student_discount,
       }

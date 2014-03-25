@@ -21,6 +21,32 @@
 
 }
 
+#modal-request-scan {
+  .request-metadata {
+    .dl-horizontal {
+      dt {
+        width: 100px;
+      }
+      dd {
+        margin-left: 120px;
+      }
+    }
+  }
+  .request-price {
+    .dl-horizontal {
+      dt {
+        width: 220px;
+      }
+      dd {
+        margin-left: 240px;
+      }
+    }
+  }
+  div {
+    margin-bottom: 25px;
+  }
+}
+
 #nal-locations-modal {
   input {
     margin: 0px 0.5em 0px 0px;

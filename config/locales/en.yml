@@ -38,7 +38,7 @@ en:
         benefits_personalization: Regardless who you are, choosing to log in enables personalised
           features such as bookmarks, tags and alerts.
         question: "Would you like to log in?"
-        yes_please_non_dtu_html: Yes please &mdash; I'm not from DTU. 
+        yes_please_non_dtu_html: Yes please &mdash; I'm not from DTU.
         yes_please_dtu_html: Yes please &mdash; I'm from DTU.
         no_thanks: "No thanks."
       orders: "Orders"
@@ -149,6 +149,32 @@ en:
       nal:
         title: 'Availability on-site in Denmark'
         text: 'The material is available at the following libraries (check to show on map):'
+      request_document:
+        title: 'Request document'
+        note: "partially"
+        text:
+          "<div id='modal-request-scan'>
+            <div class='request-metadata'>
+              <h5>You are about to request the document</h5>
+              <dl class='dl-horizontal'>
+                <dt>Title:</dt>
+                <dd>%{title}</dd>
+                <dt>Author:</dt>
+                <dd>%{author}</dd>
+              </dl>
+              <h5>from a commercial, external document supplier.</h5>
+            </div>
+            <div class='request-price'>
+              <dl class='dl-horizontal'>
+                <dt>Estimated cost of this request:</dt>
+                <dd class='dtu-red'><strong>%{dtu_price}</strong></dd>
+                <dt>Your cost:</dt>
+                <dd><strong>%{price}</strong></dd>
+              </dl>
+              <h5>Expense %{note}covered by the central DTU information budget.</h5>
+            </div>
+            <div><h5>Please confirm that you wish DTU Library to request this document from the external supplier and have it delivered to you.</h5></div>
+          </div>"
     feedback:
       label: 'Feedback'
       success_html: Your feedback has been sent. Thank you for taking the time to help us improve DTU Findit. <a href="#" data-dismiss="modal">Close this dialog</a>
@@ -173,23 +199,23 @@ en:
         title: No results in DTU Findit
         text: Your search did not find any records in DTU Findit.
         tips:
-          broaden_search_html: Try broadening your search by removing one or more search terms, or by removing one 
-            or more search filters you may have applied. On the result page, you can refine the 
-            search result by using the search filters. For more information on searching, check out the 
+          broaden_search_html: Try broadening your search by removing one or more search terms, or by removing one
+            or more search filters you may have applied. On the result page, you can refine the
+            search result by using the search filters. For more information on searching, check out the
             <a href="http://api.libguides.com/api_box.php?iid=3935&bid=14174533" target="_blank">General search help</a>.
-          for_books_html: 
-            For books, the Danish union catalogue, <a href="http://www.bibliotek.dk/?lingo=eng" target="_blank">bibliotek.dk</a> or 
+          for_books_html:
+            For books, the Danish union catalogue, <a href="http://www.bibliotek.dk/?lingo=eng" target="_blank">bibliotek.dk</a> or
             <a href="http://books.google.com" target="_blank">Google Books</a> might have what you are searching for.
           for_articles_html:
-            For journal articles and conference articles, 
-            <a href="http://scholar.google.com" target="_blank">Google Scholar</a> might 
+            For journal articles and conference articles,
+            <a href="http://scholar.google.com" target="_blank">Google Scholar</a> might
             have what you are searching for.
           in_general_html:
-            In general, DTU Findit has a technical scientific focus, and if what you are searching 
+            In general, DTU Findit has a technical scientific focus, and if what you are searching
             for does not fall into that category, you might find better results in the Danish
             union catalogue,
             <a href="http://www.bibliotek.dk/?lingo=eng" target="_blank">bibliotek.dk</a>;
-            <a href="http://scholar.google.com" target="_blank">Google Scholar</a>; or  
+            <a href="http://scholar.google.com" target="_blank">Google Scholar</a>; or
             <a href="http://books.google.com" target="_blank">Google Books</a>.
           how_to_search_html:
             Learn about the <a href="http://api.libguides.com/api_box.php?iid=3935&bid=14174533" target="_blank">search syntax</a> used by DTU Findit.
