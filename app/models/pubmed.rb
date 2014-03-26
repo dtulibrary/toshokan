@@ -78,7 +78,9 @@ class Pubmed
         end
 
         if article.has_key?("ELocationID")
-          article["ELocationID"].each do |id|
+          ids = article["ELocationID"]
+          ids = [article["ELocationID"]] if ids.is_a?(Hash)
+          ids.each do |id|
             if id["EIdType"] == "doi"
               doc[fields[:doi]] = id["__content__"]
             end
