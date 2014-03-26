@@ -178,7 +178,7 @@ class SolrDocument
         key = "atitle"
         if format == "book"
           key = "btitle"
-        elsif format == "journal"
+        elsif format == "journal" && genre != "article"
           key = "jtitle"
         end
         @context_object.referent.set_metadata(key, value.first)
