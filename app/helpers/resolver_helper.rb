@@ -7,8 +7,8 @@ module ResolverHelper
 
     if params.has_key?("url_ver") || params.has_key?("sid")
 
-      # convert some fields from Google Scholar format
-      if params.has_key?("sid")
+      # openurl 0.1 -> 1.0 preparations
+      if params.has_key?("sid") && !params.has_key?("url_ver")
 
         # set journal title
         if params.has_key?("title") && params.has_key?("atitle")
@@ -20,9 +20,13 @@ module ResolverHelper
         end
 
         # make sure format is set before creating OpenURL
-        if params.has_key?("genre") && (params["genre"] == "book" || params["genre"] == "bookitem") && !params.has_key?('rft_val_fmt')
+        if params.has_key?("genre") && ["book", "bookitem", "conference", "proceeding"].include?(params["genre"]) && !params.has_key?('rft_val_fmt')
           params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:book"
           params["rft.genre"] = params["genre"]
+          if(params.has_key?("title"))
+            params["rft.btitle"] = params["title"]
+            params.delete("title")
+          end
         elsif params.has_key?("atitle") && !params["atitle"].blank?
           params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:journal"
           params["rft.genre"] = "article"
@@ -37,6 +41,12 @@ module ResolverHelper
 
       ou = OpenURL::ContextObject.new_from_form_vars(params)
 
+      # set identifiers for openurl v. 0.1 input
+      if params.has_key?("sid") && ou.referrer.identifiers.nil?
+        ou.referrer.add_identifier(params["sid"])
+      end
+
+      # set date as year
       if ou.referent.metadata.has_key?("date") && m = /^(\d{4})?+(-\d{2}){1,2}*$/.match(ou.referent.metadata["date"])
         ou.referent.set_metadata("date", m[1])
       elsif ou.referent.metadata.has_key?("date")

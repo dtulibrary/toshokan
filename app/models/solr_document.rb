@@ -133,7 +133,7 @@ class SolrDocument
     # set additional ids which are not included in metatdata
     unless context_object.referent.identifiers.nil?
       context_object.referent.identifiers.each do |id|
-        if m = id.match(/(urn|info):([^:]*):(.*)/)
+        if m = id.match(/(urn|info):([^:\/]*)[:\/](.*)/)
           ou_field = m[2].to_sym
           if self.field_semantics.has_key?(ou_field)
             solr_doc[self.field_semantics[ou_field]] = [] if solr_doc[self.field_semantics[ou_field]].nil?
@@ -167,8 +167,7 @@ class SolrDocument
     @context_object = OpenURL::ContextObject.new
     @context_object.referrer.add_identifier('info:sid/findit.dtu.dk')
     format = self[:format]
-    genre  = self[:genre]
-    genre ||= self[:format]
+    genre = format
     format = "journal" if format == "article"
     @context_object.referent.set_format(format)
     @context_object.referent.set_metadata('genre', genre)
@@ -190,6 +189,8 @@ class SolrDocument
         @context_object.referent.set_metadata("volume", value.first)
       when :number
         @context_object.referent.set_metadata("issue", value.first)
+      when :publisher
+        @context_object.referent.set_metadata("pub", value.first)
       when :pages
         if value.first.to_s =~ /^\s*(\d+)\s*-+\s*(\d+)\s*$/
           @context_object.referent.set_metadata("spage", "#{$1}")

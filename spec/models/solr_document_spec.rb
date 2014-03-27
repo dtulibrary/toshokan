@@ -76,13 +76,34 @@ describe "SolrDocument" do
   end
 
   describe "#export_as_openurl_ctx_kev" do
-    it "generates an OpenUrl" do
+    it "generates an OpenUrl for an article" do
       openurl = OpenURL::ContextObject.new_from_kev(article.export_as_openurl_ctx_kev)
-      openurl.referent.metadata["genre"].should match "article"
+      openurl.referent.format.should eq "journal"
+      openurl.referent.metadata["genre"].should eq "article"
+      openurl.referent.metadata["au"].should eq "Kawauchi, Gisele Y."
+      openurl.referent.metadata["date"].should eq "2010"
       openurl.referent.metadata["atitle"].should match /Are there true cosmopolitan sipunculan worms/
-      openurl.referent.metadata["jtitle"].should match "Marine Biology"
-      openurl.referent.identifiers.first.should match /issn/
-      openurl.referent.identifiers.last.should match /doi/
+      openurl.referent.metadata["jtitle"].should eq "Marine Biology"
+      openurl.referent.identifiers.should include "urn:issn:00253162"
+      openurl.referent.identifiers.should include "urn:issn:14321793"
+      openurl.referent.identifiers.should include "info:doi/10.1007/s00227-010-1402-z"
+      openurl.referent.metadata["doi"].should eq "10.1007/s00227-010-1402-z"
+      openurl.referent.metadata["spage"].should eq "1417"
+      openurl.referent.metadata["epage"].should eq "1431"
+      openurl.referent.metadata["pub"].should eq "Springer-Verlag"
+    end
+
+    it "generates an OpenUrl for a book" do
+      openurl = OpenURL::ContextObject.new_from_kev(book.export_as_openurl_ctx_kev)
+      openurl.referent.format.should eq "book"
+      openurl.referent.metadata["genre"].should eq "book"
+      openurl.referent.metadata["pub"].should eq "Polyteknisk Forlag"
+      openurl.referent.metadata["btitle"].should eq "Kemiske enhedsoperationer"
+      openurl.referent.metadata["date"].should eq "2004"
+      openurl.referent.metadata["isbn"].should eq "9788750209416"
+      openurl.referent.identifiers.should include "urn:isbn:8750209418"
+      openurl.referent.identifiers.should include "urn:isbn:9788750209416"
+      openurl.referent.metadata["au"].should eq "Clement, Karsten H.,, et al."
     end
   end
 
@@ -105,7 +126,6 @@ describe "SolrDocument" do
           "rft.epage"   => "1431",
           "rft.date"    => "2010",
           "rft.issn"    => "14321793",
-          "rft.doi"     => "10.1007/s00227-010-1402-z",
           "rft_val_fmt" => "info:ofi/fmt:kev:mtx:journal",
           "rft_id"      => ["urn:issn:00253162", "urn:issn:14321793", "info:doi/10.1007/s00227-010-1402-z"]
         }))
