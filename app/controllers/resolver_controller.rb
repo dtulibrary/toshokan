@@ -81,6 +81,9 @@ class ResolverController < CatalogController
     elsif (params.has_key?("__response_type") && params["__response_type"].start_with?("image")) ||
       (params.has_key?("sfx.response_type") && params["sfx.response_type"].start_with?("image"))
       msg = "request is a image-based linking request"
+    elsif (params.has_key?("rfr_id") &&
+      (params["rfr_id"] == "info:sid/sfxit.com:kbmanager" || params["rfr_id"] == "info:ofi/rfr:db:verde") && params.has_key?("rft.object_id"))
+      msg = "request comes from SFX Admin or Verde"
     else
       nil
     end

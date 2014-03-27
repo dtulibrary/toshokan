@@ -98,6 +98,22 @@ describe ResolverController do
         get :index, open_url
         response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
       end
+
+      it "redirects if the request comes from SFX admin" do
+        open_url = "url_ver=Z39.88-2004&url_ctx_fmt=infofi/fmt:kev:mtx:ctx&ctx_ver=Z39.88-2004&ctx_enc=info:ofi/enc:UTF-8&rfr_id=info:sid/sfxit.com:kbmanager&sfx.ignore_date_threshold=1&rft.object_id=958480176648"
+        open_url = Rack::Utils.parse_nested_query(open_url)
+
+        get :index, open_url
+        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
+      end
+
+      it "redirects if the request comes from Verde" do
+        open_url = "ctx_enc=info%3Aofi%2Fenc%3AUTF-8&ctx_tim=2005-7-25T6%3A5%3A53EDT&ctx_ver=Z39.88-2004&url_ver=Z39.88-2004&url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&rfr_id=info%3Aofi/rfr%3Adb%3Averde&rft.object_id=110978966557608&rft.object_portfolio_id=3280000000001612&sfx.ignore_date_threshold=1&svc_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Asch_svc&svc.fulltext=yes"
+        open_url = Rack::Utils.parse_nested_query(open_url)
+
+        get :index, open_url
+        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
+      end
     end
   end
 end
