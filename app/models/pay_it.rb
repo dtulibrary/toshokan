@@ -171,7 +171,7 @@ module PayIt
         },
         :dtu_expense => {
           :rd => {
-            :DKK => 18000
+            :DKK => 19200
           },
           :dtu => {
             :DKK => 0
