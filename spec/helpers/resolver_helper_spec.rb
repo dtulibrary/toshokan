@@ -110,19 +110,33 @@ describe ResolverHelper do
 
     it "accepts a Proquest url" do
       proquest_url = "url_ver=Z39.88-2004&rft_val_fmt=info:ofi/fmt:kev:mtx:book&genre=report&sid=ProQ:Aquatic+Science+%2526+Fisheries+Abstracts+%2528ASFA%2529+1%253A+Biological+Sciences+%2526+Living+Resources&atitle=&title=Experiments+in+freezing+of+shrimps.+The+effects+of+vacuum-packing+and+storage+with+use+of+carbon+dioxide+gas.&issn=0078186X&date=1961-01-01&volume=&issue=&spage=10&au=Karsti%252C+O%253BHakvaag%252C+D&isbn=&jtitle=&btitle=Experiments+in+freezing+of+shrimps.+The+effects+of+vacuum-packing+and+storage+with+use+of+carbon+dioxide+gas.&rft_id=info:eric/"
-      "au=Karsti%252C+O%253BHakvaag%252C+D&isbn=&&rft_id=info:eric/"
       ou = helper.to_open_url(Rack::Utils.parse_query(proquest_url))
       ou.referent.format.should eq "book"
       ou.referent.metadata["genre"].should eq "report"
       ou.referrer.identifiers.first.should eq "info:sid/ProQ:Aquatic Science %26 Fisheries Abstracts %28ASFA%29 1%3A Biological Sciences %26 Living Resources" # double encoding is handled elsewhere
       ou.referent.metadata["date"].should eq "1961"
       ou.referent.metadata["btitle"].should eq "Experiments in freezing of shrimps. The effects of vacuum-packing and storage with use of carbon dioxide gas."
-      ou.referent.metadata["title"].should eq "Experiments in freezing of shrimps. The effects of vacuum-packing and storage with use of carbon dioxide gas."
       ou.referent.metadata["issn"].should eq "0078186X"
       ou.referent.metadata["spage"].should eq "10"
       ou.referent.metadata["au"].should eq "Karsti%2C O%3BHakvaag%2C D"
       ou.referent.metadata.length.should be 7
     end
+
+    it "accepts another Proquest url" do
+      proquest_url = "url_ver=Z39.88-2004&rft_val_fmt=info:ofi/fmt:kev:mtx:journal&genre=article&sid=ProQ:ProQ%253Aasfabiological&atitle=Sympatric+occurrence+of+living+Nautilus+%2528N.+pompilius+and+N.+stenomphalaus+%2529+on+the+Great+Barrier+Reef%252C+Australia.&title=Nautilus&issn=00281344&date=1988-01-01&volume=102&issue=1&spage=188&au=Saunders%252C+W+B%253BWard%252C+P+D&isbn=&jtitle=Nautilus&btitle=&rft_id=info:eric/"
+      ou = helper.to_open_url(Rack::Utils.parse_query(proquest_url))
+      ou.referent.format.should eq "journal"
+      ou.referent.metadata["genre"].should eq "article"
+      ou.referent.metadata["atitle"].should eq "Sympatric occurrence of living Nautilus %28N. pompilius and N. stenomphalaus %29 on the Great Barrier Reef%2C Australia." # double encoding is handled elsewhere
+      ou.referent.metadata["jtitle"].should eq "Nautilus"
+      ou.referent.metadata["date"].should eq "1988"
+      ou.referent.metadata["issn"].should eq "00281344"
+      ou.referent.metadata["volume"].should eq "102"
+      ou.referent.metadata["issue"].should eq "1"
+      ou.referent.metadata["spage"].should eq "188"
+      ou.referent.metadata["au"].should eq "Saunders%2C W B%3BWard%2C P D"
+    end
+
   end
 
   describe "#solr_params_to_blacklight_query" do

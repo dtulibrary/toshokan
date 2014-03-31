@@ -8,7 +8,8 @@ module ResolverHelper
     if params.has_key?("url_ver") || params.has_key?("sid")
 
       # openurl 0.1 -> 1.0 preparations
-      if params.has_key?("sid") && !params.has_key?("url_ver")
+      # note that some can be a mix of the two
+      if params.has_key?("sid")
 
         # set journal title
         if params.has_key?("title") && params.has_key?("atitle")
