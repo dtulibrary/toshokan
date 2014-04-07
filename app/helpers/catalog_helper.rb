@@ -101,7 +101,12 @@ module CatalogHelper
   end
 
   def render_author_links args
-    render_author_list args[:document][args[:field]]
+
+    if args[:document]['author_affiliation_ssf']
+      render_author_list args[:document]['author_affiliation_ssf'].first, {:author_with_affiliation => true}
+    else
+      render_author_list args[:document][args[:field]]
+    end
   end
 
   def render_shortened_author_links args
@@ -109,7 +114,17 @@ module CatalogHelper
   end
 
   def render_author_list authors, options = {}
-    list = authors.map { |author| render_author_link author, options[:suppress_link] }
+    if options[:author_with_affiliation]
+      affiliations = ActiveSupport::JSON.decode(authors)
+      list = []
+      affiliations.collect do |affiliation|
+        if affiliation.has_key?('au')
+          list.concat(affiliation['au'].map { |author| content_tag(:span, :class => "author") { render_author_link(author, options[:suppress_link]).safe_concat(content_tag(:sup, affiliations.index(affiliation) + 1))} })
+        end
+      end
+    else
+      list = authors.map { |author| content_tag(:span, render_author_link(author, options[:suppress_link]), :class => "author") }
+    end
 
     case
     when !options[:max_length] && options[:append]
@@ -134,8 +149,15 @@ module CatalogHelper
   end
 
   def render_affiliations args
-    affiliations = args[:document][args[:field]]
-    affiliations.collect { |affiliation| content_tag(:span, affiliation)}.join('<br>').html_safe
+    if args[:document]['author_affiliation_ssf']
+      affiliations = ActiveSupport::JSON.decode(args[:document]['author_affiliation_ssf'].first)
+      affiliations.collect do |affiliation|
+        content_tag(:span) { content_tag(:span, "#{affiliation['aff']}").safe_concat(content_tag(:sup, affiliations.index(affiliation) + 1)) }
+      end.join('<br>').html_safe
+    else
+      affiliations = args[:document][args[:field]]
+      affiliations.collect { |affiliation| content_tag(:span, affiliation)}.join('<br>').html_safe
+    end
   end
 
   def render_journal_rank(document)
