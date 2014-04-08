@@ -137,6 +137,30 @@ describe ResolverHelper do
       ou.referent.metadata["au"].should eq "Saunders%2C W B%3BWard%2C P D"
     end
 
+    it "accepts a Primo url" do
+      primo_url = "resolve?ctx_enc=UTF-8&ctx_ver=Z39.88-2004&rfr_id=primo.exlibrisgroup.com%3Aprimo3-Article-gale_ofa&svc_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Asch_svc&url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&url_ver=Z39.88-2004&rft.genre=article&rft.atitle=Management%20science%202009%20Report.%28Letter%20from%20the%20Editor%29%28Report%29&rft.jtitle=Management%20science&rft.stitle=MANAGE%20SCI&rft.stitle=MANAG%20SCI&rft.title=Management%20science&rft.au=Cachon%2C%20Gerard%20P&rft.aulast=Cachon&rft.aufirst=Gerard&rft.auinit=G%20P&rft.date=20100101&rft.pub=INFORMS&rft.place=%5BLinthicum%2C%20Md.%5D&rft.issn=0025-1909&rft.eissn=1526-5501&rft.coden=MSCIAM&rft.volume=56&rft.issue=1&rft.spage=2&rft_id=doi%3A&rft_id=oai%3A%3E&rft_dat=%3Cgale_ofa%3E219382786%3C%2Fgale_ofa%3E%3Cgrp_id%3E7617128399622374774%3C%2Fgrp_id%3E%3Coa%3E%3C%2Foa%3E&req.language=eng"
+      ou = helper.to_open_url(Rack::Utils.parse_query(primo_url))
+      ou.referent.format.should eq "journal"
+      ou.referent.metadata["genre"].should eq "article"
+      ou.referent.metadata["atitle"].should eq "Management science 2009 Report.(Letter from the Editor)(Report)"
+      ou.referent.metadata["jtitle"].should eq "Management science"
+      ou.referent.metadata["stitle"].should eq "MANAGE SCI"
+      ou.referent.metadata["title"].should be nil
+      ou.referent.metadata["au"].should eq "Cachon, Gerard P"
+      ou.referent.metadata["aulast"].should eq "Cachon"
+      ou.referent.metadata["aufirst"].should eq "Gerard"
+      ou.referent.metadata["auinit"].should eq "G P"
+      ou.referent.metadata["date"].should eq "2010"
+      ou.referent.metadata["pub"].should eq "INFORMS"
+      ou.referent.metadata["place"].should eq "[Linthicum, Md.]"
+      ou.referent.metadata["issn"].should eq "0025-1909"
+      ou.referent.metadata["eissn"].should eq "1526-5501"
+      ou.referent.metadata["coden"].should eq "MSCIAM"
+      ou.referent.metadata["volume"].should eq "56"
+      ou.referent.metadata["issue"].should eq "1"
+      ou.referent.metadata["spage"].should eq "2"
+    end
+
   end
 
   describe "#solr_params_to_blacklight_query" do

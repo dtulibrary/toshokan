@@ -40,6 +40,15 @@ module ResolverHelper
         params.delete("rft.title")
       end
 
+      # make sure that format is set
+      unless params.has_key?("rft_val_fmt")
+        if params.has_key?("rft.btitle")
+          params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:book"
+        else
+          params["rft_val_fmt"] = "info:ofi/fmt:kev:mtx:journal"
+        end
+      end
+
       ou = OpenURL::ContextObject.new_from_form_vars(params)
 
       # set identifiers for openurl v. 0.1 input
@@ -48,7 +57,7 @@ module ResolverHelper
       end
 
       # set date as year
-      if ou.referent.metadata.has_key?("date") && m = /^(\d{4})?+(-\d{2}){1,2}*$/.match(ou.referent.metadata["date"])
+      if ou.referent.metadata.has_key?("date") && m = /^(\d{4})?+(-?\d{2}){1,2}*$/.match(ou.referent.metadata["date"])
         ou.referent.set_metadata("date", m[1])
       elsif ou.referent.metadata.has_key?("date")
         ou.referent.metadata.delete("date")

@@ -135,7 +135,7 @@ class SolrDocument
       context_object.referent.identifiers.each do |id|
         if m = id.match(/(urn|info):([^:\/]*)[:\/](.*)/)
           ou_field = m[2].to_sym
-          if self.field_semantics.has_key?(ou_field)
+          if self.field_semantics.has_key?(ou_field) && !m[3].blank?
             solr_doc[self.field_semantics[ou_field]] = [] if solr_doc[self.field_semantics[ou_field]].nil?
             solr_doc[self.field_semantics[ou_field]] << m[3] unless solr_doc[self.field_semantics[ou_field]].include?(m[3])
           end
