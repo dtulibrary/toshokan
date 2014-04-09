@@ -138,7 +138,7 @@ describe ResolverHelper do
     end
 
     it "accepts a Primo url" do
-      primo_url = "resolve?ctx_enc=UTF-8&ctx_ver=Z39.88-2004&rfr_id=primo.exlibrisgroup.com%3Aprimo3-Article-gale_ofa&svc_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Asch_svc&url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&url_ver=Z39.88-2004&rft.genre=article&rft.atitle=Management%20science%202009%20Report.%28Letter%20from%20the%20Editor%29%28Report%29&rft.jtitle=Management%20science&rft.stitle=MANAGE%20SCI&rft.stitle=MANAG%20SCI&rft.title=Management%20science&rft.au=Cachon%2C%20Gerard%20P&rft.aulast=Cachon&rft.aufirst=Gerard&rft.auinit=G%20P&rft.date=20100101&rft.pub=INFORMS&rft.place=%5BLinthicum%2C%20Md.%5D&rft.issn=0025-1909&rft.eissn=1526-5501&rft.coden=MSCIAM&rft.volume=56&rft.issue=1&rft.spage=2&rft_id=doi%3A&rft_id=oai%3A%3E&rft_dat=%3Cgale_ofa%3E219382786%3C%2Fgale_ofa%3E%3Cgrp_id%3E7617128399622374774%3C%2Fgrp_id%3E%3Coa%3E%3C%2Foa%3E&req.language=eng"
+      primo_url = "ctx_enc=UTF-8&ctx_ver=Z39.88-2004&rfr_id=primo.exlibrisgroup.com%3Aprimo3-Article-gale_ofa&svc_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Asch_svc&url_ctx_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Actx&url_ver=Z39.88-2004&rft.genre=article&rft.atitle=Management%20science%202009%20Report.%28Letter%20from%20the%20Editor%29%28Report%29&rft.jtitle=Management%20science&rft.stitle=MANAGE%20SCI&rft.stitle=MANAG%20SCI&rft.title=Management%20science&rft.au=Cachon%2C%20Gerard%20P&rft.aulast=Cachon&rft.aufirst=Gerard&rft.auinit=G%20P&rft.date=20100101&rft.pub=INFORMS&rft.place=%5BLinthicum%2C%20Md.%5D&rft.issn=0025-1909&rft.eissn=1526-5501&rft.coden=MSCIAM&rft.volume=56&rft.issue=1&rft.spage=2&rft_id=doi%3A&rft_id=oai%3A%3E&rft_dat=%3Cgale_ofa%3E219382786%3C%2Fgale_ofa%3E%3Cgrp_id%3E7617128399622374774%3C%2Fgrp_id%3E%3Coa%3E%3C%2Foa%3E&req.language=eng"
       ou = helper.to_open_url(Rack::Utils.parse_query(primo_url))
       ou.referent.format.should eq "journal"
       ou.referent.metadata["genre"].should eq "article"
@@ -159,6 +159,26 @@ describe ResolverHelper do
       ou.referent.metadata["volume"].should eq "56"
       ou.referent.metadata["issue"].should eq "1"
       ou.referent.metadata["spage"].should eq "2"
+    end
+
+    it "accepts a Worldcat url" do
+      wc_url = "ctx_ver=Z39.88-2004&rfr_id=firstsearch.oclc.org%3AWorldCat&rfr_id=FirstSearch%3AWorldCat&rft_val_fmt=book&url_ver=Z39.88-2004&rft.genre=book&rft.btitle=Principles%20of%20Nano-Optics&rft.title=Principles%20of%20Nano-Optics&rft.au=Novotny%2C%20Lukas&rft.aulast=Novotny&rft.aufirst=Lukas&rft.auinit=L&rft.date=2012&rft.pub=Cambridge%20University%20Press&rft.place=Cambridge&rft.isbn=1-107-00546-9&rft.isbn_13=1-107-00546-9&rft.eisbn=1-139-55054-3&rft_id=oclcnum%3A775664216&rft_id=urn%3AISBN%3A9781107005464&rft_id=doi%3A&rft_dat=775664216%3Cfssessid%3E0%3C%2Ffssessid%3E%3Cedition%3E2nd%20ed.%3C%2Fedition%3E"
+      ou = helper.to_open_url(Rack::Utils.parse_query(wc_url))
+      ou.referent.format.should eq "book"
+      ou.referent.metadata["genre"].should eq "book"
+      ou.referrer.identifiers.first.should eq "firstsearch.oclc.org:WorldCat"
+      ou.referent.metadata["btitle"].should eq "Principles of Nano-Optics"
+      ou.referent.metadata["au"].should eq "Novotny, Lukas"
+      ou.referent.metadata["aulast"].should eq "Novotny"
+      ou.referent.metadata["aufirst"].should eq "Lukas"
+      ou.referent.metadata["auinit"].should eq "L"
+      ou.referent.metadata["date"].should eq "2012"
+      ou.referent.metadata["pub"].should eq "Cambridge University Press"
+      ou.referent.metadata["place"].should eq "Cambridge"
+      ou.referent.metadata["isbn"].should eq "1-107-00546-9"
+      ou.referent.metadata["eisbn"].should eq "1-139-55054-3"
+      ou.referent.identifiers.should include "urn:ISBN:9781107005464"
+      ou.referent.identifiers.should include "info:oclcnum/775664216"
     end
 
   end

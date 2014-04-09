@@ -49,6 +49,11 @@ module ResolverHelper
         end
       end
 
+      # make sure format is correct set
+      unless params["rft_val_fmt"].start_with?("info:ofi/fmt:kev:mtx:")
+        params["rft_val_fmt"].prepend("info:ofi/fmt:kev:mtx:")
+      end
+
       ou = OpenURL::ContextObject.new_from_form_vars(params)
 
       # set identifiers for openurl v. 0.1 input
