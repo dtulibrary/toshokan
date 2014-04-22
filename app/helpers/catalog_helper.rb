@@ -119,7 +119,8 @@ module CatalogHelper
       list = []
       affiliations.collect do |affiliation|
         if affiliation.has_key?('au')
-          list.concat(affiliation['au'].map { |author| content_tag(:span, :class => "author") { render_author_link(author, options[:suppress_link]).safe_concat(content_tag(:sup, affiliations.index(affiliation) + 1))} })
+          sup_tag = affiliations.size > 1 ? content_tag(:sup, affiliations.index(affiliation) + 1) : ''
+          list.concat(affiliation['au'].map { |author| content_tag(:span, :class => "author") { render_author_link(author, options[:suppress_link]).safe_concat(sup_tag)}})
         end
       end
     else
@@ -152,7 +153,8 @@ module CatalogHelper
     if args[:document]['author_affiliation_ssf']
       affiliations = ActiveSupport::JSON.decode(args[:document]['author_affiliation_ssf'].first)
       affiliations.collect do |affiliation|
-        content_tag(:span) { content_tag(:span, "#{affiliation['aff']}").safe_concat(content_tag(:sup, affiliations.index(affiliation) + 1)) }
+        sup_tag = affiliations.size > 1 ? content_tag(:sup, affiliations.index(affiliation) + 1) : ''
+        content_tag(:span) { content_tag(:span, "#{affiliation['aff']}").safe_concat(sup_tag) }
       end.join('<br>').html_safe
     else
       affiliations = args[:document][args[:field]]
