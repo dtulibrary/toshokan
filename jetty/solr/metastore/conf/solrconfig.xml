@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
-    <luceneMatchVersion>LUCENE_46</luceneMatchVersion>
+    <luceneMatchVersion>LUCENE_47</luceneMatchVersion>
     <dataDir>${solr.data.dir:}</dataDir>
     <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
     <codecFactory name="CodecFactory" class="solr.SchemaCodecFactory" />
@@ -190,6 +190,7 @@
             <str name="fl">iso_language:isolanguage_ss</str>
             <str name="fl">alert_timestamp:alert_timestamp_dt</str>
             <str name="fl">update_timestamp:update_timestamp_dt</str>
+            <str name="fl">author_affiliation:author_affiliation_ssf</str>
 
             <str name="qf">
                 title_ts^10

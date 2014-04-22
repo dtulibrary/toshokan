@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.17'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'jquery-rails', '~> 2.3.0'
 gem 'blacklight', '4.1'
 gem 'unicode'
