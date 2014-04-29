@@ -80,6 +80,11 @@ module Toshokan
       :document_id => 'cluster_id_ss'
     }
 
+    config.search = {
+      :dtu => 'dtu',
+      :pub => 'dtupub'
+    }
+
     config.auth = {
       :stub => false,
       :cas_url => '',

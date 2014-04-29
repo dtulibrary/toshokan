@@ -303,7 +303,7 @@ class CatalogController < ApplicationController
 
       # check whether document is available for dtu users if the user does not already have dtu search rights
       if can? :search, :public
-        @response, @document = get_solr_response_for_doc_id nil, {:fq => ['access_ss:dtu']}
+        @response, @document = get_solr_response_for_doc_id nil, {:fq => ["access_ss:#{Rails.application.config.search[:dtu]}"]}
         if @document.nil?
           not_found
         else
