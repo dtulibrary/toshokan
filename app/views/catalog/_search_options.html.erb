@@ -4,7 +4,7 @@
       <tr class="search-history-links">
         <td>
           <span>
-            <i class="icon-star-empty"></i>                  
+            <i class="icon-star-o"></i>
             <%= link_to save_search_path(params[:s_id]), :title => t('toshokan.mylibrary.save'), :id => "search-summary-save" do %>
                <%= t('toshokan.mylibrary.save') %>
             <%- end -%>
@@ -17,11 +17,11 @@
           </span>
         </td>
       </tr>
-    <%- end -%>    
+    <%- end -%>
     <tr class="search_history">
-      <td class="bordered"><i class="icon-time"></i> <b>Recent History:</b></td>
+      <td class="bordered"><i class="icon-clock-o"></i> <b>Recent History:</b></td>
     </tr>
-    <% @search_history.each do |entry| %>      
+    <% @search_history.each do |entry| %>
       <tr class="search_history">
         <td class="entry">
           <%= link_to_search_history_item(entry.query_params, "<i class='icon-search invisible'></i>") %>
@@ -31,7 +31,7 @@
     <% if can? :view, :search_history %>
       <tr class="search-history-links">
         <td class="bordered">
-          <i class="icon-time"></i> <%= link_to "Complete history", search_history_path %></td>
+          <i class="icon-clock-o"></i> <%= link_to "Complete history", search_history_path %></td>
       </tr>
     <%- end -%>
   </tbody>

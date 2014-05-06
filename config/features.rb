@@ -1,17 +1,18 @@
 
 FeatureFlipper.features do
-  
+
   in_state :development do
   end
 
   in_state :unstable do
+    feature :alis, :description => "Show loan info from Alis"
   end
 
   in_state :staging do
     feature :nal_map, :description => "Show Google Maps for NAL"
   end
 
-  in_state :live do    
+  in_state :live do
     feature :toc,          :description => "Display table of contents on journal records"
     feature :book_suggest, :description => 'Enable users to suggest books for acquistion'
     feature :cant_find_it, :description => 'Display sidebar links to Cant find forms'

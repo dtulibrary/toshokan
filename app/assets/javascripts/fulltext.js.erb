@@ -1,103 +1,211 @@
 //= require 'library_info'
 (function ($) {
 
-  $.fn.addResource = function(openUrl, id, service_list, layout_func, stop_spinner_func) {
-    var base = $(this);
-    var customData = encodeURIComponent(JSON.stringify({"id" : id}));
+  $(function () {
+    if($('body.blacklight-catalog-index').length) {
+
+      $('.document').each(function() {
+        var fulltext = $(this).find('.fulltext-options > ul');
+        if(fulltext.length) {
+
+          var openUrl = $(this).find(".Z3988").attr("title"),
+              spinner = $("<li />"),
+              showBookLoan = openUrl.indexOf("alis_id") > -1,
+              count = showBookLoan ? 2 : 1,
+              epilogue =
+                function() {
+                  count--;
+                  if(count == 0) {
+                    spinner.spin(false);
+                    spinner.remove();
+                    if(fulltext.find('.getit-entry').length == 0) {
+                      fulltext.prepend("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available') %></p></li>");
+                    }
+                  }
+                };
+
+          fulltext.prepend(spinner.spin());
+          spinner.spin({ length: 3, width: 2, radius: 4, left: 5, top: -12 });
+
+          addResource(
+            openUrl,
+            "fulltext_info",
+            partial(layoutIndex, fulltext),
+            epilogue
+          );
+
+          if(showBookLoan) {
+            addResource(
+              openUrl,
+              "loan",
+              partial(layoutIndexLoan, fulltext),
+              epilogue
+            );
+          }
+        }
+      });
+    }
+    else if($('body.blacklight-catalog-show').length) {
+
+      var fulltext = $(".fulltext-header");
+      if(fulltext.length) {
+
+        var openUrl = $(".Z3988").attr("title"),
+            spinProperties = {length: 4, width: 3, radius: 5, top: 0},
+            showBookLoan = openUrl.indexOf("alis_id") > -1,
+            count = showBookLoan ? 2 : 1,
+            epilogue =
+              function() {
+                count--;
+                if(count == 0) {
+                  fulltext.spin(false);
+                  if($(".getit-entry").children().length == 0) {
+                    fulltext.after("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available') %></p></li>");
+                  }
+                }
+              };
+
+        var placeholder = $("<li />");
+        fulltext.after(placeholder);
+        fulltext.spin(spinProperties);
+        addResource(
+          openUrl,
+          "fulltext",
+          partial(layoutShow, placeholder),
+          epilogue
+        );
+
+        if(showBookLoan) {
+
+          var bookPlaceholder = $("<li />", {"class" : "getit-entry loan"});
+          fulltext.after(bookPlaceholder);
+          addResource(
+            openUrl,
+            "loan",
+            partial(layoutShowLoan, bookPlaceholder),
+            epilogue
+          );
+        }
+      }
+    }
+  });
+
+  /*** Getit event source function ***/
+
+  var addResource = function (openUrl, serviceList, layoutFunc, epilogueFunc) {
     var url = [toshokan.getit.url,
                "/resolve?" + openUrl,
-               "&rft_dat=" + customData,
                "&req_id=" + userType,
-               "&svc_dat=" + service_list].join("");
+               "&svc_dat=" + serviceList].join("");
 
     var source = new EventSource(url);
     var count = 0;
+
     source.onmessage = function (event) {
-      layout_func(JSON.parse(event.data), count);
+      layoutFunc(JSON.parse(event.data), count);
       count++;
-      if(count == 1) {
-        stop_spinner_func.call();
-      }
     }
+
     source.onerror = function(event) {
       stop();
     }
+
     source.addEventListener("close", function(event) {
       stop();
     }, false);
 
     function stop() {
-      if(count == 0) {
-        layout_func(null);
-      }
-      stop_spinner_func.call();
+      epilogueFunc.call();
       source.close();
     }
-
-    return this;
   };
 
-  $(function () {
-    if($('body.blacklight-catalog-index').length) {
+  /*** Layout functions ***/
 
-      $('.document').each(function() {
-        var openUrl = $(this).find(".Z3988").attr("title");
-        var id = $(this).attr("id");
-        var fulltext = $(this).find('.getit-item');
+  var layoutIndex = function (elm, data) {
+    if(data != null) {
 
-        if(fulltext.length) {
-          var spinner = $("<li />");
-          fulltext.before(spinner.spin());
-          spinner.spin({length: 3, width: 2, radius: 4, left: 5, top: -12 });
-          fulltext.addResource(openUrl, id, "fulltext_info", partial(layout_index, fulltext),
-            function() { spinner.spin(false); spinner.remove(); });
-        }
+      var item = $("<li />", {
+        "class"          : "getit-entry",
+        text             : data.list_text,
+        "title"          : data.tool_tip,
+        "data-toggle"    : "tooltip",
+        "data-placement" : "bottom"
       });
+      if(data.tool_tip) {
+        $(item).tooltip();
+      }
+      $(item).prepend("<i class='" + data.icon + "'></i>");
+      elm.append(item);
     }
-    else if($('body.blacklight-catalog-show').length) {
-      var openUrl = $(".Z3988").attr("title");
-      var id = $("input[name=id]").val();
-      var fulltext = $(".fulltext-header");
+  };
 
-      if(fulltext.length) {
-        fulltext.spin({length: 4, width: 3, radius: 5, top: 0});
+  var layoutIndexLoan = function (elm, data) {
+    if(data != null) {
 
-        fulltext.addResource(openUrl, id, "fulltext", partial(layout_show, fulltext),
-          function() { fulltext.spin(false); });
+      item_text = data.summary.text_long != null ? data.summary.text_long : data.summary.text;
+
+      var item = $("<li />", {
+        "class"          : "getit-entry",
+        text             : item_text,
+        "data-toggle"    : "tooltip",
+        "data-placement" : "bottom"
+      });
+      $(item).prepend("<i class='icon-books'></i>");
+      elm.append(item);
+    }
+  };
+
+  var layoutShowLoan = function (elm, data, count) {
+
+    if(data != null) {
+      var template =
+        "{{#location_list}} \
+         <div><ul {{#url}}class='with-link'{{/url}} {{^url}}class='no-link'{{/url}}> \
+           <li><i class='{{icon}} {{icon_color}}'/></li> \
+           <li><small>{{text}}{{#callno}} under <em>{{callno}}</em>{{/callno}}{{#showCount}}{{count}}{{/showCount}}</small></li> \
+           {{#url}}<li class='pull-right'><a class='btn btn-primary btn-small' target='_blank' href='{{url}}'>{{url_text}}</a></li>{{/url}} \
+         </ul></div> \
+         {{/location_list}}";
+
+      if(data.locations) {
+
+        elm.append("<strong><i class='icon-books'></i> <%= I18n.t('toshokan.tools.borrow') %></strong> \
+                    <p><small><%= I18n.t('toshokan.tools.borrow_dtu') %></small></p>");
+
+        for(var k in data.locations) {
+          elm.append ($('<p class="location"><small>' + k + ':</small></p>'));
+          elm.append(
+            Mustache.render(
+              template,
+              { "location_list" : data.locations[k],
+                showCount : function() {return function(count, render) { if(render(count) > 1) { return "(" + render(count) + " available)"; }}}
+              }
+            )
+          );
+        }
       }
     }
-  });
+  }
 
+  var layoutShow = function (elm, data, count) {
 
-  var layout_show = function (elm, data, count) {
-
-    if(data == null) {
-      elm.after($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
-    } else {
+    if(data != null) {
       var action = null;
-      var header_elm = elm;
+      var headerElm = elm;
       var headerSelector;
 
-      if(data.subtype.match(/_scan/)) {
+      if(data.subtype.match(/_scan/) && $(".order-scan").length > 0) {
 
-        if($(".order-scan").length > 0) {
-
-          if(data.subtype == "rd_scan") {
-            action = $("li.order-rd-scan > form");
-          } else {
-            action = $("li.order-dtu-scan > form");
-          }
-
-          $(action).find("button").text(data.button_text);
-          data.lead_text = action.attr("data-price");
-        } else {
-          elm.after($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
-        }
+        action = data.subtype == "rd_scan" ? $("li.order-rd-scan > form") : $("li.order-dtu-scan > form");
+        $(action).find("button").text(data.button_text);
+        data.lead_text = action.attr("data-price");
+        $(action).addClass("getit-entry");
 
       } else if(data.subtype.match(/nal/)) {
 
-        var other_header = elm.parent().find(".other-header")
-        other_header.show();
+        var otherHeader = elm.parent().find(".other-header")
+        otherHeader.show();
         headerSelector = '.other-header';
 
         link = $("<a />", {
@@ -132,7 +240,7 @@
           toshokan.nal.updateMap();
         });
 
-        header_elm = other_header;
+        headerElm = otherHeader;
         data.lead_text = data.button_text;
 
       } else {
@@ -151,27 +259,51 @@
 
         $(action).tooltip();
 
-        var item = $("<li />", { "class" : "fulltext-item"});
-        item.append("<strong><i class='" + data.icon + "'></i>" + data.short_name + "</strong> (" + data.type + ")");
-        item.append("<p><small>" + data.short_explanation + "</small></p>");
-        item.append(
-          $("<div />", {"class" : "fulltext-action"}).append(
-            $("<div />", {"class" : "leadtext"}),
-            $("<div />").append(action)
-          )
-        );
-        lead_text = item.find(".leadtext");
-        if (data.lead_text) {
-          $(lead_text).append($("<div />").append("<strong>" + data.lead_text + "</strong>"));
-        }
-        if (data.explanation) {
-          $(lead_text).append($("<div />").append("<small>" + data.explanation + "</small>"));
-        }
-
+        var template =
+          "<li class='fulltext-item getit-entry'> \
+            <strong><i class='{{icon}}'></i>{{short_name}}</strong> ({{type}}) \
+            <p><small>{{&short_explanation}}</small></p> \
+            {{#holdings_list.length}} \
+              <div class='coverage'> \
+                <p><small><%= I18n.t('toshokan.tools.coverage') %>:</small></p> \
+                {{#holdings_list}} \
+                  {{#embargo.length}} \
+                    <p><small>Last {{#showEmbargo}}{{embargo}}{{/showEmbargo}} not available</small></p> \
+                  {{/embargo.length}} \
+                  {{^embargo}} \
+                    <p><small> \
+                    {{fromyear}}{{#fromvolume}} vol. {{fromvolume}}{{/fromvolume}}{{#fromissue}} iss. {{fromissue}}{{/fromissue}} \
+                    &mdash; \
+                    {{toyear}}{{#tovolume}} vol. {{tovolume}}{{/tovolume}}{{#toissue}} iss. {{toissue}}{{/toissue}} \
+                    </small></p> \
+                  {{/embargo}} \
+                {{/holdings_list}} \
+              </div> \
+            {{/holdings_list.length}} \
+            <div class='fulltext-action'> \
+              <div class='leadtext'> \
+                {{#lead_text}}<div><strong>{{lead_text}}</strong></div>{{/lead_text}} \
+                {{#explanation}}<div><small>{{&explanation}}</small></div>{{/explanation}} \
+              </div> \
+              <div>{{&action}}</div> \
+            </div> \
+          </li>" ;
+        action = $("<span />").append(action);
+        data.action = action.html();
+        data.showEmbargo = function() {
+           return function (embargo, render) {
+              embargo = render(embargo).split(",");
+              if(embargo[1] > 1) {
+                return embargo[1] + " " + embargo[0] + "s";
+              } else {
+                return embargo[0];
+              }
+           };
+        };
         if(data.holdings_list) {
-          holdings_item = format_holdings_list(data.holdings_list);
-          item.find(".fulltext-action").before(holdings_item);
+          data.holdings_list.sort(function(a, b) { return a.fromyear - b.fromyear; }).reverse;
         }
+        var item = Mustache.render(template, data);
 
         if (headerSelector) {
           if ($('#fulltext > ' + headerSelector + ' + .fulltext-item').length > 0) {
@@ -181,7 +313,7 @@
           }
         } else {
           if(count == 0) {
-            header_elm.after(item);
+            headerElm.after(item);
           } else {
             $(".fulltext-item").filter(":last").after(item);
           }
@@ -189,77 +321,4 @@
       }
     }
   };
-
-  function format_holdings_list(holdings_list) {
-
-    holdings_list.sort(function(a, b) { return a.fromyear - b.fromyear; }).reverse;
-    var item = $("<div />", {"class" : "coverage"});
-    item.append("<p><small><%= I18n.t('toshokan.tools.coverage') %>:</small></p>");
-    var embargo = "";
-    for(var i=0; i<holdings_list.length; i++) {
-      h = holdings_list[i];
-
-      if(h.embargo) {
-
-        unit = h.embargo[0];
-        period = h.embargo[1];
-        if(period > 1) {
-          unit = " " + unit + "s";
-        } else {
-          period = "";
-        }
-
-        embargo = "Last " + period + unit + " not available";
-      } else {
-
-        from = "";
-        if(h.fromyear) {
-          from = h.fromyear;
-          if(h.fromvolume) {
-            from += " vol. " + h.fromvolume;
-          }
-          if(h.fromissue) {
-            from += " iss. " + h.fromissue;
-          }
-        }
-        to = "";
-        if(h.toyear) {
-          to = h.toyear;
-          if(h.tovolume) {
-            to += " vol. " + h.tovolume;
-          }
-          if(h.toissue) {
-            to += " iss. " + h.toissue;
-          }
-        }
-        item.append("<p><small>" + from + " &mdash; " + to + "</small></p>");
-      }
-    }
-    if(embargo != "") {
-      item.append("<p><small>" + embargo + "</small></p>");
-    }
-
-    return item;
-  }
-
-  var layout_index = function (elm, data) {
-    if(data == null) {
-      elm.before($("<li />").html("<%= I18n.t('toshokan.tools.not_available') %>"));
-      elm.hide();
-    } else {
-
-      var item = $("<li />", {
-        text             : data.list_text,
-        "title"          : data.tool_tip,
-        "data-toggle"    : "tooltip",
-        "data-placement" : "bottom"
-      });
-      if(data.tool_tip) {
-        $(item).tooltip();
-      }
-      $(item).prepend("<i class='" + data.icon + "'></i>");
-      elm.before(item);
-    }
-  };
-
 })(jQuery);

@@ -40,19 +40,19 @@
                           <%= t "toshokan.orders.facets.#{type}.values.#{term}", :default => term %>
                         <% end %>
                       </span>
-                      <%= link_to '<i class="icon-remove"></i>'.html_safe, 
-                                  orders_path(params.except(:page).merge({ type => @filter_queries[type].reject {|e| e == term}})), 
-                                  :title => 'Remove filter' %> 
+                      <%= link_to '<i class="icon-times"></i>'.html_safe,
+                                  orders_path(params.except(:page).merge({ type => @filter_queries[type].reject {|e| e == term}})),
+                                  :title => 'Remove filter' %>
                       <span class="count"><%= number_with_delimiter count %></span>
                     </li>
                   <% else %>
                     <li>
                       <% if @facet_labels[type].try :[], term %>
-                        <%= link_to @facet_labels[type][term], 
+                        <%= link_to @facet_labels[type][term],
                                     orders_path(params.except(:page).merge({ type => ((@filter_queries[type] || []) + [term]) })),
                                     :class => 'facet_select', :title => 'Add filter' %>
                       <% else %>
-                        <%= link_to t("toshokan.orders.facets.#{type}.values.#{term}", :default => term), 
+                        <%= link_to t("toshokan.orders.facets.#{type}.values.#{term}", :default => term),
                                     orders_path(params.except(:page).merge({ type => ((@filter_queries[type] || []) + [term]) })),
                                     :class => 'facet_select', :title => 'Add filter' %>
                       <% end %>

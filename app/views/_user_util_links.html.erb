@@ -25,12 +25,12 @@
           </div>
         </div>
       </div>
-    <% end %>    
+    <% end %>
   <% end %>
   <% if current_user.authenticated? || current_user.impersonating? %>
     <div class="dropdown" id="header-menu">
       <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="#">
-        <i class="icon-cog"></i>
+        <i class="icon-gear"></i>
         <% if current_user.impersonating? %>
           <span id="original-user"><%= original_user %> <%= t('toshokan.header_links.acting_as') %></span>
         <% end %>
@@ -47,7 +47,7 @@
         <% if can? :view, :search_history %>
           <li>
             <%= link_to search_history_path do %>
-              <i class='icon-time'></i> <%= t('toshokan.mylibrary.menu.search_history') %>
+              <i class='icon-clock-o'></i> <%= t('toshokan.mylibrary.menu.search_history') %>
             <% end %>
           </li>
         <% end %>
@@ -89,14 +89,14 @@
         <% if can? :view, Order %>
           <li>
             <%= link_to orders_path do %>
-              <i class="icon-time"></i> <%= t 'toshokan.header_links.orders' %>
+              <i class="icon-shopping-cart"></i> <%= t 'toshokan.header_links.orders' %>
             <% end %>
           </li>
         <% end %>
         <% if can? :logout, User %>
           <li>
             <%= link_to destroy_user_session_path(:return_url => root_path) do %>
-              <i class='icon-signout'></i> <%= t('toshokan.header_links.logout') %>
+              <i class='icon-sign-out'></i> <%= t('toshokan.header_links.logout') %>
             <% end %>
           </li>
         <% end %>

@@ -19,12 +19,14 @@ dd.fulltext-options {
     padding-left: 0px;
     margin-right: 10px;
   }
-  .getit-item {
+  .getit {
     margin-right: 65px;
   }
 }
 
 #fulltext {
+  padding-bottom: 10px;
+
   .fulltext-item {
     line-height: 15px;
     margin: 10px 0 25px;
@@ -65,5 +67,47 @@ dd.fulltext-options {
       }
       margin-bottom: 10px;
     }
+  }
+}
+
+.loan {
+
+  :after{
+    clear: both;
+    content: "";
+    display: block;
+  }
+
+  p {
+    margin: 0px;
+    clear: both;
+  }
+  ul {
+      margin: 0px;
+      clear: both;
+      list-style-type: none;
+  }
+  li {
+    float: left;
+  }
+  .no-link > li {
+    &:first-of-type {
+      width: 16px;
+    }
+    &:last-of-type {
+      width: 222px;
+    }
+  }
+  .with-link > li {
+    width: 161px;
+    &:first-of-type {
+      width: 16px;
+    }
+    &:last-of-type {
+      width: 61px;
+    }
+  }
+  .location {
+    margin-top: 5px;
   }
 }

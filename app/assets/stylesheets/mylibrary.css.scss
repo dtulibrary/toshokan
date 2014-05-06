@@ -1,12 +1,12 @@
 
 .mylibrary {
-  
+
   .table {
     td, tr {
       .action {
         text-align: center;
       }
-      .icon-remove {
+      .icon-times {
         color: $dtu_red;
       }
     }
@@ -16,9 +16,9 @@
 
     margin: 20px 0;
 
-    .nav { 
+    .nav {
       li + li:before{
-        content: " | ";        
+        content: " | ";
         margin: 0 10px;
       }
       li {

@@ -123,6 +123,8 @@ en:
       coverage: "Coverage"
       mendeley: "Save to Mendeley"
       not_available: "Not available"
+      borrow: "Borrow"
+      borrow_dtu: "Borrow from DTU print collection"
       nal:
         title: 'On-site use at other libraries'
         map: 'Map'

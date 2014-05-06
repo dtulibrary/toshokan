@@ -26,20 +26,21 @@ describe "SolrDocument" do
 
   let(:book) do
     SolrDocument.new({
-      'publisher_ts'=>['Polyteknisk Forlag'],
-      'title_ts'=>['Kemiske enhedsoperationer'],
-      'format'=>'book',
-      'alis_key_ssf'=>['000461671'],
-      'pub_date_tis'=>[2004],
-      'journal_page_ssf'=>['597 sider'],
-      'isbn_ss'=>['8750209418',
-        '9788750209416'],
-      'keywords_ts'=>['kemiske enhedsoperationer.',
-        'lærebøger.'],
-      'keywords_facet'=>['kemiske enhedsoperationer.',
-        'lærebøger.'],
-      'author_ts'=>['Clement, Karsten H.,, et al.'],
-      'author_facet'=>['Clement, Karsten H.,, et al.']
+      "publisher_ts" => ["Polyteknisk Forlag"],
+      "member_id_ss" => ["316397882"],
+      "title_ts" => ["Kemiske enhedsoperationer"],
+      "source_ss" => ["alis"],
+      "format" => "book",
+      "pub_date_tis" => [2004],
+      "journal_page_ssf" => ["597 sider"],
+      "keywords_ts" => ["kemiske enhedsoperationer.", "lærebøger."],
+      "keywords_facet" => ["kemiske enhedsoperationer.", "lærebøger."],
+      "isbn_ss" => ["8750209418", "9788750209416"],
+      "cluster_id_ss" => ["191135307"],
+      "source_id_ss" => ["alis:000461671"],
+      "author_ts" => ["Clement, Karsten H.,, et al."],
+      "author_facet" => ["Clement, Karsten H.,, et al."],
+      "source_type_ss" => ["other"]
     })
   end
 
@@ -104,6 +105,7 @@ describe "SolrDocument" do
       openurl.referent.identifiers.should include "urn:isbn:8750209418"
       openurl.referent.identifiers.should include "urn:isbn:9788750209416"
       openurl.referent.metadata["au"].should eq "Clement, Karsten H.,, et al."
+      openurl.referent.private_data.should eq '{"id":"191135307","alis_id":"000461671"}'
     end
   end
 

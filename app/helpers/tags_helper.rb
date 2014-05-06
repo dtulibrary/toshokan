@@ -97,7 +97,7 @@ module TagsHelper
     content_tag(:span,
                 tag_display(tag_name, options),
                 :class => "selected") +
-      link_to(content_tag(:i, '', :class => "icon-remove") +
+      link_to(content_tag(:i, '', :class => "icon-times") +
                 content_tag(:span, '[remove]', :class => 'hide-text'),
               remove_tag_params(tag_name, params),
               :class=>"remove")

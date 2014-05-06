@@ -39,3 +39,6 @@
 
 // Polyfill for HTML5 placeholders
 //= require Placeholders.min.js
+
+// Mustache templating
+//=require jquery.mustache.js

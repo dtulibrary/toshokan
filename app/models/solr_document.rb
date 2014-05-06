@@ -171,6 +171,18 @@ class SolrDocument
     format = "journal" if format == "article"
     @context_object.referent.set_format(format)
     @context_object.referent.set_metadata('genre', genre)
+
+    custom_data = {:id => self.id}
+    if show_feature?(:alis) && self[:source_ss] && self[:source_ss].include?("alis")
+      self[:source_id_ss].each do |source_id|
+        if m = /alis:(\d*)/.match(source_id)
+          custom_data[:alis_id] = m[1]
+          break
+        end
+      end
+    end
+    @context_object.referent.set_private_data(custom_data.to_json)
+
     self.to_semantic_values.each do |field, value|
       case field
       when :title

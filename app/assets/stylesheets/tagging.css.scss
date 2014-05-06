@@ -37,14 +37,14 @@
     color: $dtu_blue;
   }
 
-  .icon-star-empty {
+  .icon-star-o {
     color: $dtu_grey;
   }
 }
 
 .document .tags .tag {
   background-color: $dtu_blue;
-  .icon-remove {
+  .icon-times {
     color: #ffffff;
   }
 }
@@ -55,7 +55,7 @@
   a.remove-tag {
     color: $dtu-blue;
     font-weight: bold;
-    .icon-remove {
+    .icon-times {
       color: $dtu-blue;
     }
   }

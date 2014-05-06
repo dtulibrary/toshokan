@@ -9,9 +9,9 @@
           url: link.attr('href'),
           type: "PUT"
         }).done(function(data){
-          link.disableSearchSummaryAction(doneText);      
+          link.disableSearchSummaryAction(doneText);
           link.siblings().first().removeClass(beforeIcon).addClass(afterIcon);
-        }).fail(function(evt, xhr, status, error){ 
+        }).fail(function(evt, xhr, status, error){
           addErrorFlashMessage(xhr.responseText);
         });
         return false;
@@ -25,14 +25,14 @@
       $(this).click(function(event) {
         event.preventDefault();
         return false;
-      });   
+      });
       return this;
     }
 
-    $('#search-summary-save').searchSummaryActions("<%=I18n.t('toshokan.mylibrary.saved')%>", 
-      "icon-star-empty", "icon-star");
-    $('#search-summary-alert').searchSummaryActions("<%=I18n.t('toshokan.mylibrary.alerted')%>", 
-      "icon-bell", "icon-bell-alt");
+    $('#search-summary-save').searchSummaryActions("<%=I18n.t('toshokan.mylibrary.saved')%>",
+      "icon-star-o", "icon-star");
+    $('#search-summary-alert').searchSummaryActions("<%=I18n.t('toshokan.mylibrary.alerted')%>",
+      "icon-bell", "icon-bell-o");
 
   });
 })(jQuery);

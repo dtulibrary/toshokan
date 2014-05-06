@@ -12,7 +12,7 @@
   <% (tags).each do |tag| %>
     <li class="tag">
     <% if bookmark && bookmark.tags.include?(tag) %>
-      <%= link_to (tag.name + ' ' + content_tag(:i, '', :class=>'icon-remove')).html_safe,
+      <%= link_to (tag.name + ' ' + content_tag(:i, '', :class=>'icon-times')).html_safe,
                   {:controller => 'tags', :action => 'destroy', :id => tag.id,
                    :document_id => document_id, :return_url => return_url},
                   :class => 'remove-tag', :method => :delete, :remote => remote, :title => "#{t('toshokan.tags.remove')} #{tag.name}" %>
