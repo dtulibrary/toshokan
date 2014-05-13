@@ -5,11 +5,11 @@ FeatureFlipper.features do
   end
 
   in_state :unstable do
-    feature :alis, :description => "Show loan info from Alis"
   end
 
   in_state :staging do
     feature :nal_map, :description => "Show Google Maps for NAL"
+    feature :alis, :description => "Show loan info from Alis"
   end
 
   in_state :live do
