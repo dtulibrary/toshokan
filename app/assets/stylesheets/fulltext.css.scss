@@ -72,7 +72,7 @@ dd.fulltext-options {
 
 .loan {
 
-  :after{
+  &:after{
     clear: both;
     content: "";
     display: block;
@@ -99,9 +99,12 @@ dd.fulltext-options {
     }
   }
   .with-link > li {
-    width: 161px;
     &:first-of-type {
       width: 16px;
+    }
+    &:nth-of-type(2) {
+      width: 159px;
+      margin-right: 2px;
     }
     &:last-of-type {
       width: 61px;

@@ -29,6 +29,8 @@
           <%= render_document_partial @document, :show %>
         </div>
         <%= render 'nal_modal' %>
+        <%= render 'dtu_location_modal' %>
+
         <%= render :partial => 'tags', :locals => { :document => @document} %>
       </div>
 

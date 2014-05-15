@@ -60,3 +60,17 @@
     }
   }
 }
+
+#dtu-locations-modal {
+  .modal-header {
+    :after{
+      clear: both;
+      content: "";
+      display: block;
+    }
+  }
+
+  #dtu-map {
+    height: 400px;
+  }
+}

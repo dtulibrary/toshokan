@@ -25,7 +25,7 @@
                 };
 
           fulltext.prepend(spinner.spin());
-          spinner.spin({ length: 3, width: 2, radius: 4, left: 5, top: -12 });
+          spinner.spin({ length: 3, width: 2, radius: 4, left: -2, top: -14 });
 
           addResource(
             openUrl,
@@ -60,10 +60,14 @@
                 if(count == 0) {
                   fulltext.spin(false);
                   if($(".getit-entry").children().length == 0) {
-                    fulltext.after("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available') %></p></li>");
+                    if(showBookLoan) {
+                      fulltext.after("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available_alis') %></p></li>");
+                    } else {
+                      fulltext.after("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available') %></p></li>");
+                    }
                   }
                 }
-              };
+              }
 
         var placeholder = $("<li />");
         fulltext.after(placeholder);
@@ -163,7 +167,7 @@
         "{{#location_list}} \
          <div><ul {{#url}}class='with-link'{{/url}} {{^url}}class='no-link'{{/url}}> \
            <li><i class='{{icon}} {{icon_color}}'/></li> \
-           <li><small>{{text}}{{#callno}} under <em>{{callno}}</em>{{/callno}}{{#showCount}}{{count}}{{/showCount}}</small></li> \
+           <li><small>{{text}}{{#callno}} under <em>{{callno}}</em>{{/callno}} {{#showCount}}{{count}}{{/showCount}}</small></li> \
            {{#url}}<li class='pull-right'><a class='btn btn-primary btn-small' target='_blank' href='{{url}}'>{{url_text}}</a></li>{{/url}} \
          </ul></div> \
          {{/location_list}}";
@@ -174,12 +178,12 @@
                     <p><small><%= I18n.t('toshokan.tools.borrow_dtu') %></small></p>");
 
         for(var k in data.locations) {
-          elm.append ($('<p class="location"><small>' + k + ':</small></p>'));
+          elm.append ($('<p class="location"><small><i class="icon-map-marker dtu-red"></i> <a href="#dtu-locations-modal" data-toggle="modal" id="location-link">' + k + ' </small></p>'));
           elm.append(
             Mustache.render(
               template,
               { "location_list" : data.locations[k],
-                showCount : function() {return function(count, render) { if(render(count) > 1) { return "(" + render(count) + " available)"; }}}
+                showCount : function() {return function(count, render) { if(render(count) > 1) { return "(" + render(count) + " at home)"; }}}
               }
             )
           );

@@ -1,0 +1,55 @@
+(function ($) {
+  $(function () {
+
+    $('#dtu-map').each(function () {
+
+      var mapInfo = toshokan.libraries.dtu.branches[0];
+      var latlng = new google.maps.LatLng(mapInfo.googleMapsInfo.lat, mapInfo.googleMapsInfo.long);
+
+      var map = new google.maps.Map(this, {
+        zoom : 12,
+        center : latlng
+      });
+
+      $('#dtu-locations-modal').on('shown', function (e) {
+
+        if($("#location-link").text().trim() == "DTU Ballerup") {
+          mapInfo = toshokan.libraries.dtu.branches[1];
+          latlng = new google.maps.LatLng(mapInfo.googleMapsInfo.lat, mapInfo.googleMapsInfo.long);
+        }
+
+        var marker = new google.maps.Marker({
+            position: latlng,
+            map: map
+        });
+
+        mapInfo.libraryName = toshokan.libraries.dtu.displayName.en;
+        mapInfo.travelPlanLink =
+          "http://www.rejseplanen.dk/bin/query.exe/mn?ZADR=1&Z=" +
+          encodeURIComponent(mapInfo.travelPlanInfo.street + ', ' + mapInfo.travelPlanInfo.city);
+
+        var template =
+          "<div> \
+            <h4>{{libraryName}}</h4> \
+            <h5>{{displayName.en}}</h5> \
+            <a target='_blank' href='{{openingHoursInfo.url}}'><%= I18n.t 'toshokan.tools.nal.opening_hours' %></a> | \
+            <a target='_blank' href='{{travelPlanLink}}'><%= I18n.t 'toshokan.tools.nal.travel_directions' %></a> \
+            <p>{{displayAddress.address1}}<br>{{#displayAddress.address2}}{{displayAddress.address2}}<br>{{/displayAddress.address2}} \
+            {{displayAddress.zip}} {{displayAddress.city}}</p> \
+          </div>";
+
+        var infoWindow = new google.maps.InfoWindow({
+          content: Mustache.render(template, mapInfo)
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infoWindow.open(map,marker);
+        });
+
+        google.maps.event.trigger(map, 'resize');
+        infoWindow.open(map,marker);
+        map.setCenter(latlng);
+      });
+    });
+  });
+})(jQuery);
