@@ -126,6 +126,7 @@ en:
       not_available_alis: "Please contact <a href='http://www.dtic.dtu.dk/Service/Kontakt' target='_blank'>the library service</a> or search <a href='http://www.dtic.dtu.dk/printed' target='_blank'>printed collections</a>"
       borrow: "Borrow"
       borrow_dtu: "Borrow from DTU print collection"
+      copies: "copies"
       nal:
         title: 'On-site use at other libraries'
         map: 'Map'

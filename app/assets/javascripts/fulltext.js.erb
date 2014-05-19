@@ -183,7 +183,7 @@
             Mustache.render(
               template,
               { "location_list" : data.locations[k],
-                showCount : function() {return function(count, render) { if(render(count) > 1) { return "(" + render(count) + " at home)"; }}}
+                showCount : function() {return function(count, render) { if(render(count) > 1) { return "(" + render(count) + " <%= I18n.t 'toshokan.tools.copies' %>)"; }}}
               }
             )
           );
