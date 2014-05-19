@@ -90,23 +90,23 @@ dd.fulltext-options {
   li {
     float: left;
   }
-  .no-link > li {
-    &:first-of-type {
+  .no-link  {
+    li:first-child {
       width: 16px;
     }
-    &:last-of-type {
+    li:first-child + li {
       width: 222px;
     }
   }
-  .with-link > li {
-    &:first-of-type {
+  .with-link {
+    li:first-child {
       width: 16px;
     }
-    &:nth-of-type(2) {
+    li:first-child + li {
       width: 159px;
       margin-right: 2px;
     }
-    &:last-of-type {
+    li:first-child + li + li {
       width: 61px;
     }
   }
