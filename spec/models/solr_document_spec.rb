@@ -107,6 +107,41 @@ describe "SolrDocument" do
       openurl.referent.metadata["au"].should eq "Clement, Karsten H.,, et al."
       openurl.referent.private_data.should eq '{"id":"191135307","alis_id":"000461671"}'
     end
+
+    it "sets the start or end pages even when pages element is not well formed" do
+      openurl = OpenURL::ContextObject.new_from_kev(
+        SolrDocument.new({
+          'title_ts'=>['STREAMLINE CURVATURE COMPUTING PROCEDURES FOR FLUID-FLOW PROBLEMS'],
+          'journal_issue_ssf'=>['4'],
+          'issn_ss'=>['00220825', '2161945x'],
+          'source_id_ss'=>['isi:A1967A075300004'],
+          'journal_vol_ssf'=>['89'],
+          'journal_title_ts'=>['JOURNAL OF ENGINEERING FOR POWER'],
+          'format'=>'article',
+          'language_ss'=>['English'],
+          'pub_date_tis'=>[1967],
+          'journal_page_ssf'=>['478-&'],
+          'cluster_id_ss'=>['152427633'],
+          'author_ts'=>['Novak, RA']
+        }).export_as_openurl_ctx_kev)
+      openurl.referent.metadata["spage"].should eq "478"
+      openurl.referent.metadata["epage"].should be_nil
+
+      openurl = OpenURL::ContextObject.new_from_kev(
+        SolrDocument.new({
+          'title_ts'=>['PEDESTRIAN FLOW CHARACTERISTICS'],
+          'journal_issue_ssf'=>['9'],
+          'issn_ss'=>['00410675'],
+          'journal_vol_ssf'=>['39'],
+          'journal_title_ts'=>['Traffic Eng'],
+          'format'=>'article',
+          'pub_date_tis'=>[1969],
+          'journal_page_ssf'=>['30-3, 36'],
+          'author_ts'=>['NAVIN FPD', 'WHEELER RJ']
+        }).export_as_openurl_ctx_kev)
+      openurl.referent.metadata["spage"].should eq "30"
+      openurl.referent.metadata["epage"].should be_nil
+    end
   end
 
   describe ".create_from_openURL" do

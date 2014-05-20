@@ -204,9 +204,9 @@ class SolrDocument
       when :publisher
         @context_object.referent.set_metadata("pub", value.first)
       when :pages
-        if value.first.to_s =~ /^\s*(\d+)\s*-+\s*(\d+)\s*$/
-          @context_object.referent.set_metadata("spage", "#{$1}")
-          @context_object.referent.set_metadata("epage", "#{$2}")
+        if m = /^\s*(\S+)\s*-+\s*(\S+)\s*.*$/.match(value.first.to_s)
+          @context_object.referent.set_metadata("spage", "#{m[1]}") if m[1] =~ /^\d+$/
+          @context_object.referent.set_metadata("epage", "#{m[2]}") if m[2] =~ /^\d+$/
         end
       when :year
         @context_object.referent.set_metadata("date", value.first.to_s)
