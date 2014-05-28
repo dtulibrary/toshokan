@@ -1,7 +1,9 @@
 require 'library_support'
 
-class AssistanceRequestsController < ApplicationController
-  
+class AssistanceRequestsController < CatalogController
+
+  include ResolverHelper
+
   def index
     if can? :request, :assistance
       if can? :view, :all_assistance_requests
@@ -19,7 +21,7 @@ class AssistanceRequestsController < ApplicationController
   def new
     if can? :request, :assistance
       @genre = genre_from params
-      
+
       if @genre
         @assistance_request = assistance_request_from(params) || assistance_request_for(@genre)
         head :bad_argument and return unless @assistance_request
@@ -34,7 +36,7 @@ class AssistanceRequestsController < ApplicationController
   def create
     if can? :request, :assistance
       genre = genre_from params
-      
+
       if genre
         assistance_request = assistance_request_from params
 
@@ -63,11 +65,35 @@ class AssistanceRequestsController < ApplicationController
           else
             @genre = genre
             @assistance_request = assistance_request
-            
-            unless assistance_request.valid?
-              flash.now[:error] = 'One or more required fields are empty'
-              params.delete :button
-              render :new
+
+            if show_feature?(:cff_resolver)
+              if assistance_request.valid?
+                Rails.logger.info "CFF request"
+                if params[:resolved]
+                  Rails.logger.info "CFF ignored resolver results"
+                else
+                  # make resolver lookup
+                  openurl = assistance_request.openurl
+                  (count, response, document) = get_resolver_result(openurl.to_hash)
+                  Rails.logger.info "CFF #{count} resolver results"
+                  if count > 0
+                    # redirect to resolver controller with assistance request params
+                    openurl_str = openurl.kev
+                    openurl_str.slice!(/&ctx_tim=[^&]*/)
+                    redirect_to resolve_path + "?#{openurl_str}&#{{'assistance_request' => params['assistance_request']}.to_query}&assistance_genre=#{params["genre"]}" and return
+                  end
+                end
+              else
+                flash.now[:error] = 'One or more required fields are empty'
+                params.delete :button
+                render :new
+              end
+            else
+              unless assistance_request.valid?
+                flash.now[:error] = 'One or more required fields are empty'
+                params.delete :button
+                render :new
+              end
             end
           end
         else
@@ -93,7 +119,7 @@ class AssistanceRequestsController < ApplicationController
     end
   end
 
-  def genre_from params 
+  def genre_from params
     params[:genre].to_sym if params[:genre]
   end
 

@@ -15,6 +15,22 @@ FactoryGirl.define do
     initialize_with { attributes }
   end
 
+  factory :journal_article_from_index_assistance_request, class: JournalArticleAssistanceRequest do
+    article_title  'Using an Ontology to Help Reason about the Information Content of Data'
+    journal_title  'Journal of Software Engineering and Applications'
+    journal_volume '03'
+    journal_issue  '07'
+    journal_year   '2010'
+    journal_pages  '629-643'
+  end
+
+  factory :journal_article_from_index_assistance_request_form_post, :class => Hash do
+    assistance_request { attributes_for :journal_article_from_index_assistance_request }
+    genre :journal_article
+
+    initialize_with { attributes }
+  end
+
   factory :conference_article_assistance_request do
     article_title     'How to increase your testability'
     conference_title  'Annual Conference on Testing Methods'

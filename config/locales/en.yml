@@ -362,3 +362,6 @@ en:
           title: About and Contact
     pages:
       searchbox: articles, journals, books and e-books
+    assistance_resolver:
+      question: Was this what you were looking for?
+      answer: No, please send my request

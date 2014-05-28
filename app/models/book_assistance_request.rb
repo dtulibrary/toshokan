@@ -13,4 +13,9 @@ class BookAssistanceRequest < AssistanceRequest
   def author
     book_author
   end
+
+  def openurl
+    generate_openurl(['book'], 'book', 'book')
+  end
+
 end

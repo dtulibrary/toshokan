@@ -11,3 +11,17 @@
     margin-bottom: 2em;
   }
 }
+
+.assistance-resolver-info {
+  text-align: center;
+
+  .close {
+    display: block;
+  }
+  .btn {
+    margin-left: 15px;
+  }
+  form {
+    margin: 0;
+  }
+}

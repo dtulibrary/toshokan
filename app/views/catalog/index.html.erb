@@ -18,7 +18,7 @@
 
       <%= render 'sort_and_per_page' %>
 
-            <%= render :partial => 'did_you_mean' %>
+      <%= render :partial => 'did_you_mean' %>
 
       <% if @document_list.empty? %>
         <% if any_tag_in_params? %>
@@ -28,6 +28,11 @@
         <% end %>
       <% else %>
         <h2 class="hide-text"><%= t('blacklight.search.search_results') %></h2>
+
+        <% if params[:assistance_request] %>
+          <%= render 'assistance_resolver' %>
+        <% end %>
+
         <%= render_document_index %>
       <% end %>
 

@@ -5,6 +5,7 @@ FeatureFlipper.features do
   end
 
   in_state :unstable do
+    feature :cff_resolver, :description => "Use OpenURL resolver in CFFs"
   end
 
   in_state :staging do

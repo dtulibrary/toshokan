@@ -1,0 +1,11 @@
+<div class="alert alert-info assistance-resolver-info">
+  <%= form_tag assistance_requests_path(:genre => params[:assistance_genre]) do %>
+    <%= t('toshokan.assistance_resolver.question')%>
+    <%= button_tag t('toshokan.assistance_resolver.answer'), :class => 'btn btn-primary', :value => 'create' %>
+    <a class="close" data-dismiss="alert" href="#">&times;</a>
+    <%= hidden_field_tag(:resolved, true) %>
+    <% params[:assistance_request].keys.each do |p| %>
+      <%= hidden_field_tag("assistance_request[#{p}]", params[:assistance_request][p]) %>
+    <% end %>
+  <% end %>
+</div>

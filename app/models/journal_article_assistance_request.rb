@@ -12,4 +12,9 @@ class JournalArticleAssistanceRequest < AssistanceRequest
   def author
     article_author
   end
+
+  def openurl
+    generate_openurl(['article', 'journal'], 'journal', 'article')
+  end
+
 end

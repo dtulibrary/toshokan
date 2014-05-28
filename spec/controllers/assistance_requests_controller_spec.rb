@@ -7,7 +7,7 @@ describe AssistanceRequestsController do
     controller.stub(:current_ability).and_return @ability
   end
 
-  describe '#index' do 
+  describe '#index' do
     before do
       other_user = FactoryGirl.create :dtu_employee, :identifier => '4321'
       @request1 = FactoryGirl.create :journal_article_assistance_request, :user => @user
@@ -44,7 +44,7 @@ describe AssistanceRequestsController do
           get :index
           assigns[:assistance_requests].should == @request1
         end
-        
+
         it 'renders the "index" template' do
           get :index
           should render_template :index
@@ -138,10 +138,39 @@ describe AssistanceRequestsController do
             assigns[:assistance_request].should_not be_nil
           end
 
-          it 'renders the "create" template' do
-            post :create, FactoryGirl.build(:journal_article_assistance_request_form_post, :button => 'create')
-            should render_template :create
+          if show_feature?(:cff_resolver)
+            context 'when resolving' do
+              context 'to 0 results' do
+                it 'renders the "create" template' do
+                  post :create, FactoryGirl.build(:journal_article_assistance_request_form_post, :button => 'create')
+                  should render_template :create
+                end
+              end
+              context 'to 1 or more results' do
+                it 'redirects to the resolver' do
+                  assistance_request_form = FactoryGirl.build(:journal_article_from_index_assistance_request_form_post, :button => 'create')
+                  post :create, assistance_request_form
+                  openurl_str = JournalArticleAssistanceRequest.new(assistance_request_form[:assistance_request]).openurl.kev
+                  openurl_str.slice!(/&ctx_tim=[^&]*/)
+                  redirect_url = "#{resolve_path}?#{openurl_str}&#{assistance_request_form.delete_if{|k,v| [:button, :genre].include?(k)}.to_query}&assistance_genre=journal_article"
+                  should redirect_to redirect_url
+                end
+              end
+            end
+
+            context 'when it already has been resolved' do
+              it 'renders the "create" template' do
+                post :create, FactoryGirl.build(:journal_article_from_index_assistance_request_form_post, :button => 'create', :resolved => true)
+                should render_template :create
+              end
+            end
+          else
+            it 'renders the "create" template' do
+              post :create, FactoryGirl.build(:journal_article_assistance_request_form_post, :button => 'create')
+              should render_template :create
+            end
           end
+
         end
 
         context 'with missing or invalid button parameter' do
@@ -152,7 +181,7 @@ describe AssistanceRequestsController do
         end
 
       end
-      
+
       context 'when missing required parameters' do
       end
 
@@ -210,7 +239,7 @@ describe AssistanceRequestsController do
 
       context 'with missing or invalid id parameter' do
         it 'returns an HTTP 404' do
-          get :show, :id => 'non-existing' 
+          get :show, :id => 'non-existing'
           response.response_code.should == 404
         end
       end
@@ -218,15 +247,15 @@ describe AssistanceRequestsController do
 
     context 'when user cannot request assistance' do
       it 'returns an HTTP 404' do
-        get :show, :id => @assistance_request.id 
+        get :show, :id => @assistance_request.id
         response.response_code.should == 404
       end
     end
   end
 end
 
-def form_posts 
-  { 
+def form_posts
+  {
     'journal article' => :journal_article_assistance_request_form_post,
     'conference article' => :conference_article_assistance_request_form_post,
     'book' => :book_assistance_request_form_post

@@ -15,6 +15,7 @@ class ResolverController < CatalogController
         val.map! {|v| URI.unescape(v.to_s) }
       end
     end
+   openurl_params.delete_if{|k,v| k.start_with?("assistance") }
 
     if(msg = redirect_to_sfx(openurl_params))
 
@@ -55,11 +56,17 @@ class ResolverController < CatalogController
         when 1
           # One record is found from the reference
           log_resolver_request("Found record #{@document.id}", openurl_params, request)
-          redirect_to catalog_path id: @document.id and return
+          catalog_params = {}
+          catalog_params[:id] = @document.id
+          catalog_params[:assistance_request] = params["assistance_request"] if params.has_key?("assistance_request")
+          catalog_params[:assistance_genre] = params["assistance_genre"] if params.has_key?("assistance_genre")
+          redirect_to catalog_path catalog_params and return
         else
           # More records are found from the reference
           catalog_params = solr_params_to_blacklight_query(@response['responseHeader']['params'])
           catalog_params[:from_resolver] = true
+          catalog_params[:assistance_request] = params["assistance_request"] if params.has_key?("assistance_request")
+          catalog_params[:assistance_genre] = params["assistance_genre"] if params.has_key?("assistance_genre")
           log_resolver_request("Found search result #{catalog_params} with #{@response['response']['numFound']} results", openurl_params, request)
           redirect_to catalog_index_path catalog_params and return
         end

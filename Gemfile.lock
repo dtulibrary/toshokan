@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: git://github.com/dtulibrary/findit_font.git
-  revision: ef3a6b3e54fdc97ac66be21f58916e1b9eef7bce
+  revision: 0a8224e2c3df33eaeba1cfe66d25e3bb4040aaa1
   specs:
     findit_font (0.0.1)
       railties (>= 3.2)
