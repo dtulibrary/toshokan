@@ -21,16 +21,22 @@ class Redmine
     end
   end
 
+  def logger
+    Rails.logger
+  end
+
   def send_create_request path, body
     request = body.merge :key => @api_key
 
     url = "#{@url}/#{path}.json"
 
+    logger.info "Sending create request to redmine at #{@url}:\n#{request.to_json}"
+
     response = HTTParty.post url, {
       :headers => {
         'Content-Type' => 'application/json'
       },
-      :body => request.to_json 
+      :body => request.to_json
     }
 
     if response.code == 201

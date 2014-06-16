@@ -26,8 +26,8 @@ class LibrarySupport
 
     issue = {
       :project_id    => LibrarySupport.project_ids[:failed_requests],
-      :subject       => "#{order.user} requests \"#{order.document['title_ts'].first}\"",
-      :description   => issue_description.join("\n"),
+      :subject       => "#{order.user} requests \"#{order.document['title_ts'].first}\"".encode('ascii', :invalid => :replace, :undef => :replace),
+      :description   => issue_description.join("\n").encode('ascii', :invalid => :replace, :undef => :replace),
       :custom_fields => [
         LibrarySupport.custom_fields[:failed_from].merge({
           :value => failed_from_for(order.supplier),
@@ -71,8 +71,8 @@ class LibrarySupport
 
     issue = {
       :project_id    => LibrarySupport.project_ids[assistance_request.book_suggest ? :book_suggestions : genre],
-      :description   => issue_description.join("\n\n"),
-      :subject       => "#{user} requests \"#{title}\"",
+      :description   => issue_description.join("\n\n").encode('ascii', :invalid => :replace, :undef => :replace),
+      :subject       => "#{user} requests \"#{title}\"".encode('ascii', :invalid => :replace, :undef => :replace),
       :custom_fields => [
         LibrarySupport.custom_fields[:dtu_unit].merge({
           :value => dtu_unit_for(user),
@@ -91,6 +91,8 @@ class LibrarySupport
     if response
       assistance_request.library_support_issue = response['issue']['id']
       assistance_request.save!
+    else 
+      raise 'Error creating RedMine issue'
     end
   end
 
