@@ -70,7 +70,7 @@ class SendIt
     send_order_mail 'findit_delivery', order, params
   end
 
-  def self.send_book_suggestion user, params
+  def self.send_book_suggestion user, assistance_request, params = {}
     if SendIt.book_suggest_mail.blank?
       Rails.logger.info "config.send_it.book_suggest_mail is missing or blank. Sending mail aborted."
       return
@@ -81,14 +81,15 @@ class SendIt
       :from  => user.email,
       :book  => {
       },
-      :notes => params[:notes],
+      :notes => assistance_request.notes,
       :user  => {
         :name => user.to_s,
       }
     }
 
     [:title, :year, :author, :edition, :doi, :isbn, :publisher].each do |field|
-      mail_params[:book][field] = params["book_#{field}"] unless params["book_#{field}"].blank?
+      value = assistance_request.send "book_#{field}"
+      mail_params[:book][field] = value unless value.blank?
     end
 
     mail_params[:user][:cwis]    = user.user_data["dtu"]["matrikel_id"] if user.dtu?

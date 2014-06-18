@@ -55,7 +55,7 @@ class AssistanceRequestsController < CatalogController
             if assistance_request.valid?
               assistance_request.save!
               LibrarySupport.delay.submit_assistance_request current_user, assistance_request, assistance_request_url(:id => assistance_request.id)
-              SendIt.delay.send_book_suggestion current_user, params[:assistance_request] if assistance_request.book_suggest
+              SendIt.delay.send_book_suggestion current_user, assistance_request if assistance_request.book_suggest
               flash[:notice] = 'Your request was sent to a librarian'
               redirect_to assistance_request_path(assistance_request)
             else
@@ -122,10 +122,11 @@ class AssistanceRequestsController < CatalogController
   def resend
     if can? :resend, LibrarySupport
       if AssistanceRequest.exists? params[:id]
-        @assistance_request = AssistanceRequest.find params[:id]
-        LibrarySupport.delay.submit_assistance_request current_user, @assistance_request, assistance_request_url(:id => @assistance_request.id), true
-        SendIt.delay.send_book_suggestion current_user, params[:assistance_request] if @assistance_request.book_suggest
-        render :show
+        assistance_request = AssistanceRequest.find params[:id]
+        LibrarySupport.delay.submit_assistance_request current_user, assistance_request, assistance_request_url(assistance_request), true
+        SendIt.delay.send_book_suggestion current_user, assistance_request if assistance_request.book_suggest
+        flash[:notice] = 'The request was resent to a librarian.'
+        redirect_to assistance_request_path(assistance_request)
       else
         head :not_found
       end
