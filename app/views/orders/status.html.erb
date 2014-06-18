@@ -16,6 +16,14 @@
                 <%= t 'toshokan.orders.reordered_by', :name => event.data %>
               <% when 'payment_authorized' %>
                 <%= t 'toshokan.orders.paid_with_card', :card_no => event.data %>
+              <% when 'delivery_cancelled' %>
+                <% if can? :view, :extended_info %>
+                  <%= event.data %>
+                <% end %>
+              <% when 'delivery_manual' %>
+                <% if can? :view, :extended_info %>
+                  <%= link_to "#{LibrarySupport.url}/issues/#{event.data}" %>
+                <% end %>
               <% else %>
                 <%= event.data %>
               <% end %>

@@ -492,15 +492,14 @@ class OrdersController < ApplicationController
   end
 
   def resend
-    @order = Order.find_by_uuid params[:uuid]
+    order = Order.find_by_uuid params[:uuid]
 
     if can? :resend, LibrarySupport
-      if @order && @order.user && @order.user.dtu?
-        order_event = @order.order_events.where(:name => 'delivery_cancelled').first
-        LibrarySupport.delay.submit_failed_request @order, order_status_url(@order.uuid), :reason => @order.cancel_reason, :reordered => 'Yes'
-        @restricted_events = ['payment_authorized', 'reordered', 'reorder_confirmed']
+      if order && order.user && order.user.dtu?
+        order_event = order.order_events.where(:name => 'delivery_cancelled').first
+        LibrarySupport.delay.submit_failed_request order, order_status_url(order.uuid), :reason => order.cancel_reason, :reordered => 'Yes'
         flash[:notice] = I18n.t 'toshokan.orders.flash_messages.library_support_resent'
-        render :status 
+        redirect_to order_status_path(:uuid => order.uuid)
       else
         head :bad_request
       end
