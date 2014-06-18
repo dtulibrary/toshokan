@@ -7,7 +7,7 @@ class LibrarySupport
     Redmine.new LibrarySupport.url, LibrarySupport.api_key
   end
 
-  def self.submit_failed_request order, reason = nil
+  def self.submit_failed_request order, order_url, options = {}
     return unless order.user.dtu?
 
     send_mail_link = send_mail_link_for order.user, {
@@ -22,7 +22,8 @@ class LibrarySupport
                                        .collect {|k,vs| "#{I18n.t "toshokan.catalog.show_field_labels.#{k}"}:\n   #{vs.first}"}
                                        .join("\n")
     issue_description << '</pre>'
-    issue_description << "\nCancel reason: #{reason}" if reason
+    issue_description << "\nCancel reason: #{options[:reason]}\n" if options[:reason]
+    issue_description << "\"View order in DTU Findit\":#{order_url}" if order.id
 
     issue = {
       :project_id    => LibrarySupport.project_ids[:failed_requests],
@@ -34,6 +35,9 @@ class LibrarySupport
         }),
         LibrarySupport.custom_fields[:dtu_unit].merge({
           :value => dtu_unit_for(order.user),
+        }),
+        LibrarySupport.custom_fields[:reordered].merge({
+          :value => options[:reordered] ? 'Yes' : 'No',
         }),
       ]
     }
@@ -50,7 +54,7 @@ class LibrarySupport
     end
   end
 
-  def self.submit_assistance_request user, assistance_request
+  def self.submit_assistance_request user, assistance_request, assistance_request_url, reordered = false
     genre            = assistance_request.genre
     title            = assistance_request.title
     author           = assistance_request.author
@@ -68,6 +72,7 @@ class LibrarySupport
     issue_description = []
     issue_description << "User #{phonebook_link_for user} ( CWIS: #{user.user_data['dtu']['matrikel_id']}; #{send_mail_link} ) requests the following:"
     issue_description << "<pre>\n#{item_description}\n</pre>"
+    issue_description << "\"View request in DTU Findit\":#{assistance_request_url}" if assistance_request.id
 
     issue = {
       :project_id    => LibrarySupport.project_ids[assistance_request.book_suggest ? :book_suggestions : genre],
@@ -76,6 +81,9 @@ class LibrarySupport
       :custom_fields => [
         LibrarySupport.custom_fields[:dtu_unit].merge({
           :value => dtu_unit_for(user),
+        }),
+        LibrarySupport.custom_fields[:reordered].merge({
+          :value => reordered ? 'Yes' : 'No',
         }),
       ],
     }

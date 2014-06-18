@@ -28,6 +28,9 @@
     <% if can?(:reorder, Order) && !@order.cancelled? %>
       <p><%= link_to t('toshokan.orders.reorder'), order_reorder_path(@order.uuid) %></p>
     <% end %>
+    <% if can?(:resend, LibrarySupport) && @order.cancelled? && !@order.library_support_issue %>
+      <p><%= link_to 'Resend Library Support request', order_resend_library_support_path(@order.uuid) %></p>
+    <% end %>
   </div>
   <div class="span6">
     <%= render 'order_summary' %>

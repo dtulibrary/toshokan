@@ -1,3 +1,14 @@
-<div class="span12 request-assistance-form">
-  <%= render "show_#{@assistance_request.class.name.underscore}" %>
+<div class="span12">
+  <% if can?(:resend, LibrarySupport) && !@assistance_request.library_support_issue %>
+    <div class="row">
+      <div class="span12">
+        <%= link_to 'Resend Library Support request', assistance_request_resend_library_support_path(:id => @assistance_request.id) %>
+      </div>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="span12 request-assistance-form">
+      <%= render "show_#{@assistance_request.class.name.underscore}" %>
+    </div>
+  </div>
 </div>

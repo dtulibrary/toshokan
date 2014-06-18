@@ -92,6 +92,7 @@ en:
       flash_messages:
         reordered: The article has been reordered
         error_reordering: Error reordering article - the existing order was not found
+        library_support_resent: The order was resent to Library Support
       form:
         back: Back
         cancel: Cancel

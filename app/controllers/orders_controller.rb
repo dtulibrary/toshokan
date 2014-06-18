@@ -452,9 +452,9 @@ class OrdersController < ApplicationController
 
         if @order.user && (@order.user.employee? || @order.user.student?)
           # Create library support issue
-          LibrarySupport.delay.submit_failed_request @order, params[:reason]
+          LibrarySupport.delay.submit_failed_request @order, order_status_url(@order.uuid), :reason => params[:reason]
         else
-          @order.order_events << OrderEvent.new(:name => 'delivery_cancelled')
+          @order.order_events << OrderEvent.new(:name => 'delivery_cancelled', :data => params[:reason])
           SendIt.delay.send_cancellation_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
         end
 
@@ -489,5 +489,23 @@ class OrdersController < ApplicationController
     end
 
     redirect_to order_status_path order.uuid
+  end
+
+  def resend
+    @order = Order.find_by_uuid params[:uuid]
+
+    if can? :resend, LibrarySupport
+      if @order && @order.user && @order.user.dtu?
+        order_event = @order.order_events.where(:name => 'delivery_cancelled').first
+        LibrarySupport.delay.submit_failed_request @order, order_status_url(@order.uuid), :reason => @order.cancel_reason, :reordered => 'Yes'
+        @restricted_events = ['payment_authorized', 'reordered', 'reorder_confirmed']
+        flash[:notice] = I18n.t 'toshokan.orders.flash_messages.library_support_resent'
+        render :status 
+      else
+        head :bad_request
+      end
+    else 
+      head :not_found
+    end
   end
 end

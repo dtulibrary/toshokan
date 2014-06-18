@@ -26,11 +26,13 @@ Toshokan::Application.routes.draw do
     post '/orders/:uuid/receipt',                   :to => 'orders#receipt',                        :as => 'order_receipt'  # DIBS callback
     get  '/orders/:uuid/receipt',                   :to => 'orders#receipt',                        :as => 'order_receipt'
     get  '/orders/:uuid/delivery',                  :to => 'orders#delivery',                       :as => 'order_delivery' # DocDel callback
+    get  '/orders/:uuid/resend',                    :to => 'orders#resend',                         :as => 'order_resend_library_support'
     post '/test_payment',                           :to => 'payment#credit_card',                   :as => 'payment'
 
 
     # Assistance (Can't Find) forms
     resources :assistance_requests,                 :only => [:index, :new, :create, :show]
+    get   '/assistance_requests/:id/resend',        :to => 'assistance_requests#resend',            :as => 'assistance_request_resend_library_support'
     get   '/cant_find/:genre',                      :to => redirect('/assistance_requests/new?genre=%{genre}')
 
 

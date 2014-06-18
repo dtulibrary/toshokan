@@ -87,4 +87,13 @@ class Order < ActiveRecord::Base
   def cancelled?
     delivery_status == :cancelled
   end
+
+  def cancel_reason
+    order_events.where(:name => 'delivery_cancelled').last.try :data
+  end
+
+  def library_support_issue
+    order_events.where(:name => 'delivery_manual').last.try :data
+  end
+
 end

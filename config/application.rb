@@ -173,8 +173,12 @@ module Toshokan
           :name => 'Failed from',
         },
         :book_suggest => {
-          :id    => '13',
-          :name  => 'Books Suggestion',
+          :id   => '13',
+          :name => 'Books Suggestion',
+        },
+        :reordered => {
+          :id   => '15',
+          :name => 'Reordered',
         },
       },
     }

@@ -41,6 +41,7 @@ class Ability
         can :reorder, Order
         can :view_any, Order
         can :view, :extended_info
+        can :resend, LibrarySupport
       end
     end
 
