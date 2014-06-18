@@ -22,7 +22,7 @@
                 <% end %>
               <% when 'delivery_manual' %>
                 <% if can? :view, :extended_info %>
-                  <%= link_to "#{LibrarySupport.url}/issues/#{event.data}" %>
+                  <%= link_to "#{LibrarySupport.url}/issues/#{event.data}", "#{LibrarySupport.url}/issues/#{event.data}" %>
                 <% end %>
               <% else %>
                 <%= event.data %>
