@@ -123,8 +123,8 @@ class AssistanceRequestsController < CatalogController
     if can? :resend, LibrarySupport
       if AssistanceRequest.exists? params[:id]
         assistance_request = AssistanceRequest.find params[:id]
-        LibrarySupport.delay.submit_assistance_request current_user, assistance_request, assistance_request_url(assistance_request), true
-        SendIt.delay.send_book_suggestion current_user, assistance_request if assistance_request.book_suggest
+        LibrarySupport.delay.submit_assistance_request assistance_request.user, assistance_request, assistance_request_url(assistance_request), true
+        SendIt.delay.send_book_suggestion assistance_request.user, assistance_request if assistance_request.book_suggest
         flash[:notice] = 'The request was resent to a librarian.'
         redirect_to assistance_request_path(assistance_request)
       else
