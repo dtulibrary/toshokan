@@ -9,7 +9,6 @@ FeatureFlipper.features do
 
   in_state :staging do
     feature :nal_map, :description => "Show Google Maps for NAL"
-    feature :cff_resolver, :description => "Use OpenURL resolver in CFFs"
   end
 
   in_state :live do
@@ -17,6 +16,7 @@ FeatureFlipper.features do
     feature :book_suggest, :description => 'Enable users to suggest books for acquistion'
     feature :cant_find_it, :description => 'Display sidebar links to Cant find forms'
     feature :alis, :description => "Show loan info from Alis"
+    feature :cff_resolver, :description => "Use OpenURL resolver in CFFs"
   end
 
 end
