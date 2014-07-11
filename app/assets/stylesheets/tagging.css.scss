@@ -24,9 +24,22 @@
   }
 }
 
+.tag_control .dropdown-menu {
+    .icon-mendeley {
+        font-size: 100%;
+        margin-bottom: 1px;
+        margin-left: -2px;
+        padding-right: 1px;
+    }
+    .icon-file-text-o {
+        color: $dtu_grey;
+        padding-right: 3px;
+    }
+}
+
 .tag_list,.tag_control {
   .tags_dropdown .has-tags i {
-    color: $dtu_blue;
+    color: $dtu_red;
   }
 
   .tags_dropdown .no-tags i {
@@ -34,13 +47,30 @@
   }
 
   .icon-star,.icon-tag {
-    color: $dtu_blue;
+    color: $dtu_red;
   }
 
-  .icon-star-o {
+  .icon-star-o, .icon-mendeley, .icon-quote-right, .icon-share-square-o {
     color: $dtu_grey;
   }
+
+  .icon-tag {
+      margin-left: 1px;
+      margin-top: 2px;
+      margin-right: -1px;
+  }
+
+  .icon-mendeley {
+      font-size: 170%;
+      margin-bottom: 3px;
+      margin-left: -2px;
+  }
+
+  .icon-external-link, .icon-share-square-o, .icon-quote-right {
+      margin-top: 2px;
+  }
 }
+
 
 .document .tags .tag {
   background-color: $dtu_blue;

@@ -11,6 +11,9 @@ class CatalogController < ApplicationController
   include TagsHelper
   include LimitsHelper
   include TocHelper
+  include MendeleyHelper
+
+  before_filter :authenticate_mendeley, :only => [:mendeley_index, :mendeley_show]
 
   self.solr_search_params_logic += [:add_tag_fq_to_solr]
   self.solr_search_params_logic += [:add_limit_fq_to_solr]
@@ -345,6 +348,40 @@ class CatalogController < ApplicationController
   def journal
     id = journal_id_for_issns(params[:issn]) or not_found
     redirect_to catalog_path :id => id, :key => params[:key], :ignore_search => params[:ignore_search]
+  end
+
+  def mendeley_index
+    respond_to do |format|
+      format.html do
+        extra_search_params = {:rows => 0, :facet => false, :stat => false}
+        (@response, @document_list) = get_search_results(params, extra_search_params)
+        @numFound = @response['response']['numFound']
+        @maxExport = blacklight_config.max_per_page
+        @folders, @groups = mendeley_folders_and_groups
+        render layout: 'external_page'
+      end
+      format.json do
+        extra_search_params = {:rows => blacklight_config.max_per_page, :facet => false, :stat => false}
+        (@response, @document_list) = get_search_results(params, extra_search_params)
+        save_to_mendeley @document_list, params['folder'], params['tags'].split(',').map(&:strip)
+        render :json => { :status => :saved}.to_json
+      end
+    end
+  end
+
+  def mendeley_show
+    respond_to do |format|
+      format.html do
+        (@response, @document) = get_solr_response_for_doc_id nil, {:fq => ["access_ss:#{Rails.application.config.search[:dtu]}"]}
+        @folders, @groups = mendeley_folders_and_groups
+        render layout: 'external_page'
+      end
+      format.json do
+        (@response, @document) = get_solr_response_for_doc_id nil, {:fq => ["access_ss:#{Rails.application.config.search[:dtu]}"]}
+        save_to_mendeley [@document], params['folder'], params['tags'].split(',').map(&:strip)
+        render :json => { :status => :saved}.to_json
+      end
+    end
   end
 
   # Saves the current search (if it does not already exist) as a models/search object

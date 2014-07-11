@@ -13,24 +13,24 @@
       <li class="nav-header"><%= t('toshokan.tools.cite_and_export') %></li>
 
       <li>
-        <%= link_to content_tag('i', '', :class => 'icon-mendeley') + t('toshokan.tools.mendeley'), '#', :class => 'save-to-mendeley' %>
+        <%= link_to content_tag('i', '', :class => 'icon-mendeley') + t('toshokan.tools.mendeley'), '#', :class => (show_feature?(:mendeley) ? 'save-to-mendeley-api' : 'save-to-mendeley'), :data => { :document => @document.id } %>
       </li>
 
       <% if (!@document.citation_styles.empty?) %>
         <li class="cite">
-        <%= link_to content_tag('i', '', :class => 'icon-code') + t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :name => 'citation', :class => 'lightboxLink'} %>
+        <%= link_to content_tag('i', '', :class => 'icon-quote-right') + t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :name => 'citation', :class => 'lightboxLink'} %>
         </li>
       <% end %>
 
       <% if @document.export_formats.keys.include?( :bib ) %>
         <li class="bibtex">
-        <%= link_to content_tag('i', '', :class => 'icon-external-link') + t('toshokan.tools.bibtex'), catalog_path(@document, :format => 'bib') %>
+        <%= link_to content_tag('i', '', :class => 'icon-file-text-o') + t('toshokan.tools.bibtex'), catalog_path(@document, :format => 'bib') %>
         </li>
       <% end %>
 
       <% if @document.export_formats.keys.include?( :ris ) %>
         <li class="endnote">
-        <%= link_to content_tag('i', '', :class => 'icon-external-link') + t('toshokan.tools.ris'), catalog_path(@document, :format => 'ris') %>
+        <%= link_to content_tag('i', '', :class => 'icon-file-text-o') + t('toshokan.tools.ris'), catalog_path(@document, :format => 'ris') %>
         </li>
       <% end %>
     <% end %>

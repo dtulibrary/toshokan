@@ -5,6 +5,7 @@ FeatureFlipper.features do
   end
 
   in_state :unstable do
+    feature :mendeley, :description => "Use Mendeley API instead of Web Importer"
   end
 
   in_state :staging do

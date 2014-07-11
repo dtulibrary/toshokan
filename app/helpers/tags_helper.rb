@@ -13,7 +13,7 @@ module TagsHelper
     end
 
     render 'tags/tag_control',
-           {:document_id => document.id, :bookmark => bookmark, :tags => tags, :return_url => return_url}
+           {:document => document, :document_id => document.id, :bookmark => bookmark, :tags => tags, :return_url => return_url}
   end
 
   def render_tag_partials options={}
@@ -42,6 +42,7 @@ module TagsHelper
 
       return_url = controller.params[:return_url]
       params_from_return_url = Rack::Utils.parse_nested_query(URI::parse(return_url).query)
+      params_from_return_url.merge! params.slice(:refresh)
       params = controller.params = params_from_return_url.with_indifferent_access
     end
     render(options)

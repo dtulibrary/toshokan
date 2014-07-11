@@ -1,6 +1,14 @@
-<div class="tag_control" id="<%= document_id %>-tag_control">
+<div class="tag_control" id="<%= document_id %>-tag_control" data-document="<%= document_id %>">
   <%= render 'tags/bookmark_button',
              {:document_id => document_id, :bookmark => bookmark, :tags => tags, :return_url => return_url} %>
   <%= render 'tags/tags_dropdown',
              {:document_id => document_id, :bookmark => bookmark, :tags => tags, :return_url => return_url} %>
+  <% if (!document.citation_styles.blank?) %>
+    <%= render 'tags/cite_button',
+               {:document => document, :bookmark => bookmark, :tags => tags, :return_url => return_url} %>
+  <% end %>
+  <% if show_feature?(:mendeley) && document[:format] != "journal" %>
+    <%= render 'tags/export_button',
+               {:document => document, :bookmark => bookmark, :tags => tags, :return_url => return_url} %>
+  <% end %>
 </div>

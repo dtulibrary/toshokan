@@ -1,4 +1,4 @@
-class TagsController < ApplicationController
+class TagsController < CatalogController
   before_filter :require_tag_ability
 
   # Tag management actions
@@ -10,12 +10,16 @@ class TagsController < ApplicationController
   # Document tagging actions
 
   def index
-    @document = Hashie::Mash.new({:id => params[:document_id]})
+    _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
     @bookmark = current_user.bookmarks.find_or_create_by_document_id(@document.id)
     @tags = current_user.tags.all(:order => 'name')
     @return_url = request.url
     if params && params[:return_url]
       @return_url = params[:return_url]
+    end
+    respond_to do | format |
+      format.js   { render :partial => 'tags/tag_refresh' }
+      format.html { render }
     end
   end
 
@@ -23,11 +27,13 @@ class TagsController < ApplicationController
   end
 
   def create
-    @document = Hashie::Mash.new({:id => params[:document_id]})
+    _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
     current_user.tag(@document, params[:tag_name])
 
-    redirect_to only_path(params[:return_url]) unless request.xhr?
-    render :partial => 'tags/tag_refresh' and return if request.xhr?
+    respond_to do | format |
+      format.js   { render :partial => 'tags/tag_refresh' }
+      format.html { redirect_to only_path(params[:return_url])}
+    end
   end
 
 
@@ -38,15 +44,17 @@ class TagsController < ApplicationController
     not_found unless tag
 
     if (params[:document_id])
-      @document = Hashie::Mash.new({:id => params[:document_id]})
+      _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
       bookmark = current_user.bookmarks.find_by_document_id(@document.id)
       bookmark.tags.delete(tag) if bookmark
     else
       tag.delete
     end
 
-    redirect_to only_path(params[:return_url]) unless request.xhr?
-    render :partial => 'tags/tag_refresh' and return if request.xhr?
+    respond_to do | format |
+      format.js   { render :partial => 'tags/tag_refresh' }
+      format.html { redirect_to only_path(params[:return_url])}
+    end
   end
 
   def edit
@@ -71,6 +79,10 @@ class TagsController < ApplicationController
 
   def require_tag_ability
     require_authentication unless can? :tag, Bookmark
+  end
+
+  def search_action_url
+    catalog_index_url
   end
 
 end

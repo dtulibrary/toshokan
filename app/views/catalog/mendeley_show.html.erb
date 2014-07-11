@@ -1,0 +1,26 @@
+<div>
+  <p>You're about to save 1 article to Mendeley</p>
+
+  <h6>Save in</h6>
+  <form method="get" action="<%= url_for(params.merge({ :format => :json }))%>">
+    <select name="folder" autofocus="autofocus">
+      <optgroup label="Folders">
+        <option value="">Unsorted</option>
+        <%= render_mendeley_folders @folders %>
+      </optgroup>
+      <optgroup label="Groups">
+        <%= render_mendeley_groups @groups %>
+      </optgroup>
+    </select>
+
+    <h6>Tags</h6>
+    <input name="tags" type="text"></div>
+
+    <% params.each do |k,v| %>
+      <input type="hidden" name="<%= k %>" value="<%= v %>"></input>
+    <% end %>
+
+    <h6></h6>
+    <button type="submit" class="btn">Save</button>
+  </form>
+</div>

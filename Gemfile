@@ -14,6 +14,7 @@ gem 'httparty'
 gem 'hashie'
 gem 'omniauth'
 gem 'omniauth-cas'
+gem 'omniauth-mendeley_oauth2'
 gem 'cancan'
 gem 'acts-as-taggable-on'
 gem 'dalli'
@@ -80,6 +81,9 @@ group :development do
 
   gem 'rails_view_annotator'
   gem 'rails-footnotes'
+
+  gem 'puma'
+  gem 'quiet_assets'
 end
 
 # Deploy with Capistrano

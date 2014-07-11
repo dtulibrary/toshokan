@@ -154,6 +154,8 @@ en:
       nal:
         title: 'Availability on-site in Denmark'
         text: 'The material is available at the following libraries (check to show on map):'
+      mendeley:
+        title: 'Save to Mendeley'
       request_document:
         title: 'Request document'
         note: "partially"

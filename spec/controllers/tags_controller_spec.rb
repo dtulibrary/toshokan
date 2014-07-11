@@ -7,7 +7,7 @@ describe TagsController do
   }
 
   let (:existing_bookmark) {
-    Bookmark.create :document_id => 'a_solr_document_id'
+    Bookmark.create :document_id => '2842957'
   }
 
   let!(:ability) {
@@ -77,13 +77,13 @@ describe TagsController do
 
       context 'when bookmark does not exist' do
         it 'creates the document pointer' do
-          post :create, document_id: 'new-document-pointer', tag_name: 'the_tag', return_url: root_path
-          user.tags_for('new-document-pointer').should_not be_nil
+          post :create, document_id: '3176832', tag_name: 'the_tag', return_url: root_path
+          user.tags_for('3176832').should_not be_nil
         end
 
         it 'adds the tag to the bookmark' do
-          post :create, document_id: 'new-document-pointer', tag_name: 'the_tag', return_url: root_path
-          user.tags_for('new-document-pointer').map(&:name).should == ['the_tag']
+          post :create, document_id: '3176832', tag_name: 'the_tag', return_url: root_path
+          user.tags_for('3176832').map(&:name).should == ['the_tag']
         end
       end
 
@@ -231,7 +231,7 @@ describe TagsController do
             end
             
             it "updates tag for all the current user's documents" do
-      	      another_bookmark = Bookmark.create :document_id => 'another_document_id'
+      	      another_bookmark = Bookmark.create :document_id => '3176832'
       	      post :create, :document_id => another_bookmark.document_id, :tag_name => 'the_tag', :return_url => root_path
       	      put :update, :id => tag.id, :tag_name => 'new_tag_name'
       	      user.tags_for(existing_bookmark).map(&:name).should == ['new_tag_name']

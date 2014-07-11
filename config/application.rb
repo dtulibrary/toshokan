@@ -224,5 +224,11 @@ module Toshokan
       :dtu_id => ''
     }
 
+    config.mendeley = {
+      :url       => 'https://mix.mendeley.com',
+      :client_id => '',
+      :secret    => '',
+    }
+
   end
 end

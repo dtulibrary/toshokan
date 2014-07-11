@@ -5,8 +5,15 @@ Toshokan::Application.routes.draw do
     # Catalog and related
     Blacklight.add_routes(self)
     get   '/journal',                               :to => 'catalog#journal',                       :as => 'catalog_journal'
+    get   '/mendeley',                              :to => 'catalog#mendeley_index',                :as => 'mendeley_index'
+    get   '/mendeley/:id',                          :to => 'catalog#mendeley_show',                 :as => 'mendeley_show'
     get   '/cover_images/:id',                      :to => 'cover_images#show',                     :as => 'cover_images'
 
+
+    # Mendeley oauth
+    get   '/auth/mendeley/login',                  :to => 'mendeley/sessions#new',                  :as => 'new_mendeley_session'
+    get   '/auth/mendeley/callback',               :to => 'mendeley/sessions#create',               :as => 'create_mendeley_session'
+    get   '/auth/mendeley/setup',                  :to => 'mendeley/sessions#setup',                :as => 'setup_mendeley_session'
 
     # Authentication
     get   '/login',                                 :to => 'users/sessions#new',                    :as => 'new_user_session'
