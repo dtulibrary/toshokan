@@ -27,8 +27,8 @@ class LibrarySupport
 
     issue = {
       :project_id    => LibrarySupport.project_ids[:failed_requests],
-      :subject       => "#{order.user} requests \"#{order.document['title_ts'].first}\"".encode('ascii', :invalid => :replace, :undef => :replace)[0..254],
-      :description   => issue_description.join("\n").encode('ascii', :invalid => :replace, :undef => :replace),
+      :subject       => "#{order.user} requests \"#{order.document['title_ts'].first}\""[0..254],
+      :description   => issue_description.join("\n"),
       :custom_fields => [
         LibrarySupport.custom_fields[:failed_from].merge({
           :value => failed_from_for(order.supplier),
@@ -76,8 +76,8 @@ class LibrarySupport
 
     issue = {
       :project_id    => LibrarySupport.project_ids[assistance_request.book_suggest ? :book_suggestions : genre],
-      :description   => issue_description.join("\n\n").encode('ascii', :invalid => :replace, :undef => :replace),
-      :subject       => "#{user} requests \"#{title}\"".encode('ascii', :invalid => :replace, :undef => :replace)[0..254],
+      :description   => issue_description.join("\n\n"),
+      :subject       => "#{user} requests \"#{title}\""[0..254],
       :custom_fields => [
         LibrarySupport.custom_fields[:dtu_unit].merge({
           :value => dtu_unit_for(user),
