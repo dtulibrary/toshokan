@@ -24,8 +24,8 @@ Scenario: View citations
  	Then I should see the citations
 
 Scenario: Do not export a record for a journal
-  When I have searched for "Photochemistry and photobiology"
+  When I have searched for "mechanics"
    And I have limited the "Type" facet to "Journal"
-   And I click the link for journal "Photochemistry and photobiology"
+   And I click on the first document
   Then I should not see the "Export to BibTeX" link 
    And I should not see the "Export to RIS" link
