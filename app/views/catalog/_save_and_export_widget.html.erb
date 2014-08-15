@@ -1,0 +1,12 @@
+<div id="save_and_export-dropdown" class="dropdown pull-right  hidden-phone">
+  <span class="hide-text"><%= t('toshokan.tools.save_and_export') %></span>
+  <ul class="css-dropdown">
+    <li>
+      <%= link_to(t('toshokan.tools.save_and_export'), "#") %> <span class="caret"></span>
+      <ul>
+          <li><%= link_to(t('toshokan.tools.ris'), url_for(params_for_search(:format => :ris))) %></li>
+          <li><%= link_to(t('toshokan.tools.bibtex'), url_for(params_for_search(:format => :bib))) %></li>
+      </ul>
+    </li>
+  </ul>
+</div>

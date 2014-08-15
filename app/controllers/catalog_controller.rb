@@ -76,6 +76,7 @@ class CatalogController < ApplicationController
 
     # Set per page options
     config.per_page = [10, 20, 50]
+    config.max_per_page = 500
 
     # solr field configuration for search results/index views
     config.index.show_link = 'title_ts'
@@ -283,9 +284,18 @@ class CatalogController < ApplicationController
       format.html { save_current_search_params }
       format.rss  { render :layout => false }
       format.atom { render :layout => false }
+
+      # Add all dynamically added (such as by document extensions)
+      # export formats.
+      if @document_list.first
+        @document_list.first.export_formats.each_key do | format_name |
+          # It's important that the argument to send be a symbol;
+          # if it's a string, it makes Rails unhappy for unclear reasons.
+          format.send(format_name.to_sym) { render :text => export_search_result(format_name, params, extra_search_params), :layout => false }
+        end
+      end
     end
   end
-
 
   def show
     @disable_remove_filter = true
@@ -375,4 +385,5 @@ class CatalogController < ApplicationController
       params[:s_id] = search_id
     end
   end
+
 end

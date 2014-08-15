@@ -117,6 +117,7 @@ en:
       orbit: "DTU Orbit"
     tools:
       cite_and_export: "Cite and export"
+      save_and_export: "Save and export"
       bibtex: "Export to BibTeX"
       ris: "Export to RIS"
       fulltext: "Get it"

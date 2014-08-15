@@ -3,7 +3,7 @@ require 'bibtex'
 module References
 
   def self.extended(document)
-  	document.will_export_as(:bib, "text/x-bibtex")
+    document.will_export_as(:bib, "text/x-bibtex")
     document.will_export_as(:ris, "application/x-Research-Info-Systems")
   end
 
@@ -65,8 +65,16 @@ module References
     }
 
     def to_ris(options = {})
+      ris_type = case type
+                 when :article
+                   'JOUR'
+                 when :book
+                   'BOOK'
+                 when :journal
+                   'JFULL'
+                 end
       # keyword must be followed by two spaces in order to work with reference manager
-      content = "TY  - \n"      
+      content = "TY  - #{ris_type}\n"
 
       fields.each do |field, value|
         case(field)

@@ -271,4 +271,25 @@ module CatalogHelper
     @extra_body_classes ||= ['blacklight-' + controller_name, 'blacklight-' + [controller_name, controller_action].join('-')]
   end
 
+  def export_search_result(format_name, params, extra_search_params)
+    params.delete('per_page')
+    params['page'] = 1
+    params['rows'] = blacklight_config.max_per_page
+    (response, document_list) = get_search_results(params, extra_search_params)
+
+    case format_name
+    when :bib
+      # Add references to a BibTex::Bibliography to ensure that bibtex
+      # keys are unique within exported file
+      bibliography = BibTeX::Bibliography.new
+      document_list.each do |document|
+        bibliography.add(document.export_as(:bib))
+      end
+      bibliography.map{|entry| entry.to_s}.join("\n")
+    when :ris
+      document_list.map{|document| document.export_as(:ris)}.join("\n\n")
+    end
+
+  end
+
 end
