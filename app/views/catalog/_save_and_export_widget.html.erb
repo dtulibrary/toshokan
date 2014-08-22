@@ -4,8 +4,8 @@
     <li>
       <%= link_to(t('toshokan.tools.save_and_export'), "#") %> <span class="caret"></span>
       <ul>
-          <li><%= link_to(t('toshokan.tools.ris'), url_for(params_for_search(:format => :ris))) %></li>
-          <li><%= link_to(t('toshokan.tools.bibtex'), url_for(params_for_search(:format => :bib))) %></li>
+          <li><%= link_to(content_tag('i', '', :class => 'icon-external-link') + t('toshokan.tools.ris'), url_for(params_for_search(:format => :ris))) %></li>
+          <li><%= link_to(content_tag('i', '', :class => 'icon-external-link') + t('toshokan.tools.bibtex'), url_for(params_for_search(:format => :bib))) %></li>
       </ul>
     </li>
   </ul>
