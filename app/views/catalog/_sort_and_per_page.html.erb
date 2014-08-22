@@ -8,9 +8,7 @@
 
     <%= render :partial => 'per_page_widget' %>
 
-    <% if show_feature? :export_result %>
-      <%= render :partial => 'save_and_export_widget' %>
-    <% end %>
+    <%= render :partial => 'save_and_export_widget' %>
 
     <% if can? :view_format, 'librarian' %>
       <%= render :partial => 'display_format_widget' %>

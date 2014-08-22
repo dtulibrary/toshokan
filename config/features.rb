@@ -17,7 +17,6 @@ FeatureFlipper.features do
     feature :cant_find_it, :description => 'Display sidebar links to Cant find forms'
     feature :alis, :description => "Show loan info from Alis"
     feature :cff_resolver, :description => "Use OpenURL resolver in CFFs"
-    feature :export_result, :description => "Export search result as .bib or .ris"
   end
 
 end
