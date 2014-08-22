@@ -12,7 +12,6 @@ FeatureFlipper.features do
   end
 
   in_state :live do
-    feature :toc,          :description => "Display table of contents on journal records"
     feature :book_suggest, :description => 'Enable users to suggest books for acquistion'
     feature :cant_find_it, :description => 'Display sidebar links to Cant find forms'
     feature :alis, :description => "Show loan info from Alis"

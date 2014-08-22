@@ -2,8 +2,6 @@
 module TocHelper
 
   def toc_for document, params = {}, solr_params = {}
-    return nil unless show_feature?(:toc)
-    
     # FIXME: this is a hack until we have journal records for all toc-issns
     if document[:format] == 'article' && document[:toc_key_s]      
       issn, _, _, _ = dissect_toc_key(document[:toc_key_s])

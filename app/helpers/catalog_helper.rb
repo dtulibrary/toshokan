@@ -48,7 +48,7 @@ module CatalogHelper
     field = args[:field]
     has_toc  = document[:toc_key_s] && document[:issn_ss]
     has_journal = document[:toc_key_s] && document[:toc_key_journal_exists] && document[:issn_ss]
-    (link_to_if(has_journal && show_feature?(:toc),
+    (link_to_if(has_journal,
         document[field].first,
         catalog_journal_path(:issn => document[:issn_ss], :key => document[:toc_key_s], :ignore_search => '✓'),
         { :title => I18n.t('toshokan.catalog.toc.open_table_of_contents'), :data => { :toggle => 'tooltip' } }) +
@@ -61,7 +61,7 @@ module CatalogHelper
     document = args[:document]
     field = args[:field]
     has_toc  = document[:toc_key_s] && document[:issn_ss]
-    (link_to_if(false && has_toc && show_feature?(:toc),  # disabled until we have journal records for all toc-issns
+    (link_to_if(false && has_toc,  # disabled until we have journal records for all toc-issns
         document[field].first,
         catalog_journal_path(:issn => document[:issn_ss], :key => document[:toc_key_s], :ignore_search => '✓'),
         { :title => I18n.t('toshokan.catalog.toc.open_table_of_contents'), :data => { :toggle => 'tooltip' } }) +
