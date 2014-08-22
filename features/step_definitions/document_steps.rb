@@ -15,11 +15,11 @@ Then /^I should see the page for a single document$/ do
 end
 
 Then /^I should get a "(.*?)" file$/ do |extension|
-	case extension
-	when "bib"
-  	page.response_headers['Content-Type'].should include "text/x-bibtex"
+  case extension
+  when "bib"
+    page.response_headers['Content-Type'].should include "text/x-bibtex"
   when "ris"
-  	page.response_headers['Content-Type'].should include "application/x-Research-Info-Systems"
+    page.response_headers['Content-Type'].should include "application/x-Research-Info-Systems"
   end
 end
 

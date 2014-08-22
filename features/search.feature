@@ -46,3 +46,15 @@ Scenario: "Can't find it?" links are only visible when hits > 0
    When I search for "sdkjfhskdjfhskdjfhkjh"
    Then I should see the result page
     But I shouldn't see the "can't find it?" links
+
+Scenario: Export result in BibTex format
+  Given I'm logged in as a DTU employee
+   When I search for "integer"
+   And I click "Export to BibTeX"
+  Then I should get a "bib" file
+
+Scenario: Export result in RIS format
+  Given I'm logged in as a DTU employee
+   When I search for "integer"
+   And I click "Export to RIS"
+  Then I should get a "ris" file
