@@ -25,6 +25,7 @@ class Order < ActiveRecord::Base
         'rft.jtitle' => 'journal_title_ts',
         'rft.issn' => 'issn_ss',
         'rft.year' => 'pub_date_tis',
+        'rft.date' => 'pub_date_tis',
         'rft.volume' => 'journal_vol_ssf',
         'rft.issue' => 'journal_issue_ssf',
         'rft.pages' => 'journal_page_ssf',
