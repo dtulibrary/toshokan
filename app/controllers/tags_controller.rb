@@ -18,7 +18,7 @@ class TagsController < CatalogController
 
   def index
     _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
-    @bookmark = current_user.bookmarks.find_or_create_by_document_id(@document.id)
+    @bookmark = current_user.bookmarks.find_by_document_id(@document.id)
     @tags = current_user.tags.all(:order => 'name')
     @return_url = request.url
     if params && params[:return_url]
