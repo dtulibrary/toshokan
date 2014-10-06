@@ -181,6 +181,14 @@ describe ResolverHelper do
       ou.referent.identifiers.should include "info:oclcnum/775664216"
     end
 
+    it "accepts a Reaxys url" do
+      rx_url = "SID=Elsevier%3AReaxys&aulast=Brorsson&coden=&date=2009&doi=&issn=1465-7740&issue=SUPPL.+1&spage=60&title=Diabetes%2C+O"
+      ou = helper.to_open_url(Rack::Utils.parse_query(rx_url))
+      ou.should_not be_nil
+      ou.referent.metadata["aulast"].should eq "Brorsson"
+      ou.referent.metadata["issn"].should eq "1465-7740"
+    end
+
   end
 
   describe "#solr_params_to_blacklight_query" do

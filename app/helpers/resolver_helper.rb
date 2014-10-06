@@ -4,6 +4,8 @@ module ResolverHelper
   include FacetsHelper
 
   def to_open_url(params)
+    # work around Reaxys openurls with uppercase sid param
+    params["sid"] = params.delete("SID") if params.has_key?("SID")
 
     if params.has_key?("url_ver") || params.has_key?("sid")
 
