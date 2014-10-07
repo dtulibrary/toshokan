@@ -2,6 +2,6 @@
   <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.pickup_location.title' %></h5>
   <p><%= t 'toshokan.assistance_requests.forms.sections.pickup_location.text' %></p>
   <% section_fields(['pickup_location'], @assistance_request) do |label, value| %>
-    <p class="indented"><%= t "toshokan.assistance_requests.forms.sections.pickup_location.#{value}_html" %></p>
+    <p class="indented"><%= t "toshokan.assistance_requests.forms.sections.pickup_location.values.#{value}_html" %></p>
   <% end %>
 </div>
