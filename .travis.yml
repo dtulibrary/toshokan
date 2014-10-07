@@ -2,10 +2,10 @@ language: ruby
 rvm:
   - 1.9.3
 before_script:
-  - "rake db:migrate jetty:start"
+  - "bundle exec rake db:migrate jetty:start"
   - "sleep 15"
-  - "rake metastore:testdata:index"
-script: "rake spec cucumber"
+  - "bundle exec rake metastore:testdata:index"
+script: "bundle exec rake spec cucumber"
 
 # whitelist
 branches:
