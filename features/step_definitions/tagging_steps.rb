@@ -77,7 +77,7 @@ Given /^I list my tags$/ do
 end
 
 Given /^I rename tag "(.*?)" to "(.*?)"$/ do |tag_name, new_tag_name|
-visit manage_tags_path
+  visit manage_tags_path
   within(:xpath, "//tr[td/span/text()='#{tag_name}']") do
     find(:xpath, "//a[@title='Edit']").click    
   end
@@ -129,3 +129,10 @@ Then /^I should see a tag constraint with name "(.*?)" and value "(.*?)"$/ do |n
   end
 end
 
+Then /^I should see a clickable tag facet with name "(.*?)"$/ do |tag_name|
+  find('.facet_limit .tag_list').should have_css('a', :text => tag_name)
+end
+
+Then /^I should see an inactive tag facet with name "(.*?)"$/ do |tag_name|
+  find('.facet_limit .tag_list').should_not have_css('a', :text => tag_name)
+end

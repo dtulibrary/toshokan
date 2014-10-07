@@ -1,5 +1,4 @@
 # -*- encoding : utf-8 -*-
-
 module TagsHelper
 
   def render_tag_control(document)
@@ -28,12 +27,7 @@ module TagsHelper
     options = options.dup
     options[:partial] = "tags/tags_list"
     options[:locals] ||= {}
-    options[:locals][:tags] ||= current_or_guest_user.tags.order(:name)
-
-    if request.xhr?
-      # TODO: on ajax requests we could query solr for document counts for each
-      # tag wrt. the current query
-    end
+    options[:locals][:tags] ||= Tag.reserved_tags.map{|t| OpenStruct.new(:name => t)} + current_or_guest_user.tags.order(:name)
 
     if request.xhr? and controller.params and controller.params[:return_url]
       # if this is an ajax call, we are given a return_url that represents the original request
@@ -45,7 +39,20 @@ module TagsHelper
       params_from_return_url.merge! params.slice(:refresh)
       params = controller.params = params_from_return_url.with_indifferent_access
     end
+
+    options[:locals][:tags].each do |tag|
+      tag.count = count_documents_for_tag_and_search(tag, controller.params)
+    end
+
     render(options)
+  end
+
+  def count_documents_for_tag_and_search(tag, params)
+    extra_search_params = {:rows => 0, :facet => false, :stat => false}
+    params = params.dup
+    params[:t] = {tag.name => '✓'}
+    (response, _) = controller.get_search_results(params, extra_search_params)
+    response['response']['numFound']
   end
 
   def render_tags_for_document(document)
@@ -166,10 +173,9 @@ module TagsHelper
     # :fq, map from :t.
     if ( user_params[:t])
       t_request_params = user_params[:t]
-      document_ids = []
-
       solr_parameters[:fq] ||= []
       t_request_params.each_pair do |t|
+        document_ids = []
         tag_name = t.first
         if tag_name == Tag.reserved_tag_all
           document_ids = current_user.bookmarks.map(&:document_id);
@@ -181,12 +187,12 @@ module TagsHelper
             document_ids = tag.bookmarks.map(&:document_id)
           end
         end
-      end
 
-      if not document_ids.empty?
-        solr_parameters[:fq] << "#{SolrDocument.unique_key}:(#{document_ids.join(' OR ')})"
-      else
-        solr_parameters[:fq] << "#{SolrDocument.unique_key}:(NOT *)"
+        if not document_ids.empty?
+          solr_parameters[:fq] << "#{SolrDocument.unique_key}:(#{document_ids.join(' OR ')})"
+        else
+          solr_parameters[:fq] << "#{SolrDocument.unique_key}:(NOT *)"
+        end
       end
 
     end

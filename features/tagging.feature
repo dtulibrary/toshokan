@@ -24,13 +24,24 @@ Scenario: Bookmarking a document in document view
      And I bookmark the document
     Then the document should be bookmarked
 
+Scenario: Bookmarks facet should not be clickable when no documents are bookmarked
+    When I search for "cohomology"
+    Then I should see an inactive tag facet with name "All"
+
+Scenario: Bookmarks facet should be clickable when documents are bookmarked
+    When I bookmark the document with title "A cohomology theory for colored tangles"
+     And I am on the search page
+    Then I should see a clickable tag facet with name "All"
+
 Scenario: Filtering by All should list bookmarked documents
     When I bookmark the document with title "A cohomology theory for colored tangles"
      And I filter by tag "All"
     Then I should see "A cohomology theory for colored tangles"
 
-Scenario: Filtering by All when no documents are bookmarked should render 'No hits for tag'
-    When I filter by tag "All"
+Scenario: Filtering by All when no documents match search are bookmarked should render 'No hits for tag'
+    When I bookmark the document with title "A cohomology theory for colored tangles"
+     And I filter by tag "All"
+     And I search for "title:(asdf)"
     Then I should see "No saved references match the filter(s) you applied."
 
 Scenario: Bookmark constraints should be displayed above the search result
