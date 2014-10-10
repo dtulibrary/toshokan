@@ -2,7 +2,7 @@
   <p>You're about to save 1 article to Mendeley</p>
 
   <h6>Save in</h6>
-  <form method="get" action="<%= url_for(params.merge({ :format => :json }))%>">
+  <form method="post" action="<%= mendeley_show_save_path(params[:id]) %>" data-remote="true">
     <select name="folder" autofocus="autofocus">
       <optgroup label="Folders">
         <option value="">Unsorted</option>
@@ -14,11 +14,12 @@
     </select>
 
     <h6>Tags</h6>
-    <input name="tags" type="text"></div>
+    <input name="tags" type="text"/>
 
     <% params.each do |k,v| %>
-      <input type="hidden" name="<%= k %>" value="<%= v %>"></input>
+      <input type="hidden" name="<%= k %>" value="<%= v %>"/>
     <% end %>
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>"/>
 
     <h6></h6>
     <button type="submit" class="btn">Save</button>

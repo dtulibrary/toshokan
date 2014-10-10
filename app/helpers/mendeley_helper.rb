@@ -46,13 +46,16 @@ module MendeleyHelper
     groups.map{ |g| content_tag('option', g['name'], :value => "@#{g['id']}") + render_mendeley_folders(g['folders'], nil, 1) }.join(' ').html_safe
   end
 
-
   def save_to_mendeley(solr_documents, folder, tags)
-    folder, group = folder.split('@')
     solr_documents.each do |d|
       next if d['format'] == 'journal'
+      save_document_to_mendeley d, folder, tags
+    end
+  end
 
-      mendeley_document = solr_to_mendeley(d, group, tags).to_json
+  def save_document_to_mendeley(solr_document, folder, tags)
+    folder, group = folder.split('@')
+      mendeley_document = solr_to_mendeley(solr_document, group, tags).to_json
 
       logger.info mendeley_document
 
@@ -79,8 +82,6 @@ module MendeleyHelper
           })
         logger.info response.inspect
       end
-
-    end
   end
 
   def solr_to_mendeley(solr_document, group, tags)

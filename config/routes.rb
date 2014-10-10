@@ -7,6 +7,8 @@ Toshokan::Application.routes.draw do
     get   '/journal',                               :to => 'catalog#journal',                       :as => 'catalog_journal'
     get   '/mendeley',                              :to => 'catalog#mendeley_index',                :as => 'mendeley_index'
     get   '/mendeley/:id',                          :to => 'catalog#mendeley_show',                 :as => 'mendeley_show'
+    post  '/mendeley',                              :to => 'catalog#mendeley_index_save',           :as => 'mendeley_index_save'
+    post  '/mendeley/:id',                          :to => 'catalog#mendeley_show_save',            :as => 'mendeley_show_save'
     get   '/cover_images/:id',                      :to => 'cover_images#show',                     :as => 'cover_images'
 
 
