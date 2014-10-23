@@ -10,7 +10,7 @@ Toshokan::Application.routes.draw do
     post  '/mendeley',                              :to => 'catalog#mendeley_index_save',           :as => 'mendeley_index_save'
     post  '/mendeley/:id',                          :to => 'catalog#mendeley_show_save',            :as => 'mendeley_show_save'
     get   '/cover_images/:id',                      :to => 'cover_images#show',                     :as => 'cover_images'
-
+    get   '/progress/:name',                        :to => 'progress#show',                         :as => 'show_progress'
 
     # Mendeley oauth
     get   '/auth/mendeley/login',                  :to => 'mendeley/sessions#new',                  :as => 'new_mendeley_session'

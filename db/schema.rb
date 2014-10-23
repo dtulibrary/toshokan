@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140311083238) do
+ActiveRecord::Schema.define(:version => 20141010190213) do
 
   create_table "assistance_requests", :force => true do |t|
     t.string   "type"
@@ -110,6 +110,19 @@ ActiveRecord::Schema.define(:version => 20140311083238) do
   add_index "orders", ["supplier_order_id"], :name => "index_orders_on_supplier_order_id"
   add_index "orders", ["user_id"], :name => "index_orders_on_user_id"
   add_index "orders", ["uuid"], :name => "index_orders_on_uuid"
+
+  create_table "progresses", :force => true do |t|
+    t.string   "name"
+    t.float    "start"
+    t.float    "current"
+    t.float    "end"
+    t.boolean  "stop"
+    t.boolean  "finished"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "progresses", ["name"], :name => "index_progresses_on_name"
 
   create_table "roles", :force => true do |t|
     t.string   "name"
