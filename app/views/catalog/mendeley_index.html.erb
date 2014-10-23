@@ -3,7 +3,7 @@
     records from the current search result to Mendeley</p>
 
   <h6>Save in</h6>
-  <form method="post" action="<%= mendeley_index_save_path %>" data-remote="true">
+  <form id="mendeley-save-form"  method="post" action="<%= mendeley_index_save_path %>" data-remote="true">
     <select name="folder" autofocus="autofocus">
       <optgroup label="Folders">
         <option value="">Unsorted</option>
@@ -24,6 +24,9 @@
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     
     <h6></h6>
-    <button type="submit" class="btn">Save</button>
+    <button id="mendeley-save-submit" type="submit" class="btn">Save</button>
+    <div id="mendeley-save-progress" class="progress" style="display:none" data-name="<%= @export_id %>">
+      <div class="bar" style="width: 0%;"></div>
+    </div>
   </form>
 </div>

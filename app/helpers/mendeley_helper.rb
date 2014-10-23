@@ -46,10 +46,22 @@ module MendeleyHelper
     groups.map{ |g| content_tag('option', g['name'], :value => "@#{g['id']}") + render_mendeley_folders(g['folders'], nil, 1) }.join(' ').html_safe
   end
 
-  def save_to_mendeley(solr_documents, folder, tags)
-    solr_documents.each do |d|
-      next if d['format'] == 'journal'
-      save_document_to_mendeley d, folder, tags
+  def save_to_mendeley(solr_documents, folder, tags, options = {})
+    p = Progress.create({:name => options[:progress_name], :start => 0, :end => solr_documents.count, :current => 0, :stop => false, :finished => false}) if options[:progress_name]
+    Thread.new do
+      solr_documents.each_with_index do |d,i|
+        next if d['format'] == 'journal'
+        save_document_to_mendeley d, folder, tags
+        if options[:progress_name]
+          p.current = i+1
+          p.save
+        end
+      end
+      if options[:progress_name]
+        p.finished = true
+        p.save
+      end
+      ActiveRecord::Base.connection.close
     end
   end
 

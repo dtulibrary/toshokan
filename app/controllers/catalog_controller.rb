@@ -357,7 +357,7 @@ class CatalogController < ApplicationController
         (@response, @document_list) = get_search_results(params, extra_search_params)
         @num_found = @response['response']['numFound']
         @max_export = blacklight_config.max_per_page
-        @export_id  = SecureRandom.base64
+        @export_id  = SecureRandom.uuid
         @folders, @groups = mendeley_folders_and_groups
         render layout: 'external_page'
       end
@@ -367,13 +367,13 @@ class CatalogController < ApplicationController
   def mendeley_index_save
     extra_search_params = {:rows => blacklight_config.max_per_page, :facet => false, :stat => false}
     (@response, @document_list) = get_search_results(params, extra_search_params)
-    save_to_mendeley @document_list, params['folder'], params['tags'].split(',').map(&:strip)
+    save_to_mendeley @document_list, params['folder'], params['tags'].split(',').map(&:strip), {:progress_name => params['export_id']}
     respond_to do |format|
       format.html do
         render :inline => 'Saved', layout: 'external_page'
       end
       format.js do
-        render :js => 'alert("Saved");'
+        render :js => ''
       end
     end
   end
@@ -396,7 +396,7 @@ class CatalogController < ApplicationController
         render :inline => 'Saved', layout: 'external_page'
       end
       format.js do
-        render :js => 'alert("Saved");'
+        render :js => ''
       end
     end
   end

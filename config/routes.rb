@@ -13,9 +13,9 @@ Toshokan::Application.routes.draw do
     get   '/progress/:name',                        :to => 'progress#show',                         :as => 'show_progress'
 
     # Mendeley oauth
-    get   '/auth/mendeley/login',                  :to => 'mendeley/sessions#new',                  :as => 'new_mendeley_session'
-    get   '/auth/mendeley/callback',               :to => 'mendeley/sessions#create',               :as => 'create_mendeley_session'
-    get   '/auth/mendeley/setup',                  :to => 'mendeley/sessions#setup',                :as => 'setup_mendeley_session'
+    get   '/auth/mendeley/login',                   :to => 'mendeley/sessions#new',                 :as => 'new_mendeley_session'
+    get   '/auth/mendeley/callback',                :to => 'mendeley/sessions#create',              :as => 'create_mendeley_session'
+    get   '/auth/mendeley/setup',                   :to => 'mendeley/sessions#setup',               :as => 'setup_mendeley_session'
 
     # Authentication
     get   '/login',                                 :to => 'users/sessions#new',                    :as => 'new_user_session'
