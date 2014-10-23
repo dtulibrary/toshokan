@@ -32,7 +32,7 @@
             }, 'json');
         }
 
-        $('body').on('ajax:success', '#mendeley-save-form', function () {
+        $('#mendeley-save-form').on('ajax:send', function () {
             pollProgress();
             $('#mendeley-save-submit').hide();
             $('#mendeley-save-progress').show();
