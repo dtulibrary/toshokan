@@ -23,13 +23,12 @@
             jQuery.get('/progress/' + name, '', function(data) {
                 if (data) {
                     percent = 100*(data['current']-data['start'])/(data['end']-data['start']);
- }                    console.log(percent);
                     $('#mendeley-save-progress .bar').width(percent + '%');
                     if (percent >= 100.0) {
                         parent.$('#mendeley-modal').modal('hide');
                     }
                 }
-                setTimeout(pollProgress, 500);
+                window.setTimeout(pollProgress, 500);
             }, 'json');
         }
 
