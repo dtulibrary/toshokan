@@ -17,7 +17,7 @@
     <h6>Tags</h6>
     <input name="tags" type="text"/>
 
-    <% Rack::Utils.parse_query(URI(request.url).query).each do |k,v| %>
+    <% Rack::Utils.parse_query(Rack::Utils.build_nested_query(params)).each do |k,v| %>
       <input type="hidden" name="<%= k %>" value="<%= v %>"/>
     <% end %>
     <input type="hidden" name="export_id" value="<%= @export_id %>"/>
