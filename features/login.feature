@@ -1,4 +1,3 @@
-
 Feature: Login and logout
 
 Scenario: User logs in and out

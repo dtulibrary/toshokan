@@ -7,7 +7,7 @@ When /^I click on the title for the first of the results$/ do
 end
 
 When /^I go to the next document$/ do
-  page.find('#previousNextDocument .next').click   
+  page.find('#previousNextDocument .next').click
 end
 
 Then /^I should see the page for a single document$/ do
@@ -24,10 +24,8 @@ Then /^I should get a "(.*?)" file$/ do |extension|
 end
 
 Given /^I go to the record page for "(.*?)"$/ do |title|
-  steps %{
-    And I have searched for "title:(#{title})"
-    And I click the link "#{title}"
-  }
+  step "I have searched for \"title:(#{title})\""
+  step "I click the link \"#{title}\""
 end
 
 Then /^I should see the citations$/ do
@@ -39,11 +37,10 @@ Then /^I should see the document titled "(.*?)"$/ do |title|
 end
 
 Given /^I go to the standalone page for id "(.*?)"$/ do |id|
-  visit solr_document_path(:id => id)  
+  visit solr_document_path(:id => id)
 end
 
 When /^I click the link for journal "(.*?)"$/ do |title|
-  Alert.stub(:get).and_return(double(:success? => false, :body => "null", :code => 404))  
+  Alert.stub(:get).and_return(double(:success? => false, :body => "null", :code => 404))
   step "I click the link \"#{title}\""
 end
-

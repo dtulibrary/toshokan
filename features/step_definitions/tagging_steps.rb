@@ -4,10 +4,8 @@ Given /^I bookmark the( first)? document$/ do |first|
 end
 
 When /^I bookmark the document with title "(.*?)"$/ do |title|
-  steps %{
-    And I go to the record page for "#{title}"
-    And I bookmark the document
-  }
+  step "I go to the record page for \"#{title}\""
+  step "I bookmark the document"
 end
 
 When /^I unbookmark the( first)? document$/ do |first|
@@ -79,7 +77,7 @@ end
 Given /^I rename tag "(.*?)" to "(.*?)"$/ do |tag_name, new_tag_name|
   visit manage_tags_path
   within(:xpath, "//tr[td/span/text()='#{tag_name}']") do
-    find(:xpath, "//a[@title='Edit']").click    
+    find(:xpath, "//a[@title='Edit']").click
   end
   fill_in('tag_name', :with => new_tag_name)
   click_button 'Save'
@@ -88,7 +86,7 @@ end
 Given /^I delete tag "(.*?)"$/ do |tag_name|
   visit manage_tags_path
   within(:xpath, "//tr[td/span/text()='#{tag_name}']") do
-    find(:xpath, "//a[@title='Delete']").click        
+    find(:xpath, "//a[@title='Delete']").click
   end
 end
 
