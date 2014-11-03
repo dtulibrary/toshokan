@@ -421,7 +421,6 @@ DEPENDENCIES
   guard-rails_best_practices
   guard-rspec
   hashie
-  highline
   httparty
   jettywrapper
   jquery-rails (~> 2.3.0)

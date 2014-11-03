@@ -99,6 +99,13 @@ class LibrarySupport
     if response
       assistance_request.library_support_issue = response['issue']['id']
       assistance_request.save!
+
+      order = Order.where('assistance_request_id = ?', assistance_request.id).first
+      if order
+        order.supplier_order_id = response['issue']['id']
+        order.order_events << OrderEvent.new(:name => 'delivery_manual', :data => response['issue']['id'])
+        order.save!
+      end
     else 
       raise 'Error creating RedMine issue'
     end

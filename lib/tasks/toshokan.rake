@@ -61,6 +61,70 @@ namespace :orders do
       order.save!
     end
   end
+
+  task :create_orders_for_existing_assistance_requests => :environment do
+    select = AssistanceRequest.where('id not in (select assistance_request_id from orders where assistance_request_id is not null)')
+    puts "Migrating #{select.count} assistance requests..."
+    select.find_each do |r| 
+      order = Order.new
+      order.user = r.user
+      order.assistance_request_id = r.id
+      order.created_at = r.created_at
+      order_updated_at = r.updated_at
+      order.supplier = :dtu_manual
+      order.supplier_order_id = r.library_support_issue
+      order.price = 0 
+      order.vat = 0 
+      order.currency = :DKK
+      order.email = r.user.email
+      order.uuid = UUIDTools::UUID.timestamp_create.to_s
+      order.open_url = r.openurl.kev
+      order.org_unit = r.user.user_data["dtu"]["org_units"].first if r.user.dtu?
+      order.delivery_status = :initiated
+      order.order_events << OrderEvent.new(:name => 'delivery_manual', :data => r.library_support_issue)
+      order.save!
+    end 
+    puts "Done."
+  end
+
+  task :retrofit_user_type => :environment do
+    select = Order.where(:user_type => nil)
+    puts "Retrofitting user type on #{select.count} orders..."
+    select.find_each do |order|
+      if order.user.blank?
+        order.user_type = 'anonymous'
+      else
+        order.user_type = order.user.type
+      end 
+      order.save!
+    end 
+    puts "Done."
+  end 
+
+  task :retrofit_origin => :environment do
+    select = Order.where(:origin => nil)
+    puts "Retrofitting origin on #{select.count} orders..."
+    select.find_each do |order|
+      order.origin = order.assistance_request_id.blank? ? 'scan_request' : 'assistance_request'
+      order.save!
+    end 
+    puts "Done."
+  end
+
+  task :retrofit_year_and_month => :environment do
+    select = Order.where(:created_year => nil)
+    puts "Retrofitting year and month on #{select.count} orders..."
+    select.find_each do |order|
+      order.created_year  = order.created_at.year.to_s
+      order.created_month = order.created_at.month.to_s
+      unless order.delivered_at.blank?
+        order.delivered_year  = order.delivered_at.year.to_s
+        order.delivered_month = order.delivered_at.month.to_s
+      end 
+      order.save!
+    end 
+    puts "Done."
+  end
 end
 
 def fetch_account matrikel_id, url

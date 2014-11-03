@@ -2,37 +2,15 @@
   <h5 class="header"><%= t 'toshokan.orders.your_order' %><%= @order.persisted? ? ": #{@order.dibs_order_id}" : ''%></h5>
   <hr>
   <div class="items">
-    <div class="metadata">
-      <div class="title">"<%= @order.document['title_ts'].first %>"</div>
-      <div class="author"><%= t 'toshokan.orders.by' %> <%= @order.document['author_ts'].first %></div>
-      <div class="journal"><%= @order.document['journal_title_ts'].first %></div>
-    </div>
-    <div><%= t 'toshokan.orders.price_excl_vat' %> <%= render_formatted_price @order.price, @order.currency %></div>
+    <%= render :partial => 'article_item', :locals => {:order => @order} %>
+    <% unless @order.assistance_request %>
+      <div><%= t 'toshokan.orders.price_excl_vat' %> <%= render_formatted_price @order.price, @order.currency %></div>
+    <% end %>
   </div>
   <hr>
-  <% if @order.email %>
-    <div class="delivery-info">
-      <% [:email, :mobile, :customer_ref].each do |method| %>
-        <% unless @order.send(method).blank? %>
-          <div>
-            <%= t "toshokan.orders.summary.#{method}" %>:<span class="pull-right"><%= @order.send method %></span>
-          </div>
-        <% end %>
-      <% end %>
-      <% if @order.masked_card_number %>
-        <div>
-          <%= t 'toshokan.orders.summary.paid_with_card' %>:<span class="pull-right"><%= @order.masked_card_number %></span>
-        </div>
-      <% end %>
-    </div>
-    <hr>
+  <% if @order.assistance_request %>
+    <%= render :partial => 'assistance_request_summary', :locals => {:assistance_request => @order.assistance_request} %>
+  <% else %>
+    <%= render 'price_summary' %>
   <% end %>
-  <div class="price-details">
-    <%= t 'toshokan.orders.subtotal' %>: <%= render_formatted_price @order.price, @order.currency %><br>
-    <%= t 'toshokan.orders.vat', :vat_pct => 25 %>: <%= render_formatted_price @order.vat, @order.currency %>
-  </div>
-  <hr class="heavy">
-  <div class="price">
-    <%= t 'toshokan.orders.total' %>: <%= render_formatted_price @order.price + @order.vat, @order.currency %>
-  </div>
 </div>

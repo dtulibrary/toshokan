@@ -57,4 +57,12 @@ module OrdersHelper
           :target => '_blank')), 
       :class => 'terms-accepted')
   end
+
+  def render_order_item order
+    if order.assistance_request_id
+      render :partial => '/orders/assistance_request_item', :locals => {:order => order}
+    else
+      render :partial => '/orders/article_item', :locals => {:order => order}
+    end
+  end
 end

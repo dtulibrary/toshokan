@@ -20,7 +20,6 @@ class Ability
       can :search,  :dtu
       can :request, :assistance      if user.employee? || user.student?
       can :view,    :my_publications if user.employee?
-      can :select,  :pickup_location if user.student?
     when user.public?
       # Logged in from outside DTU Campus
       can :search,  :public

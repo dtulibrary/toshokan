@@ -4,6 +4,8 @@ class AssistanceRequestsController < CatalogController
 
   include ResolverHelper
 
+  before_filter :disable_header_searchbar
+
   def index
     if can? :request, :assistance
       if can? :view, :all_assistance_requests
@@ -54,10 +56,28 @@ class AssistanceRequestsController < CatalogController
           when :confirm
             if assistance_request.valid?
               assistance_request.save!
+
+              order = Order.new
+              order.user = assistance_request.user
+              order.assistance_request_id = assistance_request.id
+              order.created_at = assistance_request.created_at
+              order_updated_at = assistance_request.updated_at
+              order.supplier = :dtu_manual
+              order.price = 0 
+              order.vat = 0 
+              order.currency = :DKK
+              order.email = assistance_request.email
+              order.uuid = UUIDTools::UUID.timestamp_create.to_s
+              order.open_url = assistance_request.openurl.kev
+              order.org_unit = assistance_request.user.user_data["dtu"]["org_units"].first if assistance_request.user.dtu?
+              order.delivery_status = :initiated
+              order.order_events << OrderEvent.new(:name => 'request_manual', :data => assistance_request.id)
+              order.save!
+
               LibrarySupport.delay.submit_assistance_request current_user, assistance_request, assistance_request_url(:id => assistance_request.id)
               SendIt.delay.send_book_suggestion current_user, assistance_request if assistance_request.book_suggest
               flash[:notice] = 'Your request was sent to a librarian'
-              redirect_to assistance_request_path(assistance_request)
+              redirect_to order_status_path(:uuid => order.uuid)
             else
               flash[:error] = assistance_request.errors
               redirect_to new_assistance_request_path(assistance_request)

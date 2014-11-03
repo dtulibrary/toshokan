@@ -24,6 +24,8 @@
                 <% if can? :view, :extended_info %>
                   <%= link_to "#{LibrarySupport.url}/issues/#{event.data}", "#{LibrarySupport.url}/issues/#{event.data}" %>
                 <% end %>
+              <% when 'request_manual' %>
+                <%= link_to assistance_request_url(:id => @order.assistance_request_id), assistance_request_path(:id => @order.assistance_request_id) %>
               <% else %>
                 <%= event.data %>
               <% end %>
@@ -33,7 +35,7 @@
     <%- end -%>
     </dl>
 
-    <% if can?(:reorder, Order) && !@order.cancelled? %>
+    <% if can?(:reorder, Order) && !@order.cancelled? && !@order.assistance_request_id %>
       <p><%= link_to t('toshokan.orders.reorder'), order_reorder_path(@order.uuid) %></p>
     <% end %>
     <% if can?(:resend, LibrarySupport) && @order.cancelled? && !@order.library_support_issue %>

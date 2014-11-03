@@ -13,15 +13,24 @@ FactoryGirl.define do
     factory :logged_in_user do
       provider 'cas'
       identifier '1234' 
+      user_data do 
+        { 'email' => 'john.doe@example.com' }
+      end
 
       factory :public_user do
       end
 
       factory :dtu_user do
         factory :dtu_employee do
+          user_data do
+            { 'email' => 'employee@dtu.dk' }
+          end
         end
 
         factory :dtu_student do
+          user_data do
+            { 'email' => 'student@dtu.dk' }
+          end
         end
       end
     end

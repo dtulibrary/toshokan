@@ -7,30 +7,43 @@ class Order < ActiveRecord::Base
 
   validates :open_url, :supplier, :price, :vat, :currency, :email, :presence => true
 
+  after_create :set_created_fields
+
   attr_accessible :user, :uuid, :open_url, :supplier, :price, :vat, :currency, :email
   attr_accessor :flow
+
+  def set_created_fields
+    unless created_at.blank?
+      created_year  = created_at.year
+      created_month = created_at.month
+    end
+  end
 
   # Convert the OpenURL of ordered document to a hash with similarly named keys like those used in solr documents
   # TODO: Return a SolrDocument instead from SolrDocument.import_from_openurl_kev or something like that
   def document
     unless @document
       @document = { :open_url => open_url }
-      ['author_ts', 'title_ts', 'journal_title_ts', 'issn_ss', 'pub_date_tis', 'journal_vol_ssf', 'journal_issue_ssf', 'journal_page_ssf', 'doi_ss'].each do |field|
-        @document[field] = []
-      end 
 
       field_map = { 
-        'rft.au' => 'author_ts',
+        'rft.au'     => 'author_ts',
         'rft.atitle' => 'title_ts',
         'rft.jtitle' => 'journal_title_ts',
-        'rft.issn' => 'issn_ss',
-        'rft.year' => 'pub_date_tis',
-        'rft.date' => 'pub_date_tis',
+        'rft.btitle' => 'title_ts',
+        'rft.issn'   => 'issn_ss',
+        'rft.year'   => 'pub_date_tis',
+        'rft.date'   => 'pub_date_tis',
         'rft.volume' => 'journal_vol_ssf',
-        'rft.issue' => 'journal_issue_ssf',
-        'rft.pages' => 'journal_page_ssf',
-        'rft.doi' => 'doi_ss'
+        'rft.issue'  => 'journal_issue_ssf',
+        'rft.pages'  => 'journal_page_ssf',
+        'rft.doi'    => 'doi_ss',
+        'rft.pub'    => 'publisher_ts',
+        'rft.place'  => 'publication_place_ts',
       }   
+
+      field_map.values.uniq.each do |field|
+        @document[field] = []
+      end
 
       open_url.scan /([^&=]+)=([^&]*)/ do |k,v|
         @document[field_map[k]].try :<<, URI.decode_www_form_component(v)
@@ -97,4 +110,7 @@ class Order < ActiveRecord::Base
     order_events.where(:name => 'delivery_manual').last.try :data
   end
 
+  def assistance_request
+    AssistanceRequest.find_by_id assistance_request_id
+  end
 end

@@ -13,12 +13,14 @@
     </p>
   <% else %>
     <div class="clearfix">
-      <%= radio_button_tag 'assistance_request[pickup_location]', 'lyngby', true %>
-      <%= label_tag 'assistance_request_pickup_location_lyngby', 
-                    t('toshokan.assistance_requests.forms.sections.pickup_location.values.lyngby_html') %>
-      <%= radio_button_tag 'assistance_request[pickup_location]', 'ballerup' %>
-      <%= label_tag 'assistance_request_pickup_location_ballerup', 
-                    t('toshokan.assistance_requests.forms.sections.pickup_location.values.ballerup_html') %>
+      <div class="radio-group">
+        <%= radio_button_tag 'assistance_request[pickup_location]', 'lyngby', true %>
+        <%= label_tag 'assistance_request_pickup_location_lyngby', 
+                      t('toshokan.assistance_requests.forms.sections.pickup_location.values.lyngby_html') %>
+        <%= radio_button_tag 'assistance_request[pickup_location]', 'ballerup' %>
+        <%= label_tag 'assistance_request_pickup_location_ballerup', 
+                      t('toshokan.assistance_requests.forms.sections.pickup_location.values.ballerup_html') %>
+      </div>
     </div>
   <% end %>
 </div>

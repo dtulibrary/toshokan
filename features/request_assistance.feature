@@ -10,17 +10,17 @@ Scenario Outline: DTU user views request assistance form
   Given I've logged in as a DTU <user_type>
    When I go to the "request assistance" form for "<genre>"
    Then I should see the "request assistance" form for "<genre>"
-    And I should see the "<should_see>" section
-    But I shouldn't see the "<should_not_see>" section
+    And I should see the "physical location" section
+    But I shouldn't see the "pickup location" section
 
 Examples:
-  | user_type | genre              | should_see        | should_not_see    |
-  | employee  | journal article    | physical location | pickup location   |
-  | employee  | conference article | physical location | pickup location   |
-  | employee  | book               | physical location | pickup location   |
-  | student   | journal article    | pickup location   | physical location |
-  | student   | conference article | pickup location   | physical location |
-  | student   | book               | pickup location   | physical location |
+  | user_type | genre              |
+  | employee  | journal article    |
+  | employee  | conference article |
+  | employee  | book               |
+  | student   | journal article    |
+  | student   | conference article |
+  | student   | book               |
 
 
 
@@ -43,17 +43,17 @@ Scenario Outline: DTU user submits valid request assistance form
    When I fill in the "request assistance" form with valid data
     And I click "Send request"
    Then I should see the "request assistance" confirmation page for "<genre>"
-    And I should see the "<should_see>" section with the submitted data
-    But I shouldn't see the "<should_not_see>" section
+    And I should see the "physical location" section with the submitted data
+    But I shouldn't see the "pickup location" section
 
 Examples:
-  | user_type | genre              | should_see        | should_not_see    |
-  | employee  | journal article    | physical location | pickup location   |
-  | employee  | conference article | physical location | pickup location   |
-  | employee  | book               | physical location | pickup location   |
-  | student   | journal article    | pickup location   | physical location |
-  | student   | conference article | pickup location   | physical location |
-  | student   | book               | pickup location   | physical location |
+  | user_type | genre              |
+  | employee  | journal article    |
+  | employee  | conference article |
+  | employee  | book               |
+  | student   | journal article    |
+  | student   | conference article |
+  | student   | book               |
 
 
 
@@ -108,15 +108,13 @@ Scenario Outline: DTU user confirms assistance request
     And I've submitted a valid assistance request for "<genre>"
    When I click "Confirm request"
    Then I should see "Your request was sent to a librarian"
-    And I should see the submitted data
-    And I should see the "<should_see>" section with the submitted data
-    But I should not see the "<should_not_see>" section
+    And I should see "Order Status"
 
 Examples:
-  | user_type | genre              | should_see        | should_not_see    |
-  | employee  | journal article    | physical location | pickup location   |
-  | employee  | conference article | physical location | pickup location   |
-  | employee  | book               | physical location | pickup location   |
-  | student   | journal article    | pickup location   | physical location |
-  | student   | conference article | pickup location   | physical location |
-  | student   | book               | pickup location   | physical location |
+  | user_type | genre              |
+  | employee  | journal article    |
+  | employee  | conference article |
+  | employee  | book               |
+  | student   | journal article    |
+  | student   | conference article |
+  | student   | book               |

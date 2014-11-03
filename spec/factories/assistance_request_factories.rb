@@ -48,10 +48,22 @@ FactoryGirl.define do
   factory :book_assistance_request do
     book_title 'Testing Super-bible'
     book_year  '1999'
+
+    factory :book_suggestion_assistance_request do
+      book_suggest '1'
+      notes        'This book is so good'
+    end
   end
 
   factory :book_assistance_request_form_post, :class => Hash do
     assistance_request { attributes_for :book_assistance_request }
+    genre :book
+
+    initialize_with { attributes }
+  end
+
+  factory :book_suggestion_assistance_request_form_post, :class => Hash do
+    assistance_request { attributes_for :book_suggestion_assistance_request }
     genre :book
 
     initialize_with { attributes }

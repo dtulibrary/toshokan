@@ -25,15 +25,24 @@ en:
         payment_authorized: Payment authorized
         payment_cancelled: Payment cancelled
         payment_captured: Payment completed
+        request_manual: Requested manually using form
       facets:
         order_price:
           title: Order price (in DKK excl. VAT)
         user:
           title: User (top 20)
+        user_type:
+          title: User type
+          values:
+            dtu_staff: DTU employee
+            dtu_student: DTU student
+            walkin: Walk-in
+            public: Public
+            anonymous: Anonymous
         email: 
           title: Email
         org_unit: 
-          title: Institute
+          title: User's organisation
           values:
             '41': DTU Mechanical Engineering
             'stud': Students
@@ -71,13 +80,62 @@ en:
             '60': DTU Adgangskursus
             'KME': Copenhagen School of Marine Engineering and Technology Management
             'ADMIT': IT Service
+        origin:
+          title: Order origin
+          values:
+            scan_request: Scan request
+            assistance_request: Forms
         year: 
           title: Year
         supplier:
-          title: Supplier
+          title: Document supplier
           values:
             rd: Reprints Desk
             dtu: DTU Local scan
+            dtu_manual: Library Support
+        delivery_status:
+          title: Order status
+          values:
+            deliver: Delivered
+            cancelled: Cancelled
+            initiated: Initiated
+            delivery_requested: Requested at supplier
+            redelivery_requested: Re-requested at supplier
+            reordered: Re-ordered
+        order_start_year:
+          title: Order start year
+        order_start_month:
+          title: Order start month
+          values:
+            '1':  January
+            '2':  February
+            '3':  March
+            '4':  April
+            '5':  May
+            '6':  June
+            '7':  July
+            '8':  August
+            '9':  September
+            '10': October
+            '11': November
+            '12': December
+        order_end_year:
+          title: Order end year
+        order_end_month:
+          title: Order end month
+          values:
+            '1':  January
+            '2':  February
+            '3':  March
+            '4':  April
+            '5':  May
+            '6':  June
+            '7':  July
+            '8':  August
+            '9':  September
+            '10': October
+            '11': November
+            '12': December
         event:
           title: Order event
           values:
@@ -165,6 +223,8 @@ en:
         paid_with_card: Pay with credit card
       suppliers:
         rd: Reprints Desk
+        dtu: DTU DocDel
+        dtu_manual: Library Support
       terms_of_service: Terms and conditions
       text:
         dtu_html: 

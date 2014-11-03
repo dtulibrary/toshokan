@@ -9,7 +9,7 @@ describe AssistanceRequestsController do
 
   describe '#index' do
     before do
-      other_user = FactoryGirl.create :dtu_employee, :identifier => '4321'
+      other_user = FactoryGirl.create :dtu_employee, :identifier => '4321', :email => 'other@dtu.dk'
       @request1 = FactoryGirl.create :journal_article_assistance_request, :user => @user
       @request2 = FactoryGirl.create :conference_article_assistance_request, :user => other_user
     end
@@ -119,14 +119,33 @@ describe AssistanceRequestsController do
                 }.to change(assistance_request_classes[genre], :count).by 1
               end
 
-              it 'sends a mail to delivery support' do
-                SendIt.delay.should_receive :send_request_assistance_mail
+              it 'creates an order for the request' do
+                expect {
+                  post :create, FactoryGirl.build(form_posts[genre], :button => 'confirm')
+                }.to change(Order, :count).by 1
+              end
+
+              it 'creates an issue in library support redmine' do
+                LibrarySupport.stub(:delay).and_return LibrarySupport
+                LibrarySupport.should_receive :submit_assistance_request
                 post :create, FactoryGirl.build(form_posts[genre], :button => 'confirm')
               end
 
-              it 'redirects to #show' do
+              it 'redirects to the order status page' do
                 post :create, FactoryGirl.build(form_posts[genre], :button => 'confirm')
-                should redirect_to assistance_request_path(assistance_request_classes[genre].send :first)
+                assistance_request_id = AssistanceRequest.first.id
+                order = Order.where(:assistance_request_id => assistance_request_id).first
+                should redirect_to order_status_path(:uuid => order.uuid)
+              end
+            end
+          end
+
+          context 'when genre is book' do
+            context 'when user suggests book acquisition' do
+              it 'sends a book suggestion email' do
+                SendIt.stub(:delay).and_return SendIt
+                SendIt.should_receive :send_book_suggestion
+                post :create, FactoryGirl.build(:book_suggestion_assistance_request_form_post, :button => 'confirm' )
               end
             end
           end

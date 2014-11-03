@@ -63,20 +63,22 @@ class OrdersController < ApplicationController
       end
     end
 
-    @filter_queries = {}
+    # Create facets
     @facets = ActiveSupport::OrderedHash.new
+    @facet_labels = {}
+    @filter_queries = {}
   
     if can? :view_any, Order # Perhaps this should be can? :view, :orders_facets
-      # Apply email filter query
-#      if params[:email] && !params[:email].blank?
-#        @orders = @orders.where "email = ?", params[:email]
-#        @filter_queries[:email] = params[:email]
-#      end
-
       # Apply user filter query
       if params[:user] && !params[:user].blank?
         @orders = @orders.where :user_id => params[:user].first
         @filter_queries[:user] = [params[:user]].flatten
+      end
+
+      # Apply user type filter query
+      if params[:user_type] && !params[:user_type].blank?
+        @orders = @orders.where :user_type => params[:user_type].first
+        @filter_queries[:user_type] = [params[:user_type]].flatten
       end
 
       # Apply year filter query
@@ -95,6 +97,11 @@ class OrdersController < ApplicationController
         @filter_queries[:org_unit] = [params[:org_unit]].flatten
       end
 
+      if params[:origin] && !params[:origin].blank?
+        @orders = @orders.where :origin => params[:origin].first
+        @filter_queries[:origin] = [params[:origin]].flatten
+      end
+
       # Apply order price filter query
       if params[:order_price] && !params[:order_price].blank?
         @orders = @orders.where :price => params[:order_price].first
@@ -107,7 +114,37 @@ class OrdersController < ApplicationController
         @filter_queries[:supplier] = [params[:supplier]].flatten
       end
   
-      # Apply status filter query
+      # Apply order status filter query
+      if params[:delivery_status] && !params[:delivery_status].blank?
+        @orders = @orders.where :delivery_status => params[:delivery_status].first
+        @filter_queries[:delivery_status] = [params[:delivery_status]].flatten
+      end
+
+      # Apply order start year filter query
+      if params[:order_start_year] && !params[:order_start_year].blank?
+        @orders = @orders.where :created_year => params[:order_start_year].first
+        @filter_queries[:order_start_year] = [params[:order_start_year]].flatten
+      end
+
+      # Apply order start month filter query
+      if params[:order_start_month] && !params[:order_start_month].blank?
+        @orders = @orders.where :created_month => params[:order_start_month].first
+        @filter_queries[:order_start_month] = [params[:order_start_month]].flatten
+      end
+
+      # Apply order end year filter query
+      if params[:order_end_year] && !params[:order_end_year].blank?
+        @orders = @orders.where :delivered_year => params[:order_end_year].first
+        @filter_queries[:order_end_year] = [params[:order_end_year]].flatten
+      end
+
+      # Apply order end month filter query
+      if params[:order_end_month] && !params[:order_end_month].blank?
+        @orders = @orders.where :delivered_month => params[:order_end_month].first
+        @filter_queries[:order_end_month] = [params[:order_end_month]].flatten
+      end
+
+      # Apply event filter query
       if params[:event] && !params[:event].blank?
         events = [params[:event]].flatten
         where_clause = (['orders.id in (select order_id from order_events where name = ?)'] * events.size).join ' and '
@@ -115,14 +152,8 @@ class OrdersController < ApplicationController
         @filter_queries[:event] = events
       end
 
-      # Create facets
-#      @facets[:email]    = @orders.group('email')
-#                                  .reorder('count_all desc')
-#                                  .count
-
       # User facet
       @facets[:user] = ActiveSupport::OrderedHash.new
-      @facet_labels = {}
       @facet_labels[:user] = {}
       @orders.where('user_id is not null').group('user_id').reorder('count_all desc').limit(20).count.each do |user_id, count|
         user_id = user_id.to_s
@@ -135,41 +166,78 @@ class OrdersController < ApplicationController
         end
       end
 
+      # User type facet
+      @facets[:user_type] = @orders.group('user_type')
+                                   .reorder('count_all desc')
+                                   .count
+
       # Institute facet
       @facets[:org_unit] = @orders.where('org_unit is not null')
                                   .group('org_unit')
                                   .reorder('count_all desc')
                                   .count
 
-      # Order price facet
-      @facets[:order_price] = ActiveSupport::OrderedHash.new
-      @facet_labels[:order_price] = {}
-      @orders.group('price').reorder('count_all desc').count.each do |price, count|
-        price = price.to_s
-        @facets[:order_price][price] = count
-        @facet_labels[:order_price][price] = (price.to_i / 100).to_s
-      end
+      # Order origin facet
+      @facets[:origin] = @orders.group('origin')
+                                .reorder('count_all desc')
+                                .count
 
-      # Supplier facet
-      @facets[:supplier]    = @orders.group('supplier')
-                                     .reorder('count_all desc')
-                                     .count
+      # Order status facet
+      @facets[:delivery_status] = @orders.group('delivery_status')
+                                         .reorder('count_all desc')
+                                         .count
+      # Order price facet
+#      @facets[:order_price] = ActiveSupport::OrderedHash.new
+#      @facet_labels[:order_price] = {}
+#      @orders.group('price').reorder('count_all desc').count.each do |price, count|
+#        price = price.to_s
+#        @facets[:order_price][price] = count
+#        @facet_labels[:order_price][price] = (price.to_i / 100).to_s
+#      end
+
+      # Order duration facet
+
+      # Order start year facet
+      @facets[:order_start_year] = @orders.group('created_year')
+                                          .reorder('count_all desc')
+                                          .count
+
+      # Order start month facet
+      @facets[:order_start_month] = @orders.group('created_month')
+                                           .reorder('count_all desc')
+                                           .count
+
+      # Order end year facet
+      @facets[:order_end_year] = @orders.where('delivered_at is not null')
+                                        .group('delivered_year')
+                                        .reorder('count_all desc')
+                                        .count
+
+      # Order end month facet
+      @facets[:order_end_month] = @orders.where('delivered_at is not null')
+                                         .group('delivered_month')
+                                         .reorder('count_all desc')
+                                         .count
+
+      @facets[:supplier] = @orders.group('supplier')
+                                  .reorder('count_all desc')
+                                  .count
 
       # Order event facet
-      @facets[:event]       = @orders.joins(:order_events)
-                                     .group(:name)
-                                     .reorder('count_all desc')
-                                     .count
+#      @facets[:event] = @orders.joins(:order_events)
+#                               .group(:name)
+#                               .reorder('count_all desc')
+#                               .count
 
       # Year facet
       # Since SQLite doesn't support extract(year from created_at) we have to wiggle a bit for the year facet
       # Group by date and sum up counts per year
-      @facets[:year] = ActiveSupport::OrderedHash.new
-      @orders.select('date(created_at)').group('date(created_at)').reorder('date(created_at) desc').count.each do |date, count|
-        year = date[0..3]
-        @facets[:year][year] ||= 0
-        @facets[:year][year] += count
-      end
+#      @facets[:year] = ActiveSupport::OrderedHash.new
+#      @orders.select('date(created_at)').group('date(created_at)').reorder('date(created_at) desc').count.each do |date, count|
+#        year = date[0..3]
+#        @facets[:year][year] ||= 0
+#        @facets[:year][year] += count
+#      end
     end
    
     # Reject facets with no terms
@@ -424,6 +492,8 @@ class OrdersController < ApplicationController
         @order.order_events << OrderEvent.new(:name => is_redelivery ? 'redelivery_done' : 'delivery_done', :data => params[:url])
         @order.delivery_status = delivery_status
         @order.delivered_at = Time.now
+        @order.delivered_year = @order.delivered_at.year
+        @order.delivered_month = @order.delivered_at.month
         @order.save!
         
         SendIt.delay.send_delivery_mail @order, :url => params[:url], :order => {:status_url => order_status_url(@order.uuid)}

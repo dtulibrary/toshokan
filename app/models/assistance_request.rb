@@ -1,5 +1,6 @@
 class AssistanceRequest < ActiveRecord::Base
   belongs_to :user
+  has_one :order
   validates :user_id, :presence => true
   attr_protected :type, :user_id
   serialize :physical_location, JSON
@@ -14,7 +15,7 @@ class AssistanceRequest < ActiveRecord::Base
       'journal' => [
         {:name => 'journal_title',  :ou => 'jtitle',  :required => true},
         {:name => 'journal_issn',   :ou => 'issn'},
-        {:name => 'journal_volume', :ou => 'volumne', :required => true},
+        {:name => 'journal_volume', :ou => 'volume', :required => true},
         {:name => 'journal_issue',  :ou => 'issue',   :required => true, },
         {:name => 'journal_year',   :ou => 'date',    :required => true},
         {:name => 'journal_pages',  :ou => 'pages',   :required => true}
@@ -31,7 +32,7 @@ class AssistanceRequest < ActiveRecord::Base
       ],
       'book' => [
         {:name => 'book_title',     :ou => 'btitle', :required => true},
-        {:name => 'book_author',    :ou => 'author'},
+        {:name => 'book_author',    :ou => 'au'},
         {:name => 'book_edition'},
         {:name => 'book_doi',       :ou => 'doi'},
         {:name => 'book_isbn',      :ou => 'isbn'},

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141010190213) do
+ActiveRecord::Schema.define(:version => 20141028100301) do
 
   create_table "assistance_requests", :force => true do |t|
     t.string   "type"
@@ -96,14 +96,21 @@ ActiveRecord::Schema.define(:version => 20141010190213) do
     t.string   "delivery_status"
     t.datetime "payed_at"
     t.datetime "delivered_at"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
     t.integer  "user_id"
     t.text     "open_url"
     t.string   "masked_card_number"
     t.text     "supplier_order_id"
     t.text     "docdel_order_id"
     t.text     "org_unit"
+    t.integer  "assistance_request_id"
+    t.text     "user_type"
+    t.text     "origin"
+    t.text     "created_year"
+    t.text     "created_month"
+    t.text     "delivered_year"
+    t.text     "delivered_month"
   end
 
   add_index "orders", ["docdel_order_id"], :name => "index_orders_on_docdel_order_id"

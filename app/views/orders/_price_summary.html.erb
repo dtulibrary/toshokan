@@ -1,0 +1,25 @@
+<% if @order.email %>
+  <div class="delivery-info">
+    <% [:email, :mobile, :customer_ref].each do |method| %>
+      <% unless @order.send(method).blank? %>
+        <div>
+          <%= t "toshokan.orders.summary.#{method}" %>:<span class="pull-right"><%= @order.send method %></span>
+        </div>
+      <% end %>
+    <% end %>
+    <% if @order.masked_card_number %>
+      <div>
+        <%= t 'toshokan.orders.summary.paid_with_card' %>:<span class="pull-right"><%= @order.masked_card_number %></span>
+      </div>
+    <% end %>
+  </div>
+  <hr>
+<% end %>
+<div class="price-details">
+  <%= t 'toshokan.orders.subtotal' %>: <%= render_formatted_price @order.price, @order.currency %><br>
+  <%= t 'toshokan.orders.vat', :vat_pct => 25 %>: <%= render_formatted_price @order.vat, @order.currency %>
+</div>
+<hr class="heavy">
+<div class="price">
+  <%= t 'toshokan.orders.total' %>: <%= render_formatted_price @order.price + @order.vat, @order.currency %>
+</div>

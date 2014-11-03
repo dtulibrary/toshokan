@@ -73,7 +73,6 @@ group :development do
   gem 'guard-rails'
   gem 'guard-rails_best_practices'
   gem 'guard-migrate'
-  gem 'highline'
   # eventmachine 0.12.10 does not compile on windows
   gem 'eventmachine', '~> 1.0.0.rc4', :platforms => :mswin
   gem 'rb-fsevent'

@@ -80,7 +80,7 @@
         <thead>
           <tr>
             <th>Order info</th>
-            <th>Article</th>
+            <th>Item</th>
           </tr>
         </thead>
         <tbody>
@@ -96,7 +96,7 @@
                   <%= render :partial => 'order_info', :locals => {:order => order} %>
                 </td>
                 <td>
-                  <%= render :partial => 'article_info', :locals => {:order => order} %>
+                  <%= render_order_item order %>
                 </td>
               </li>
             <% end %>
