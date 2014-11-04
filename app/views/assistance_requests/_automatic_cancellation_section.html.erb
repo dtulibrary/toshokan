@@ -14,7 +14,7 @@
     </p>
   <% else -%>
     <div class="radio-group">
-      <% ['6', '3', '1'].each do |value| %>
+      <% AssistanceRequest.auto_cancel_values_in_days.each do |value| %>
         <%= radio_button_tag 'assistance_request[auto_cancel]', value, @assistance_request.auto_cancel == value %>
         <%= label_tag "assistance_request_auto_cancel_#{value}", 
               t("toshokan.assistance_requests.forms.sections.automatic_cancellation.values.#{value}") %>

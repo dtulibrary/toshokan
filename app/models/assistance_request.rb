@@ -5,6 +5,10 @@ class AssistanceRequest < ActiveRecord::Base
   attr_protected :type, :user_id
   serialize :physical_location, JSON
 
+  def self.auto_cancel_values_in_days
+    ['180', '90' ,'30']
+  end
+
   def self.form_sections
     {
       'article' => [
