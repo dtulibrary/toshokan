@@ -127,6 +127,18 @@ namespace :orders do
   end
 end
 
+namespace :assistance_requests do
+  task :retrofit_auto_cancel => :environment do
+    select = AssistanceRequest.where(:auto_cancel => 'never')
+    puts "Retrofitting auto cancel on #{select.count} assistance requests..."
+    select.find_each do |r|
+      r.auto_cancel = nil
+      r.save!
+    end
+    puts "Done."
+  end
+end
+
 def fetch_account matrikel_id, url
   url += "&XPathExpression=#{URI.encode_www_form_component "/account[@matrikel_id = #{matrikel_id}]"}"
   response = HTTParty.get url

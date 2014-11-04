@@ -1,7 +1,7 @@
 <dl>
   <dt>Created</dt>
   <dd><tt><%= l assistance_request.created_at, :format => :short %></tt></dd>
-  <% if assistance_request.auto_cancel != 'never' %>
+  <% unless assistance_request.auto_cancel.blank? %>
     <dt>Automatically cancel</dt>
     <dd><tt><%= l (assistance_request.created_at + 24*60*60*assistance_request.auto_cancel.to_i), :format => :short %> (<%= assistance_request.auto_cancel %> days)</tt></dd>
   <% end %>

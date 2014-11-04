@@ -52,12 +52,15 @@ en:
           article: 
             title: Article
           automatic_cancellation:
-            title: Automatic cancellation
+            title: Last date of interest
             text: Automatically cancel this order after
             values:
-              never: Never cancel
-              '14': "14 days"
-              '30': "30 days"
+              '1': 1 month
+              '3': 3 months
+              '6': 6 months
+              '14': 14 days
+              '30': 30 days
+              never: Not selected
           book: 
             title: Book
             suggest_for_purchase:

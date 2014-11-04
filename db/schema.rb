@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141028100301) do
+ActiveRecord::Schema.define(:version => 20141104055315) do
 
   create_table "assistance_requests", :force => true do |t|
     t.string   "type"
@@ -38,12 +38,12 @@ ActiveRecord::Schema.define(:version => 20141028100301) do
     t.text     "email"
     t.text     "pickup_location"
     t.text     "physical_location"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.text     "conference_isxn"
     t.text     "conference_pages"
     t.text     "book_publisher"
-    t.text     "auto_cancel",           :default => "never"
+    t.text     "auto_cancel"
     t.boolean  "book_suggest",          :default => false
     t.text     "library_support_issue"
   end

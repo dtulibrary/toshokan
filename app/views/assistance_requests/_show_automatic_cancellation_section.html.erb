@@ -2,8 +2,12 @@
   <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.automatic_cancellation.title' %></h5>
   <p><%= t 'toshokan.assistance_requests.forms.sections.automatic_cancellation.text' %></p>
   <p class="indented">
-    <tt>
-      <%= t "toshokan.assistance_requests.forms.sections.automatic_cancellation.values.#{@assistance_request.auto_cancel}" %>
-    </tt>
+    <% if @assistance_request.auto_cancel.blank? %>
+      <%= t 'toshokan.assistance_requests.forms.sections.automatic_cancellation.values.never' %>
+    <% else %>
+      <tt>
+        <%= t "toshokan.assistance_requests.forms.sections.automatic_cancellation.values.#{@assistance_request.auto_cancel}" %>
+      </tt>
+    <% end %>
   </p>
 </div>

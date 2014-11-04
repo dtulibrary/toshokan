@@ -41,6 +41,11 @@ When /^I go to the "request assistance" form$/ do
   step %{I'm on the "request assistance" form}
 end
 
+# Examples:
+#   I fill in the "article" form sections with valid data
+#   I fill in the "article", "journal" form sections with valid data
+#   I fill in the "article" and "journal" form sections with valid data
+#   I fill in the "article", "journal" and "notes" form sections with valid data
 When /^I fill in the (".*") form sections with valid data$/ do |sections|
   sections.scan /"(.*?)"/ do |section, _|
     step %{I fill in the "#{section}" form section with valid data}
@@ -102,7 +107,7 @@ end
 end
 
 When /^I fill in the "automatic cancellation" form section with valid data$/ do
-  step %{I select automatic cancellation "14 days"}
+  step %{I select automatic cancellation "3 months"}
 end
 
 Then /^I should see the "physical location" section with the submitted data$/ do
@@ -122,7 +127,7 @@ end
 
 Then /^I should see the "automatic cancellation" section with the submitted data$/ do
   within locator_for_section('automatic-cancellation') do
-    step %{I should see "Automatic cancellation"}
+    step %{I should see "Last date of interest"}
     step %{I should see "#{submitted_data['auto_cancel']}"}
   end
 end
@@ -133,6 +138,10 @@ Then /^I should(n't| not)? see the "request assistance" form links$/ do |negate|
   step %{I should#{negate} see the "Book" link}
 end
 
+# Examples:
+#   I should see the "Confirm" buttons
+#   I should see the "Back" and "Confirm" buttons
+#   I should see the "Back", "New" and "Confirm" buttons
 Then /^I should see the (".*") buttons$/ do |buttons|
   buttons.scan /"(.*?)"/ do |button,_|
     step %{I should see the "#{button}" button}
@@ -176,7 +185,7 @@ end
 
 Then /^I should see the "automatic cancellation" section$/ do
   within '.automatic-cancellation-section' do
-    ['Never cancel', '14 days', '30 days'].each do |text|
+    ['6 months', '3 months', '1 month'].each do |text|
       step %{I should see "#{text}"}
     end
   end
@@ -312,38 +321,38 @@ def _section_fields
   {
     'article' => [
       {:title => 'Title',  :required => true},
-      {:title => 'Author', :required => false},
-      {:title => 'DOI',    :required => false}
+      {:title => 'Author'},
+      {:title => 'DOI'}
     ],
     'journal' => [
       {:title => 'Title',  :required => true},
-      {:title => 'ISSN',   :required => false},
+      {:title => 'ISSN'},
       {:title => 'Volume', :required => true},
       {:title => 'Issue',  :required => true},
       {:title => 'Year',   :required => true},
       {:title => 'Pages',  :required => true}
     ],
     'auto-cancel' => [
-      {:title => 'Automatic cancellation', :required => true}
+      {:title => 'Automatic cancellation'}
     ],
     'notes' => [
-      {:title => 'Notes', :required => false}
+      {:title => 'Notes'}
     ],
     'conference' => [
       {:title => 'Title',        :required => true},
-      {:title => 'Location',     :required => false},
+      {:title => 'Location'},
       {:title => 'Year',         :required => true},
-      {:title => 'ISSN or ISBN', :required => false},
+      {:title => 'ISSN or ISBN'},
       {:title => 'Pages',        :required => true}
     ],
     'book' => [
       {:title => 'Title',     :required => true},
-      {:title => 'Author',    :required => false},
-      {:title => 'Edition',   :required => false},
-      {:title => 'DOI',       :required => false},
-      {:title => 'ISBN',      :required => false},
+      {:title => 'Author'},
+      {:title => 'Edition'},
+      {:title => 'DOI'},
+      {:title => 'ISBN'},
       {:title => 'Year',      :required => true},
-      {:title => 'Publisher', :required => false}
+      {:title => 'Publisher'}
     ]
   }
 end
