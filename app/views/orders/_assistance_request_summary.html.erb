@@ -1,11 +1,11 @@
 <dl>
   <dt>Created</dt>
-  <dd><tt><%= l assistance_request.created_at, :format => :short %></tt></dd>
+  <dd><tt><%= l assistance_request.created_at.to_date, :format => :long %></tt></dd>
   <% unless assistance_request.auto_cancel.blank? || assistance_request.auto_cancel == 'never' %>
     <dt>Last date of interest</dt>
     <dd>
       <tt>
-        <%= l (assistance_request.created_at + 24*60*60*assistance_request.auto_cancel.to_i), :format => :short %> 
+        <%= l (assistance_request.created_at.to_date + assistance_request.auto_cancel.to_i), :format => :long %> 
         (<%= t "toshokan.assistance_requests.forms.sections.automatic_cancellation.values.#{assistance_request.auto_cancel}" %>)
       </tt>
     </dd>
