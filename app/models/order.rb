@@ -7,15 +7,21 @@ class Order < ActiveRecord::Base
 
   validates :open_url, :supplier, :price, :vat, :currency, :email, :presence => true
 
-  after_create :set_created_fields
+  before_save :set_derived_fields
 
   attr_accessible :user, :uuid, :open_url, :supplier, :price, :vat, :currency, :email
   attr_accessor :flow
 
-  def set_created_fields
+  def set_derived_fields
+    self.user_type ||= user_id.blank? ? 'anonymous' : user.type
+    self.origin    ||= assistance_request_id.blank? ? 'scan_request' : 'assistance_request'
     unless created_at.blank?
-      created_year  = created_at.year
-      created_month = created_at.month
+      self.created_year  ||= created_at.year
+      self.created_month ||= created_at.month
+    end
+    unless delivered_at.blank?
+      self.delivered_year  ||= delivered_at.year
+      self.delivered_month ||= delivered_at.month
     end
   end
 
