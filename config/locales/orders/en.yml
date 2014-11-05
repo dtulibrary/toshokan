@@ -30,7 +30,7 @@ en:
         order_price:
           title: Order price (in DKK excl. VAT)
         user:
-          title: User (top 20)
+          title: User
         user_type:
           title: User type
           values:
