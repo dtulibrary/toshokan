@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141104055315) do
+ActiveRecord::Schema.define(:version => 20141105121505) do
 
   create_table "assistance_requests", :force => true do |t|
     t.string   "type"
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20141104055315) do
     t.text     "created_month"
     t.text     "delivered_year"
     t.text     "delivered_month"
+    t.integer  "duration_hours"
   end
 
   add_index "orders", ["docdel_order_id"], :name => "index_orders_on_docdel_order_id"

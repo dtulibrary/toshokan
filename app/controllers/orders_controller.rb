@@ -116,7 +116,11 @@ class OrdersController < ApplicationController
   
       # Apply order status filter query
       if params[:delivery_status] && !params[:delivery_status].blank?
-        @orders = @orders.where :delivery_status => params[:delivery_status].first
+        if params[:delivery_status].first == 'requested'
+          @orders = @orders.where :delivery_status => ['initiated', 'requested', 'delivery_requested', 'redelivery_requested']
+        else
+          @orders = @orders.where :delivery_status => params[:delivery_status].first
+        end
         @filter_queries[:delivery_status] = [params[:delivery_status]].flatten
       end
 
@@ -183,7 +187,13 @@ class OrdersController < ApplicationController
                                 .count
 
       # Order status facet
-      @facets[:delivery_status] = @orders.group('delivery_status')
+      cases = {
+        'initiated'            => 'requested',
+        'requested'            => 'requested',
+        'delivery_requested'   => 'requested',
+        'redelivery_requested' => 'requested'
+      }
+      @facets[:delivery_status] = @orders.group("case delivery_status #{cases.collect {|k,v| "when '#{k}' then '#{v}'"}.join ' '} else delivery_status end")
                                          .reorder('count_all desc')
                                          .count
       # Order price facet
@@ -219,6 +229,7 @@ class OrdersController < ApplicationController
                                          .reorder('count_all desc')
                                          .count
 
+      # Order supplier facet
       @facets[:supplier] = @orders.group('supplier')
                                   .reorder('count_all desc')
                                   .count

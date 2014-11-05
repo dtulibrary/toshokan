@@ -22,6 +22,7 @@ class Order < ActiveRecord::Base
     unless delivered_at.blank?
       self.delivered_year  ||= delivered_at.year
       self.delivered_month ||= delivered_at.month
+      self.duration_hours = (delivered_at - created_at) / (60*60)
     end
   end
 
