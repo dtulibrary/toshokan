@@ -140,12 +140,12 @@ en:
         duration:
           title: Order duration
           values:
-            '6h': 6 hours or less
-            '1d': 6 hours to 1 day
-            '1w': 1 day to 1 week
-            '1m': 1 week to 1 month
-            '3m': 1 month to 3 months
-            '3m+': 3 months or more
+            '6h': Within 6 hours
+            '1d': Within 1 day
+            '1w': Within 1 week
+            '1m': Within 1 month
+            '3m': Within 3 months
+            '3m+': More than 3 months
         event:
           title: Order event
           values:

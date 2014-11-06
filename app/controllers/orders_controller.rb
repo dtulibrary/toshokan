@@ -150,17 +150,19 @@ class OrdersController < ApplicationController
 
       # Apply order duration filter query
       if params[:duration] && !params[:duration].blank?
-        intervals = {
-          '6h'  => 0..6,
-          '1d'  => 7..24,
-          '1w'  => 25..7*24,
-          '1m'  => 7*24+1..4*7*24,
-          '3m'  => 4*7*24+1..3*4*7*24,
-          '3m+' => 3*4*7*24+1..2000000000,
+        duration = params[:duration].last
+        Rails.logger.debug "Selecting duration #{duration}"
+        expr = {
+          '6h'  => '<= 6',
+          '1d'  => '<= 24',
+          '1w'  => "<= #{7*24}",
+          '1m'  => "<= #{4*7*24}",
+          '3m'  => "<= #{3*4*7*24}",
+          '3m+' => "> #{3*4*7*24}", 
         }
 
-        @orders = @orders.where :duration_hours => intervals[params[:duration].first]
-        @filter_queries[:duration] = [params[:duration]].flatten
+        @orders = @orders.where "duration_hours #{expr[duration]}"
+        @filter_queries[:duration] = [duration].flatten
       end
 
       # Apply event filter query
@@ -222,10 +224,24 @@ class OrdersController < ApplicationController
       }.collect {|k,v| "when duration_hours <= #{k} then '#{v}'"}.join ' '
 
       @facets[:duration] = ActiveSupport::OrderedHash.new
-      @facets[:duration] = @orders.where('duration_hours is not null')
-                                  .group("case #{cases} else '3m+' end")
-                                  .reorder('count_all desc')
-                                  .count
+      groups = @orders.where('duration_hours is not null')
+                      .group("case #{cases} else '3m+' end")
+                      .reorder('count_all desc')
+                      .count
+
+      groups.each do |g, count|
+        @facets[:duration][g] = g == '3m+' ? count : 0
+      end
+
+      groups.each do |g, count|
+        unless g == '3m+'
+          @facets[:duration]['3m'] += count if @facets[:duration]['3m'] && ['6h', '1d', '1w', '1m', '3m'].include?(g)
+          @facets[:duration]['1m'] += count if @facets[:duration]['1m'] && ['6h', '1d', '1w', '1m'].include?(g) 
+          @facets[:duration]['1w'] += count if @facets[:duration]['1w'] && ['6h', '1d', '1w'].include?(g) 
+          @facets[:duration]['1d'] += count if @facets[:duration]['1d'] && ['6h', '1d'].include?(g) 
+          @facets[:duration]['6h'] += count if @facets[:duration]['6h'] && g == '6h'
+        end
+      end
 
       # Order start year facet
       @facets[:order_start_year] = @orders.group('created_year')
