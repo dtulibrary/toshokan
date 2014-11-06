@@ -148,6 +148,21 @@ class OrdersController < ApplicationController
         @filter_queries[:order_end_month] = [params[:order_end_month]].flatten
       end
 
+      # Apply order duration filter query
+      if params[:duration] && !params[:duration].blank?
+        intervals = {
+          '6h'  => 0..6,
+          '1d'  => 7..24,
+          '1w'  => 25..7*24,
+          '1m'  => 7*24+1..4*7*24,
+          '3m'  => 4*7*24+1..3*4*7*24,
+          '3m+' => 3*4*7*24+1..2000000000,
+        }
+
+        @orders = @orders.where :duration_hours => intervals[params[:duration].first]
+        @filter_queries[:duration] = [params[:duration]].flatten
+      end
+
       # Apply event filter query
       if params[:event] && !params[:event].blank?
         events = [params[:event]].flatten
@@ -189,23 +204,28 @@ class OrdersController < ApplicationController
       # Order status facet
       cases = {
         'initiated'            => 'requested',
-        'requested'            => 'requested',
         'delivery_requested'   => 'requested',
         'redelivery_requested' => 'requested'
-      }
-      @facets[:delivery_status] = @orders.group("case delivery_status #{cases.collect {|k,v| "when '#{k}' then '#{v}'"}.join ' '} else delivery_status end")
+      }.collect {|k,v| "when '#{k}' then '#{v}'"}.join ' '
+
+      @facets[:delivery_status] = @orders.group("case delivery_status #{cases} else delivery_status end")
                                          .reorder('count_all desc')
                                          .count
-      # Order price facet
-#      @facets[:order_price] = ActiveSupport::OrderedHash.new
-#      @facet_labels[:order_price] = {}
-#      @orders.group('price').reorder('count_all desc').count.each do |price, count|
-#        price = price.to_s
-#        @facets[:order_price][price] = count
-#        @facet_labels[:order_price][price] = (price.to_i / 100).to_s
-#      end
 
       # Order duration facet
+      cases = {
+        6        => '6h',
+        24       => '1d',
+        7*24     => '1w',
+        4*7*24   => '1m',
+        3*4*7*24 => '3m',
+      }.collect {|k,v| "when duration_hours <= #{k} then '#{v}'"}.join ' '
+
+      @facets[:duration] = ActiveSupport::OrderedHash.new
+      @facets[:duration] = @orders.where('duration_hours is not null')
+                                  .group("case #{cases} else '3m+' end")
+                                  .reorder('count_all desc')
+                                  .count
 
       # Order start year facet
       @facets[:order_start_year] = @orders.group('created_year')
