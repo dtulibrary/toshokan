@@ -36,8 +36,10 @@
                       <span class="selected">
                         <% if @facet_labels[type].try :[], term %>
                           <%= @facet_labels[type][term] %>
-                        <% else %>
+                        <% elsif term %>
                           <%= t "toshokan.orders.facets.#{type}.values.#{term}", :default => term %>
+                        <% else %>
+                          <%= t "toshokan.orders.facets.#{type}.values.nil" %>
                         <% end %>
                       </span>
                       <%= link_to '<i class="icon-times"></i>'.html_safe,

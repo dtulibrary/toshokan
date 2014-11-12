@@ -43,6 +43,8 @@ class Order < ActiveRecord::Base
         'rft.volume' => 'journal_vol_ssf',
         'rft.issue'  => 'journal_issue_ssf',
         'rft.pages'  => 'journal_page_ssf',
+        'rft.spage'  => 'journal_page_ssf',
+        'rft.epage'  => 'journal_page_ssf',
         'rft.doi'    => 'doi_ss',
         'rft.pub'    => 'publisher_ts',
         'rft.place'  => 'publication_place_ts',

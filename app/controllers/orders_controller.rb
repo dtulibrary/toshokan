@@ -223,25 +223,31 @@ class OrdersController < ApplicationController
         3*4*7*24 => '3m',
       }.collect {|k,v| "when duration_hours <= #{k} then '#{v}'"}.join ' '
 
-      @facets[:duration] = ActiveSupport::OrderedHash.new
+      # -- Get non-overlapping intervals
       groups = @orders.where('duration_hours is not null')
                       .group("case #{cases} else '3m+' end")
                       .reorder('count_all desc')
                       .count
 
+      # -- Accumulate overlapping intervals
+      accum = {}
       groups.each do |g, count|
-        @facets[:duration][g] = g == '3m+' ? count : 0
+        accum[g] = g == '3m+' ? count : 0
       end
 
       groups.each do |g, count|
         unless g == '3m+'
-          @facets[:duration]['3m'] += count if @facets[:duration]['3m'] && ['6h', '1d', '1w', '1m', '3m'].include?(g)
-          @facets[:duration]['1m'] += count if @facets[:duration]['1m'] && ['6h', '1d', '1w', '1m'].include?(g) 
-          @facets[:duration]['1w'] += count if @facets[:duration]['1w'] && ['6h', '1d', '1w'].include?(g) 
-          @facets[:duration]['1d'] += count if @facets[:duration]['1d'] && ['6h', '1d'].include?(g) 
-          @facets[:duration]['6h'] += count if @facets[:duration]['6h'] && g == '6h'
+          accum['3m'] += count if accum['3m'] && ['6h', '1d', '1w', '1m', '3m'].include?(g)
+          accum['1m'] += count if accum['1m'] && ['6h', '1d', '1w', '1m'].include?(g) 
+          accum['1w'] += count if accum['1w'] && ['6h', '1d', '1w'].include?(g) 
+          accum['1d'] += count if accum['1d'] && ['6h', '1d'].include?(g) 
+          accum['6h'] += count if accum['6h'] && g == '6h'
         end
       end
+    
+      # -- Sort by count descending
+      @facets[:duration] = {}
+      accum.sort {|a,b| b[1] <=> a[1]}.each {|g,count| @facets[:duration][g] = count}
 
       # Order start year facet
       @facets[:order_start_year] = @orders.group('created_year')
