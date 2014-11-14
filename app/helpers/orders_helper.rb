@@ -65,4 +65,26 @@ module OrdersHelper
       render :partial => '/orders/article_item', :locals => {:order => order}
     end
   end
+
+  def should_render_event? event
+  end
+
+  def render_order_event_data order, event
+    case event.name
+    when /.*confirmed/
+      t 'toshokan.orders.supplier_order_id', :supplier => t("toshokan.orders.suppliers.#{order.supplier}"), :order_id => order.supplier_order_id
+    when 'reordered'
+      t 'toshokan.orders.reordered_by', :name => event.data
+    when 'payment_authorized'
+      t 'toshokan.orders.paid_with_card', :card_no => event.data
+    when 'delivery_manual'
+      url = "#{LibrarySupport.url}/issues/#{event.data}"
+      link_to url, url
+    when 'request_manual'
+      link_to t('toshokan.orders.view_order'), assistance_request_path(:id => order.assistance_request_id)
+    else
+      event.data
+    end
+  end
+
 end

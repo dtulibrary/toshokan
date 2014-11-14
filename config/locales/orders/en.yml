@@ -25,7 +25,7 @@ en:
         payment_authorized: Payment authorized
         payment_cancelled: Payment cancelled
         payment_captured: Payment completed
-        request_manual: Requested manually using form
+        request_manual: Order sent to a librarian
       facets:
         order_price:
           title: Order price (in DKK excl. VAT)
@@ -235,6 +235,7 @@ en:
         rd: Reprints Desk
         dtu: DTU DocDel
         dtu_manual: Library Support
+      supplier_order_id: '%{supplier} order ID: %{order_id}'
       terms_of_service: Terms and conditions
       text:
         dtu_html: 
@@ -245,4 +246,5 @@ en:
       thank_you: Thank you for your order!
       total: Total
       vat: "%{vat_pct}% VAT"
+      view_order: 'View order'
       your_order: Your order
