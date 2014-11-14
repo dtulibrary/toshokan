@@ -3,36 +3,7 @@
     <h4><%= t 'toshokan.orders.order_status' %></h4>
 
     <dl>
-    <%- @order.order_events.each do |event| %>
-      <% if can?(:view, :extended_info) || !@restricted_events.include?(event.name) %>
-          <dt><%= l event.created_at, :format => :long %></dt>
-          <dd><%= t "toshokan.orders.events.#{event.name}" %></dd>
-          <% unless event.data.blank? || cannot?(:view, :extended_info) %>
-            <dd class="event-data">
-              <% case event.name %>
-              <% when /.*confirmed$/ %>
-                <%= t "toshokan.orders.suppliers.#{@order.supplier}" %> order ID: <%= @order.supplier_order_id %>
-              <% when 'reordered' %>
-                <%= t 'toshokan.orders.reordered_by', :name => event.data %>
-              <% when 'payment_authorized' %>
-                <%= t 'toshokan.orders.paid_with_card', :card_no => event.data %>
-              <% when 'delivery_cancelled' %>
-                <% if can? :view, :extended_info %>
-                  <%= event.data %>
-                <% end %>
-              <% when 'delivery_manual' %>
-                <% if can? :view, :extended_info %>
-                  <%= link_to "#{LibrarySupport.url}/issues/#{event.data}", "#{LibrarySupport.url}/issues/#{event.data}" %>
-                <% end %>
-              <% when 'request_manual' %>
-                <%= link_to assistance_request_url(:id => @order.assistance_request_id), assistance_request_path(:id => @order.assistance_request_id) %>
-              <% else %>
-                <%= event.data %>
-              <% end %>
-            </dd>
-          <% end %>
-      <% end %>
-    <%- end -%>
+      <%= render @order.order_events %>
     </dl>
 
     <% if can?(:reorder, Order) && !@order.cancelled? && !@order.assistance_request_id %>
