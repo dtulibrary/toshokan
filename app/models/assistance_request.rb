@@ -2,7 +2,7 @@ class AssistanceRequest < ActiveRecord::Base
   belongs_to :user
   has_one :order
   validates :user_id, :presence => true
-  attr_protected :type, :user_id
+  #attr_protected :type, :user_id
   serialize :physical_location, JSON
 
   def self.auto_cancel_values_in_days

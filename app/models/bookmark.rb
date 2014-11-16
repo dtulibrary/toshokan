@@ -5,6 +5,6 @@ class Bookmark < ActiveRecord::Base
   has_many :taggings, :dependent => :destroy
   has_many :tags, :through => :taggings, :dependent => :destroy
   validates_presence_of :user_id, :scope=>:document_id
-  attr_accessible :id, :document_id, :title
+  #attr_accessible :id, :document_id, :title
 
 end

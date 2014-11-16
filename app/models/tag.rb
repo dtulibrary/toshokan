@@ -6,7 +6,7 @@ class Tag < ActiveRecord::Base
   has_many :bookmarks, :through => :taggings
   has_many :subscriptions, :dependent => :destroy
 
-  attr_accessible :name, :shared
+  #attr_accessible :name, :shared
   attr_accessor :count
 
   validates :name, :presence => true,

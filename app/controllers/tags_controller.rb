@@ -11,7 +11,7 @@ class TagsController < CatalogController
   # Tag management actions
 
   def manage
-    @tags = current_user.tags.all(:order => 'name')
+    @tags = current_user.tags.all.order :name
   end
 
   # Document tagging actions

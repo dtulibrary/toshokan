@@ -1,13 +1,14 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.19'
+gem 'rails', '~> 4.1.0'
+gem 'activerecord-session_store'
 
 gem 'jquery-rails', '~> 2.3.0'
-gem 'blacklight', '4.1'
+gem 'blacklight', '~> 5.1.0'
 gem 'unicode'
-gem 'bootstrap-sass', '~> 2.2.0'
+gem 'bootstrap-sass', '~> 3.2.0'
 
-gem "blacklight_range_limit", :git => 'git://github.com/dtulibrary/blacklight_range_limit.git'
+gem "blacklight_range_limit"
 gem 'pg'
 gem 'unhappymapper', :require => 'happymapper'
 gem 'httparty'
@@ -15,7 +16,7 @@ gem 'hashie'
 gem 'omniauth'
 gem 'omniauth-cas'
 gem 'omniauth-mendeley_oauth2'
-gem 'cancan'
+gem 'cancancan'
 gem 'acts-as-taggable-on'
 gem 'dalli'
 gem 'bibtex-ruby'
@@ -33,11 +34,11 @@ gem "rack-utf8_sanitizer", "~> 1.1.0"
 # in production environments by default.
 group :assets do
   gem 'sass-rails'
-  gem 'coffee-rails',  '~> 3.2.1'
 
   gem 'therubyracer', :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
   gem 'findit_font', :git => 'git://github.com/dtulibrary/findit_font.git'
+  gem 'autoprefixer-rails'
 end
 
 group :test do
@@ -54,7 +55,6 @@ end
 
 group :test, :development do
   gem 'jettywrapper'
-  gem 'debugger'
   gem 'rspec-rails'
   gem 'metastore-test_data', :github => 'dtulibrary/metastore-test_data'
   gem 'sqlite3'
@@ -83,11 +83,9 @@ group :development do
 
   gem 'puma'
   gem 'quiet_assets'
+  gem 'byebug'
 end
 
 # Deploy with Capistrano
-gem 'capistrano'
-gem 'rvm-capistrano'
-
-# To use debugger
-# gem 'debugger'
+gem 'capistrano', '~> 2.15'
+gem 'rvm-capistrano', '~> 1.2.5'

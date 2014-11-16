@@ -28,7 +28,7 @@
 }
 
 .order-summary {
-  @include border-radius(5px);
+  border-radius: 5px;
   border: 1px solid #ccc;
   padding: 20px;
 

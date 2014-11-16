@@ -2,14 +2,13 @@ class Alert
   extend ActiveModel::Naming
   include ActiveModel::Conversion  
   include ActiveModel::Validations
-  include ActiveModel::MassAssignmentSecurity
   include HTTParty
   include Configured
 
   base_uri Alert.url
 
   attr_accessor :frequency, :user_id, :alert_type, :name, :query, :created_at, :updated_at, :id, :reference
-  attr_accessible :alert_type, :query, :name
+  #attr_accessible :alert_type, :query, :name
 
   validates_presence_of :query, :alert_type, :user_id
 

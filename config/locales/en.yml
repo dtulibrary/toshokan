@@ -5,6 +5,31 @@ en:
       start_over: 'New Search'
       form:
         submit: Find it
+      fields:
+        abstract_ts: 'Abstract'
+        affiliation_ts: 'Affiliations'
+        author_ts: 'Authors'
+        editor_ts: 'Editors'
+        doi_ss: 'DOI'
+        format: 'Format'
+        isbn_ss: 'ISBN'
+        issn_ss: 'ISSN'
+        journal_title_ts: 'Journal'
+        keywords_ts: 'Keywords'
+        pub_date_tis: 'Year'
+        title_ts: 'Title'
+        publisher_ts: 'Publisher'
+        udc_ss: 'UDC'
+        title_abbr_ts: 'Alternative titles'
+        format: 'Type'
+        language_ss: 'Language'
+        conf_title_ts: 'Proceedings'
+        subtitle_ts: 'Subtitle'
+        journal_page_ssf: 'Pages'
+        journal_vol_ssf: 'Volume'
+        journal_issue_ssf: 'Issue'
+        dissertation_date_ssf: 'Dissertation date'
+        supervisor_ts: "Supervisors"
   toshokan:
     header:
       dtu: 'Technical University of Denmark'
@@ -238,11 +263,6 @@ en:
         tags:
           title: No saved references match the filter(s) you applied.
           broaden_html: Please remove <b>Bookmarks</b> or <b>Tag</b> filter(s) below the search box to expand your search.
-      display_formats:
-        standard_index: 'Standard'
-        standard_show: 'Standard'
-        librarian_index: 'Librarian'
-        librarian_show: 'Librarian'
       index_field_labels:
         abstract_ts: 'Abstract'
         author_ts: 'Authors'

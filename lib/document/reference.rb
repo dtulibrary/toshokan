@@ -1,6 +1,6 @@
 require 'bibtex'
 
-module References
+module Reference
 
   def self.extended(document)
     document.will_export_as(:bib, "text/x-bibtex")

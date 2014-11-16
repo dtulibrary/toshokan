@@ -14,13 +14,7 @@ module FacetsHelper
     super facet_solr_field, item, options
   end
 
-  # Add I18n lookups for certain facet fields
-  def facet_display_value field, item
-    value = super
-    field == 'format' ? I18n.t("toshokan.catalog.formats.#{value}") : value
-  end
-
-  def render_facet_count num
-    super number_with_delimiter(num)
+  def render_facet_count num, options = {}
+    super number_with_delimiter(num), options
   end
 end

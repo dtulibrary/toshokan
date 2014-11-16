@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
 
   include Blacklight::User
 
-  attr_accessible :email, :identifier, :provider, :user_data
+  #attr_accessible :email, :identifier, :provider, :user_data
   serialize :user_data, JSON
 
   attr_accessor :impersonating, :walk_in, :internal, :campus, :orders_enabled

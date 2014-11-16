@@ -16,7 +16,7 @@ class UsersController < ApplicationController
         .page(params[:page] || 1)
         .per(params[:all] ? 100000 : 10)
 
-      @all_roles = Role.all :order => :name
+      @all_roles = Role.all.order :name
     else
       deny_access and return
     end

@@ -14,8 +14,8 @@
     height: 34px;
     width: 450px;
     float: left;
-    @include box-sizing(border-box);
-    @include border-radius(5px 0px 0px 5px);
+    box-sizing: border-box;
+    border-radius: 5px 0px 0px 5px;
 
     .icons {
       display: inline-block;
@@ -31,7 +31,7 @@
         }
 
         &.disabled {
-          @include opacity(50);
+          opacity: 50;
         }
       }
     }
@@ -60,7 +60,7 @@
     font-size: 22px;
     float: left;
     margin-left: -1px;
-    @include border-radius(0px 5px 5px 0px);
+    border-radius: 0px 5px 5px 0px;
   }
 
 }

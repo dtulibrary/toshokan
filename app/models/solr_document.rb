@@ -8,7 +8,7 @@ class SolrDocument
 
   self.unique_key = SolrDocument.document_id
 
-  SolrDocument.use_extension(References)
+  SolrDocument.use_extension(Reference)
 
   attr_reader :citation_styles
 

@@ -1,5 +1,4 @@
 <%= form_tag search_action_url, :method => :get, :class => 'search-query-form form-inline clearfix' do %>
-  <%= search_as_hidden_fields(:omit_keys => [:q, :search_field, :qt, :page, :ignore_search, :key, :resolve]).html_safe %>
 
   <% unless search_fields.empty? %>
     <div class="pull-left hide">

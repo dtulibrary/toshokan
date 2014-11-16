@@ -7,13 +7,13 @@
 
   <div class="search-history-tools clearfix">
     <div class="pull-left">
-      <%= paginate @searches, :theme => 'blacklight_compact' %>
+      <%= paginate @searches %>
     </div>
     <div class="pull-right filter-history">
       <ul class="nav">
         <li class="<%= 'disabled' if current_page? search_history_path %>"><%= link_to t('toshokan.search_history.all_filter'), search_history_path %></li>
-        <li class="<%= 'disabled' if current_page? saved_searches_path %>"><%= link_to t('toshokan.search_history.saved_filter'), saved_searches_path %></li>
-        <li class="<%= 'disabled' if current_page? alerted_searches_path %>"><%= link_to t('toshokan.search_history.alerted_filter'), alerted_searches_path %></li>
+        <li class="<%= 'disabled' if current_page? saved_search_history_path %>"><%= link_to t('toshokan.search_history.saved_filter'), saved_search_history_path %></li>
+        <li class="<%= 'disabled' if current_page? alerted_search_history_path %>"><%= link_to t('toshokan.search_history.alerted_filter'), alerted_search_history_path %></li>
       </ul>
     </div>
   </div>
@@ -43,24 +43,24 @@
             <% end %>
           </td>-->
           <td class="action">
-            <%= link_to forget_search_path(search.id), :method => :delete,
+            <%= link_to forget_search_history_path(search.id), :method => :delete,
               :title => t('toshokan.mylibrary.saved'), :class => if !search.saved then "hidden" end,
                :remote => true, :disable_with => '<i class="icon-star-o"></i>' do %>
               <i class="icon-star"></i>
             <%- end -%>
-            <%= link_to save_search_path(search.id), :method => :put, :title =>
+            <%= link_to save_search_history_path(search.id), :method => :put, :title =>
               t('toshokan.mylibrary.save'), :remote => true, :class => if search.saved then "hidden" end,
                 :disable_with => '<i class="icon-star"></i>' do %>
               <i class="icon-star-o"></i>
             <%- end -%>
           </td>
           <td class="action">
-            <%= link_to forget_search_alert_path(search.id), :method => :delete,
+            <%= link_to forget_search_history_alert_path(search.id), :method => :delete,
               :title => t('toshokan.mylibrary.alerted'), :class => if !search.alerted then "hidden" end,
               :remote => true, :disable_with => '<i class="icon-bell"></i>' do %>
               <i class="icon-bell-o"></i>
             <%- end -%>
-            <%= link_to save_search_alert_path(search.id), :method => :put,
+            <%= link_to alert_search_history_path(search.id), :method => :put,
               :title => t('toshokan.mylibrary.alert'),  :class => if search.alerted then "hidden" end,
               :remote => true, :disable_with => '<i class="icon-bell-o"></i>' do %>
               <i class="icon-bell"></i>

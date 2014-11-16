@@ -2,7 +2,7 @@
   <div class="navbar-inner level1-navbar">
     <div class="container">
       <div class="row">
-        <div class="span12">
+        <div class="col-md-12">
           <div class="pull-right">
             <%= render :partial=>'/user_util_links' %>
           </div>
@@ -15,10 +15,10 @@
     <div class="header-gradient">
       <div class="container">
         <div class="row logos">
-          <div class="span3">
+          <div class="col-md-3">
             <%= link_to 'DTU Find<span class="dtu-red">it</span>'.html_safe, root_path, :class => 'findit-logo visible-desktop pull-left' %>
           </div>
-          <div class="span7">
+          <div class="col-md-7">
             <% unless @disable_header_searchbar %>
               <div class="search">
                 <div id="searchbar">
@@ -32,7 +32,7 @@
               </div>
             <% end %>
           </div>
-          <div class="span2">
+          <div class="col-md-2">
             <%= link_to content_tag('div', '', :class => 'dtu-logo').html_safe, 'http://www.dtu.dk/english', :class => 'logo pull-right' %>
           </div>
         </div>

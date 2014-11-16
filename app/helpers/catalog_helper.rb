@@ -239,10 +239,10 @@ module CatalogHelper
     b = empty_if_not_integer(range['begin'])
     e = empty_if_not_integer(range['end'])
 
-    b = normalize_year(b) if b.is_an? Integer
-    e = normalize_year(e) if e.is_an? Integer
+    b = normalize_year(b) if b.is_a? Integer
+    e = normalize_year(e) if e.is_a? Integer
 
-    if b.is_an?(Integer) && e.is_an?(Integer) && b > e
+    if b.is_a?(Integer) && e.is_a?(Integer) && b > e
       e = b
     end
 

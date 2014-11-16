@@ -1,5 +1,5 @@
 <div class="order">
-  <div id="sidebar" class="span3">
+  <div id="sidebar" class="col-md-3">
     <h5 style="margin: 8px 15px">Find orders</h5>
     <div class="well" style="padding: 15px">
       <%= form_tag orders_path, :class => 'clearfix', :method => :get do %>
@@ -69,7 +69,7 @@
       </div>
     <% end %>
   </div>
-  <div class="span9">
+  <div class="col-md-9">
     <% if @orders.empty? %>
       There are no orders that match your query.
     <% else %>

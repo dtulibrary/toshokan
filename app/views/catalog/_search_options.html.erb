@@ -11,7 +11,7 @@
           </span>
           <span>
             <i class="icon-bell"></i>
-            <%= link_to save_search_alert_path(params[:s_id]), :title => t('toshokan.mylibrary.alert'), :id => "search-summary-alert" do %>
+            <%= link_to alert_search_history_path(params[:s_id]), :title => t('toshokan.mylibrary.alert'), :id => "search-summary-alert" do %>
               <%= t('toshokan.mylibrary.alert') %>
             <%- end -%>
           </span>
