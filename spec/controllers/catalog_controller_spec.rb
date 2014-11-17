@@ -73,7 +73,7 @@ describe CatalogController do
 
         it "redirects to authentication required for public users" do
           user = login
-          (user.public?).should be_true
+          (user.public?).should be_truthy
           get :show, params
           response.should redirect_to authentication_required_catalog_url(:url => catalog_url(params))
         end

@@ -50,6 +50,20 @@ class AssistanceRequest < ActiveRecord::Base
     form_sections[section]
   end
 
+  def self.relevant_form_sections
+    ['article','journal','notes','conference','book']
+  end
+
+  def self.fields
+    if @fields.nil?
+      @fields = []
+      relevant_form_sections.each do |section|
+        @fields += fields_for(section).map {|field_info| field_info[:name].to_sym}
+      end
+    end
+    return @fields
+  end
+
   def self.required_fields_for section
     form_sections[section].select {|e| e[:required]}.collect {|e| e[:name]}
   end

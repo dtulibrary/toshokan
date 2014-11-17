@@ -193,12 +193,15 @@ describe ResolverHelper do
 
   describe "#solr_params_to_blacklight_query" do
 
-    before do
-      @config = Blacklight::Configuration.new do |config|
+    let(:blacklight_config) do
+      Blacklight::Configuration.new do |config|
         config.add_facet_field 'facet'
       end
+    end
 
-      helper.stub(:blacklight_config => @config)
+    before do
+      helper.extend Blacklight::Controller # the blacklight_config method must be defined on the class in order to stub it
+      allow(helper).to receive(:blacklight_config).and_return(blacklight_config)
     end
 
     it "leaves a plain query unchanged" do

@@ -168,7 +168,7 @@ en:
       getit: "Get it"
       other: "Other resources"
     citation:
-      mla: "MLA"
+      'modern-language-association': "MLA"
       apa: "APA"
       'chicago-author-date': "Chicago"
     modals:

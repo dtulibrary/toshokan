@@ -14,7 +14,7 @@ class SolrDocument
 
   def initialize *args
     super
-    @citation_styles = [:mla, :apa, :'chicago-author-date']
+    @citation_styles = ["modern-language-association", "apa", 'chicago-author-date']
   end
 
   def id
@@ -74,7 +74,12 @@ class SolrDocument
   end
 
   def export_as_citation_txt(style_name)
-    CiteProc.process self.to_bibtex.to_citeproc, :style => style_name.to_sym
+    # CiteProc.process self.to_bibtex.to_citeproc, :style => style_name.to_sym
+    processor = CiteProc::Processor.new style: style_name, format: 'text'
+    bibtex = self.to_bibtex.to_citeproc
+    processor << self.to_bibtex.to_citeproc
+    rendered = processor.render :bibliography, id: bibtex["id"]
+    rendered.first
   end
 
   def has_citation_style(style)

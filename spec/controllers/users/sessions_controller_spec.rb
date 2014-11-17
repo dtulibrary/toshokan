@@ -17,7 +17,7 @@ describe Users::SessionsController do
 
       it 'removes the user id from the session' do
         delete 'destroy'
-        session.has_key?(:user_id).should be_false
+        session.has_key?(:user_id).should be_falsey
       end
 
       it 'redirects to cas logout' do
@@ -138,7 +138,7 @@ describe Users::SessionsController do
           session[:user_id].should be_nil
           session[:original_user_id].should eq @user.id
 
-          controller.current_user.walk_in.should be_true
+          controller.current_user.walk_in.should be_truthy
         end
       end
     end
@@ -184,7 +184,7 @@ describe Users::SessionsController do
           session[:user_id].should eq @other_user.id
           session[:original_user_id].should eq @user.id
 
-          controller.current_user.walk_in.should be_true
+          controller.current_user.walk_in.should be_truthy
         end
       end
 
@@ -235,6 +235,7 @@ describe Users::SessionsController do
         it 'should redirect to root path' do
           put :update, @params
           response.should redirect_to switch_user_path
+          flash[:error].should eq "User not found"
         end
       end
     end

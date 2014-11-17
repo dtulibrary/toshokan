@@ -88,11 +88,11 @@ describe User do
 
     it "should be created correctly" do
       user = User.create_or_update_with_user_data(@provider, @user_data)
-      user.persisted?.should be_true
+      (user.persisted?).should be_truthy
       user.identifier.should eq @user_data['id']
-      user.dtu?.should be_true
-      user.employee?.should be_true
-      user.student?.should be_false
+      (user.dtu?).should be_truthy
+      (user.employee?).should be_truthy
+      (user.student?).should be_falsey
 
       user.email.should eq 'mail@example.com'
       user.name.should eq 'Firstname Lastname'
@@ -123,13 +123,13 @@ describe User do
   describe "for anonymous user" do
     it "should be created correctly" do
       user = User.new
-      user.persisted?.should be_false
-      user.identifier.should be_nil
-      user.dtu?.should be_false
-      user.public?.should be_true
+      (user.persisted?).should be_falsey
+      (user.identifier).should be_nil
+      (user.dtu?).should be_falsey
+      (user.public?).should be_truthy
 
-      user.email.should be_nil
-      user.name.should eq 'Anonymous'
+      (user.email).should be_nil
+      (user.name).should eq 'Anonymous'
 
       user.address.should be_nil
     end

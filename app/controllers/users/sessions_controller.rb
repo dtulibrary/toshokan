@@ -162,7 +162,7 @@ class Users::SessionsController < ApplicationController
         if new_user == nil
           logger.info "User not found with identifier: #{new_user_id}"
           flash[:error] = 'User not found'
-          redirect_to switch_user_path, flash: flash
+          redirect_to switch_user_path
           return
         end
         logger.info "User #{current_user.id}(#{current_user}) impersonates #{new_user.id}(#{new_user})"

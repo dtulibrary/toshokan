@@ -71,8 +71,10 @@ describe "SolrDocument" do
 
   describe "#export_as_citation_txt" do
     it "generates a citation" do
-      citation = article.export_as_citation_txt("mla")
-      citation.should match "Cosmopolitan Sipunculan Worms"
+      article.citation_styles.each do |style|
+        citation = article.export_as_citation_txt(style)
+        citation.should match /Cosmopolitan Sipunculan Worms/i
+      end
     end
   end
 

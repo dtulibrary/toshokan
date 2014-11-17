@@ -162,11 +162,11 @@ class AssistanceRequestsController < CatalogController
   def assistance_request_from params
     case genre_from params
     when :journal_article
-      JournalArticleAssistanceRequest.new params[:assistance_request]
+      JournalArticleAssistanceRequest.new params_for_assistance_request(JournalArticleAssistanceRequest)
     when :conference_article
-      ConferenceArticleAssistanceRequest.new params[:assistance_request]
+      ConferenceArticleAssistanceRequest.new params_for_assistance_request(ConferenceArticleAssistanceRequest)
     when :book
-      BookAssistanceRequest.new params[:assistance_request]
+      BookAssistanceRequest.new params_for_assistance_request(BookAssistanceRequest)
     end
   end
 
@@ -180,4 +180,11 @@ class AssistanceRequestsController < CatalogController
       BookAssistanceRequest.new
     end
   end
+
+  def params_for_assistance_request( assistance_request_class=AssistanceRequest )
+    # Only trust the params listed by the class `fields` method
+    params.fetch(:assistance_request, {}).permit( *assistance_request_class.fields )
+    # params.fetch(:assistance_request, {}).permit! # <-- This would trust everything in params[:assistance_request]
+  end
+
 end

@@ -98,8 +98,8 @@ class User < ActiveRecord::Base
   end
 
   def tag(document, tag_name)
-    bookmark = bookmarks.find_or_create_by_document_id(document.id)
-    tag = tags.find_or_create_by_name(tag_name)
+    bookmark = bookmarks.find_or_create_by(document_id:document.id)
+    tag = tags.find_or_create_by(name:tag_name)
     bookmark.tags << tag unless bookmark.tags.exists?(tag)
     bookmark.save
     tag
@@ -125,7 +125,7 @@ class User < ActiveRecord::Base
                   else
                     document_or_document_id.id
                   end
-    bookmarks.find_or_create_by_document_id(document_id)
+    bookmarks.find_or_create_by(document_id:document_id)
   end
 
   def name

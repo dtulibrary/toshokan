@@ -19,7 +19,7 @@ module Reference
   end
 
   def to_bibtex
-    bib_doc = References::Entry.new
+    bib_doc = Reference::Entry.new
     bib_doc.type = self.to_semantic_values[:format].first
     self.to_semantic_values.select { |field, values| BIBTEX_FIELD_NAMES.include? field.to_sym }.each do |field,values|
       case(field)   

@@ -2,6 +2,7 @@
 
 module ResolverHelper
   include FacetsHelper
+  include Blacklight::UrlHelperBehavior # deprecation horizon: blacklight 6.0
 
   def to_open_url(params)
     # work around Reaxys openurls with uppercase sid param
