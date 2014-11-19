@@ -67,17 +67,8 @@ group :development do
   gem 'rails_best_practices'
 
   gem 'paint'
-  gem 'guard'
-  gem 'guard-rspec'
-  gem 'guard-cucumber'
-  gem 'guard-brakeman'
-  gem 'guard-rails'
-  gem 'guard-rails_best_practices'
-  gem 'guard-migrate'
   # eventmachine 0.12.10 does not compile on windows
   gem 'eventmachine', '~> 1.0.0.rc4', :platforms => :mswin
-  gem 'rb-fsevent'
-  gem 'ruby_gntp'
 
   gem 'rails_view_annotator'
   gem 'rails-footnotes'
