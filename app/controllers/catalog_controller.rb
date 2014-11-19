@@ -327,7 +327,8 @@ class CatalogController < ApplicationController
     associate_search_with_user
 
     respond_to do |format|
-      format.html { render }
+      # TODO Blacklight::Catalog calls preferred_view here
+      format.html { }
       format.rss  { render :layout => false }
       format.atom { render :layout => false }
 
