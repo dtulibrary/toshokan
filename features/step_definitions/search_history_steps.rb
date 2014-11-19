@@ -45,8 +45,6 @@ When /^I remove the alert from the search "(.*?)"$/ do |arg1|
 end
 
 Then /^I should see a constraint with name "(.*?)" and value "(.*?)"$/ do |name, value|
-  within('.constraint') do
-    find('.filterName').should have_content name
-    find('.filterValue').should have_content value
-  end
+  expect(page).to have_css('.constraint .filterName', text:name)
+  expect(page).to have_css('.constraint .filterValues', text:value)
 end
