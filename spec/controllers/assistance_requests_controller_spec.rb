@@ -4,7 +4,7 @@ describe AssistanceRequestsController do
   before do
     @user = login FactoryGirl.create(:dtu_employee)
     @ability = FactoryGirl.build :ability
-    controller.stub(:current_ability).and_return @ability
+    allow(controller).to receive(:current_ability).and_return @ability
   end
 
   describe '#index' do
@@ -26,12 +26,12 @@ describe AssistanceRequestsController do
 
         it 'assigns all requests' do
           get :index
-          assigns[:assistance_requests].should == [@request1, @request2]
+          expect( assigns[:assistance_requests]  ).to eq [@request1, @request2]
         end
 
         it 'renders the "index" template' do
           get :index
-          should render_template :index
+          expect(response).to render_template :index
         end
       end
 
@@ -42,19 +42,19 @@ describe AssistanceRequestsController do
 
         it 'assigns all requests for the current user' do
           get :index
-          assigns[:assistance_requests].should == @request1
+          expect( assigns[:assistance_requests]  ).to eq @request1
         end
 
         it 'renders the "index" template' do
           get :index
-          should render_template :index
+          expect(response).to render_template :index
         end
       end
 
       context 'when user cannot view requests' do
         it 'returns an HTTP 404' do
           get :index
-          response.response_code.should == 404
+          expect( response.response_code ).to eq 404
         end
       end
 
@@ -63,7 +63,7 @@ describe AssistanceRequestsController do
     context 'when user cannot request assistance' do
       it 'returns an HTTP 404' do
         get :index
-        response.response_code.should == 404
+        expect( response.response_code ).to eq 404
       end
     end
   end
@@ -81,12 +81,12 @@ describe AssistanceRequestsController do
           context "when genre is #{genre}" do
             it "assigns a new #{genre} article assistance request object" do
               get :new, :genre => genre.gsub(' ', '_').to_sym
-              assigns[:assistance_request].class.name.underscore.should == "#{genre.gsub ' ', '_'}_assistance_request"
+              expect( assigns[:assistance_request].class.name.underscore ).to eq "#{genre.gsub ' ', '_'}_assistance_request"
             end
 
             it 'renders the "new" template' do
               get :new, :genre => genre.gsub(' ', '_').to_sym
-              should render_template :new
+              expect(response).to render_template :new
             end
           end
         end
@@ -96,7 +96,7 @@ describe AssistanceRequestsController do
     context 'when user cannot request assistance' do
       it 'renders the "need_to_login" template' do
         get :new
-        should render_template :cant_request_assistance
+        expect(response).to render_template :cant_request_assistance
       end
     end
   end
@@ -126,8 +126,8 @@ describe AssistanceRequestsController do
               end
 
               it 'creates an issue in library support redmine' do
-                LibrarySupport.stub(:delay).and_return LibrarySupport
-                LibrarySupport.should_receive :submit_assistance_request
+                allow(LibrarySupport).to receive(:delay).and_return LibrarySupport
+                expect(LibrarySupport).to receive :submit_assistance_request
                 post :create, FactoryGirl.build(form_posts[genre], :button => 'confirm')
               end
 
@@ -135,7 +135,7 @@ describe AssistanceRequestsController do
                 post :create, FactoryGirl.build(form_posts[genre], :button => 'confirm')
                 assistance_request_id = AssistanceRequest.first.id
                 order = Order.where(:assistance_request_id => assistance_request_id).first
-                should redirect_to order_status_path(:uuid => order.uuid)
+                expect(response).to redirect_to order_status_path(:uuid => order.uuid)
               end
             end
           end
@@ -143,8 +143,8 @@ describe AssistanceRequestsController do
           context 'when genre is book' do
             context 'when user suggests book acquisition' do
               it 'sends a book suggestion email' do
-                SendIt.stub(:delay).and_return SendIt
-                SendIt.should_receive :send_book_suggestion
+                allow(SendIt).to receive(:delay).and_return SendIt
+                expect(SendIt).to receive :send_book_suggestion
                 post :create, FactoryGirl.build(:book_suggestion_assistance_request_form_post, :button => 'confirm' )
               end
             end
@@ -154,7 +154,7 @@ describe AssistanceRequestsController do
         context 'when button parameter is create' do
           it 'assigns the assistance request object' do
             post :create, FactoryGirl.build(:journal_article_assistance_request_form_post, :button => 'create')
-            assigns[:assistance_request].should_not be_nil
+            expect(assigns[:assistance_request]).to_not be_nil
           end
 
           if show_feature?(:cff_resolver)
@@ -162,7 +162,7 @@ describe AssistanceRequestsController do
               context 'to 0 results' do
                 it 'renders the "create" template' do
                   post :create, FactoryGirl.build(:journal_article_assistance_request_form_post, :button => 'create')
-                  should render_template :create
+                  expect(response).to render_template :create
                 end
               end
               context 'to 1 or more results' do
@@ -172,7 +172,7 @@ describe AssistanceRequestsController do
                   openurl_str = JournalArticleAssistanceRequest.new(assistance_request_form[:assistance_request]).openurl.kev
                   openurl_str.slice!(/&ctx_tim=[^&]*/)
                   redirect_url = "#{resolve_path}?#{openurl_str}&#{assistance_request_form.delete_if{|k,v| [:button, :genre].include?(k)}.to_query}&assistance_genre=journal_article"
-                  should redirect_to redirect_url
+                  expect(response).to redirect_to redirect_url
                 end
               end
             end
@@ -180,13 +180,13 @@ describe AssistanceRequestsController do
             context 'when it already has been resolved' do
               it 'renders the "create" template' do
                 post :create, FactoryGirl.build(:journal_article_from_index_assistance_request_form_post, :button => 'create', :resolved => true)
-                should render_template :create
+                expect(response).to render_template :create
               end
             end
           else
             it 'renders the "create" template' do
               post :create, FactoryGirl.build(:journal_article_assistance_request_form_post, :button => 'create')
-              should render_template :create
+              expect(response).to render_template :create
             end
           end
 
@@ -195,7 +195,7 @@ describe AssistanceRequestsController do
         context 'with missing or invalid button parameter' do
           it 'renders the "create" template' do
             post :create, FactoryGirl.build(:journal_article_assistance_request_form_post)
-            should render_template :create
+            expect(response).to render_template :create
           end
         end
 
@@ -207,7 +207,7 @@ describe AssistanceRequestsController do
       context 'when missing genre parameter' do
         it 'returns an HTTP 400' do
           post :create, :assistance_request => FactoryGirl.attributes_for(:journal_article_assistance_request)
-          response.response_code.should == 400
+          expect( response.response_code ).to eq 400
         end
       end
     end
@@ -215,7 +215,7 @@ describe AssistanceRequestsController do
     context 'when user cannot request assistance' do
       it 'returns an HTTP 404' do
         post :create, :assistance_request => FactoryGirl.attributes_for(:journal_article_assistance_request)
-        response.response_code.should == 404
+        expect( response.response_code ).to eq 404
       end
     end
   end
@@ -235,31 +235,31 @@ describe AssistanceRequestsController do
       end
 
       it 'checks if an object with the supplied id exists' do
-        AssistanceRequest.should_receive(:exists?).with(@assistance_request.id.to_s)
+        expect(AssistanceRequest).to receive(:exists?).with(@assistance_request.id.to_s)
         get :show, :id => @assistance_request.id
       end
 
       context 'with valid id parameter' do
         it 'finds the assistance request object' do
-          AssistanceRequest.should_receive(:find).with(@assistance_request.id.to_s)
+          expect(AssistanceRequest).to receive(:find).with(@assistance_request.id.to_s)
           get :show, :id => @assistance_request.id
         end
 
         it 'assigns the assistance request object' do
           get :show, :id => @assistance_request.id
-          assigns[:assistance_request].should == @assistance_request
+          expect(assigns[:assistance_request]).to eq @assistance_request
         end
 
         it 'renders the "show" template' do
           get :show, :id => @assistance_request.id
-          should render_template :show
+          expect(response).to render_template :show
         end
       end
 
       context 'with missing or invalid id parameter' do
         it 'returns an HTTP 404' do
           get :show, :id => 'non-existing'
-          response.response_code.should == 404
+          expect( response.response_code ).to eq 404
         end
       end
     end
@@ -267,7 +267,7 @@ describe AssistanceRequestsController do
     context 'when user cannot request assistance' do
       it 'returns an HTTP 404' do
         get :show, :id => @assistance_request.id
-        response.response_code.should == 404
+        expect( response.response_code ).to eq 404
       end
     end
   end

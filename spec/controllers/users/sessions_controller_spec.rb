@@ -17,12 +17,12 @@ describe Users::SessionsController do
 
       it 'removes the user id from the session' do
         delete 'destroy'
-        session.has_key?(:user_id).should be_falsey
+        expect(session.has_key?(:user_id)).to be_falsey
       end
 
       it 'redirects to cas logout' do
         delete 'destroy'
-        response.should redirect_to controller.logout_url
+        expect(response).to redirect_to controller.logout_url
       end
     end
 
@@ -31,8 +31,8 @@ describe Users::SessionsController do
   describe '#new' do
     it 'should redirect to cas' do
       get :new
-      response.code.should eq "302"
-      response.location.should include controller.omniauth_path(:cas)
+      expect(response.code).to eq "302"
+      expect(response.location).to include controller.omniauth_path(:cas)
     end
 
   end
@@ -43,22 +43,20 @@ describe Users::SessionsController do
       before(:each) do
         request.env["omniauth.auth"] = OmniAuth.mock_auth_for(:cas)
         @user_data = {'id' => 'abcd', 'email' => 'somebody@example.com'}
-        Riyosha
-          .should_receive(:find).with('abcd')
-          .and_return(@user_data)
+        expect(Riyosha).to receive(:find).with('abcd').and_return(@user_data)
       end
 
       it "should redirect to requested url on callback from CAS with proper auth hash" do
         post "create", :provider => :cas, :url => root_path
 
-        controller.session[:user_id].should_not be_nil
-        response.should redirect_to(root_path)
+        expect(controller.session[:user_id]).to_not be_nil
+        expect(response).to redirect_to(root_path)
       end
 
       it "should create a user from the user data" do
         post "create", :provider => :cas
 
-        User.find_by_identifier('abcd').user_data['email'].should eq @user_data['email']
+        expect(User.find_by_identifier('abcd').user_data['email']).to eq @user_data['email']
       end
 
       it "should update the user data for an existing user" do
@@ -66,12 +64,10 @@ describe Users::SessionsController do
         post "destroy"
 
         updated_user_data = {'id' => 'abcd', 'email' => 'updated@example.com'}
-        Riyosha
-          .should_receive(:find).with('abcd')
-          .and_return(updated_user_data)
+        expect(Riyosha).to receive(:find).with('abcd').and_return(updated_user_data)
 
         post "create", :provider => :cas
-        User.find_by_identifier('abcd').user_data['email'].should eq updated_user_data['email']
+        expect( User.find_by_identifier('abcd').user_data['email'] ).to eq updated_user_data['email']
       end
     end
 
@@ -81,29 +77,25 @@ describe Users::SessionsController do
       end
       context "and the user does not exist" do
         before(:each) do
-          Riyosha
-            .should_receive(:find).with('abcd')
-            .and_return(nil)
+          expect(Riyosha).to receive(:find).with('abcd').and_return(nil)
         end
         it "should not login" do
           post "create", :provider => :cas
-          controller.current_user.should_not be_authenticated
+          expect(controller.current_user).to_not be_authenticated
         end
         it "should display an error message" do
           post "create", :provider => :cas
-          controller.flash[:alert].should_not be_blank
+          expect(controller.flash[:alert]).to_not be_blank
         end
       end
       context "and the user does exist" do
         before(:each) do
           @user_data = {'id' => 'abcd', 'email' => 'somebody@example.com'}
-          Riyosha
-            .should_receive(:find).with('abcd')
-            .and_return(@user_data)
+          expect(Riyosha).to receive(:find).with('abcd').and_return(@user_data)
         end
         it "should perform the login" do
           post "create", :provider => :cas
-          controller.current_user.should be_authenticated
+          expect(controller.current_user).to be_authenticated
         end
       end
     end
@@ -126,19 +118,19 @@ describe Users::SessionsController do
       end
       it 'should change to an anonymous user' do
         put :update, @params
-        session[:user_id].should be_nil
-        session[:original_user_id].should eq @user.id
+        expect(session[:user_id]).to be_nil
+        expect(session[:original_user_id]).to eq @user.id
 
-        controller.current_user.should_not be_authenticated
-        controller.current_user.roles.should be_empty
+        expect(controller.current_user).to_not be_authenticated
+        expect(controller.current_user.roles).to be_empty
       end
       context 'and walk_in flag is set' do
         it 'should change to an anonymous user with walk_in abilities' do
           put :update, @params.merge({:walk_in => 'true'})
-          session[:user_id].should be_nil
-          session[:original_user_id].should eq @user.id
+          expect(session[:user_id]).to be_nil
+          expect(session[:original_user_id]).to eq @user.id
 
-          controller.current_user.walk_in.should be_truthy
+          expect(controller.current_user.walk_in).to be_truthy
         end
       end
     end
@@ -148,10 +140,10 @@ describe Users::SessionsController do
         @params = {:student => 'true'}
       end
       it 'the current user should become a student without any roles' do
-        controller.current_user.roles.should_not be_empty
+        expect(controller.current_user.roles).to_not be_empty
         put :update, @params
-        controller.current_user.should be_student
-        controller.current_user.roles.should be_empty
+        expect(controller.current_user).to be_student
+        expect(controller.current_user.roles).to be_empty
       end
     end
 
@@ -160,10 +152,10 @@ describe Users::SessionsController do
         @params = {:employee => 'true'}
       end
       it 'the current user should become an employee without any roles' do
-        controller.current_user.roles.should_not be_empty
+        expect(controller.current_user.roles).to_not be_empty
         put :update, @params
-        controller.current_user.should be_employee
-        controller.current_user.roles.should be_empty
+        expect(controller.current_user).to be_employee
+        expect(controller.current_user.roles).to be_empty
       end
     end
 
@@ -174,24 +166,24 @@ describe Users::SessionsController do
 
       it 'should change the user' do
         put :update, @params
-        session[:user_id].should eq @other_user.id
-        session[:original_user_id].should eq @user.id
+        expect(session[:user_id]).to eq @other_user.id
+        expect(session[:original_user_id]).to eq @user.id
       end
 
       context 'and walk_in flag is set' do
         it 'should change the user and give walk_in abilities' do
           put :update, @params.merge({:walk_in => 'true'})
-          session[:user_id].should eq @other_user.id
-          session[:original_user_id].should eq @user.id
+          expect(session[:user_id]).to eq @other_user.id
+          expect(session[:original_user_id]).to eq @user.id
 
-          controller.current_user.walk_in.should be_truthy
+          expect(controller.current_user.walk_in).to be_truthy
         end
       end
 
       context 'when request is not ajax' do
         it 'should redirect to root path' do
           put :update, @params
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -204,19 +196,19 @@ describe Users::SessionsController do
 
       it 'should not change the user' do
         put :update, @params
-        session[:user_id].should eq @other_user.id
-        session[:original_user_id].should be_nil
+        expect(session[:user_id]).to eq @other_user.id
+        expect(session[:original_user_id]).to be_nil
       end
 
       context 'when request is not ajax' do
         it 'should flash an error message' do
           put :update, @params
-          flash[:error].should == 'Not allowed'
+          expect(flash[:error]).to eq 'Not allowed'
         end
 
         it 'should redirect to root path' do
           put :update, @params
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -228,14 +220,14 @@ describe Users::SessionsController do
 
       it 'should flash an error message' do
         put :update, @params
-        flash[:error].should == 'User not found'
+        expect(flash[:error]).to eq 'User not found'
       end
 
       context 'when request is not ajax' do
         it 'should redirect to root path' do
           put :update, @params
-          response.should redirect_to switch_user_path
-          flash[:error].should eq "User not found"
+          expect(response).to redirect_to switch_user_path
+          expect(flash[:error]).to eq "User not found"
         end
       end
     end
@@ -249,13 +241,13 @@ describe Users::SessionsController do
 
     it "should deny access for a user that doesn't have \"User Support\" role" do
       get :switch
-      response.response_code.should eq 401
+      expect(response.response_code).to eq 401
     end
 
     it "should allow access for a user that has \"User Support\" role" do
       @user.roles << Role.find_by_code('SUP')
       get :switch
-      response.response_code.should eq 200
+      expect(response.response_code).to eq 200
     end
 
     context 'when searching for a user' do
@@ -309,20 +301,20 @@ describe Users::SessionsController do
         it 'should assign a list of users' do
           get :switch, { :user_q => '12345' }
           found_users = assigns[:found_users]
-          found_users.should_not be_nil
+          expect(found_users).to_not be_nil
         end
 
         it 'should include matched users in the assigned list' do
           get :switch, { :user_q => 'example.com' }
           found_users = assigns[:found_users]
-          found_users.should include(@other_user)
-          found_users.should include(@third_user)
+          expect(found_users).to include(@other_user)
+          expect(found_users).to include(@third_user)
         end
 
         it 'should not include the current user in the assigned list' do
           get :switch, { :user_q => 'lastname' }
           found_users = assigns[:found_users]
-          found_users.should_not include(@user)
+          expect(found_users).to_not include(@user)
         end
       end
 
@@ -330,8 +322,8 @@ describe Users::SessionsController do
         it 'should find only the user that matches all tokens' do
           get :switch, { :user_q => 'Lastname 54321@example.com' }
           found_users = assigns[:found_users]
-          found_users.should include(@other_user)
-          found_users.size.should eq 1
+          expect(found_users).to include(@other_user)
+          expect(found_users.size).to eq 1
         end
       end
 
@@ -339,7 +331,7 @@ describe Users::SessionsController do
         it 'should assign an empty list of users' do
           get :switch, { :user_q => 'you cant find me' }
           found_users = assigns[:found_users]
-          found_users.should be_empty
+          expect(found_users).to be_empty
         end
       end
 
@@ -351,7 +343,7 @@ describe Users::SessionsController do
 
         it 'should not allow listing users' do
           put :switch, @params
-          response.response_code.should eq 401
+          expect(response.response_code).to eq 401
         end
       end
 
@@ -363,7 +355,7 @@ describe Users::SessionsController do
 
     it "redirects the user to logout with redirect params to login" do
       get :logout_login_as_dtu
-      response.should redirect_to controller.logout_login_as_dtu_url
+      expect(response).to redirect_to controller.logout_login_as_dtu_url
     end
   end
 end

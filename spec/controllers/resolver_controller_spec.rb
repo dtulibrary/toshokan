@@ -15,7 +15,7 @@ describe ResolverController do
       open_url = Rack::Utils.parse_nested_query(single_doc_open_url)
 
       get :index, open_url
-      response.should redirect_to(catalog_path(:id => "191288369"))
+      expect(response).to redirect_to(catalog_path(:id => "191288369"))
     end
 
     it "redirects to a search result" do
@@ -29,7 +29,7 @@ describe ResolverController do
       query_params[:from_resolver] = true
 
       get :index, open_url
-      response.should redirect_to(catalog_index_path(query_params))
+      expect(response).to redirect_to(catalog_index_path(query_params))
     end
 
     it "shows a synthesized single document page" do
@@ -41,14 +41,14 @@ describe ResolverController do
       open_url = Rack::Utils.parse_nested_query(open_url)
 
       get :index, open_url
-      response.should render_template('catalog/show')
+      expect(response).to render_template('catalog/show')
     end
 
     context "search in Solr is not possible" do
 
       before do
         fake_error = RSolr::Error::Http.new({}, {})
-        controller.stub(:get_resolver_result) { |*args| raise fake_error }
+        expect(controller).to receive(:get_resolver_result) { |*args| raise fake_error }
       end
 
       it "redirects to root" do
@@ -57,7 +57,7 @@ describe ResolverController do
         get :index, open_url
         # using the standard blacklight rescue_from
         # might consider to override this and create a synthesized record instead
-        response.should redirect_to(root_url)
+        expect(response).to redirect_to(root_url)
       end
     end
 
@@ -73,7 +73,7 @@ describe ResolverController do
         open_url = Rack::Utils.parse_nested_query(open_url)
 
         get :index, open_url
-        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
+        expect(response).to redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
       end
 
       it "redirects if the request contains a SFX request id" do
@@ -81,7 +81,7 @@ describe ResolverController do
         open_url = Rack::Utils.parse_nested_query(open_url)
 
         get :index, open_url
-        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
+        expect(response).to redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
       end
 
       it "redirects if its an image based linking request" do
@@ -89,14 +89,14 @@ describe ResolverController do
         open_url = Rack::Utils.parse_nested_query(open_url)
 
         get :index, open_url
-        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
+        expect(response).to redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
       end
 
       it "redirects if it can't create an OpenURL from the request parameters" do
         open_url = Rack::Utils.parse_nested_query("somerandomthing=randomthing")
 
         get :index, open_url
-        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
+        expect(response).to redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
       end
 
       it "redirects if the request comes from SFX admin" do
@@ -104,7 +104,7 @@ describe ResolverController do
         open_url = Rack::Utils.parse_nested_query(open_url)
 
         get :index, open_url
-        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
+        expect(response).to redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
       end
 
       it "redirects if the request comes from Verde" do
@@ -112,7 +112,7 @@ describe ResolverController do
         open_url = Rack::Utils.parse_nested_query(open_url)
 
         get :index, open_url
-        response.should redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
+        expect(response).to redirect_to("#{Rails.application.config.resolve[:sfx_url]}?#{open_url.to_query}&fromfindit=true")
       end
     end
   end

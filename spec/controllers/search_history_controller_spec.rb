@@ -10,7 +10,7 @@ describe SearchHistoryController do
   let!(:ability) {
     ability = Object.new
     ability.extend CanCan::Ability
-    controller.stub(:current_ability).and_return(ability)
+    allow(controller).to receive(:current_ability).and_return(ability)
     ability
   }
 
@@ -22,18 +22,18 @@ describe SearchHistoryController do
       end
 
       it 'assigns the alerts array' do
-        assigns(:searches).should be_empty
+        expect(assigns(:searches)).to be_empty
       end
 
       it 'renders the index template' do        
-        should render_template 'index'
+        expect(response).to render_template 'index'
       end
     end
 
     context "without ability to view search history" do
       it 'redirects to Authentication Required' do
         get :index
-        response.should redirect_to authentication_required_url(:url => search_history_url)
+        expect(response).to redirect_to authentication_required_url(:url => search_history_url)
       end
     end
   end
@@ -48,14 +48,14 @@ describe SearchHistoryController do
       end
 
       it 'redirects to back' do        
-        response.should redirect_to("where_i_came_from")
+        expect(response).to redirect_to("where_i_came_from")
       end
     end
 
     context "without ability to view search history" do
       it 'redirects to Authentication Required' do
         post :save, :id => 1
-        response.should be_redirect
+        expect(response).to be_redirect
       end
     end
   end
@@ -70,14 +70,14 @@ describe SearchHistoryController do
       end
 
       it 'redirects to back' do        
-        response.should redirect_to("where_i_came_from")
+        expect(response).to redirect_to("where_i_came_from")
       end
     end
 
     context "without ability to view search history" do
       it 'redirects to Authentication Required' do
         delete :forget, :id => 1
-        response.should be_redirect
+        expect(response).to be_redirect
       end
     end
   end
@@ -91,15 +91,15 @@ describe SearchHistoryController do
       end
 
       it 'redirects to back' do
-        Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
-        Alert.stub(:post).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+        allow(Alert).to receive(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+        allow(Alert).to receive(:post).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
         put :alert, :id => 1
-        response.should redirect_to("where_i_came_from")
+        expect(response).to redirect_to("where_i_came_from")
       end
 
       it 'does not marked search as alerted if it can\'t be alerted' do
-        Alert.stub(:get).and_return(double(:success? => false, :message => "Failure", :code => 500))        
-        Search.find_by_id(1).alerted.should_not eq true
+        allow(Alert).to receive(:get).and_return(double(:success? => false, :message => "Failure", :code => 500))        
+        expect(Search.find_by_id(1).alerted).to_not be_truthy
       end
 
     end
@@ -107,7 +107,7 @@ describe SearchHistoryController do
     context "without ability to view search history" do
       it 'redirects to Authentication Required' do
         put :alert, :id => 1
-        response.should be_redirect
+        expect(response).to be_redirect
       end
     end
   end
@@ -123,22 +123,22 @@ describe SearchHistoryController do
       end
 
       it 'redirects to back' do
-        Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
-        Alert.stub(:delete).and_return(double(:success? => true))        
+        allow(Alert).to receive(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+        allow(Alert).to receive(:delete).and_return(double(:success? => true))        
         delete :forget_alert, :id => 1
-        response.should redirect_to("where_i_came_from")
+        expect(response).to redirect_to("where_i_came_from")
       end
 
       it 'does not unmarked search as alerted when alert could not be deleted' do
-        Alert.stub(:delete).and_return(double(:success? => false, :message => "Failure", :code => 500))        
-        Search.find_by_id(1).alerted.should eq true
+        allow(Alert).to receive(:delete).and_return(double(:success? => false, :message => "Failure", :code => 500))
+        expect(Search.find_by_id(1).alerted).to eq true
       end
     end
 
     context "without ability to view search history" do
       it 'redirects to Authentication Required' do
         delete :forget_alert, :id => 1
-        response.should be_redirect
+        expect(response).to be_redirect
       end
     end
   end
@@ -153,22 +153,22 @@ describe SearchHistoryController do
 
       it 'redirects to back' do        
         delete :destroy, :id => 1
-        response.should redirect_to("where_i_came_from")
+        expect(response).to redirect_to("where_i_came_from")
       end
 
       it 'does not delete search when an associated alert could not be deleted' do
         @search.alerted = true
         @search.save        
-        Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
-        Alert.stub(:delete).and_return(double(:success? => false, :message => "Failure", :code => 500))
-        Search.find_by_id(1).should_not be_nil
+        allow(Alert).to receive(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+        allow(Alert).to receive(:delete).and_return(double(:success? => false, :message => "Failure", :code => 500))
+        expect(Search.find_by_id(1)).to_not be_nil
       end
     end
 
     context "without ability to view search history" do
       it 'redirects to Authentication Required' do
         delete :destroy, :id => 1
-        response.should be_redirect
+        expect(response).to be_redirect
       end
     end
   end

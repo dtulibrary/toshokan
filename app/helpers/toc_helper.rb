@@ -14,7 +14,9 @@ module TocHelper
     query = "issn_ss:(#{document[:issn_ss].join(' OR ')})"
     toc_facets = toc_solr.get('select', :params => solr_params.merge({ :q => query, :rows => 0,
           :facet => 'true', 'facet.field' => 'pub_date_tis', 'facet.sort' => 'index', 'facet.limit' => 1000, 'facet.mincount' => 1 }))
-    toc_facets = toc_facets.with_indifferent_access
+
+    toc_facets = toc_facets.dup.with_indifferent_access
+    # toc_facets = ActiveSupport::HashWithIndifferentAccess.new_from_hash_copying_default(toc_facets)
 
     # build a list of years (in decreasing order) until we have at least `threshold`
     # volumes/issues to display
@@ -51,7 +53,7 @@ module TocHelper
     fl    = 'toc_key_s,issn_ss,pub_date_tis,journal_vol_ssf,journal_issue_ssf,journal_part_ssf'
     sort  = 'pub_date_tsort desc, journal_vol_tsort desc, journal_issue_tsort desc, journal_part_sort asc'
     toc_data = toc_solr.get('select', :params => solr_params.merge({ :q => query, :rows => count, :fl => fl, :sort => sort }))
-    toc_docs = toc_data.with_indifferent_access[:response][:docs]
+    toc_docs = toc_data.dup.with_indifferent_access[:response][:docs]
 
     # - do some field-name mapping here to make the view logic simpler
     # - also sort (even thought we get results sorted by Solr) since the
@@ -96,7 +98,7 @@ module TocHelper
     query = "toc_key_s:(#{toc_key})"
     sort  = 'journal_page_start_tsort asc'
     articles = blacklight_solr.get(blacklight_config.solr_path, :params => solr_params.merge({:q => query, :sort => sort, :rows => 100}))
-    articles.with_indifferent_access
+    articles.dup.with_indifferent_access
   end
 
   def render_toc toc

@@ -7,7 +7,7 @@ describe CatalogController do
   let!(:ability) {
     ability = Object.new
     ability.extend CanCan::Ability
-    controller.stub(:current_ability).and_return(ability)
+    allow(controller).to receive(:current_ability).and_return(ability)
     ability
   }
 
@@ -28,14 +28,14 @@ describe CatalogController do
         end
         it 'renders the catalog' do
           get :index, params
-          response.should render_template('catalog/index')
+          expect(response).to render_template('catalog/index')
         end
       end
 
       context 'without ability to tag' do
         it 'redirects to Authentication Required' do
           get :index, params
-          response.should redirect_to authentication_required_url(:url => catalog_index_url(params))
+          expect(response).to redirect_to authentication_required_url(:url => catalog_index_url(params))
         end
       end
     end
@@ -56,7 +56,7 @@ describe CatalogController do
 
         it "renders the document page" do
           get :show, params
-          response.should render_template('catalog/show')
+          expect(response).to render_template('catalog/show')
         end
       end
 
@@ -68,14 +68,14 @@ describe CatalogController do
 
         it "redirects to dtu login for anonymous users" do
           get :show, params
-          response.should redirect_to new_user_session_path(:url => catalog_url(params), :only_dtu => true)
+          expect(response).to redirect_to new_user_session_path(:url => catalog_url(params), :only_dtu => true)
         end
 
         it "redirects to authentication required for public users" do
           user = login
-          (user.public?).should be_truthy
+          expect(user.public?).to be_truthy
           get :show, params
-          response.should redirect_to authentication_required_catalog_url(:url => catalog_url(params))
+          expect(response).to redirect_to authentication_required_catalog_url(:url => catalog_url(params))
         end
       end
     end
@@ -85,7 +85,7 @@ describe CatalogController do
       it "is not found" do
         params = {:id => "123456789"}
         get :show, params
-        response.should be_not_found
+        expect(response).to be_not_found
       end
     end
   end
