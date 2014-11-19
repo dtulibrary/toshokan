@@ -7,7 +7,7 @@ Then /^I should(?: not|n't) see "(.*?)"$/ do |content|
 end
 
 Then /^I should(n't| not)? see the search page$/ do |negate|
-  page.has_css?('#search').should (negate ? be_false : be_true)
+  page.has_css?('#search').should (negate ? be_falsey : be_truthy)
 end
 
 Then /^I should(n't| not)? see the "(.*?)" link$/ do |negate, expected|
@@ -18,7 +18,7 @@ Then /^I should(n't| not)? see the "(.*?)" link$/ do |negate, expected|
     actual = link.gsub(/^\s+|<.*?>|\s+$/, '').gsub(/\s+/, ' ')
     found ||= actual == expected
   end
-  found.should (negate ? be_false : be_true)
+  found.should (negate ? be_falsey : be_truthy)
 end
 
 Then /^render the page$/ do
@@ -38,7 +38,7 @@ When /^I reload the page$/ do
 end
 
 When /^I click "(.*?)"$/ do |name|
-  click_link_or_button name
+  click_link_or_button name, :match => :first
 end
 
 When /^I click the link "(.*?)"$/ do |link|

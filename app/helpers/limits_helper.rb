@@ -71,7 +71,13 @@ module LimitsHelper
 
   def limit_label(limit)
     field_config = blacklight_config[:limit_fields][limit]
-    field_config[:label] || limit.titlecase
+
+    solr_field_label(
+        :"blacklight.search.fields.limit.#{limit}",
+        :"blacklight.search.fields.#{limit}",
+        (field_config["label"] if field_config),
+        limit.to_s.humanize
+    )
   end
 
   def limit_display_value(limit, value)

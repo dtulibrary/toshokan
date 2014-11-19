@@ -24,7 +24,12 @@ end
 Then /^the user with (\w+) "(.+?)" should((?: not|n't))? have role "(.+?)"$/ do |key, value, negate, role_name|
   role = Role.find_by_name role_name
   user = find_user key, value
-  page.has_css?("form[data-identifier = '#{user.identifier}'] input[data-role_id = '#{role.id}']", :checked => !negate).should be_true
+  checkbox = page.find(:css, "form[data-identifier = '#{user.identifier}'] input[data-role_id = '#{role.id}']")
+  if negate
+    expect(checkbox).to_not be_checked
+  else
+    expect(checkbox).to be_checked
+  end
 end
 
 def role_checkbox user, role

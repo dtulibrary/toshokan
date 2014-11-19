@@ -198,7 +198,7 @@ Then /^I should see the proper required fields in the "(.*?)" section$/ do |sect
       # find_field(required_field).should have_css('.required')
       # (find_field(required_field)['class'] || '').split.should include?('required')
       # worked for me so this is the current working solution
-      (find_field(required_field)['class'] || '').split.any? {|c| c == 'required'}.should be_true
+      (find_field(required_field)['class'] || '').split.any? {|c| c == 'required'}.should be_truthy
     end
   end
 end
@@ -207,7 +207,7 @@ Then /^I should see the proper optional fields in the "(.*?)" section$/ do |sect
   (optional_section_fields[section] || []).each do |optional_field|
     within locator_for_section(section) do
       # See comment from step for required fields
-      (find_field(optional_field)['class'] || '').split.any? {|c| c == 'required'}.should be_false
+      (find_field(optional_field)['class'] || '').split.any? {|c| c == 'required'}.should be_falsey
     end
   end
 end
@@ -220,7 +220,7 @@ end
 
 Then /^I should see an error in the "(.*?)" field in the "(.*?)" form section$/ do |field, section|
   within locator_for_section(section) do
-    (find_field(field)['class'] || '').split.any? {|c| c == 'error'}.should be_true
+    (find_field(field)['class'] || '').split.any? {|c| c == 'error'}.should be_truthy
   end
 end
 

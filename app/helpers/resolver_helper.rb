@@ -121,7 +121,7 @@ module ResolverHelper
     params.merge!({:qt => '/resolve', :rows => 2, :echoParams => 'all'}).merge!(blacklight_config[:resolver_params])
 
     res = blacklight_solr.send_and_receive(blacklight_config.solr_path, :params => add_inclusive_access_filter(params))
-    solr_response = Blacklight::SolrResponse.new(force_to_utf8(res), params)
+    solr_response = Blacklight::SolrResponse.new(res, params)
     count = 0
     unless solr_response.docs.empty?
       document = SolrDocument.new(solr_response.docs.first, solr_response)

@@ -1,5 +1,7 @@
 class SearchHistoryController < ApplicationController
 
+  include Blacklight::Catalog::SearchContext
+
   before_filter :require_search_history_ability
 
   def initialize

@@ -30,6 +30,15 @@ en:
         journal_issue_ssf: 'Issue'
         dissertation_date_ssf: 'Dissertation date'
         supervisor_ts: "Supervisors"
+        facet:
+          author_facet: 'Author'
+          format: 'Type'
+          journal_title_facet: 'Journal Title'
+          pub_date_tsort: 'Publication Year'
+        limit:
+          toc: 'Articles in'
+          author: 'Author'
+          subject: 'Subject'
   toshokan:
     header:
       dtu: 'Technical University of Denmark'

@@ -324,8 +324,10 @@ class CatalogController < ApplicationController
     (@response, @document_list) = get_search_results(params, extra_search_params)
     @filters = params[:f] || []
 
+    associate_search_with_user
+
     respond_to do |format|
-      format.html { save_current_search_params }
+      format.html { render }
       format.rss  { render :layout => false }
       format.atom { render :layout => false }
 
@@ -440,43 +442,50 @@ class CatalogController < ApplicationController
     end
   end
 
-  # Saves the current search (if it does not already exist) as a models/search object
-  # then adds the id of the search object to session[:history] (if not logged in) or
-  # add the search to the users searches
-  def save_current_search_params
-    # If it's got anything other than controller, action, total, we
-    # consider it an actual search to be saved. Can't predict exactly
-    # what the keys for a search will be, due to possible extra plugins.
-    return if (search_session.keys - [:controller, :action, :total, :counter, :commit, :locale]) == []
-    params_copy = search_session.clone # don't think we need a deep copy for this
-    params_copy.delete(:page)
-    params_copy.delete(:s_id)
-
-    # don't save default 'empty' search
-    unless params[:q].blank? && params[:f].blank? && params[:l].blank? && params[:t].blank?
-
-      index = @search_history.collect { |search| search.query_params }.index(params_copy)
-      if index.nil?
-
-
-        new_search = Search.create(:query_params => params_copy)
-        search_id = new_search.id
-
-        if can? :view, :search_history
-          current_user.searches << new_search
-          current_user.save
-        else
-          session[:history].unshift(new_search.id)
-          # Only keep most recent X searches in history, for performance.
-          # both database (fetching em all), and cookies (session is in cookie)
-          session[:history] = session[:history].slice(0, Blacklight::Catalog::SearchHistoryWindow)
-        end
-      else
-        search_id = @search_history[index].id
-      end
-
-      params[:s_id] = search_id
+  def associate_search_with_user
+    if current_search_session
+      current_user.searches << current_search_session
+      current_search_session.save
     end
   end
+
+  # # Saves the current search (if it does not already exist) as a models/search object
+  # # then adds the id of the search object to session[:history] (if not logged in) or
+  # # add the search to the users searches
+  # def save_current_search_params
+  #   # If it's got anything other than controller, action, total, we
+  #   # consider it an actual search to be saved. Can't predict exactly
+  #   # what the keys for a search will be, due to possible extra plugins.
+  #   return if (search_session.keys - [:controller, :action, :total, :counter, :commit, :locale]) == []
+  #   params_copy = search_session.clone # don't think we need a deep copy for this
+  #   params_copy.delete(:page)
+  #   params_copy.delete(:s_id)
+  #
+  #   # don't save default 'empty' search
+  #   unless params[:q].blank? && params[:f].blank? && params[:l].blank? && params[:t].blank?
+  #
+  #     index = @search_history.collect { |search| search.query_params }.index(params_copy)
+  #     if index.nil?
+  #
+  #
+  #       new_search = Search.create(:query_params => params_copy)
+  #       search_id = new_search.id
+  #
+  #       if can? :view, :search_history
+  #         current_user.searches << new_search
+  #         current_user.save
+  #       else
+  #         session[:history].unshift(new_search.id)
+  #         # Only keep most recent X searches in history, for performance.
+  #         # both database (fetching em all), and cookies (session is in cookie)
+  #         session[:history] = session[:history].slice(0, Blacklight::Catalog::SearchHistoryWindow)
+  #       end
+  #     else
+  #       search_id = @search_history[index].id
+  #     end
+  #
+  #     params[:s_id] = search_id
+  #   end
+  # end
 
 end

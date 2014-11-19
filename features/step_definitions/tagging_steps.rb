@@ -1,5 +1,5 @@
 Given /^I bookmark the( first)? document$/ do |first|
-  scope = first ? find('.documentFunctions') : page
+  scope = first ? find('.documentFunctions', :match=>:first) : page
   scope.click_on 'Bookmark'
 end
 
@@ -9,7 +9,7 @@ When /^I bookmark the document with title "(.*?)"$/ do |title|
 end
 
 When /^I unbookmark the( first)? document$/ do |first|
-  scope = first ? find('.documentFunctions') : page
+  scope = first ? find('.documentFunctions', :match=>:first) : page
   scope.click_on 'Remove bookmark and tags'
 end
 
@@ -45,7 +45,7 @@ Given /^I remove the tag "(.*?)" from the first document$/ do |tag_name|
 end
 
 Given /^I remove the tag "(.*?)" from the document$/ do |tag_name|
-  within(".tag", :text => tag_name) do
+  within(".tag", :text => tag_name, :match => :first) do
     click_on 'Remove'
   end
 end
@@ -91,12 +91,12 @@ Given /^I delete tag "(.*?)"$/ do |tag_name|
 end
 
 Then /^the( first)? document should be bookmarked$/ do |first|
-  scope = first ? find('.documentFunctions') : page
+  scope = first ? find('.documentFunctions', :match => :first) : page
   scope.should have_css('.tag_control .icon-star')
 end
 
 Then /^the( first)? document should not be bookmarked$/ do |first|
-  scope = first ? find('.documentFunctions') : page
+  scope = first ? find('.documentFunctions', :match=>:first) : page
   scope.should_not have_css('.tag_control .icon-star')
 end
 
@@ -106,7 +106,7 @@ Then /^the( first)? document should have tags$/ do |first|
 end
 
 Then /^the( first)? document should not have tags$/ do |first|
-  scope = first ? find('.documentFunctions') : page
+  scope = first ? find('.documentFunctions', :match=>:first) : page
   scope.should have_css('.tags_dropdown .no-tags')
 end
 

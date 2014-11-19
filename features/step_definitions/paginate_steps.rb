@@ -1,12 +1,12 @@
 # encoding: utf-8
 
 Then /^I should not see any pagination$/ do
-  page.has_css?('.pagination').should be_false
+  page.has_css?('.pagination').should be_falsey
 end
 
 Then /^I should see page links from (\d+) to (\d+)$/ do |from, to|
   (from.to_i..to.to_i).each{ |page_number|
-    page.has_css?('.pagination ul li a', :text => "#{page_number}").should be_true
+    page.has_css?('.pagination ul li a', :text => "#{page_number}").should be_truthy
   }
 end
 Then /^the (next|previous) page link should be active$/ do |link_type|
