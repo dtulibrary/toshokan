@@ -279,10 +279,10 @@ class CatalogController < ApplicationController
     #config.add_labeled_field :sort, 'author_sort asc, title_sort asc', :field_name => 'author'
     #config.add_labeled_field :sort, 'title_sort asc, pub_date_tsort desc', :field_name => 'title'
 
-    config.add_sort_field 'score desc, pub_date_tsort desc, journal_vol_tsort desc, journal_issue_tsort desc, journal_page_start_tsort asc, title_sort asc', :field_name => 'relevance'
-    config.add_sort_field 'pub_date_tsort desc, journal_vol_tsort desc, journal_issue_tsort desc, journal_page_start_tsort asc, title_sort asc', :field_name => 'year'
-    config.add_sort_field 'author_sort asc, title_sort asc', :field_name => 'author'
-    config.add_sort_field 'title_sort asc, pub_date_tsort desc', :field_name => 'title'
+    config.add_sort_field 'score desc, pub_date_tsort desc, journal_vol_tsort desc, journal_issue_tsort desc, journal_page_start_tsort asc, title_sort asc', :label => 'relevance'
+    config.add_sort_field 'pub_date_tsort desc, journal_vol_tsort desc, journal_issue_tsort desc, journal_page_start_tsort asc, title_sort asc', :label => 'year'
+    config.add_sort_field 'author_sort asc, title_sort asc', :label => 'author'
+    config.add_sort_field 'title_sort asc, pub_date_tsort desc', :label => 'title'
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
