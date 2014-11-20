@@ -59,7 +59,7 @@ module Toshokan
     config.assets.version = '1.2'
 
     # Enable I18n fallbacks
-    config.i18n.fallbacks = true
+    config.i18n.fallbacks  = true
     config.i18n.load_path += Dir[File.join(Rails.root, 'config', 'locales', '**', '*.{rb,yml}')]
 
     # Sanitize UTF8 input
@@ -67,7 +67,7 @@ module Toshokan
 
 
     # Config to be overriden by local settings
-    config.time_zone = 'CET'
+    config.time_zone                      = 'CET'
     config.active_record.default_timezone = :local
 
     config.solr_document = {
@@ -80,10 +80,10 @@ module Toshokan
     }
 
     config.auth = {
-      :stub => false,
+      :stub    => false,
       :cas_url => '',
       :api_url => '',
-      :ip => {
+      :ip      => {
         :walk_in  => [],
         :campus   => [],
         :internal => [],
@@ -91,7 +91,7 @@ module Toshokan
     }
 
     config.cover_images = {
-      :url => '',
+      :url     => '',
       :api_key => ''
     }
 
@@ -107,12 +107,12 @@ module Toshokan
     config.orders = {
       # Prefix order id's since we use unique order id's in DIBS
       # and development machines, unstable, staging and production all use the same DIBS
-      :order_id_prefix => 'N/A-',
-      :reply_to_email => '',
+      :order_id_prefix   => 'N/A-',
+      :reply_to_email    => '',
       :order_link_hidden => true,
-      :enabled => true,
-      :enabled_ips => [],
-      :terms_of_service => {
+      :enabled           => true,
+      :enabled_ips       => [],
+      :terms_of_service  => {
         :en => 'http://lgdata.s3-website-us-east-1.amazonaws.com/docs/3935/791908/DTUFindit_TermsAndConditions.pdf',
         :da => 'http://lgdata.s3-website-us-east-1.amazonaws.com/docs/3935/791910/DTUFindit_Handelsbetingelser.pdf',
       },
@@ -121,26 +121,26 @@ module Toshokan
     config.dibs = {
       :payment_url => 'https://payment.architrade.com/paymentweb/start.action',
       :capture_url => 'https://payment.architrade.com/cgi-bin/capture.cgi',
-      :cancel_url => 'https://payment.architrade.com/cgi-adm/cancel.cgi',
-      :username => '',
-      :password => '',
+      :cancel_url  => 'https://payment.architrade.com/cgi-adm/cancel.cgi',
+      :username    => '',
+      :password    => '',
       :merchant_id => '',
-      :md5_key1 => '',
-      :md5_key2 => '',
-      :paytype => 'DK,VISA,ELEC,MC,MTRO,AMEX,JCB',
-      :test => true,
+      :md5_key1    => '',
+      :md5_key2    => '',
+      :paytype     => 'DK,VISA,ELEC,MC,MTRO,AMEX,JCB',
+      :test        => true,
     }
 
     config.doc_del = {
-      :url => '',
+      :url     => '',
       :enabled => true,
     }
 
     config.send_it = {
-      :url => '',
-      :delay_jobs => true,
+      :url                   => '',
+      :delay_jobs            => true,
       :delivery_support_mail => '',
-      :book_suggest_mail => '',
+      :book_suggest_mail     => '',
     }
 
     config.library_support = {
@@ -180,7 +180,7 @@ module Toshokan
     config.delay_jobs = true
 
     config.scopus_url = "http://www.scimagojr.com/journalsearch.php?q=%s&tip=iss"
-    config.orbit_url = "http://orbit.dtu.dk/en/publications/id(%s).html"
+    config.orbit_url  = "http://orbit.dtu.dk/en/publications/id(%s).html"
 
     config.lib_guide = {
       :public => {
@@ -193,7 +193,8 @@ module Toshokan
     }
 
     config.alert = {
-      :url => 'http://localhost',
+      :url       => 'http://localhost',
+      :test_mode => false,
     }
 
     config.google = {
@@ -203,7 +204,7 @@ module Toshokan
     }
 
     config.rsolr = {
-      :retries => 3,
+      :retries     => 3,
       :retry_delay => 0.1,
     }
 
@@ -212,9 +213,9 @@ module Toshokan
     }
 
     config.pubmed = {
-      :url => "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?id=%<id>s&db=pubmed&retmode=xml&tool=%<tool>s&email=%<email>s",
-      :tool => '',
-      :email => '',
+      :url    => "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?id=%<id>s&db=pubmed&retmode=xml&tool=%<tool>s&email=%<email>s",
+      :tool   => '',
+      :email  => '',
       :dtu_id => ''
     }
 

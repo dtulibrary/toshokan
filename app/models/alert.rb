@@ -1,6 +1,6 @@
 class Alert
   extend ActiveModel::Naming
-  include ActiveModel::Conversion  
+  include ActiveModel::Conversion
   include ActiveModel::Validations
   include HTTParty
   include Configured
@@ -22,21 +22,23 @@ class Alert
   end
 
   def save
+    return false if Alert.test_mode
     begin
       response = self.class.post("/alerts", {:body => attributes})
       if response.success?
-        self.id = ActiveSupport::JSON.decode(response.body)["alert"]["id"]        
+        self.id = ActiveSupport::JSON.decode(response.body)["alert"]["id"]
       else
         Rails.logger.error "Alert service failed on saving alert for #{self.inspect} with #{response.message} and status #{response.code}"
-      end    
+      end
       response.success?
     rescue Timeout::Error
       Rails.logger.error "Alert service timed out"
       false
-     end    
+     end
   end
 
   def self.destroy(id)
+    return false if Alert.test_mode
     begin
       response = self.delete("/alerts/#{id}")
       unless response.success?
@@ -46,7 +48,7 @@ class Alert
     rescue Timeout::Error
       Rails.logger.error "Alert service timed out"
       false
-    end        
+    end
   end
 
   def self.all(user, type)
@@ -56,7 +58,7 @@ class Alert
       response = self.get("/alerts", :query => {"user_id" => user.identifier, "alert_type" => type})
       if response.success?
         alerts = []
-        ActiveSupport::JSON.decode(response.body).each do |a|        
+        ActiveSupport::JSON.decode(response.body).each do |a|
           alerts << Alert.new(a["alert"])
         end
       else
@@ -64,14 +66,14 @@ class Alert
       end
     rescue Timeout::Error
       Rails.logger.error "Alert service timed out"
-    end        
+    end
     alerts
   end
 
   def self.lookup(id)
     return nil if Alert.test_mode
     begin
-      response = self.get("/alerts/#{id}")    
+      response = self.get("/alerts/#{id}")
       if response.success?
         alert = Alert.new(ActiveSupport::JSON.decode(response.body)["alert"])
       else
@@ -83,7 +85,7 @@ class Alert
       end
     rescue Timeout::Error
       Rails.logger.error "Alert service timed out"
-    end   
+    end
     alert
   end
 
@@ -101,8 +103,8 @@ class Alert
       end
     rescue Timeout::Error
       Rails.logger.error "Alert service timed out"
-    end   
-    alert 
+    end
+    alert
   end
 
   def persisted?
