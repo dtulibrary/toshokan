@@ -12,7 +12,7 @@
     border: 1px solid #d4d4d4;
     padding: 2px 5px;
     height: 34px;
-    width: 450px;
+    width: 446px;
     float: left;
     box-sizing: border-box;
     border-radius: 5px 0px 0px 5px;
@@ -38,7 +38,7 @@
   }
 
   #q {
-    width: 375px;
+    width: 376px;
     border: none;
     padding: 0px;
     margin: 0px 10px 0px 0px;
@@ -57,10 +57,11 @@
   button {
     width: 90px;
     height: 34px;
-    font-size: 22px;
+    font-size: 18px;
     float: left;
     margin-left: -1px;
     border-radius: 0px 5px 5px 0px;
+    padding: 0px 12px;
   }
 
 }

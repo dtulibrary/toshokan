@@ -3,11 +3,15 @@
 @media (min-width: 1200px) {
   #searchbar {
     .text-field-with-icons {
-      width: 580px;
+      width: 560px;
     }
 
     #q {
-      width: 500px;
+      width: 480px;
+    }
+
+    #search {
+      padding: 0px 12px;
     }
   }
 }
