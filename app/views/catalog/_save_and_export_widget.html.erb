@@ -1,14 +1,11 @@
 <div id="save_and_export-dropdown" class="dropdown pull-right  hidden-phone">
-  <span class="hide-text"><%= t('toshokan.tools.save_and_export') %></span>
-  <ul class="css-dropdown">
-    <li>
-      <%= link_to(t('toshokan.tools.save_and_export'), "#") %> <span class="caret"></span>
-      <ul>
-          <% if show_feature?(:mendeley) %>
-            <li><%= link_to(content_tag('i', '', :class => 'icon-mendeley') + t('toshokan.tools.mendeley'), '#', :class => 'save-to-mendeley-api') %></li>
-          <% end %>
-          <li><%= link_to(content_tag('i', '', :class => 'icon-file-text-o') + t('toshokan.tools.ris'), url_for(params_for_search(:format => :ris))) %></li>
-          <li><%= link_to(content_tag('i', '', :class => 'icon-file-text-o') + t('toshokan.tools.bibtex'), url_for(params_for_search(:format => :bib))) %></li>
+  <%= link_to((t('toshokan.tools.save_and_export') + ' <span class="caret"></span>').html_safe, "#", :class => 'btn btn-default dropdown-toggle', 'data-toggle' => 'dropdown') %>
+  <ul class="dropdown-menu">
+      <% if show_feature?(:mendeley) %>
+        <li role="presentation"><%= link_to(content_tag('i', '', :class => 'icon-mendeley') + t('toshokan.tools.mendeley'), '#', :class => 'save-to-mendeley-api', :role => 'menuitem') %></li>
+      <% end %>
+      <li role="presentation"><%= link_to(content_tag('i', '', :class => 'icon-file-text-o') + t('toshokan.tools.ris'), url_for(params_for_search(:format => :ris)), :role => 'menuitem') %></li>
+      <li role="presentation"><%= link_to(content_tag('i', '', :class => 'icon-file-text-o') + t('toshokan.tools.bibtex'), url_for(params_for_search(:format => :bib)), :role => 'menuitem') %></li>
       </ul>
     </li>
   </ul>
