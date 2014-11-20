@@ -70,7 +70,7 @@ group :development do
   # eventmachine 0.12.10 does not compile on windows
   gem 'eventmachine', '~> 1.0.0.rc4', :platforms => :mswin
 
-  gem 'rails_view_annotator'
+  gem 'rails_view_annotator', '= 0.0.7'
   gem 'rails-footnotes'
 
   gem 'puma'
