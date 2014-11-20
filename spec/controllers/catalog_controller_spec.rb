@@ -47,6 +47,7 @@ describe CatalogController do
     context "when the document exists" do
 
       let(:params) {{ :id => "183644425" }}
+      let(:search_params) {{ :q => 'Kardiologiczny', 'f[author]'=>'Grabowski, Marcin' }}
 
       context "with access" do
 
@@ -57,6 +58,14 @@ describe CatalogController do
         it "renders the document page" do
           get :show, params
           expect(response).to render_template('catalog/show')
+        end
+
+        it "injects last query into params without destroying relevant params" do
+          get :index, search_params  # create previous search
+          get :show, params
+          expect(controller.params).to include(search_params)
+          expect(controller.params[:action]).to eq 'show'
+          expect(controller.params[:controller]).to eq 'catalog'
         end
       end
 

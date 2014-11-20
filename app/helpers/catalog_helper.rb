@@ -2,6 +2,16 @@
 module CatalogHelper
   include Blacklight::CatalogHelperBehavior
 
+  ##  DELETE THIS METHOD after upgraded to blacklight 5.7+ it will be provided by Blacklight::CatalogHelperBehavior
+  # Should we display the pagination controls?
+  #
+  # @param [Blacklight::SolrResponse]
+  # @return [Boolean]
+  def show_pagination? response = nil
+    response ||= @response
+    response.limit_value > 0
+  end
+
   def has_search_parameters?
     result = super || !params[:t].blank? || !params[:l].blank? || !params[:resolve].blank?
   end

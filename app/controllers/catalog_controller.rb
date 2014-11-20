@@ -390,7 +390,8 @@ class CatalogController < ApplicationController
 
   def inject_last_query_into_params
     if current_search_session
-      params.merge!(current_search_session.query_params) unless params[:ignore_search]
+      current_search_params = current_search_session.query_params.empty? ? {} : current_search_session.query_params
+      params.merge!(current_search_params.reject {|k,v| ["controller","action"].include?(k)}) unless params[:ignore_search]
     end
   end
 

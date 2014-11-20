@@ -40,5 +40,5 @@ When /^I go to page (\d+) of the result set$/ do |page_number|
 end
 
 When /^I go to the (next|previous) page of the result set$/ do |link_type|
-  click_link (link_type == 'next' ? 'Next »' : '« Previous')
+  click_link (link_type == 'next' ? 'Next »' : '« Previous'), :match => :first
 end
