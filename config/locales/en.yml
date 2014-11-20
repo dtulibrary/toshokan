@@ -126,7 +126,7 @@ en:
       profile_picture_for: "Profile picture for"
       find:
         search_label: "Search for user by first name, last name, email, cwis, initials, or any combination of these"
-        search: "Search"
+        search: "Search for user"
         filter_label: "Filter users by role"
       switch:
         become_user: 'Become user'

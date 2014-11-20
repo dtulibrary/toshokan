@@ -1,7 +1,7 @@
 When /^I switch user to user with (.*?) "(.*?)"$/ do |key, value|
   click_link 'Switch user'
   fill_in "user_q", with: value
-  click_button 'Search'
+  click_button 'Search for user'
   within ".found_user" do
     click_button 'Become user'
   end
