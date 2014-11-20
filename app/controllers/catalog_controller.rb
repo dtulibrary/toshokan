@@ -14,6 +14,7 @@ class CatalogController < ApplicationController
   include MendeleyHelper
 
   before_filter :authenticate_mendeley, :only => [:mendeley_index, :mendeley_show]
+  before_filter :inject_last_query_into_params, only:[:show]
 
   self.solr_search_params_logic += [:add_tag_fq_to_solr]
   self.solr_search_params_logic += [:add_limit_fq_to_solr]
@@ -384,6 +385,12 @@ class CatalogController < ApplicationController
           format.send(format_name.to_sym) { render :text => @document.export_as(format_name), :layout => false }
         end
       end
+    end
+  end
+
+  def inject_last_query_into_params
+    if current_search_session
+      params.merge!(current_search_session.query_params) unless params[:ignore_search]
     end
   end
 

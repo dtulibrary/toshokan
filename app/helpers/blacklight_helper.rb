@@ -61,13 +61,6 @@ module BlacklightHelper
     end
   end
 
-  def render_search_bar
-    local_params = params.with_indifferent_access
-    local_params = (session[:search] || {}).deep_merge(local_params).with_indifferent_access unless params[:ignore_search]
-
-    render :partial => 'catalog/search_form', :locals => {:local_params => local_params}
-  end
-
   def should_render_index_field? document, solr_field
     !field_suppressed?(document, solr_field) && super
   end

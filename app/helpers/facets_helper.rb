@@ -9,9 +9,13 @@ module FacetsHelper
     facet_configuration_for_field(facet_name).always_expand
   end
 
-  def render_facet_value facet_solr_field, item, options = {}
-    item.label = t "toshokan.catalog.formats.#{item.label}" if facet_solr_field == 'format'
-    super facet_solr_field, item, options
+  # Overrides facet_display_value to use i18n names for document formats (article, book, etc.)
+  def facet_display_value field, item
+    if field == 'format'
+      item = Blacklight::SolrResponse::Facets::FacetItem.new(item) unless item.respond_to? :label
+      item.label = t "toshokan.catalog.formats.#{item.label}"
+    end
+    super
   end
 
   def render_facet_count num, options = {}

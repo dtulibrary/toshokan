@@ -3,7 +3,7 @@
   <% unless search_fields.empty? %>
     <div class="pull-left hide">
       <label for="search_field" class="hide-text"><%= t('blacklight.search.form.search_field.label') %></label>
-      <%= select_tag(:search_field, options_for_select(search_fields, h(local_params[:search_field])), :title => t('blacklight.search.form.search_field.title'), :class=>"search_field input-small") %>
+      <%= select_tag(:search_field, options_for_select(search_fields, h(params[:search_field])), :title => t('blacklight.search.form.search_field.title'), :class=>"search_field input-small") %>
       <span class="hide-text"><%= t('blacklight.search.form.search_field.post_label') %></span>
     </div>
   <% end %>
@@ -15,7 +15,7 @@
       <a title="More options" id="more-options" href="#"><i class="icon-chevron-down"></i></a>
       <a title="Less options" id="less-options" href="#" class="hide"><i class="icon-chevron-up"></i></a>
     </div>
-    <%= text_field_tag :q, local_params[:q], :class => "search_q q", :id => "q"%>
+    <%= text_field_tag :q, params[:q], :class => "search_q q", :id => "q"%>
   </div>
   <button type="submit" class="btn btn-primary search-btn" id="search">
     <span class="submit-search-text hidden-tablet"><%=t('blacklight.search.form.submit')%></span>
