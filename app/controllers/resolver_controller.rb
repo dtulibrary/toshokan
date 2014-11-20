@@ -2,6 +2,12 @@ class ResolverController < CatalogController
 
   include ResolverHelper
 
+  rescue_from RSolr::Error::Http do |exception|
+    flash[:error] ||= []
+    flash[:error] << exception.message
+    redirect_to :root
+  end
+
   def index
 
     # get params from request query string to maintain multiple values with the same key

@@ -4,7 +4,7 @@ gem 'rails', '~> 4.1.0'
 gem 'activerecord-session_store'
 
 gem 'jquery-rails', '~> 2.3.0'
-gem 'blacklight', '~> 5.1.0'
+gem 'blacklight', '~> 5.7'
 gem 'unicode'
 gem 'bootstrap-sass', '~> 3.2.0'
 

@@ -9,11 +9,11 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141105121505) do
+ActiveRecord::Schema.define(version: 20141118142714) do
 
-  create_table "assistance_requests", :force => true do |t|
+  create_table "assistance_requests", force: true do |t|
     t.string   "type"
     t.integer  "user_id"
     t.text     "article_title"
@@ -38,28 +38,31 @@ ActiveRecord::Schema.define(:version => 20141105121505) do
     t.text     "email"
     t.text     "pickup_location"
     t.text     "physical_location"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "conference_isxn"
     t.text     "conference_pages"
     t.text     "book_publisher"
     t.text     "auto_cancel"
-    t.boolean  "book_suggest",          :default => false
+    t.boolean  "book_suggest",          default: false
     t.text     "library_support_issue"
   end
 
-  create_table "bookmarks", :force => true do |t|
-    t.integer  "user_id",     :null => false
+  create_table "bookmarks", force: true do |t|
+    t.integer  "user_id",       null: false
     t.string   "document_id"
     t.string   "title"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "user_type"
+    t.string   "document_type"
   end
 
-  create_table "delayed_jobs", :force => true do |t|
-    t.integer  "priority",   :default => 0
-    t.integer  "attempts",   :default => 0
+  add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
+
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0
+    t.integer  "attempts",   default: 0
     t.text     "handler"
     t.text     "last_error"
     t.datetime "run_at"
@@ -67,22 +70,22 @@ ActiveRecord::Schema.define(:version => 20141105121505) do
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
 
-  create_table "order_events", :force => true do |t|
+  create_table "order_events", force: true do |t|
     t.integer  "order_id"
     t.string   "name"
     t.text     "data"
     t.datetime "created_at"
   end
 
-  add_index "order_events", ["name"], :name => "index_order_events_on_name"
+  add_index "order_events", ["name"], name: "index_order_events_on_name"
 
-  create_table "orders", :force => true do |t|
+  create_table "orders", force: true do |t|
     t.string   "uuid"
     t.string   "supplier"
     t.integer  "price"
@@ -96,8 +99,8 @@ ActiveRecord::Schema.define(:version => 20141105121505) do
     t.string   "delivery_status"
     t.datetime "payed_at"
     t.datetime "delivered_at"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "user_id"
     t.text     "open_url"
     t.string   "masked_card_number"
@@ -114,100 +117,100 @@ ActiveRecord::Schema.define(:version => 20141105121505) do
     t.integer  "duration_hours"
   end
 
-  add_index "orders", ["docdel_order_id"], :name => "index_orders_on_docdel_order_id"
-  add_index "orders", ["supplier_order_id"], :name => "index_orders_on_supplier_order_id"
-  add_index "orders", ["user_id"], :name => "index_orders_on_user_id"
-  add_index "orders", ["uuid"], :name => "index_orders_on_uuid"
+  add_index "orders", ["docdel_order_id"], name: "index_orders_on_docdel_order_id"
+  add_index "orders", ["supplier_order_id"], name: "index_orders_on_supplier_order_id"
+  add_index "orders", ["user_id"], name: "index_orders_on_user_id"
+  add_index "orders", ["uuid"], name: "index_orders_on_uuid"
 
-  create_table "progresses", :force => true do |t|
+  create_table "progresses", force: true do |t|
     t.string   "name"
     t.float    "start"
     t.float    "current"
     t.float    "end"
     t.boolean  "stop"
     t.boolean  "finished"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "progresses", ["name"], :name => "index_progresses_on_name"
+  add_index "progresses", ["name"], name: "index_progresses_on_name"
 
-  create_table "roles", :force => true do |t|
+  create_table "roles", force: true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "code"
   end
 
-  create_table "roles_users", :id => false, :force => true do |t|
+  create_table "roles_users", id: false, force: true do |t|
     t.integer "role_id"
     t.integer "user_id"
   end
 
-  create_table "searches", :force => true do |t|
+  create_table "searches", force: true do |t|
     t.text     "query_params"
     t.integer  "user_id"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "user_type"
     t.string   "title"
-    t.boolean  "saved",        :default => false
-    t.boolean  "alerted",      :default => false
+    t.boolean  "saved",        default: false
+    t.boolean  "alerted",      default: false
   end
 
-  add_index "searches", ["user_id"], :name => "index_searches_on_user_id"
+  add_index "searches", ["user_id"], name: "index_searches_on_user_id"
 
-  create_table "sessions", :force => true do |t|
-    t.string   "session_id", :null => false
+  create_table "sessions", force: true do |t|
+    t.string   "session_id", null: false
     t.text     "data"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
-  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
 
-  create_table "subscriptions", :force => true do |t|
+  create_table "subscriptions", force: true do |t|
     t.integer "user_id"
     t.integer "tag_id"
   end
 
-  add_index "subscriptions", ["user_id", "tag_id"], :name => "index_subscriptions_on_user_id_and_tag_id", :unique => true
-  add_index "subscriptions", ["user_id"], :name => "index_subscriptions_on_user_id"
+  add_index "subscriptions", ["user_id", "tag_id"], name: "index_subscriptions_on_user_id_and_tag_id", unique: true
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id"
 
-  create_table "taggings", :force => true do |t|
+  create_table "taggings", force: true do |t|
     t.integer  "tag_id"
     t.integer  "bookmark_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "taggings", ["bookmark_id"], :name => "index_taggings_on_bookmark_id"
-  add_index "taggings", ["tag_id", "bookmark_id"], :name => "index_taggings_on_tag_id_and_bookmark_id", :unique => true
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["bookmark_id"], name: "index_taggings_on_bookmark_id"
+  add_index "taggings", ["tag_id", "bookmark_id"], name: "index_taggings_on_tag_id_and_bookmark_id", unique: true
+  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id"
 
-  create_table "tags", :force => true do |t|
+  create_table "tags", force: true do |t|
     t.string   "name"
     t.integer  "user_id"
     t.boolean  "shared"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "tags", ["name", "user_id"], :name => "index_tags_on_name_and_user_id", :unique => true
-  add_index "tags", ["shared"], :name => "index_tags_on_shared"
-  add_index "tags", ["user_id"], :name => "index_tags_on_user_id"
+  add_index "tags", ["name", "user_id"], name: "index_tags_on_name_and_user_id", unique: true
+  add_index "tags", ["shared"], name: "index_tags_on_shared"
+  add_index "tags", ["user_id"], name: "index_tags_on_user_id"
 
-  create_table "users", :force => true do |t|
+  create_table "users", force: true do |t|
     t.string   "provider"
     t.string   "identifier"
     t.string   "email"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "user_data"
   end
 
-  add_index "users", ["identifier"], :name => "index_users_on_identifier"
-  add_index "users", ["provider", "identifier"], :name => "index_users_on_provider_and_identifier", :unique => true
+  add_index "users", ["identifier"], name: "index_users_on_identifier"
+  add_index "users", ["provider", "identifier"], name: "index_users_on_provider_and_identifier", unique: true
 
 end

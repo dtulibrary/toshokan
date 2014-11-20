@@ -1,7 +1,7 @@
 class BookmarksController < CatalogController
   def update
     _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
-    current_or_guest_user.existing_bookmark_for(@document.id) || current_user.bookmarks.create({:document_id => @document.id})
+    current_or_guest_user.existing_bookmark_for(@document) || current_user.bookmarks.create({:document_id => @document.id})
 
     respond_to do | format |
       format.js   { render :partial => 'tags/tag_refresh' }
@@ -11,7 +11,7 @@ class BookmarksController < CatalogController
 
   def destroy
     _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
-    bookmark = current_user.existing_bookmark_for(@document.id)
+    bookmark = current_user.existing_bookmark_for(@document)
     current_or_guest_user.bookmarks.delete(bookmark) if bookmark
 
     respond_to do | format |

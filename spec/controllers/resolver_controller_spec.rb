@@ -48,7 +48,7 @@ describe ResolverController do
 
       before do
         fake_error = RSolr::Error::Http.new({}, {})
-        expect(controller).to receive(:get_resolver_result) { |*args| raise fake_error }
+        expect(controller).to receive(:get_resolver_result).and_raise(fake_error)
       end
 
       it "redirects to root" do
