@@ -11,3 +11,4 @@ script: "bundle exec rake spec cucumber"
 branches:
   only:
     - master
+    - bl5-migration
