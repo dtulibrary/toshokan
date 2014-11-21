@@ -1,5 +1,5 @@
-$('#<%= @document.id %>-tag_control').replaceWith("<%= escape_javascript(render_tag_control(@document)) %>");
-$('#<%= @document.id %> .tags-as-labels').replaceWith("<%= escape_javascript(render_tags_for_document(@document)) %>");
+$("#<%= @document.id %>-tag_control").replaceWith("<%= escape_javascript(render_tag_control(@document)) %>");
+$("#<%= @document.id %>-tags_as_labels").replaceWith("<%= escape_javascript(render_tags_for_document(@document)) %>");
 
 <% unless params['refresh'] %>
   // refresh bookmarks/tags facet
