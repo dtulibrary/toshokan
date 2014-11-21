@@ -1,17 +1,16 @@
-<table id="search-options" class="table hide table-hover">
+<table id="search-options" class="table table-hover dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="more-options">
   <tbody>
     <% if (can? :view, :search_history) && (!search_session['id'].nil?) && (@search_history.length > 0) && !params[:q].blank? %>
       <tr class="search-history-links">
         <td>
           <span>
-            <i class="icon-star-o"></i>
             <%= link_to save_search_path(search_session['id']), :title => t('toshokan.mylibrary.save'), :id => "search-summary-save" do %>
-               <%= t('toshokan.mylibrary.save') %>
+               <i class="icon-star-o"></i><%= t('toshokan.mylibrary.save') %>
             <%- end -%>
           </span>
           <span>
-            <i class="icon-bell"></i>
             <%= link_to alert_search_history_path(search_session['id']), :title => t('toshokan.mylibrary.alert'), :id => "search-summary-alert" do %>
+              <i class="icon-bell"></i>
               <%= t('toshokan.mylibrary.alert') %>
             <%- end -%>
           </span>

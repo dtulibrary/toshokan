@@ -9,11 +9,20 @@
   <% end %>
   <div class="text-field-with-icons">
     <div class="icons">
-      <a title="Show search help" id="toggle-search-syntax" href="#"><i class="icon-question-circle"></i></a>
+      <span class="dropdown">
+        <a title="Show search help" id="toggle-search-syntax" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#">
+          <i class="icon-question-circle"></i>
+        </a>
+        <%= render 'catalog/search_help' %>
+      </span>
       <a title="Clear search field" id="search-clear" href="#"><i class="icon-times"></i></a>
       <a title="Undo clear" id="undo-clear" href="#" class="hide"><i class="icon-repeat"></i></a>
-      <a title="More options" id="more-options" href="#"><i class="icon-chevron-down"></i></a>
-      <a title="Less options" id="less-options" href="#" class="hide"><i class="icon-chevron-up"></i></a>
+      <span class="dropdown">
+        <a title="More options" id="more-options" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#">
+          <i class="icon-chevron-down"></i>
+        </a>
+        <%= render 'catalog/search_options' %>
+      </span>
     </div>
     <%= text_field_tag :q, params[:q], :class => "search_q q", :id => "q"%>
   </div>
@@ -22,5 +31,5 @@
     <i class="icon-search hidden-desktop"></i>
   </button>
 <% end %>
-<%= render 'catalog/search_help' %>
-<%= render 'catalog/search_options' %>
+<%#= render 'catalog/search_help' %>
+<%#= render 'catalog/search_options.table' %>
