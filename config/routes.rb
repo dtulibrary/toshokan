@@ -4,6 +4,7 @@ Toshokan::Application.routes.draw do
 
     # Catalog and related
     Blacklight.add_routes(self)
+    get   '/metadata/:id',                          :to => 'metadata#show',                         :as => 'metadata'
     get   '/journal',                               :to => 'catalog#journal',                       :as => 'catalog_journal'
     get   '/mendeley',                              :to => 'catalog#mendeley_index',                :as => 'mendeley_index'
     get   '/mendeley/:id',                          :to => 'catalog#mendeley_show',                 :as => 'mendeley_show'

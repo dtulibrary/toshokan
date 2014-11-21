@@ -29,6 +29,7 @@ class Ability
     unless user.roles.empty?
       if user.roles.include? Role.find_by_code('DAT')
         can :view_format, ['standard', 'librarian']
+        can :view, :metadata
       else
         can :view_format, 'standard'
       end

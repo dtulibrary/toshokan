@@ -1,0 +1,8 @@
+<% if can? :view, :metadata %>
+  <dl class="dl-horizontal dl-invert">
+    <dt>Detailed metadata</dt>
+    <dd>
+      <%= link_to 'Open', metadata_path(document[:cluster_id_ss]), :target => '_blank', :class => 'btn btn-default btn-xs' %>
+    </dd>
+  </dl>
+<% end %>

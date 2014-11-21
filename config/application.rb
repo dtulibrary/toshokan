@@ -131,6 +131,10 @@ module Toshokan
       :test        => true,
     }
 
+    config.metadata = {
+      :url => ''
+    }
+
     config.doc_del = {
       :url     => '',
       :enabled => true,
