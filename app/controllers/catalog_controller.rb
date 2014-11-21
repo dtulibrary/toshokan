@@ -109,11 +109,11 @@ class CatalogController < ApplicationController
     #
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
-    #config.add_labeled_field :facet, 'format', :always_expand => true
+    #config.add_labeled_field :facet, 'format', :collapse => false
     #config.add_labeled_field :facet, 'pub_date_tsort', :range => true
     #config.add_labeled_field :facet, 'author_facet', :limit => 20
     #config.add_labeled_field :facet, 'journal_title_facet', :limit => 20
-    config.add_facet_field 'format', :always_expand => true
+    config.add_facet_field 'format', :collapse => false
     config.add_facet_field 'pub_date_tsort', :range => true
     config.add_facet_field 'author_facet', :limit => 20
     config.add_facet_field 'journal_title_facet', :limit => 20
