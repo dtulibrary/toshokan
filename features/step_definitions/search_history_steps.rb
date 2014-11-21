@@ -4,8 +4,8 @@ end
 
 Then /^I should( not)? see "(.*?)" in the history$/ do |negate, search|
   css = '.item .constraint .filterValue'
-  negate ? page.should_not(have_css(css, :text => search))
-         : page.should(have_css(css, :text => search))
+  negate ? expect(page).to_not(have_css(css, :text => search))
+         : expect(page).to(have_css(css, :text => search))
 end
 
 When /^I delete the search "(.*?)"$/ do |arg1|
@@ -19,7 +19,7 @@ When /^I save the search "(.*?)"$/ do |arg1|
 end
 
 Then /^it should( not)? be saved$/ do |negate|
-  negate ? page.should(have_link("Save")) : page.should(have_link("Saved"))
+  negate ? expect(page).to(have_link("Save")) : expect(page).to(have_link("Saved"))
 end
 
 When /^I unsave the search "(.*?)"$/ do |arg1|
@@ -29,18 +29,18 @@ end
 # Alerted searches
 
 When /^I alert the search "(.*?)"$/ do |arg1|
-  Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
-  Alert.stub(:post).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+  allow(Alert).to receive(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+  allow(Alert).to receive(:post).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
   click_link "Alert"
 end
 
 Then /^it should( not)? be alerted$/ do |negate|
-  negate ? page.should(have_link("Alert")) : page.should(have_link("Alerted"))
+  negate ? expect(page).to(have_link("Alert")) : expect(page).to(have_link("Alerted"))
 end
 
 When /^I remove the alert from the search "(.*?)"$/ do |arg1|
-  Alert.stub(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
-  Alert.stub(:delete).and_return(double(:success? => true))
+  allow(Alert).to receive(:get).and_return(double(:success? => true, :body => {"alert" => Alert.new({:query => "test"})}.to_json))
+  allow(Alert).to receive(:delete).and_return(double(:success? => true))
   click_link "Alerted"
 end
 

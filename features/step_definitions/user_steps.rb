@@ -9,7 +9,7 @@ Given /^I(?:'ve| have) logged in(.*)$/ do |m|
 end
 
 Then /^the(?: current)? user should be "(.*?)"$/ do |username|
-  find('#util-links #current-user').should have_content username
+  expect( find('#util-links #current-user') ).to have_content username
 end
 
 Given /^the following DTU employee users? exists?:$/ do |table|
@@ -73,7 +73,7 @@ Given /^I'm logged in as a public user$/ do
 end
 
 Given /^I(?:'m| am) a walk-in user$/ do
-  ApplicationController.stub(:walk_in_request?).and_return(true)
+  allow(ApplicationController).to receive(:walk_in_request?).and_return(true)
 end
 
 Given /^I'm an anonymous user$/ do

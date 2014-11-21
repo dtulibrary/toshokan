@@ -92,45 +92,45 @@ end
 
 Then /^the( first)? document should be bookmarked$/ do |first|
   scope = first ? find('.documentFunctions', :match => :first) : page
-  scope.should have_css('.tag_control .icon-star')
+  expect(scope).to have_css('.tag_control .icon-star')
 end
 
 Then /^the( first)? document should not be bookmarked$/ do |first|
   scope = first ? find('.documentFunctions', :match=>:first) : page
-  scope.should_not have_css('.tag_control .icon-star')
+  expect(scope).to_not have_css('.tag_control .icon-star')
 end
 
 Then /^the( first)? document should have tags$/ do |first|
   scope = first ? find('.documentFunctions') : page
-  scope.should have_css('.tags_dropdown .has-tags')
+  expect(scope).to have_css('.tags_dropdown .has-tags')
 end
 
 Then /^the( first)? document should not have tags$/ do |first|
   scope = first ? find('.documentFunctions', :match=>:first) : page
-  scope.should have_css('.tags_dropdown .no-tags')
+  expect(scope).to have_css('.tags_dropdown .no-tags')
 end
 
 Then /^the( first)? document should be tagged with "(.*?)"$/ do |first, tag_name|
   scope = first ? find('.documentFunctions') : page
-  scope.should have_css('.tags-as-labels .tags .tag', :text => tag_name)
+  expect(scope).to have_css('.tags-as-labels .tags .tag', :text => tag_name)
 end
 
 Then /^the( first)? document should not be tagged with "(.*?)"$/ do |first, tag_name|
   scope = first ? find('.documentFunctions') : page
-  scope.should_not have_css('.tags-as-labels .tags .tag', :text => tag_name)
+  expect(scope).to_not have_css('.tags-as-labels .tags .tag', :text => tag_name)
 end
 
 Then /^I should see a tag constraint with name "(.*?)" and value "(.*?)"$/ do |name, value|
   within('.tag-constraint.constraint') do
-    find('.filterName').should have_content name
-    find('.filterValue').should have_content value
+    expect( find('.filterName') ).to have_content name
+    expect( find('.filterValue') ).to have_content value
   end
 end
 
 Then /^I should see a clickable tag facet with name "(.*?)"$/ do |tag_name|
-  find('.facet_limit .tag_list').should have_css('a', :text => tag_name)
+  expect( find('.facet_limit .tag_list') ).to have_css('a', :text => tag_name)
 end
 
 Then /^I should see an inactive tag facet with name "(.*?)"$/ do |tag_name|
-  find('.facet_limit .tag_list').should_not have_css('a', :text => tag_name)
+  expect( find('.facet_limit .tag_list') ).to_not have_css('a', :text => tag_name)
 end

@@ -1,13 +1,17 @@
 Then /^I should see "(.*?)"$/ do |content|
-  page.should have_content content
+  expect(page).to have_content content
 end
 
 Then /^I should(?: not|n't) see "(.*?)"$/ do |content|
-  page.should_not have_content content
+  expect(page).to_not have_content content
 end
 
 Then /^I should(n't| not)? see the search page$/ do |negate|
-  page.has_css?('#search').should (negate ? be_falsey : be_truthy)
+  if negate
+    expect(page).to have_css('#search')
+  else
+    expect(page).to_not have_css('#search')
+  end
 end
 
 Then /^I should(n't| not)? see the "(.*?)" link$/ do |negate, expected|
@@ -18,7 +22,7 @@ Then /^I should(n't| not)? see the "(.*?)" link$/ do |negate, expected|
     actual = link.gsub(/^\s+|<.*?>|\s+$/, '').gsub(/\s+/, ' ')
     found ||= actual == expected
   end
-  found.should (negate ? be_falsey : be_truthy)
+  expect(found).to (negate ? be_falsey : be_truthy)
 end
 
 Then /^render the page$/ do
@@ -50,6 +54,6 @@ When /^I go to the root page$/ do
 end
 
 Then /^I should be redirected to DTU CAS$/ do
-  response.should redirect_to new_user_session_path
+  expect(response).to redirect_to new_user_session_path
 end
 

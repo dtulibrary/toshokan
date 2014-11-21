@@ -11,15 +11,15 @@ When /^I go to the next document$/ do
 end
 
 Then /^I should see the page for a single document$/ do
-  page.should have_css('.blacklight-catalog-show')
+  expect(page).to have_css('.blacklight-catalog-show')
 end
 
 Then /^I should get a "(.*?)" file$/ do |extension|
   case extension
   when "bib"
-    page.response_headers['Content-Type'].should include "text/x-bibtex"
+    expect(page.response_headers['Content-Type']).to include "text/x-bibtex"
   when "ris"
-    page.response_headers['Content-Type'].should include "application/x-Research-Info-Systems"
+    expect(page.response_headers['Content-Type']).to include "application/x-Research-Info-Systems"
   end
 end
 
@@ -29,11 +29,11 @@ Given /^I go to the record page for "(.*?)"$/ do |title|
 end
 
 Then /^I should see the citations$/ do
-  current_path.should match 'citation'
+  expect(current_path).to match 'citation'
 end
 
 Then /^I should see the document titled "(.*?)"$/ do |title|
-  page.should have_css('.document dd', :text => title)
+  expect(page).to have_css('.document dd', :text => title)
 end
 
 Given /^I go to the standalone page for id "(.*?)"$/ do |id|
@@ -41,6 +41,6 @@ Given /^I go to the standalone page for id "(.*?)"$/ do |id|
 end
 
 When /^I click the link for journal "(.*?)"$/ do |title|
-  Alert.stub(:get).and_return(double(:success? => false, :body => "null", :code => 404))
+  allow(Alert).to receive(:get).and_return(double(:success? => false, :body => "null", :code => 404))
   step "I click the link \"#{title}\""
 end

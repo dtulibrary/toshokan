@@ -32,19 +32,19 @@ Given /^I(?:'ve| have) limited the "(.*?)" facet to "(.*?)"$/ do |facet_name, fa
 end
 
 Then /^I should see the result page$/ do
-  current_path.should match(/^\/(en|da)\/catalog$/)  
+  expect(current_path).to match(/^\/(en|da)\/catalog$/)
 end
 
 Then /^I should see (\d+) documents?$/ do |results|
-  page.all("#documents .document").length.should == results.to_i
+  expect(page.all("#documents .document").length).to eq results.to_i
 end
 
 Then /^I should see a document with title "(.*?)"$/ do |title|
-  page.should have_selector('.document .index_title a', text: title) 
+  expect(page).to have_selector('.document .index_title a', text: title)
 end
 
 Then /^I should see the search form filled with "(.*?)"$/ do |q|
-  find_field('q').value.should == q
+  expect(find_field('q').value).to eq q
 end
 
 Then /^I should see the no hits page$/ do
@@ -54,5 +54,5 @@ Then /^I should see the no hits page$/ do
 end
 
 Then /^I should(n't| not)? see the "can't find it\?" links$/ do |negate|
-  page.send(negate ? :should_not : :should, have_selector('.cant-find-links')) 
+  expect(page).send(negate ? :to_not : :to, have_selector('.cant-find-links'))
 end

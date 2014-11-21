@@ -1,38 +1,37 @@
 # encoding: utf-8
 
 Then /^I should not see any pagination$/ do
-  page.has_css?('.pagination').should be_falsey
+  expect(page).to_not have_css('.pagination')
 end
 
 Then /^I should see page links from (\d+) to (\d+)$/ do |from, to|
   (from.to_i..to.to_i).each{ |page_number|
-    page.has_css?('.pagination ul li a', :text => "#{page_number}").should be_truthy
+    expect(page).to have_css('.pagination ul li a', :text => "#{page_number}")
   }
 end
 Then /^the (next|previous) page link should be active$/ do |link_type|
-  find('.pagination ul li', :text => (link_type == 'next' ? 'Next »' : '« Previous'))[:class].should_not include('disabled')
+  expect( find('.pagination ul li', :text => (link_type == 'next' ? 'Next »' : '« Previous'))[:class] ).to_not include('disabled')
 end
 
 Then /^the (next|previous) page link should be inactive$/ do |link_type|
-  find('.pagination ul li', :text => (link_type == 'next' ? 'Next »' : '« Previous'))[:class].should include('disabled')
+  expect( find('.pagination ul li', :text => (link_type == 'next' ? 'Next »' : '« Previous'))[:class] ).to include('disabled')
 end
 
 Then /^I should see the (forward|backward) page gap$/ do |gap_type|
-  #debugger
-  all('.pagination ul li a')[gap_type == 'forward' ? -1 : -2].text.should =='…'
+  expect( all('.pagination ul li a')[gap_type == 'forward' ? -1 : -2].text).to eq'…'
 end
 
 Then /^I should not see the (forward|backward) page gap$/ do |gap_type|
-  find('.pagination ul li a')[gap_type == 'forward' ? -1 : 2].text.should_not == '…'
+  expect( find('.pagination ul li a')[gap_type == 'forward' ? -1 : 2].text).to eq'…'
 end
 
 Then /^I should see both page gaps$/ do
-  all('.pagination ul li a')[2].text.should == '…'
-  all('.pagination ul li a')[-1].text.should == '…'
+  expect(all('.pagination ul li a')[2].text).to eq '…'
+  expect(all('.pagination ul li a')[-1].text).to eq '…'
 end
 
 Then /^I should not see any page gaps$/ do
-  page.should_not have_css('.pagination ul li a', :text => '...')
+  expect(page).to_not have_css('.pagination ul li a', :text => '...')
 end
 
 When /^I go to page (\d+) of the result set$/ do |page_number|

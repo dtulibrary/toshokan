@@ -7,7 +7,7 @@ When /^I go to the user management page$/ do
 end
 
 Then /^I should be on the user management page$/ do
-  page.body.should have_content 'Manage Users'
+  expect(page.body).to have_content 'Manage Users'
 end
 
 When /^I (add|remove) role "(.+?)" (?:to|from) user with (\w+) "(.+?)"$/ do |action, role_name, key, value|

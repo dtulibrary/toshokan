@@ -91,7 +91,7 @@ end
   Then %r{^I should see the "#{section}" form section with the submitted data$} do
     within locator_for_section(section) do
       submitted_data[section].each do |field, value|
-        find_field(field).value.should == value
+        expect(find_field(field).value).to eq value
       end
     end
   end
@@ -149,11 +149,11 @@ Then /^I should see the (".*") buttons$/ do |buttons|
 end
 
 Then /^I should see the "(.*?)" button$/ do |button|
-  page.should have_button(button)
+  expect(page).to have_button(button)
 end
 
 Then /^I should(?:n't| not) see the "(.*?)" section$/ do |section|
-  page.should_not have_sections([section])
+  expect(page).to_not have_sections([section])
 end
 
 Then /^I should see the "(article|journal|notes|conference|book|publisher)" section$/ do |section|
@@ -195,10 +195,10 @@ Then /^I should see the proper required fields in the "(.*?)" section$/ do |sect
   (required_section_fields[section] || []).each do |required_field|
     within locator_for_section(section) do
       # The following is really ugly but neither of
-      # find_field(required_field).should have_css('.required')
-      # (find_field(required_field)['class'] || '').split.should include?('required')
+      # expect( find_field(required_field) ).to have_css('.required')
+      # expect( (find_field(required_field)['class'] || '').split ).to include?('required')
       # worked for me so this is the current working solution
-      (find_field(required_field)['class'] || '').split.any? {|c| c == 'required'}.should be_truthy
+      expect( (find_field(required_field)['class'] || '').split.any? {|c| c == 'required'} ).to be_truthy
     end
   end
 end
@@ -207,7 +207,7 @@ Then /^I should see the proper optional fields in the "(.*?)" section$/ do |sect
   (optional_section_fields[section] || []).each do |optional_field|
     within locator_for_section(section) do
       # See comment from step for required fields
-      (find_field(optional_field)['class'] || '').split.any? {|c| c == 'required'}.should be_falsey
+      expect( (find_field(optional_field)['class'] || '').split.any? {|c| c == 'required'}).to be_falsey
     end
   end
 end
@@ -220,7 +220,7 @@ end
 
 Then /^I should see an error in the "(.*?)" field in the "(.*?)" form section$/ do |field, section|
   within locator_for_section(section) do
-    (find_field(field)['class'] || '').split.any? {|c| c == 'error'}.should be_truthy
+    expect( (find_field(field)['class'] || '').split.any? {|c| c == 'error'}).to be_truthy
   end
 end
 
@@ -239,9 +239,9 @@ end
 
 def check_form_correctness sections, negate = false
   if negate
-    page.should_not have_sections(sections)
+    expect(page).to_not have_sections(sections)
   else
-    page.should have_sections(sections)
+    expect(page).to have_sections(sections)
     sections.each do |section|
       step %{I should see the proper required fields in the "#{section}" section}
       step %{I should see the proper optional fields in the "#{section}" section}

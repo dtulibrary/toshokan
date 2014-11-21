@@ -7,9 +7,9 @@ When /^I fill in "(.*?)" with "(.*?)"$/ do |field, value|
 end
 
 Then /^the \"(.*?)\" field should be blank$/ do |field|
-  field_labeled(field).value.should be_blank
+  expect( field_labeled(field).value ).to be_blank
 end
 
 Then /^the \"(.*?)\" field should contain \"(.*?)\"$/ do |field, value|
-  field_labeled(field).value.should =~ /#{value}/
+  expect( field_labeled(field).value ).to be =~ /#{value}/
 end
