@@ -61,11 +61,7 @@ end
 Given /^I filter by tag "(.*?)"$/ do |tag_name|
   visit(root_path)
 
-  if !find('#facets a', :text => tag_name).visible?
-    find("#facets .twiddle", :text => 'Bookmarks').click
-  end
-
-  within('.facet_limit .tag_list') do
+  within('#my-references .facet-values') do
     click_link tag_name
   end
 end
@@ -128,9 +124,9 @@ Then /^I should see a tag constraint with name "(.*?)" and value "(.*?)"$/ do |n
 end
 
 Then /^I should see a clickable tag facet with name "(.*?)"$/ do |tag_name|
-  expect( find('.facet_limit .tag_list') ).to have_css('a', :text => tag_name)
+  expect( find('#my-references .facet-values') ).to have_css('a', :text => tag_name)
 end
 
 Then /^I should see an inactive tag facet with name "(.*?)"$/ do |tag_name|
-  expect( find('.facet_limit .tag_list') ).to_not have_css('a', :text => tag_name)
+  expect( find('#my-references .facet-values') ).to_not have_css('a', :text => tag_name)
 end

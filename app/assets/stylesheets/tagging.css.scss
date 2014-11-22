@@ -1,5 +1,11 @@
 @import 'toshokan_defaults';
 
+#my-references {
+  .facet-values {
+    padding-left: 1em;
+  }
+}
+
 // make tagging buttons line up side-by-side
 .tag_control {
   form {

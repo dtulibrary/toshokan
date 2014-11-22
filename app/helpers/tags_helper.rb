@@ -37,7 +37,7 @@ module TagsHelper
       return_url = controller.params[:return_url]
       params_from_return_url = Rack::Utils.parse_nested_query(URI::parse(return_url).query)
       params_from_return_url.merge! params.slice(:refresh)
-      params = controller.params = params_from_return_url.with_indifferent_access
+      controller.params = params_from_return_url.with_indifferent_access
     end
 
     options[:locals][:tags].each do |tag|
@@ -73,11 +73,11 @@ module TagsHelper
   def tag_display_icon(tag_name)
     case tag_name
     when Tag.reserved_tag_all
-      content_tag(:i, '', :class => 'icon-empty')
+      content_tag(:i, '', :class => 'glyphicon glyphicon-star red')
     when Tag.reserved_tag_untagged
-      content_tag(:i, '', :class => 'icon-star')
+      content_tag(:i, '', :class => 'glyphicon glyphicon-tag')
     else
-      content_tag(:i, '', :class => 'icon-tag')
+      content_tag(:i, '', :class => 'glyphicon glyphicon-tag red')
     end
   end
 
@@ -105,8 +105,8 @@ module TagsHelper
     content_tag(:span,
                 tag_display(tag_name, options),
                 :class => "selected") +
-      link_to(content_tag(:i, '', :class => "icon-times") +
-                content_tag(:span, '[remove]', :class => 'hide-text'),
+      link_to(content_tag(:i, '', :class => "glyphicon glyphicon-remove") +
+                content_tag(:span, '[remove]', :class => 'sr-only'),
               remove_tag_params(tag_name, params),
               :class=>"remove")
   end
