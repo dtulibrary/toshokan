@@ -76,6 +76,7 @@ group :development do
   gem 'puma'
   gem 'quiet_assets'
   gem 'byebug'
+  gem 'hirb'  # Used by rake steps
 end
 
 # Deploy with Capistrano

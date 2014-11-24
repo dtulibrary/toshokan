@@ -164,6 +164,7 @@ GEM
     hashie (3.3.1)
     highline (1.6.21)
     hike (1.2.3)
+    hirb (0.7.2)
     httparty (0.13.3)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
@@ -398,6 +399,7 @@ DEPENDENCIES
   feature_flipper
   findit_font!
   hashie
+  hirb
   httparty
   jettywrapper
   jquery-rails (~> 2.3.0)
