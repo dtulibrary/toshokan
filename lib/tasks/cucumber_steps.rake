@@ -1,9 +1,9 @@
-require 'hirb'
-
 # based on http://www.natontesting.com/2010/01/11/updated-script-to-list-all-cucumber-step-definitions/
 namespace :cucumber do
   desc 'List all defined steps'
   task :steps do
+    require 'hirb'
+
     extend Hirb::Console
     puts "CUCUMBER steps:"
     puts ""
