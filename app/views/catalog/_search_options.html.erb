@@ -1,4 +1,4 @@
-<table id="search-options" class="table table-hover dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="more-options">
+<table id="search-options" class="table table-hover" role="menu" aria-labelledby="more-options">
   <tbody>
     <% if (can? :view, :search_history) && (!search_session['id'].nil?) && (@search_history.length > 0) && !params[:q].blank? %>
       <tr class="search-history-links">
