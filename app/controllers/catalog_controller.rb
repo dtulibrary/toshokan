@@ -458,6 +458,34 @@ class CatalogController < ApplicationController
     end
   end
 
+  # Overrides Blacklight::Catalog::SearchContext#find_or_initialize_search_session_from_params
+  # If user is logged in, search in persisted Search records for the user instead of the session history
+  def find_or_initialize_search_session_from_params params
+    params_copy = params.reject { |k,v| blacklisted_search_session_params.include?(k.to_sym) or v.blank? }
+
+    return if params_copy.reject { |k,v| [:action, :controller].include? k.to_sym }.blank?
+
+    if current_user
+      past_searches = current_user.searches
+    else
+      past_searches = searches_from_history
+    end
+
+    saved_search = past_searches.select { |x| x.query_params == params_copy }.first
+
+    if saved_search
+      saved_search.updated_at = Time.now
+      saved_search.save
+      return saved_search
+    else
+      begin
+        s = Search.create(:query_params => params_copy)
+        add_to_search_history(s)
+        return s
+      end
+    end
+  end
+
   # # Saves the current search (if it does not already exist) as a models/search object
   # # then adds the id of the search object to session[:history] (if not logged in) or
   # # add the search to the users searches

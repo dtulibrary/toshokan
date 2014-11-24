@@ -10,7 +10,7 @@ class SearchHistoryController < ApplicationController
   end
 
   def index
-    @searches = current_user.searches.order("created_at DESC").page params[:page]
+    @searches = current_user.searches.order("updated_at DESC").page params[:page]
     paginate
   end
 
