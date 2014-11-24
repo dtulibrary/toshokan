@@ -463,7 +463,8 @@ class CatalogController < ApplicationController
   def find_or_initialize_search_session_from_params params
     params_copy = params.reject { |k,v| blacklisted_search_session_params.include?(k.to_sym) or v.blank? }
 
-    return if params_copy.reject { |k,v| [:action, :controller].include? k.to_sym }.blank?
+    # Don't save default 'empty' search
+    return if params_copy[:q].blank? && params_copy[:f].blank? && params_copy[:l].blank? && params_copy[:t].blank?
 
     if current_user
       past_searches = current_user.searches
@@ -485,44 +486,5 @@ class CatalogController < ApplicationController
       end
     end
   end
-
-  # # Saves the current search (if it does not already exist) as a models/search object
-  # # then adds the id of the search object to session[:history] (if not logged in) or
-  # # add the search to the users searches
-  # def save_current_search_params
-  #   # If it's got anything other than controller, action, total, we
-  #   # consider it an actual search to be saved. Can't predict exactly
-  #   # what the keys for a search will be, due to possible extra plugins.
-  #   return if (search_session.keys - [:controller, :action, :total, :counter, :commit, :locale]) == []
-  #   params_copy = search_session.clone # don't think we need a deep copy for this
-  #   params_copy.delete(:page)
-  #   params_copy.delete(:s_id)
-  #
-  #   # don't save default 'empty' search
-  #   unless params[:q].blank? && params[:f].blank? && params[:l].blank? && params[:t].blank?
-  #
-  #     index = @search_history.collect { |search| search.query_params }.index(params_copy)
-  #     if index.nil?
-  #
-  #
-  #       new_search = Search.create(:query_params => params_copy)
-  #       search_id = new_search.id
-  #
-  #       if can? :view, :search_history
-  #         current_user.searches << new_search
-  #         current_user.save
-  #       else
-  #         session[:history].unshift(new_search.id)
-  #         # Only keep most recent X searches in history, for performance.
-  #         # both database (fetching em all), and cookies (session is in cookie)
-  #         session[:history] = session[:history].slice(0, Blacklight::Catalog::SearchHistoryWindow)
-  #       end
-  #     else
-  #       search_id = @search_history[index].id
-  #     end
-  #
-  #     params[:s_id] = search_id
-  #   end
-  # end
 
 end
