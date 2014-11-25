@@ -101,6 +101,10 @@
 .order-form {
   label {
     float: left;
+    font-weight: normal;
+    display: block;
+    font-size: 14px;
+    line-height: 20px;
 
     &.terms-accepted {
       display: inline;

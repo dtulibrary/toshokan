@@ -16,13 +16,13 @@
                            t('toshokan.assistance_requests.forms.field_labels.conference_location') %>
     <%= labeled_text_field 'assistance_request', 'conference_isxn',
                            t('toshokan.assistance_requests.forms.field_labels.conference_isxn') %>
-    <div class="row-fluid">
-      <div class="span6">
+    <div class="row">
+      <div class="col-md-6">
         <%= labeled_text_field 'assistance_request', 'conference_year', 
                                t('toshokan.assistance_requests.forms.field_labels.conference_year'),
                                :required => true %>
       </div>
-      <div class="span6">
+      <div class="col-md-6">
         <%= labeled_text_field 'assistance_request', 'conference_pages',
                                t('toshokan.assistance_requests.forms.field_labels.conference_pages'),
                                :required => true %>

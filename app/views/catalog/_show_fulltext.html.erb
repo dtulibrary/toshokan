@@ -1,5 +1,5 @@
-  <ul id="fulltext" class="nav nav-list">
-    <li class="nav-header fulltext-header"><%= t('toshokan.tools.fulltext') %></li>
+  <ul id="fulltext" class="list-unstyled">
+    <li class="fulltext-header"><h4><%= t('toshokan.tools.fulltext') %></h4></li>
 
     <% if (can? :order, :article)  && (params[:resolve].blank? || (params[:resolve] && (can? :search, :dtu))) %>
       <% # Quick-fix for getting conf title to DocDel when no journal title is available.

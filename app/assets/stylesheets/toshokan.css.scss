@@ -1,4 +1,5 @@
 @import 'bootstrap-sprockets';
+@import 'bootstrap/variables';
 @import 'bootstrap';
 
 @import 'blacklight';
@@ -10,9 +11,8 @@
 @import 'header';
 @import 'sort_and_per_page';
 @import 'feedback';
-
+@import 'lists';
 @import 'admin';
-@import 'buttons';
 @import 'documents';
 @import 'cover_images';
 @import 'dtu_design_elements';

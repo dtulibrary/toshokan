@@ -7,30 +7,34 @@
   # functions by default only on detail.
 -%>
 
-  <ul class="nav nav-list">
+  <ul class="list-unstyled">
 
     <% if @document[:format] != "journal" %>
-      <li class="nav-header"><%= t('toshokan.tools.cite_and_export') %></li>
+      <li class="nav-header"><h4><%= t('toshokan.tools.cite_and_export') %></h4></li>
 
       <li>
-        <%= link_to content_tag('i', '', :class => 'icon-mendeley') + t('toshokan.tools.mendeley'), '#', :class => (show_feature?(:mendeley) ? 'save-to-mendeley-api' : 'save-to-mendeley'), :data => { :document => @document.id } %>
+        <i class="icon-mendeley"></i>
+        <%= link_to t('toshokan.tools.mendeley'), '#', :class => (show_feature?(:mendeley) ? 'save-to-mendeley-api' : 'save-to-mendeley'), :data => { :document => @document.id } %>
       </li>
 
       <% if (!@document.citation_styles.empty?) %>
         <li class="cite">
-        <%= link_to content_tag('i', '', :class => 'icon-quote-right') + t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :name => 'citation', :class => 'lightboxLink'} %>
+          <i class="icon-quote-right"></i>
+          <%= link_to t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :name => 'citation', :class => 'lightboxLink'} %>
         </li>
       <% end %>
 
       <% if @document.export_formats.keys.include?( :bib ) %>
         <li class="bibtex">
-        <%= link_to content_tag('i', '', :class => 'icon-file-text-o') + t('toshokan.tools.bibtex'), catalog_path(@document, :format => 'bib') %>
+          <i class="icon-file-text-o"></i> 
+          <%= link_to t('toshokan.tools.bibtex'), catalog_path(@document, :format => 'bib') %>
         </li>
       <% end %>
 
       <% if @document.export_formats.keys.include?( :ris ) %>
         <li class="endnote">
-        <%= link_to content_tag('i', '', :class => 'icon-file-text-o') + t('toshokan.tools.ris'), catalog_path(@document, :format => 'ris') %>
+          <i class="icon-file-text-o"></i>
+          <%= link_to t('toshokan.tools.ris'), catalog_path(@document, :format => 'ris') %>
         </li>
       <% end %>
     <% end %>
@@ -38,7 +42,7 @@
     <% if @document[:format] == "journal" && params[:resolve].blank? %>
 
       <% if can? :view, :search_history %>
-        <li class="nav-header journal-alert-header"><i class="icon-bell"></i><%= t('toshokan.alerts.title') %></li>
+        <li class="nav-header journal-alert-header"><i class="icon-bell"></i><h4><%= t('toshokan.alerts.title') %></h4></li>
         <li>
           <%= render :partial => 'alerts/add_journal_alert', :locals => { :document => @document } %>
         </li>

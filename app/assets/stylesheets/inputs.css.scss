@@ -6,8 +6,15 @@ input {
     margin: 0px;
   }
 
-  &[type = 'text']:focus {
-    @include focused_field;
+  &[type = 'text'] {
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.1) inset;
+    margin-bottom: 5px;
+    
+    &:focus {
+      @include focused_field;
+    }
   }
   
   &.required {
@@ -26,6 +33,10 @@ textarea {
 }
 
 label {
+  box-sizing: border-box;
+  font-weight: normal;
+  width: 100%;
+
   &.error {
     color: #f00;
   }

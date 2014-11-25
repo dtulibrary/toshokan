@@ -1,15 +1,15 @@
-<div class="span12">
+<div class="col-md-12">
   <div class="order">
     <div class="header">
       <%= render_switch_locale params[:locale] %>
       <%= render_order_steps @order.flow %>
     </div>
     <div class="row">
-      <div class="span6">
+      <div class="col-md-6">
         <div class="info"><%= t "toshokan.orders.text.#{@order.supplier}_html" %></div>
         <%= render 'order_form' %> 
         </div>
-      <div class="span6">
+      <div class="col-md-6">
         <%= render 'order_summary' %>
         <% if @order.flow.fields.include? :requirements %>
           <div class="well requirements">
