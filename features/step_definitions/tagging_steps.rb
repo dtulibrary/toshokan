@@ -1,19 +1,19 @@
-Given /^I bookmark the( first)? document$/ do |first|
+Given (/^I bookmark the( first)? document$/) do |first|
   scope = first ? find('.documentFunctions', :match=>:first) : page
   scope.click_on 'Bookmark'
 end
 
-When /^I bookmark the document with title "(.*?)"$/ do |title|
+When (/^I bookmark the document with title "(.*?)"$/) do |title|
   step "I go to the record page for \"#{title}\""
   step "I bookmark the document"
 end
 
-When /^I unbookmark the( first)? document$/ do |first|
+When (/^I unbookmark the( first)? document$/) do |first|
   scope = first ? find('.documentFunctions', :match=>:first) : page
   scope.click_on 'Remove bookmark and tags'
 end
 
-Given /^I add a tag "(.*?)" to the first document$/ do |tag_name|
+Given (/^I add a tag "(.*?)" to the first document$/) do |tag_name|
   click_on 'Tags'
   within('.new_tag') do
     fill_in 'tag_name', with: tag_name
@@ -21,7 +21,7 @@ Given /^I add a tag "(.*?)" to the first document$/ do |tag_name|
   end
 end
 
-Given /^I add a tag "(.*?)" to the document$/ do |tag_name|
+Given (/^I add a tag "(.*?)" to the document$/) do |tag_name|
   click_on 'Tags'
   within('.new_tag') do
     fill_in 'tag_name', with: tag_name
@@ -29,7 +29,7 @@ Given /^I add a tag "(.*?)" to the document$/ do |tag_name|
   end
 end
 
-Given /^I add a tag "(.*?)" to the document with title "(.*?)"$/ do |tag_name, query|
+Given (/^I add a tag "(.*?)" to the document with title "(.*?)"$/) do |tag_name, query|
   step "I search for \"#{query}\" in the title"
 
   click_on 'Tags'
@@ -37,20 +37,20 @@ Given /^I add a tag "(.*?)" to the document with title "(.*?)"$/ do |tag_name, q
   click_button 'Add'
 end
 
-Given /^I remove the tag "(.*?)" from the first document$/ do |tag_name|
+Given (/^I remove the tag "(.*?)" from the first document$/) do |tag_name|
   click_on 'Tags'
   within(".existing_tags .tag", :text => tag_name) do
     click_on 'Remove'
   end
 end
 
-Given /^I remove the tag "(.*?)" from the document$/ do |tag_name|
+Given (/^I remove the tag "(.*?)" from the document$/) do |tag_name|
   within(".tag", :text => tag_name, :match => :first) do
     click_on 'Remove'
   end
 end
 
-Given /^I remove the tag "(.*?)" from the document with title "(.*?)"$/ do |tag_name, query|
+Given (/^I remove the tag "(.*?)" from the document with title "(.*?)"$/) do |tag_name, query|
   step "I search for \"#{query}\" in the title"
 
   within(".document .documentFunctions .tag", :text => tag_name) do
@@ -58,7 +58,7 @@ Given /^I remove the tag "(.*?)" from the document with title "(.*?)"$/ do |tag_
   end
 end
 
-Given /^I filter by tag "(.*?)"$/ do |tag_name|
+Given (/^I filter by tag "(.*?)"$/) do |tag_name|
   visit(root_path)
 
   within('#my-references .facet-values') do
@@ -66,11 +66,11 @@ Given /^I filter by tag "(.*?)"$/ do |tag_name|
   end
 end
 
-Given /^I list my tags$/ do
+Given (/^I list my tags$/) do
   visit manage_tags_path
 end
 
-Given /^I rename tag "(.*?)" to "(.*?)"$/ do |tag_name, new_tag_name|
+Given (/^I rename tag "(.*?)" to "(.*?)"$/) do |tag_name, new_tag_name|
   visit manage_tags_path
   within(:xpath, "//tr[td/span/text()='#{tag_name}']") do
     find(:xpath, "//a[@title='Edit']").click
@@ -79,54 +79,54 @@ Given /^I rename tag "(.*?)" to "(.*?)"$/ do |tag_name, new_tag_name|
   click_button 'Save'
 end
 
-Given /^I delete tag "(.*?)"$/ do |tag_name|
+Given (/^I delete tag "(.*?)"$/) do |tag_name|
   visit manage_tags_path
   within(:xpath, "//tr[td/span/text()='#{tag_name}']") do
     find(:xpath, "//a[@title='Delete']").click
   end
 end
 
-Then /^the( first)? document should be bookmarked$/ do |first|
+Then (/^the( first)? document should be bookmarked$/) do |first|
   scope = first ? find('.documentFunctions', :match => :first) : page
   expect(scope).to have_css('.tag_control .icon-star')
 end
 
-Then /^the( first)? document should not be bookmarked$/ do |first|
+Then (/^the( first)? document should not be bookmarked$/) do |first|
   scope = first ? find('.documentFunctions', :match=>:first) : page
   expect(scope).to_not have_css('.tag_control .icon-star')
 end
 
-Then /^the( first)? document should have tags$/ do |first|
+Then (/^the( first)? document should have tags$/) do |first|
   scope = first ? find('.documentFunctions') : page
   expect(scope).to have_css('.tags_dropdown .has-tags')
 end
 
-Then /^the( first)? document should not have tags$/ do |first|
+Then (/^the( first)? document should not have tags$/) do |first|
   scope = first ? find('.documentFunctions', :match=>:first) : page
   expect(scope).to have_css('.tags_dropdown .no-tags')
 end
 
-Then /^the( first)? document should be tagged with "(.*?)"$/ do |first, tag_name|
+Then (/^the( first)? document should be tagged with "(.*?)"$/) do |first, tag_name|
   scope = first ? find('.documentFunctions') : page
   expect(scope).to have_css('.tags-as-labels .tags .tag', :text => tag_name)
 end
 
-Then /^the( first)? document should not be tagged with "(.*?)"$/ do |first, tag_name|
+Then (/^the( first)? document should not be tagged with "(.*?)"$/) do |first, tag_name|
   scope = first ? find('.documentFunctions') : page
   expect(scope).to_not have_css('.tags-as-labels .tags .tag', :text => tag_name)
 end
 
-Then /^I should see a tag constraint with name "(.*?)" and value "(.*?)"$/ do |name, value|
+Then (/^I should see a tag constraint with name "(.*?)" and value "(.*?)"$/) do |name, value|
   within('.tag-constraint.constraint') do
     expect( find('.filterName') ).to have_content name
     expect( find('.filterValue') ).to have_content value
   end
 end
 
-Then /^I should see a clickable tag facet with name "(.*?)"$/ do |tag_name|
+Then (/^I should see a clickable tag facet with name "(.*?)"$/) do |tag_name|
   expect( find('#my-references .facet-values') ).to have_css('a', :text => tag_name)
 end
 
-Then /^I should see an inactive tag facet with name "(.*?)"$/ do |tag_name|
+Then (/^I should see an inactive tag facet with name "(.*?)"$/) do |tag_name|
   expect( find('#my-references .facet-values') ).to_not have_css('a', :text => tag_name)
 end
