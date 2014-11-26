@@ -156,7 +156,7 @@ module TocHelper
   end
 
   def render_journal_info_for_issue issue
-    render_journal_info_from_parts(issue[:year], issue[:vol], issue[:issue] > 0 && issue[:issue], issue[:part])
+    render_journal_metadata_from_parts(issue[:year], issue[:vol], issue[:issue] > 0 && issue[:issue], issue[:part])
   end
 
   def link_to_toc_query body, key, title

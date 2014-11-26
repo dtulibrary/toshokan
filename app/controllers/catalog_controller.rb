@@ -5,13 +5,13 @@ require 'i18n'
 class CatalogController < ApplicationController
 
   include Blacklight::Catalog
-
-  include CatalogHelper
+  include Toshokan::Catalog
 
   include TagsHelper
   include LimitsHelper
   include TocHelper
   include MendeleyHelper
+  include DocumentIdentifiersHelper
 
   before_filter :authenticate_mendeley, :only => [:mendeley_index, :mendeley_show]
   before_filter :inject_last_query_into_params, only:[:show]
@@ -325,8 +325,6 @@ class CatalogController < ApplicationController
     (@response, @document_list) = get_search_results(params, extra_search_params)
     @filters = params[:f] || []
 
-    associate_search_with_user
-
     respond_to do |format|
       # TODO Blacklight::Catalog calls preferred_view here
       format.html { }
@@ -388,13 +386,6 @@ class CatalogController < ApplicationController
     end
   end
 
-  def inject_last_query_into_params
-    if current_search_session
-      current_search_params = current_search_session.query_params.empty? ? {} : current_search_session.query_params
-      params.merge!(current_search_params.reject {|k,v| ["controller","action"].include?(k)}) unless params[:ignore_search]
-    end
-  end
-
   def journal
     id = journal_id_for_issns(params[:issn]) or not_found
     redirect_to catalog_path :id => id, :key => params[:key], :ignore_search => params[:ignore_search]
@@ -447,42 +438,6 @@ class CatalogController < ApplicationController
       end
       format.js do
         render :js => ''
-      end
-    end
-  end
-
-  def associate_search_with_user
-    if current_search_session
-      current_user.searches << current_search_session
-      current_search_session.save
-    end
-  end
-
-  # Overrides Blacklight::Catalog::SearchContext#find_or_initialize_search_session_from_params
-  # If user is logged in, search in persisted Search records for the user instead of the session history
-  def find_or_initialize_search_session_from_params params
-    params_copy = params.reject { |k,v| blacklisted_search_session_params.include?(k.to_sym) or v.blank? }
-
-    # Don't save default 'empty' search
-    return if params_copy[:q].blank? && params_copy[:f].blank? && params_copy[:l].blank? && params_copy[:t].blank?
-
-    if current_user
-      past_searches = current_user.searches
-    else
-      past_searches = searches_from_history
-    end
-
-    saved_search = past_searches.select { |x| x.query_params == params_copy }.first
-
-    if saved_search
-      saved_search.updated_at = Time.now
-      saved_search.save
-      return saved_search
-    else
-      begin
-        s = Search.create(:query_params => params_copy)
-        add_to_search_history(s)
-        return s
       end
     end
   end

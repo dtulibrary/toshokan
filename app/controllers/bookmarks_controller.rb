@@ -1,4 +1,6 @@
 class BookmarksController < CatalogController
+  before_filter :require_tag_ability
+
   def update
     _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
     current_or_guest_user.existing_bookmark_for(@document) || current_user.bookmarks.create({document:@document})
@@ -19,5 +21,12 @@ class BookmarksController < CatalogController
       format.html { redirect_to only_path(params[:return_url]) }
     end
   end
+
+  private
+
+  def require_tag_ability
+    require_authentication unless can? :tag, Bookmark
+  end
+
 
 end

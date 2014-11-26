@@ -6,7 +6,7 @@ describe TocHelper do
     helper = ApplicationController.new # provides :current_user so we can stub it
     helper.extend Blacklight::Catalog # provides :blacklight_config so we can stub it
     helper.extend Blacklight::SolrHelper
-    helper.extend CatalogHelper # provides :add_access_filter
+    helper.extend Toshokan::SearchParametersHelpers # provides :add_access_filter
     helper.extend TocHelper
     helper
   end

@@ -37,6 +37,8 @@ RSpec.configure do |config|
 
   config.infer_spec_type_from_file_location!
 
+  # config.include Rails.application.routes.url_helpers
+
   WebMock.disable_net_connect!(allow_localhost: true)
 end
 

@@ -62,7 +62,6 @@ describe BookmarksController do
 
     context 'without ability to tag' do
       it 'redirects to Authentication Required' do
-        pending "What should the behavior be here?"
         put :update, :id => '12345'
         expect(response).to be_redirect
       end
@@ -120,7 +119,6 @@ describe BookmarksController do
 
     context 'without ability to tag' do
       it 'redirects to Authentication Required' do
-        pending "What should the behavior be here?"
         post :destroy, :id => 12345, :return_url => root_path
         expect(response).to be_redirect
       end
