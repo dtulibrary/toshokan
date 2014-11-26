@@ -66,7 +66,7 @@ end
 When /^I select automatic cancellation "(.*?)"$/ do |value|
   within locator_for_section('automatic-cancellation') do
     choose(value)
-    submitted_data['automatic cancellation'] = value
+    submitted_data['auto_cancel'] = value
   end
 end
 
@@ -271,9 +271,9 @@ end
 
 def form_sections
   {
-    'journal article'    => ['article', 'journal', 'notes'],
-    'conference article' => ['article', 'conference', 'notes'],
-    'book'               => ['book', 'notes']
+    'journal article'    => ['article', 'journal', 'notes', 'automatic cancellation'],
+    'conference article' => ['article', 'conference', 'notes', 'automatic cancellation'],
+    'book'               => ['book', 'notes', 'automatic cancellation']
   }
 end
 

@@ -42,6 +42,9 @@ class AssistanceRequest < ActiveRecord::Base
         {:name => 'book_isbn',      :ou => 'isbn'},
         {:name => 'book_year',      :ou => 'date',   :required => true},
         {:name => 'book_publisher', :ou => 'pub'}
+      ],
+      'automatic cancellation' => [
+        {:name => 'auto_cancel'}
       ]
     }
   end
@@ -51,7 +54,7 @@ class AssistanceRequest < ActiveRecord::Base
   end
 
   def self.relevant_form_sections
-    ['article','journal','notes','conference','book']
+    ['article','journal','notes','conference','book','automatic cancellation']
   end
 
   def self.fields
