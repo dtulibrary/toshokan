@@ -3,8 +3,8 @@ module Toshokan
     extend ActiveSupport::Concern
 
     included do
+      include Toshokan::PerformsSearches
       include Toshokan::AssociatesSearchesWithUsers
-      include Toshokan::SearchParametersHelpers
       helper_method :journal_id_for_issns
     end
 

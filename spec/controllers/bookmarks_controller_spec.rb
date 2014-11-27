@@ -12,6 +12,7 @@ describe BookmarksController do
   let(:document) {
     SolrDocument.new("cluster_id_ss"=>"2842957")
   }
+
   let (:existing_bookmark) {
     # user.bookmarks.create({:document_id => document.id, document_type:"SolrDocument"})
     user.bookmarks.create({document:document})
@@ -109,9 +110,9 @@ describe BookmarksController do
         end
       end
 
-      context 'when tag does not exist' do
+      context 'when bookmark does not exist' do
         it 'is not found' do
-          post :destroy, :id => 12345, :return_url => root_path
+          post :destroy, :id => document.id, :return_url => root_path
           expect(response).to be_not_found
         end
       end

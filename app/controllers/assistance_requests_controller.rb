@@ -1,7 +1,8 @@
 require 'library_support'
 
-class AssistanceRequestsController < CatalogController
+class AssistanceRequestsController < ApplicationController
 
+  include Toshokan::PerformsSearches
   include ResolverHelper
 
   before_filter :disable_header_searchbar

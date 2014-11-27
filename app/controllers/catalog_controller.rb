@@ -16,10 +16,6 @@ class CatalogController < ApplicationController
   before_filter :authenticate_mendeley, :only => [:mendeley_index, :mendeley_show]
   before_filter :inject_last_query_into_params, only:[:show]
 
-  self.solr_search_params_logic += [:add_tag_fq_to_solr]
-  self.solr_search_params_logic += [:add_limit_fq_to_solr]
-  self.solr_search_params_logic += [:add_access_filter]
-
   configure_blacklight do |config|
     # It seems the I18n path is not set by Rails prior to running this block.
     # (other stuff like the Rails logger has not been initialized here either)

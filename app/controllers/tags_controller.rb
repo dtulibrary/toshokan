@@ -1,12 +1,7 @@
-class TagsController < CatalogController
-  before_filter :require_tag_ability
+class TagsController < ApplicationController
 
-  # don't execute filters from catalog controller to avoid
-  # messing up the search stored in session
-  skip_before_filter :search_session
-  skip_before_filter :history_session
-  skip_before_filter :delete_or_assign_search_session_params
-  skip_after_filter  :set_additional_search_session_values
+  include Toshokan::PerformsSearches
+  before_filter :require_tag_ability
 
   # Tag management actions
 

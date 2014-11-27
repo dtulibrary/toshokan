@@ -1,5 +1,6 @@
-class ResolverController < CatalogController
+class ResolverController < ApplicationController
 
+  include Toshokan::PerformsSearches
   include ResolverHelper
 
   rescue_from RSolr::Error::Http do |exception|
