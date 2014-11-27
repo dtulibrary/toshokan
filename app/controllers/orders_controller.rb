@@ -81,31 +81,16 @@ class OrdersController < ApplicationController
         @filter_queries[:user_type] = [params[:user_type]].flatten
       end
 
-      # Apply year filter query
-      if params[:year] && !params[:year].blank?
-        t1 = Time.new params[:year].first
-        t2 = Time.new(t1.year + 1)
-        # In theory this is not entirely correct, since an order could be placed
-        # at the very first second of the new year.
-        @orders = @orders.where :created_at => t1..t2
-        @filter_queries[:year] = [params[:year]].flatten
-      end
-
       # Apply org_unit filter query
       if params[:org_unit] && !params[:org_unit].blank?
         @orders = @orders.where :org_unit => params[:org_unit].first
         @filter_queries[:org_unit] = [params[:org_unit]].flatten
       end
 
+      # Apply origin filter query
       if params[:origin] && !params[:origin].blank?
         @orders = @orders.where :origin => params[:origin].first
         @filter_queries[:origin] = [params[:origin]].flatten
-      end
-
-      # Apply order price filter query
-      if params[:order_price] && !params[:order_price].blank?
-        @orders = @orders.where :price => params[:order_price].first
-        @filter_queries[:order_price] = [params[:order_price]].flatten
       end
 
       # Apply supplier filter query
@@ -163,14 +148,6 @@ class OrdersController < ApplicationController
 
         @orders = @orders.where "duration_hours #{expr[duration]}"
         @filter_queries[:duration] = [duration].flatten
-      end
-
-      # Apply event filter query
-      if params[:event] && !params[:event].blank?
-        events = [params[:event]].flatten
-        where_clause = (['orders.id in (select order_id from order_events where name = ?)'] * events.size).join ' and '
-        @orders = @orders.where where_clause, *events
-        @filter_queries[:event] = events
       end
 
       # User facet
@@ -251,46 +228,33 @@ class OrdersController < ApplicationController
 
       # Order start year facet
       @facets[:order_start_year] = @orders.group('created_year')
-                                          .reorder('count_all desc')
+                                          .reorder('created_year desc')
                                           .count
 
       # Order start month facet
       @facets[:order_start_month] = @orders.group('created_month')
-                                           .reorder('count_all desc')
+                                           .reorder('created_month asc')
                                            .count
+      @facets[:order_start_month] = @facets[:order_start_month].sort {|a,b| a[0].to_i <=> b[0].to_i}
 
       # Order end year facet
       @facets[:order_end_year] = @orders.where('delivered_at is not null')
                                         .group('delivered_year')
-                                        .reorder('count_all desc')
+                                        .reorder('delivered_year desc')
                                         .count
 
       # Order end month facet
       @facets[:order_end_month] = @orders.where('delivered_at is not null')
                                          .group('delivered_month')
-                                         .reorder('count_all desc')
+                                         .reorder('delivered_month asc')
                                          .count
+      @facets[:order_end_month] = @facets[:order_end_month].sort {|a,b| a[0].to_i <=> b[0].to_i}
 
       # Order supplier facet
       @facets[:supplier] = @orders.group('supplier')
                                   .reorder('count_all desc')
                                   .count
 
-      # Order event facet
-#      @facets[:event] = @orders.joins(:order_events)
-#                               .group(:name)
-#                               .reorder('count_all desc')
-#                               .count
-
-      # Year facet
-      # Since SQLite doesn't support extract(year from created_at) we have to wiggle a bit for the year facet
-      # Group by date and sum up counts per year
-#      @facets[:year] = ActiveSupport::OrderedHash.new
-#      @orders.select('date(created_at)').group('date(created_at)').reorder('date(created_at) desc').count.each do |date, count|
-#        year = date[0..3]
-#        @facets[:year][year] ||= 0
-#        @facets[:year][year] += count
-#      end
     end
    
     # Reject facets with no terms
