@@ -30,7 +30,7 @@
                   <%= t "toshokan.orders.facets.#{type}.title" %>
                 </h5>
               </div>
-              <div id="facet-<%= type %>" class="panel-collapse facet-content in">
+              <div id="facet-<%= type %>" class="panel-collapse facet-content <%= @filter_queries[type].blank? ? 'collapse' : 'in' %>">
                 <div class="panel-body">
                   <ul class="facet-values list-unstyled">
                     <% values.each do |term, count| %>
