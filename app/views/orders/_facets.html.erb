@@ -1,0 +1,56 @@
+<h5 style="margin: 8px 15px">Filter <%= number_with_delimiter @count %> results</h5>
+<div id="facets" class="facets sidenav">
+  <div class="facets-collapse">
+    <% @facets.each do |type, values| %>
+      <div class="panel panel-default facet_limit <%= @filter_queries[type].blank? ? '' : 'facet_limit-active' %>">
+        <div class="collapsed collapse-toggle panel-heading" data-target="#facet-<%= type %>" data-toggle="collapse">
+          <h5 class="panel-title">
+            <%= t "toshokan.orders.facets.#{type}.title" %>
+          </h5>
+        </div>
+        <div id="facet-<%= type %>" class="panel-collapse facet-content <%= @filter_queries[type].blank? ? 'collapse' : 'in' %>">
+          <div class="panel-body">
+            <ul class="facet-values list-unstyled">
+              <% values.each do |term, count| %>
+                <% if @filter_queries[type].try :include?, term %>
+                  <li>
+                    <span class="facet-label">
+                      <span class="selected">
+                        <% if @facet_labels[type].try :[], term %>
+                          <%= @facet_labels[type][term] %>
+                        <% elsif term %>
+                          <%= t "toshokan.orders.facets.#{type}.values.#{term}", :default => term %>
+                        <% else %>
+                          <%= t "toshokan.orders.facets.#{type}.values.nil" %>
+                        <% end %>
+                      </span>
+                      <%= link_to '<i class="icon-times"></i>'.html_safe,
+                                  orders_path(params.except(:page).merge({ type => @filter_queries[type].reject {|e| e == term}})),
+                                  :title => 'Remove filter', :class => 'remove' %>
+                    </span>
+                    <span class="select facet-count"><%= number_with_delimiter count %></span>
+                  </li>
+                <% else %>
+                  <li>
+                    <span class="facet-label">
+                      <% if @facet_labels[type].try :[], term %>
+                        <%= link_to @facet_labels[type][term],
+                                    orders_path(params.except(:page).merge({ type => ((@filter_queries[type] || []) + [term]) })),
+                                    :class => 'facet_select', :title => 'Add filter' %>
+                      <% else %>
+                        <%= link_to t("toshokan.orders.facets.#{type}.values.#{term}", :default => term),
+                                    orders_path(params.except(:page).merge({ type => ((@filter_queries[type] || []) + [term]) })),
+                                    :class => 'facet_select', :title => 'Add filter' %>
+                      <% end %>
+                    </span>
+                    <span class="facet-count"><%= number_with_delimiter count %></span>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,81 +1,8 @@
 <div class="order">
   <div id="sidebar" class="col-md-3">
-    <h5 style="margin: 8px 15px">Find orders</h5>
-    <div class="well" style="padding: 15px">
-      <%= form_tag orders_path, :class => 'clearfix', :method => :get do %>
-        <% [:email, :date].each do |facet_type| %>
-          <%= hidden_field_tag facet_type, params[facet_type] unless params[facet_type].blank? %>
-        <% end %>
-        <% if can? :view_any, Order %>
-          <%= label_tag :q_email, 'Email' %>
-          <%= text_field_tag :q_email, params[:q_email], :class => 'input-block-level' %>
-        <% end %>
-        <%= label_tag :q_orderid, 'Order ID' %>
-        <%= text_field_tag :q_orderid, params[:q_orderid], :class => 'input-block-level' %>
-        <% if can? :view, :extended_info %>
-          <%= label_tag :q_supplier_order_id, 'Supplier order ID' %>
-          <%= text_field_tag :q_supplier_order_id, params[:q_supplier_order_id], :class => 'input-block-level' %>
-        <% end %>
-        <%= button_tag 'Search', :class => 'btn btn-primary pull-right' %>
-      <% end %>
-    </div>
+    <%= render 'find_orders_form' %>
     <% unless @facets.empty? %>
-      <h5 style="margin: 8px 15px">Filter <%= number_with_delimiter @count %> results</h5>
-      <div id="facets" class="facets sidenav">
-        <div class="facets-collapse">
-          <% @facets.each do |type, values| %>
-            <div class="panel panel-default facet_limit <%= @filter_queries[type].blank? ? '' : 'facet_limit-active' %>">
-              <div class="collapsed collapse-toggle panel-heading" data-target="#facet-<%= type %>" data-toggle="collapse">
-                <h5 class="panel-title">
-                  <%= t "toshokan.orders.facets.#{type}.title" %>
-                </h5>
-              </div>
-              <div id="facet-<%= type %>" class="panel-collapse facet-content <%= @filter_queries[type].blank? ? 'collapse' : 'in' %>">
-                <div class="panel-body">
-                  <ul class="facet-values list-unstyled">
-                    <% values.each do |term, count| %>
-                      <% if @filter_queries[type].try :include?, term %>
-                        <li>
-                          <span class="facet-label">
-                            <span class="selected">
-                              <% if @facet_labels[type].try :[], term %>
-                                <%= @facet_labels[type][term] %>
-                              <% elsif term %>
-                                <%= t "toshokan.orders.facets.#{type}.values.#{term}", :default => term %>
-                              <% else %>
-                                <%= t "toshokan.orders.facets.#{type}.values.nil" %>
-                              <% end %>
-                            </span>
-                            <%= link_to '<i class="icon-times"></i>'.html_safe,
-                                        orders_path(params.except(:page).merge({ type => @filter_queries[type].reject {|e| e == term}})),
-                                        :title => 'Remove filter', :class => 'remove' %>
-                          </span>
-                          <span class="select facet-count"><%= number_with_delimiter count %></span>
-                        </li>
-                      <% else %>
-                        <li>
-                          <span class="facet-label">
-                            <% if @facet_labels[type].try :[], term %>
-                              <%= link_to @facet_labels[type][term],
-                                          orders_path(params.except(:page).merge({ type => ((@filter_queries[type] || []) + [term]) })),
-                                          :class => 'facet_select', :title => 'Add filter' %>
-                            <% else %>
-                              <%= link_to t("toshokan.orders.facets.#{type}.values.#{term}", :default => term),
-                                          orders_path(params.except(:page).merge({ type => ((@filter_queries[type] || []) + [term]) })),
-                                          :class => 'facet_select', :title => 'Add filter' %>
-                            <% end %>
-                          </span>
-                          <span class="facet-count"><%= number_with_delimiter count %></span>
-                        </li>
-                      <% end %>
-                    <% end %>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
+      <%= render 'facets' %>
     <% end %>
   </div>
   <div class="col-md-9">
