@@ -20,6 +20,7 @@ module Toshokan
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/lib/document)
     config.eager_load_paths += %W(#{config.root}/lib/document)
+    config.railties_order = [:main_app, DtuRailsCommon::Engine, Blacklight::Engine, :all]
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -69,6 +70,8 @@ module Toshokan
     # Config to be overriden by local settings
     config.time_zone                      = 'CET'
     config.active_record.default_timezone = :local
+
+    config.application_name = 'DTU Findit'
 
     config.solr_document = {
       :document_id => 'cluster_id_ss'

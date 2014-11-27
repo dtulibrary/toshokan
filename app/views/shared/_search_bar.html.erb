@@ -1,0 +1,10 @@
+<div class="search">
+  <div id="searchbar">
+    <%= render_search_bar %>
+  </div>
+  <div id="appliedParams">
+    <% if query_has_constraints? %>
+      <%= render 'catalog/constraints' %>
+    <% end %>
+  </div>
+</div>

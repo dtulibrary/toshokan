@@ -3,6 +3,7 @@ require 'blacklight/catalog'
 require 'i18n'
 
 class CatalogController < ApplicationController
+  layout 'with_search_bar'
 
   include Blacklight::Catalog
   include Toshokan::Catalog

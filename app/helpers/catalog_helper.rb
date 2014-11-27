@@ -18,7 +18,7 @@ module CatalogHelper
       controller_name = CatalogController.controller_name
       controller_action = "show"
     end
-    @extra_body_classes ||= ['blacklight-' + controller_name, 'blacklight-' + [controller_name, controller_action].join('-')]
+    ['blacklight-' + controller_name, 'blacklight-' + [controller_name, controller_action].join('-')]
   end
 
 end

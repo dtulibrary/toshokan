@@ -5,7 +5,6 @@ class AssistanceRequestsController < ApplicationController
   include Toshokan::PerformsSearches
   include Toshokan::Resolver
 
-  before_filter :disable_header_searchbar
 
   def index
     if can? :request, :assistance
@@ -64,8 +63,8 @@ class AssistanceRequestsController < ApplicationController
               order.created_at = assistance_request.created_at
               order_updated_at = assistance_request.updated_at
               order.supplier = :dtu_manual
-              order.price = 0 
-              order.vat = 0 
+              order.price = 0
+              order.vat = 0
               order.currency = :DKK
               order.email = assistance_request.email
               order.uuid = UUIDTools::UUID.timestamp_create.to_s

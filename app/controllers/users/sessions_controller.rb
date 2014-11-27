@@ -1,6 +1,5 @@
 class Users::SessionsController < ApplicationController
   skip_before_filter :authenticate, :only => [ :setup, :create, :new ]
-  before_filter :disable_header_searchbar, :only => [ :switch ]
 
   # #new is either called by the user clicking login or by the authorize before_filter
   # (due to forced shunting of dtu users).

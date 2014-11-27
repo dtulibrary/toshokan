@@ -1,14 +1,9 @@
-@import 'bootstrap-sprockets';
-@import 'bootstrap/variables';
-@import 'bootstrap';
-
+@import 'dtu_rails_common';
 @import 'blacklight';
 @import 'blacklight_range_limit';
 @import 'blacklight_range_limit/blacklight_range_limit';
 
 @import 'findit-font';
-@import 'layout';
-@import 'header';
 @import 'sort_and_per_page';
 @import 'feedback';
 @import 'lists';
@@ -32,7 +27,6 @@
 @import 'toc';
 @import 'mendeley';
 @import 'tooltip';
-@import 'service_menu';
 @import 'icons';
 @import 'constraints';
 @import 'home';

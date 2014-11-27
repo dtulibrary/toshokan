@@ -1,4 +1,5 @@
 class TagsController < ApplicationController
+  layout 'with_search_bar'
 
   include Toshokan::PerformsSearches
   before_filter :require_tag_ability

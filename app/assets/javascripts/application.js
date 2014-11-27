@@ -22,6 +22,7 @@
 //
 // Required by Blacklight
 //= require blacklight/blacklight
+//= require 'dtu_rails_common'
 //= require_tree .
 
 // Spin.js
