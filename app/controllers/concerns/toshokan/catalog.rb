@@ -4,7 +4,11 @@ module Toshokan
 
     included do
       include Toshokan::PerformsSearches
+      include Toshokan::SearchesTags
       include Toshokan::AssociatesSearchesWithUsers
+      include Toshokan::BuildsToc
+      include Toshokan::MendeleyController
+
       helper_method :journal_id_for_issns
     end
 
@@ -33,6 +37,32 @@ module Toshokan
       end
     end
 
+    ##
+    # Add any existing limits, stored in app-level HTTP query
+    # as :l, to solr as appropriate :fq query.
+    def add_limit_fq_to_solr(solr_parameters, user_params)
+      # :fq, map from :l.
+      if ( user_params[:l])
+        l_request_params = user_params[:l]
+
+        solr_parameters[:fq] ||= []
+        l_request_params.each_pair do |l|
+          limit_name = l.first
+          limit_value = l.second
+          if limit_value.is_a? Hash
+            limit_value = limit_value[:value]
+          end
+
+          field_config = blacklight_config[:limit_fields][limit_name]
+          solr_parameters[:fq] << field_config[:fields].map { |field|
+            "#{field}:\"#{limit_value}\""
+          }.join(' OR ')
+        end
+
+        solr_parameters
+      end
+    end
+
     def journal_document_for_issns(issns)
       response = get_solr_response_for_field_values("issn_ss", issns, add_access_filter({:fq => ['format:journal'], :rows => 1})).first
       documents = response[:response][:docs]
@@ -42,6 +72,11 @@ module Toshokan
     def journal_id_for_issns(issns)
       document = journal_document_for_issns(issns)
       document[:cluster_id_ss] if document
+    end
+
+    def journal
+      id = journal_id_for_issns(params[:issn]) or not_found
+      redirect_to catalog_path :id => id, :key => params[:key], :ignore_search => params[:ignore_search]
     end
 
   end

@@ -3,7 +3,7 @@ require 'library_support'
 class AssistanceRequestsController < ApplicationController
 
   include Toshokan::PerformsSearches
-  include ResolverHelper
+  include Toshokan::Resolver
 
   before_filter :disable_header_searchbar
 

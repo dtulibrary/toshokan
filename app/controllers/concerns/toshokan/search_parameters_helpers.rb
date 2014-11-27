@@ -13,4 +13,6 @@ module Toshokan
       solr_parameters
     end
   end
+
+
 end

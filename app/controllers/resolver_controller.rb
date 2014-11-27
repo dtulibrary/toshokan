@@ -1,7 +1,7 @@
 class ResolverController < ApplicationController
 
   include Toshokan::PerformsSearches
-  include ResolverHelper
+  include Toshokan::Resolver
 
   rescue_from RSolr::Error::Http do |exception|
     flash[:error] ||= []

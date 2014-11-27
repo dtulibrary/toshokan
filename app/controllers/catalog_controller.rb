@@ -7,13 +7,6 @@ class CatalogController < ApplicationController
   include Blacklight::Catalog
   include Toshokan::Catalog
 
-  include TagsHelper
-  include LimitsHelper
-  include TocHelper
-  include MendeleyHelper
-  include DocumentIdentifiersHelper
-
-  before_filter :authenticate_mendeley, :only => [:mendeley_index, :mendeley_show]
   before_filter :inject_last_query_into_params, only:[:show]
 
   configure_blacklight do |config|
@@ -378,62 +371,6 @@ class CatalogController < ApplicationController
           # if it's a string, it makes Rails unhappy for unclear reasons.
           format.send(format_name.to_sym) { render :text => @document.export_as(format_name), :layout => false }
         end
-      end
-    end
-  end
-
-  def journal
-    id = journal_id_for_issns(params[:issn]) or not_found
-    redirect_to catalog_path :id => id, :key => params[:key], :ignore_search => params[:ignore_search]
-  end
-
-  def mendeley_index
-    respond_to do |format|
-      format.html do
-        extra_search_params = {:rows => 0, :facet => false, :stat => false}
-        (@response, @document_list) = get_search_results(params, extra_search_params)
-        @num_found = @response['response']['numFound']
-        @max_export = blacklight_config.max_per_page
-        @export_id  = SecureRandom.uuid
-        @folders, @groups = mendeley_folders_and_groups
-        render layout: 'external_page'
-      end
-    end
-  end
-
-  def mendeley_index_save
-    extra_search_params = {:rows => blacklight_config.max_per_page, :facet => false, :stat => false}
-    (@response, @document_list) = get_search_results(params, extra_search_params)
-    save_to_mendeley @document_list, params['folder'], params['tags'].split(',').map(&:strip), {:progress_name => params['export_id']}
-    respond_to do |format|
-      format.html do
-        render :inline => 'Saved', layout: 'external_page'
-      end
-      format.js do
-        render :js => ''
-      end
-    end
-  end
-
-  def mendeley_show
-    (@response, @document) = get_solr_response_for_doc_id nil, {:fq => ["access_ss:#{Rails.application.config.search[:dtu]}"]}
-    @folders, @groups = mendeley_folders_and_groups
-    respond_to do |format|
-      format.html do
-        render layout: 'external_page'
-      end
-    end
-  end
-
-  def mendeley_show_save
-    (@response, @document) = get_solr_response_for_doc_id nil, {:fq => ["access_ss:#{Rails.application.config.search[:dtu]}"]}
-    save_to_mendeley [@document], params['folder'], params['tags'].split(',').map(&:strip)
-    respond_to do |format|
-      format.html do
-        render :inline => 'Saved', layout: 'external_page'
-      end
-      format.js do
-        render :js => ''
       end
     end
   end

@@ -1,17 +1,6 @@
 # -*- coding: utf-8 -*-
 module MendeleyHelper
 
-  def mendeley_authenticated?
-    session[:mendeley_access_token] && Time.at(session[:mendeley_access_token].expires_at) > Time.now
-  end
-
-  def authenticate_mendeley
-    unless mendeley_authenticated?
-      session.delete(:mendeley_access_token)
-      redirect_to "/auth/mendeley/login?#{ {:url => request.url}.to_query }"
-    end
-  end
-
   def refresh_access_token
 
   end
