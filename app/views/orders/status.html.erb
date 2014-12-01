@@ -1,5 +1,5 @@
 <div class="order">
-  <div class="span6">
+  <div class="col-md-6">
     <h4><%= t 'toshokan.orders.order_status' %></h4>
 
     <dl>
@@ -13,7 +13,7 @@
       <p><%= link_to 'Resend Library Support request', order_resend_library_support_path(@order.uuid) %></p>
     <% end %>
   </div>
-  <div class="span6">
+  <div class="col-md-6">
     <%= render 'order_summary' %>
   </div>
 </div>

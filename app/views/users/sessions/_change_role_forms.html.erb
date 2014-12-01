@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="span3">
+  <div class="col-md-4">
     <%= form_tag user_session_path, :method => :put do %>
       <%= hidden_field :anonymous, :value => true %>
       <%= button_tag t('toshokan.users.switch.become_anonymous'), :class => 'btn btn-primary' %>
@@ -8,13 +8,13 @@
       </label>
     <% end %>
   </div>
-  <div class="span3">
+  <div class="col-md-4">
     <%= form_tag user_session_path, :method => :put do %>
       <%= hidden_field :student, :value => true %>
       <%= button_tag t('toshokan.users.switch.become_student'), :class => 'btn btn-primary' %>
     <% end %>
   </div>
-  <div class="span3">
+  <div class="col-md-4">
     <%= form_tag user_session_path, :method => :put do %>
       <%= hidden_field :employee, :value => true %>
       <%= button_tag t('toshokan.users.switch.become_employee'), :class => 'btn btn-primary' %>

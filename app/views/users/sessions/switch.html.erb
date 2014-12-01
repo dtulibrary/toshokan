@@ -1,12 +1,12 @@
-<div class="span12">
+<div class="col-md-12">
   <div class="row">
-    <div class="span9 offset1 well">
+    <div class="col-md-9 col-md-offset-1 well">
       <h4><%= t('toshokan.users.switch.to_another_user') %></h4>
       <%= render :partial => 'switch_user_form', :locals => { :found_users => @found_users } %>
    </div>
   </div>
   <div class="row">
-    <div class="span9 offset1 well">
+    <div class="col-md-9 col-md-offset-1 well">
       <h4><%= t('toshokan.users.switch.to_another_role') %></h4>
       <%= render :partial => 'change_role_forms' %>
     </div>
