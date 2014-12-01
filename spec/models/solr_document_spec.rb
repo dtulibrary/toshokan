@@ -141,6 +141,21 @@ describe "SolrDocument" do
         }).export_as_openurl_ctx_kev)
       openurl.referent.metadata["spage"].should eq "30"
       openurl.referent.metadata["epage"].should be_nil
+
+      openurl = OpenURL::ContextObject.new_from_kev(
+        SolrDocument.new({
+          'title_ts'=>['PEDESTRIAN FLOW CHARACTERISTICS'],
+          'journal_issue_ssf'=>['9'],
+          'issn_ss'=>['00410675'],
+          'journal_vol_ssf'=>['39'],
+          'journal_title_ts'=>['Traffic Eng'],
+          'format'=>'article',
+          'pub_date_tis'=>[1969],
+          'journal_page_ssf'=>['30'],
+          'author_ts'=>['NAVIN FPD', 'WHEELER RJ']
+        }).export_as_openurl_ctx_kev)
+      openurl.referent.metadata["spage"].should eq "30"
+      openurl.referent.metadata["epage"].should be_nil
     end
   end
 
