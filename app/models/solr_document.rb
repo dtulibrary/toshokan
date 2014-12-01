@@ -207,6 +207,8 @@ class SolrDocument
         if m = /^\s*(\S+)\s*-+\s*(\S+)\s*.*$/.match(value.first.to_s)
           @context_object.referent.set_metadata("spage", "#{m[1]}") if m[1] =~ /^\d+$/
           @context_object.referent.set_metadata("epage", "#{m[2]}") if m[2] =~ /^\d+$/
+        else
+          @context_object.referent.set_metadata('spage', value.first.to_s)
         end
       when :year
         @context_object.referent.set_metadata("date", value.first.to_s)
