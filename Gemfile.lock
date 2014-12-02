@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/dtulibrary/dtu_rails_common.git
-  revision: c7273a2998c220854ce65b376df2647872b5acba
+  revision: 22483de9399eb5bd733e10a6b3214dfb9b2f4d1f
   specs:
     dtu_rails_common (0.0.1)
       bootstrap-sass (~> 3.3.0)
@@ -69,6 +69,7 @@ GEM
       execjs
     awesome_print (1.2.0)
     bcrypt (3.1.9)
+    bcrypt (3.1.9-x86-mingw32)
     bibtex-ruby (4.0.4)
       latex-decode (~> 0.0)
     blacklight (5.7.2)
