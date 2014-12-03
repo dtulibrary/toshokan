@@ -1,10 +1,10 @@
 <div class="panel panel-default facet_limit <%= 'facet_limit-active' if any_tag_in_params? %>">
-  <div class="collapse-toggle panel-heading" data-toggle="collapse" data-target="#my-references">
+  <div class="collapse-toggle panel-heading collapsed" data-toggle="collapse" data-target="#my-references">
     <h5 class="panel-title">
       <%= link_to t('toshokan.tags.title'), "#", :"data-no-turbolink" => true %>
     </h5>
   </div>
-  <div id="my-references" class="panel-collapse facet-content in">
+  <div id="my-references" class="panel-collapse facet-content collapse">
     <div class="panel-body">
       <%= render_tag_list %>
     </div>

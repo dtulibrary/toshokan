@@ -8,24 +8,23 @@ i[class^="icon-"], i[class*=" icon-"] {
   height: auto;
 }
 
-a > i.icon-pubmed {
-  background-image: image_url('pubmed_logo.png');
+a > i[class^="icon-"] {
   background-position: center center;
   height: 16px;
   width: 16px;
-  display: inline-block;
+  float: left;
+  margin-top: 2px;
+  margin-right: 0.5em;
+}
+
+a > i.icon-pubmed {
+  background-image: image_url('pubmed_logo.png');
 }
 
 a > i.icon-isi {
   background-image: image_url('isi_logo.png');
-  background-position: center center;
-  height: 15px;
-  width: 16px;
 }
 
 a > i.icon-dtu {
   background-image: image_url('dtu-logo-red.png');
-  background-position: center center;
-  height: 16px;
-  width: 16px;
 }
