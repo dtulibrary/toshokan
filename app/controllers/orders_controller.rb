@@ -2,6 +2,8 @@ require 'uuidtools'
 
 class OrdersController < ApplicationController
 
+  include Blacklight::Catalog
+
   # Delivery is called from DocDel
   skip_before_filter :authenticate, :only => [:delivery]
 
