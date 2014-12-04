@@ -4,7 +4,7 @@
 -%>
 <div class="group <%= alert.nil? ? 'hide' : '' %>">
   <i class="icon-check-square-o"></i>
-  <%= link_to t('toshokan.alerts.journal.remove'), alert_path(alert_id), 
+  <%= link_to t('toshokan.alerts.journal.add'), alert_path(alert_id),
               :method => :delete, :title => "Remove journal alert", :remote => true,
               :class => "journal-alert" %>
 </div>
@@ -13,7 +13,7 @@
   <i class="icon-square-o"></i>
   <%= link_to t('toshokan.alerts.journal.add'), 
               alerts_path("alert[alert_type]" => "journal", "alert[query]" => document['issn_ss'].first,
-                          "alert[name]" => document['title_ts'].first), 
+                          "alert[name]" => document['title_ts'].first),
               :method => :post, :title => "Add journal alert", :remote => true,
               :class => "journal-alert add" %>
 </div>
