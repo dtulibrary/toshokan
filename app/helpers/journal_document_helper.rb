@@ -14,7 +14,7 @@ module JournalDocumentHelper
                 catalog_journal_path(:issn => document[:issn_ss], :key => document[:toc_key_s], :ignore_search => '✓'),
                 { :title => I18n.t('toshokan.catalog.toc.open_table_of_contents'), :data => { :toggle => 'tooltip' } }) +
         ' — ' +
-        link_to_toc_query_if(has_toc && !limit_in_params?(:toc), render_journal_metadata(document, :show), document[:toc_key_s], document[:journal_title_ts].first) +
+        link_to_toc_query_if(has_toc && !limit_in_params?(:toc), render_journal_metadata(document, :show), document[:toc_key_s], (document[:journal_title_ts] || document[:conf_title_ts]).first) +
         render_journal_page_info(document, :show)).html_safe
   end
 
@@ -28,7 +28,7 @@ module JournalDocumentHelper
 
   def render_conference_info_index args
     (args[:document][args[:field]].first + ' &mdash; ' +
-        render_journal_info(args[:document], :index) +
+        render_journal_info(args, :index) +
         render_journal_page_info(args[:document], :index)).html_safe
   end
 
