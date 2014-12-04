@@ -1,0 +1,10 @@
+<div id="alert_tools" class="well tools">
+  <ul class="list-unstyled">
+    <% if can? :view, :search_history %>
+      <li class="nav-header journal-alert-header"><h4><i class="icon-bell"></i><%= t('toshokan.alerts.title') %></h4></li>
+      <li>
+        <%= render :partial => 'alerts/add_journal_alert', :locals => { :document => @document } %>
+      </li>
+    <% end %>
+  </ul>
+</div>
