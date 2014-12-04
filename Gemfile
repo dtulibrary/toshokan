@@ -5,7 +5,7 @@ gem 'activerecord-session_store'
 
 gem 'jquery-rails', '~> 2.3.0'
 gem 'blacklight', '~> 5.7'
-gem 'dtu_rails_common', :git => 'git://github.com/dtulibrary/dtu_rails_common.git'
+gem 'dtu_rails_common', :github => 'dtulibrary/dtu_rails_common'
 gem 'unicode'
 
 gem "blacklight_range_limit"
@@ -38,7 +38,7 @@ group :assets do
 
   gem 'therubyracer', :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
-  gem 'findit_font', :git => 'git://github.com/dtulibrary/findit_font.git'
+  gem 'findit_font', :github => 'dtulibrary/findit_font'
   gem 'autoprefixer-rails'
 end
 

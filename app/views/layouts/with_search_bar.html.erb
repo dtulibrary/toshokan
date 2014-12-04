@@ -2,6 +2,10 @@
   <%= render :partial => 'shared/head' %>
 <% end %>
 
+<% content_for :menu do %>
+  <%= render partial: '/user_util_links' %>
+<% end %>
+
 <% content_for :logo do %>
   <%= link_to 'DTU Find<span class="dtu-red">it</span>'.html_safe, root_path, :class => 'findit-logo visible-desktop pull-left' %>
 <% end %>
