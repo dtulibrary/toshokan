@@ -77,6 +77,7 @@ group :development do
   gem 'quiet_assets'
   gem 'byebug'
   gem 'hirb'  # Used by rake steps
+  gem 'foreman'
 end
 
 # Deploy with Capistrano
