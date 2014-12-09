@@ -81,7 +81,6 @@
 
 
 .document .tags .tag {
-  background-color: $dtu_blue;
   .icon-times {
     color: #ffffff;
   }
@@ -106,8 +105,8 @@
   display: inline-block;
   vertical-align: middle;
   font-weight: normal;
-  padding-top: 1px;
-  padding-bottom: 0px;
+  padding-top: 2px;
+  padding-bottom: 3px;
   text-shadow: none;
 
   // format remove button with icon inside label
@@ -119,7 +118,7 @@
       margin: 0px;
       background: none;
       position: relative;
-      top: -1px;
+      top: 1px;
     }
   }
 }

@@ -19,7 +19,7 @@
       </thead>
       <% @tags.each do |tag| %>
         <tr class='tag-manager'>
-          <td><span class="label label-important"><%= tag.name %></span></td>
+          <td><span class="btn btn-primary btn-xs"><%= tag.name %></span></td>
           <td class="action">
             <%= link_to edit_tag_path(tag), :title => t('toshokan.mylibrary.edit') do %>
               <i class="icon-edit"></i>

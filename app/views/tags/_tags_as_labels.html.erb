@@ -1,7 +1,7 @@
 <% remote = true if local_assigns[:remote].nil? %>
 <% if bookmark %>
   <% bookmark.tags.each do |tag| %>
-    <span class="label tag">
+    <span class="label label-primary tag">
       <%= render_tag_value(tag.name, {:suppress_link => true, :suppress_icon => true}) %>
       <%= form_tag({:controller => 'tags', :action => 'destroy', :id => tag.id, :document_id => bookmark.document_id},
                    {:method => :delete, :remote => remote}) do %>
