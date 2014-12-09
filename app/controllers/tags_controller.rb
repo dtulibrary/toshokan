@@ -2,6 +2,8 @@ class TagsController < ApplicationController
   layout 'with_search_bar'
 
   include Toshokan::PerformsSearches
+  include Toshokan::Catalog
+
   before_filter :require_tag_ability
 
   # Tag management actions
@@ -30,15 +32,14 @@ class TagsController < ApplicationController
   end
 
   def create
-    _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
+    @document = SolrDocument.new(SolrDocument.unique_key => params[:document_id])
     current_user.tag(@document, params[:tag_name])
 
     respond_to do | format |
       format.js   { render :partial => 'tags/tag_refresh' }
-      format.html { redirect_to only_path(params[:return_url])}
+      format.html { redirect_to only_path(params[:return_url]) }
     end
   end
-
 
   # Tag management and document tagging actions
 
@@ -47,8 +48,8 @@ class TagsController < ApplicationController
     not_found unless tag
 
     if (params[:document_id])
-      _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
-      bookmark = current_user.bookmarks.find_by_document_id(@document.id)
+      @document = SolrDocument.new(SolrDocument.unique_key =>  params[:document_id])
+      bookmark = current_user.existing_bookmark_for(@document)
       bookmark.tags.delete(tag) if bookmark
     else
       tag.delete
@@ -56,7 +57,7 @@ class TagsController < ApplicationController
 
     respond_to do | format |
       format.js   { render :partial => 'tags/tag_refresh' }
-      format.html { redirect_to only_path(params[:return_url])}
+      format.html { redirect_to only_path(params[:return_url]) }
     end
   end
 

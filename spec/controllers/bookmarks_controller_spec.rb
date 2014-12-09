@@ -10,12 +10,11 @@ describe BookmarksController do
   }
 
   let(:document) {
-    SolrDocument.new("cluster_id_ss"=>"2842957")
+    SolrDocument.new(SolrDocument.unique_key => '2842957')
   }
 
   let (:existing_bookmark) {
-    # user.bookmarks.create({:document_id => document.id, document_type:"SolrDocument"})
-    user.bookmarks.create({document:document})
+    user.bookmark document
   }
 
   let!(:ability) {

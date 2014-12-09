@@ -9,7 +9,7 @@ module Toshokan
       include Toshokan::BuildsToc
       include Toshokan::MendeleyController
 
-      helper_method :journal_id_for_issns
+      helper_method :journal_id_for_issns, :add_limit_fq_to_solr
     end
 
     # Overrides Blacklight::Catalog#has_search_parameters? to know about DTU-specific query parameters

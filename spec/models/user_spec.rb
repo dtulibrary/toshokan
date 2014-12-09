@@ -10,9 +10,7 @@ describe User do
   }
 
   let(:document) {
-    d = double("document")
-    allow(d).to receive(:id).and_return("1")
-    d
+    SolrDocument.new(SolrDocument.unique_key => '1')
   }
 
   it "is valid" do
@@ -42,14 +40,14 @@ describe User do
     subject.tag(document, 'a tag')
 
     expect( subject.tags.map(&:name) ).to eq ['a tag']
-    expect( subject.tags_for(document).map(&:name) ).to eq ['a tag']
+    expect( subject.existing_tags_for(document).map(&:name) ).to eq ['a tag']
   end
 
   it "can list owned tags for document id" do
     subject.tag(document, 'a tag')
 
     expect( subject.tags.map(&:name) ).to eq ['a tag']
-    expect( subject.tags_for(document.id).map(&:name) ).to eq ['a tag']
+    expect( subject.existing_tags_for(document).map(&:name) ).to eq ['a tag']
   end
 
   it "can list owned tags for bookmark" do
@@ -57,7 +55,7 @@ describe User do
     bookmark = subject.tags.find_by_name('a tag').bookmarks.first
 
     expect( subject.tags.map(&:name) ).to eq ['a tag']
-    expect( subject.tags_for(bookmark).map(&:name) ).to eq ['a tag']
+    expect( subject.existing_tags_for(document).map(&:name) ).to eq ['a tag']
   end
 
   describe 'from Riyosha user data for DTU employee' do
