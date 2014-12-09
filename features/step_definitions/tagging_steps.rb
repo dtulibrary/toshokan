@@ -1,5 +1,5 @@
 Given (/^I bookmark the( first)? document$/) do |first|
-  scope = first ? find('.documentFunctions', :match=>:first) : page
+  scope = first ? find('.index-document-functions', :match=>:first) : page
   scope.click_on 'Bookmark'
 end
 
@@ -9,7 +9,7 @@ When (/^I bookmark the document with title "(.*?)"$/) do |title|
 end
 
 When (/^I unbookmark the( first)? document$/) do |first|
-  scope = first ? find('.documentFunctions', :match=>:first) : page
+  scope = first ? find('.index-document-functions', :match=>:first) : page
   scope.click_on 'Remove bookmark and tags'
 end
 
@@ -53,7 +53,7 @@ end
 Given (/^I remove the tag "(.*?)" from the document with title "(.*?)"$/) do |tag_name, query|
   step "I search for \"#{query}\" in the title"
 
-  within(".document .documentFunctions .tag", :text => tag_name) do
+  within(".document .index-document-functions .tag", :text => tag_name) do
     click_link 'Remove'
   end
 end
@@ -87,32 +87,32 @@ Given (/^I delete tag "(.*?)"$/) do |tag_name|
 end
 
 Then (/^the( first)? document should be bookmarked$/) do |first|
-  scope = first ? find('.documentFunctions', :match => :first) : page
+  scope = first ? find('.index-document-functions', :match => :first) : page
   expect(scope).to have_css('.tag_control .icon-star')
 end
 
 Then (/^the( first)? document should not be bookmarked$/) do |first|
-  scope = first ? find('.documentFunctions', :match=>:first) : page
+  scope = first ? find('.index-document-functions', :match=>:first) : page
   expect(scope).to_not have_css('.tag_control .icon-star')
 end
 
 Then (/^the( first)? document should have tags$/) do |first|
-  scope = first ? find('.documentFunctions') : page
+  scope = first ? find('.index-document-functions') : page
   expect(scope).to have_css('.tags_dropdown .has-tags')
 end
 
 Then (/^the( first)? document should not have tags$/) do |first|
-  scope = first ? find('.documentFunctions', :match=>:first) : page
+  scope = first ? find('.index-document-functions', :match=>:first) : page
   expect(scope).to have_css('.tags_dropdown .no-tags')
 end
 
 Then (/^the( first)? document should be tagged with "(.*?)"$/) do |first, tag_name|
-  scope = first ? find('.documentFunctions') : page
+  scope = first ? find('.index-document-functions') : page
   expect(scope).to have_css('.tags-as-labels .tags .tag', :text => tag_name)
 end
 
 Then (/^the( first)? document should not be tagged with "(.*?)"$/) do |first, tag_name|
-  scope = first ? find('.documentFunctions') : page
+  scope = first ? find('.index-document-functions') : page
   expect(scope).to_not have_css('.tags-as-labels .tags .tag', :text => tag_name)
 end
 

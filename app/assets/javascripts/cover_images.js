@@ -7,7 +7,7 @@
       var imageUrl = $(coverImage).attr('data-href');
       $.ajax(imageUrl, {
         success: function () {
-          $(coverImage).removeClass('hidden').css('background-image', 'url(' + imageUrl + ')');
+          $(coverImage).removeClass('hide').css('background-image', 'url(' + imageUrl + ')');
         }
       });
     });
