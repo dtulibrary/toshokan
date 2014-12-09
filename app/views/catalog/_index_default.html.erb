@@ -1,6 +1,6 @@
 <%# default partial to display solr document fields in catalog index view -%>
 <div class="row">
-  <div class="col-lg-10">
+  <div class="col-sm-9 col-lg-10">
     <%= altmetric_badge(document) %>
     <dl class="dl-horizontal dl-invert">
 
@@ -17,7 +17,7 @@
       <%= render :partial => 'openurl',  :locals => { :document => document } %>
     </dl>
   </div>
-  <div class="col-lg-2">
+  <div class="col-sm-3 col-lg-2">
     <%= render_cover_image document %>
   </div>
 </div>
