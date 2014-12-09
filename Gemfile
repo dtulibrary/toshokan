@@ -8,7 +8,7 @@ gem 'blacklight', '~> 5.7'
 gem 'dtu_rails_common', :github => 'dtulibrary/dtu_rails_common'
 gem 'unicode'
 
-gem "blacklight_range_limit"
+gem 'blacklight_range_limit'
 gem 'pg'
 gem 'unhappymapper', :require => 'happymapper'
 gem 'httparty'
@@ -29,7 +29,7 @@ gem 'uuidtools'
 gem 'feature_flipper'
 gem 'kaminari'
 gem 'lisbn'
-gem "rack-utf8_sanitizer", "~> 1.1.0"
+gem 'rack-utf8_sanitizer', '~> 1.1.0'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -50,7 +50,7 @@ group :test do
   gem 'database_cleaner'
   gem 'capybara'
   gem 'launchy'
-  gem 'factory_girl_rails', "~> 4.0"
+  gem 'factory_girl_rails', '~> 4.0'
   gem 'webmock'
 end
 

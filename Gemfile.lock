@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/dtulibrary/dtu_rails_common.git
-  revision: 4ab14c0f56d2bf89d131bc5560378eb7207e1c6e
+  revision: 5a3ab6277a1a7d2da45ae9f9d973175a3b2a9662
   specs:
-    dtu_rails_common (0.0.1)
+    dtu_rails_common (0.0.2)
       bootstrap-sass (~> 3.3.0)
       devise (~> 3.4.1)
       omniauth (~> 1.2.2)
