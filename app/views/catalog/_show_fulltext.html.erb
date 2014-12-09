@@ -29,9 +29,9 @@
         <%=link_to "<i class='icon-dtu'></i> #{t('toshokan.source_url.orbit')}".html_safe, Rails.application.config.orbit_url % "#{@document['orbit_id_ssf'].first}" %>
       </li>
     <% end %>
-    <% if @document['backlink_ss'] %>
+    <% if should_render_orbit_backlink? @document %>
       <li>
-        <%= link_to "<i class=\"icon-dtu\"></i> #{t 'toshokan.source_url.orbit'}".html_safe, @document['backlink_ss'].first %>
+        <%= link_to "<i class=\"icon-dtu\"></i> #{t 'toshokan.source_url.orbit'}".html_safe, extract_orbit_backlink(@document) %>
       </li>
     <% end %>
   </ul>
