@@ -8,6 +8,7 @@ module Toshokan
       include Toshokan::AssociatesSearchesWithUsers
       include Toshokan::BuildsToc
       include Toshokan::MendeleyController
+      include Toshokan::NormalizesYears
 
       helper_method :journal_id_for_issns, :add_limit_fq_to_solr
     end
