@@ -162,6 +162,8 @@ en:
       borrow: "Borrow"
       borrow_dtu: "Borrow from DTU print collection"
       copies: "copies"
+      metrics:
+        title: "Metrics"
       nal:
         title: 'On-site use at other libraries'
         map: 'Map'
