@@ -1,7 +1,6 @@
 <%# default partial to display solr document fields in catalog index view -%>
 <div class="row">
   <div class="col-sm-9 col-lg-10">
-    <%= altmetric_badge(document) %>
     <dl class="dl-horizontal dl-invert">
 
       <% index_fields(document).each do |solr_fname, field| -%>
