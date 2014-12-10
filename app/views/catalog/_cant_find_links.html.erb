@@ -11,7 +11,8 @@
           <% [:journal_article, :conference_article, :book].each do |genre| %>
             <li>
               <span class="facet-label">
-              <%= link_to t("toshokan.assistance_requests.genres.#{genre}"), new_assistance_request_path(:genre => genre) %>
+                <%= link_to t("toshokan.assistance_requests.genres.#{genre}"), new_assistance_request_path(:genre => genre) %>
+              </span>
             </li>
           <% end %>
         </ul>
