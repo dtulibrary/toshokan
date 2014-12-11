@@ -37,6 +37,7 @@
       </div>
 
       <%= render :partial => 'toc',     :locals => { :document => @document, :toc => @toc } %>
+      <%= render :partial => 'metadata', :locals => { :document => @document } %>
       <%= render :partial => 'openurl', :locals => { :document => @document } %>
 
     </div>
