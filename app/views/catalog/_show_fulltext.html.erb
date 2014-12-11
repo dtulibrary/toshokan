@@ -13,25 +13,7 @@
       </li>
     <% end %>
 
-    <% show = (@document['pubmed_url_ssf'] || @document['isi_url_ssf'] || @document['orbit_id_ssf'] || @document['backlink_ss']) %>
-    <li class="other-header <%= show ? '' : 'hide' %>">
+    <li class="other-header hide">
       <h5><%= t 'toshokan.availability.other' %></h5>
     </li>
-
-    <% if(@document['pubmed_url_ssf']) %>
-      <li><%=link_to "<i class='icon-pubmed'></i> #{t('toshokan.source_url.pubmed')}".html_safe, "#{@document['pubmed_url_ssf'].first}?otool=#{Rails.application.config.pubmed[:dtu_id]}" %></li>
-    <% end %>
-    <% if(@document['isi_url_ssf']) %>
-      <li><%=link_to "<i class='icon-isi'></i> #{t('toshokan.source_url.isi')}".html_safe, "#{@document['isi_url_ssf'].first}" %></li>
-    <% end %>
-    <% if(@document['orbit_id_ssf']) %>
-      <li>
-        <%=link_to "<i class='icon-dtu'></i> #{t('toshokan.source_url.orbit')}".html_safe, Rails.application.config.orbit_url % "#{@document['orbit_id_ssf'].first}" %>
-      </li>
-    <% end %>
-    <% if should_render_orbit_backlink? @document %>
-      <li>
-        <%= link_to "<i class=\"icon-dtu\"></i> #{t 'toshokan.source_url.orbit'}".html_safe, extract_orbit_backlink(@document) %>
-      </li>
-    <% end %>
   </ul>
