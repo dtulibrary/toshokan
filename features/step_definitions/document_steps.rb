@@ -10,6 +10,10 @@ When(/^I go to the next document$/) do
   page.find('#previousNextDocument .next').click
 end
 
+Then(/^I should see one or more documents$/) do
+  expect(page).to have_css('.document')
+end
+
 Then(/^I should see the page for a single document$/) do
   expect(page).to have_css('.blacklight-catalog-show')
 end

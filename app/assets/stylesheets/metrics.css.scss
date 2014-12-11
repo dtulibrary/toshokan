@@ -1,0 +1,13 @@
+.metric {
+  text-align: center;
+  margin-top: 1em;
+
+  &:first-child {
+    margin-top: 0em;
+  }
+
+  .dtu-orbit-backlink img {
+    width: 64px;
+  }
+}
+

@@ -24,17 +24,17 @@
         <!-- static fields -->
         <field name="id"              type="string"               indexed="true"  stored="true" multiValued="false" required="true" />
         <field name="timestamp"       type="date"                 indexed="true"  stored="true" multiValued="false" default="NOW"/>
-        <field name="format"          type="ondisk_docval_string" indexed="true"  stored="true" multiValued="false" required="true" docValues="true"/>
+        <field name="format"          type="docval_string" indexed="true"  stored="true" multiValued="false" required="true" docValues="true"/>
 
         <field name="spell" type="textSpell" indexed="true" stored="false" multiValued="true"/>
 
         <!-- specialized fields (mainly to configure docValues on selected fields) -->
-        <field name="pub_date_tsort"            type="ondisk_docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
-        <field name="journal_vol_tsort"         type="ondisk_docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
-        <field name="journal_issue_tsort"       type="ondisk_docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
-        <field name="journal_page_start_tsort"  type="ondisk_docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
-        <field name="title_sort"                type="ondisk_docval_string" indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
-        <field name="author_sort"               type="ondisk_docval_string" indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+        <field name="pub_date_tsort"            type="docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+        <field name="journal_vol_tsort"         type="docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+        <field name="journal_issue_tsort"       type="docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+        <field name="journal_page_start_tsort"  type="docval_tint"   indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+        <field name="title_sort"                type="docval_string" indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
+        <field name="author_sort"               type="docval_string" indexed="true" stored="false" multiValued="false" docValues="true" required="false" />
 
         <!-- dynamic fields -->
         <dynamicField name="*_s"   type="string"  indexed="true" stored="true" />
@@ -100,9 +100,9 @@
     <types>
         <!-- specialized types for on-disk docValues -->
 
-        <fieldType name="ondisk_docval_tlong" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0" docValuesFormat="Disk"/>
-        <fieldType name="ondisk_docval_tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0" docValuesFormat="Disk"/>
-        <fieldType name="ondisk_docval_string" class="solr.StrField" sortMissingLast="true" omitNorms="true" docValuesFormat="Disk"/>
+        <fieldType name="docval_tlong" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0" />
+        <fieldType name="docval_tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0" />
+        <fieldType name="docval_string" class="solr.StrField" sortMissingLast="true" omitNorms="true" />
 
         <!-- field type definitions. The "name" attribute is
            just a label to be used by field definitions.  The "class"

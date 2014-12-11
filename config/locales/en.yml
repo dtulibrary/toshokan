@@ -164,6 +164,8 @@ en:
       copies: "copies"
       metrics:
         title: "Metrics"
+        dtu_orbit:
+          title: "View publication in DTU ORBIT"
       nal:
         title: 'On-site use at other libraries'
         map: 'Map'
