@@ -3,6 +3,7 @@ Toshokan::Application.configure do
 
   # Code is not reloaded between requests
   config.cache_classes = true
+  config.eager_load = true
 
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
@@ -33,8 +34,20 @@ Toshokan::Application.configure do
   # See everything in the log (default is :info)
   config.log_level = :info
 
-  # Prepend all log lines with the following tags
-  config.log_tags = [ :uuid ]
+  # Tag all log lines with [user id] [session id] [request id]
+  def get_session_id(req)
+    session_key = Rails.application.config.session_options[:key]
+    req.cookies[session_key]
+  end
+
+  def get_user_id(req)
+    session = ActiveRecord::SessionStore::Session.find_by_session_id(get_session_id req).try(:data)
+    (session && session["user_id"]) || 'anonymous'
+  end
+
+  config.log_tags = [lambda { |r| get_user_id r },
+                     lambda { |r| get_session_id r },
+                     lambda { |r| r.uuid }]
 
   # Use a different logger for distributed setups
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
@@ -72,4 +85,3 @@ end
 if File.exists? File.dirname(__FILE__) + '/../application.local.rb'
   require File.dirname(__FILE__) + '/../application.local.rb'
 end
-

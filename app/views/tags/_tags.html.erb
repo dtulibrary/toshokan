@@ -1,6 +1,12 @@
-<div class="facet_limit toshokan-bookmarks">
-  <h5 class="twiddle"><%= t('toshokan.tags.title') %><i class="icon-chevron"></i></h5>
-  <div class="tag_list">
-    <%= render_tag_list %>
+<div class="panel panel-default facet_limit <%= 'facet_limit-active' if any_tag_in_params? %>">
+  <div class="collapse-toggle panel-heading collapsed" data-toggle="collapse" data-target="#my-references">
+    <h5 class="panel-title">
+      <%= link_to t('toshokan.tags.title'), "#", :"data-no-turbolink" => true %>
+    </h5>
+  </div>
+  <div id="my-references" class="panel-collapse facet-content collapse">
+    <div class="panel-body">
+      <%= render_tag_list %>
+    </div>
   </div>
 </div>

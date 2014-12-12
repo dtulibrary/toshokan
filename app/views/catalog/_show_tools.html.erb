@@ -1,50 +1,14 @@
-<%-
-  # Compare with render_document_functions_partial helper, and
-  # _document_functions partial. BL actually has two groups
-  # of document-related tools. "document functions" by default
-  # contains Bookmark/Folder functionality shown on both results and
-  # item view. While "document tools" contains external export type
-  # functions by default only on detail.
--%>
+<div class="well tools" id="fulltext_tools">
+  <%= render :partial => 'show_fulltext' %>
+</div><!--/well -->
 
-  <ul class="nav nav-list">
-
-    <% if @document[:format] != "journal" %>
-      <li class="nav-header"><%= t('toshokan.tools.cite_and_export') %></li>
-
-      <li>
-        <%= link_to content_tag('i', '', :class => 'icon-mendeley') + t('toshokan.tools.mendeley'), '#', :class => (show_feature?(:mendeley) ? 'save-to-mendeley-api' : 'save-to-mendeley'), :data => { :document => @document.id } %>
-      </li>
-
-      <% if (!@document.citation_styles.empty?) %>
-        <li class="cite">
-        <%= link_to content_tag('i', '', :class => 'icon-quote-right') + t('blacklight.tools.cite'), citation_catalog_path(:id => @document), {:id => 'citeLink', :name => 'citation', :class => 'lightboxLink'} %>
-        </li>
-      <% end %>
-
-      <% if @document.export_formats.keys.include?( :bib ) %>
-        <li class="bibtex">
-        <%= link_to content_tag('i', '', :class => 'icon-file-text-o') + t('toshokan.tools.bibtex'), catalog_path(@document, :format => 'bib') %>
-        </li>
-      <% end %>
-
-      <% if @document.export_formats.keys.include?( :ris ) %>
-        <li class="endnote">
-        <%= link_to content_tag('i', '', :class => 'icon-file-text-o') + t('toshokan.tools.ris'), catalog_path(@document, :format => 'ris') %>
-        </li>
-      <% end %>
-    <% end %>
-
-    <% if @document[:format] == "journal" && params[:resolve].blank? %>
-
-      <% if can? :view, :search_history %>
-        <li class="nav-header journal-alert-header"><i class="icon-bell"></i><%= t('toshokan.alerts.title') %></li>
-        <li>
-          <%= render :partial => 'alerts/add_journal_alert', :locals => { :document => @document } %>
-        </li>
-      <% end %>
-
-      <%= render_journal_rank @document %>
-    <% end %>
-
-  </ul>
+<% if params[:resolve].blank? %>
+  <% if @document[:format] == 'journal' %>
+    <%= render 'show_alert_tools' %>
+    <%= render 'show_journal_rank_tools' %>
+    </div>
+  <% else %>
+    <%= render 'show_metrics' %>
+    <%= render 'show_export_tools' %>
+  <% end %>
+<% end %>

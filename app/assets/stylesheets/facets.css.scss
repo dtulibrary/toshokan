@@ -49,7 +49,7 @@
   }
   
   .facets-collapse .facet_limit:last-child > h5 {
-      @include border-radius(0px);
+      border-radius: 0px;
   }
 }
 

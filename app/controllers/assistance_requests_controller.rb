@@ -1,10 +1,10 @@
 require 'library_support'
 
-class AssistanceRequestsController < CatalogController
+class AssistanceRequestsController < ApplicationController
 
-  include ResolverHelper
+  include Toshokan::PerformsSearches
+  include Toshokan::Resolver
 
-  before_filter :disable_header_searchbar
 
   def index
     if can? :request, :assistance
@@ -63,8 +63,8 @@ class AssistanceRequestsController < CatalogController
               order.created_at = assistance_request.created_at
               order_updated_at = assistance_request.updated_at
               order.supplier = :dtu_manual
-              order.price = 0 
-              order.vat = 0 
+              order.price = 0
+              order.vat = 0
               order.currency = :DKK
               order.email = assistance_request.email
               order.uuid = UUIDTools::UUID.timestamp_create.to_s
@@ -162,11 +162,11 @@ class AssistanceRequestsController < CatalogController
   def assistance_request_from params
     case genre_from params
     when :journal_article
-      JournalArticleAssistanceRequest.new params[:assistance_request]
+      JournalArticleAssistanceRequest.new params_for_assistance_request(JournalArticleAssistanceRequest)
     when :conference_article
-      ConferenceArticleAssistanceRequest.new params[:assistance_request]
+      ConferenceArticleAssistanceRequest.new params_for_assistance_request(ConferenceArticleAssistanceRequest)
     when :book
-      BookAssistanceRequest.new params[:assistance_request]
+      BookAssistanceRequest.new params_for_assistance_request(BookAssistanceRequest)
     end
   end
 
@@ -180,4 +180,11 @@ class AssistanceRequestsController < CatalogController
       BookAssistanceRequest.new
     end
   end
+
+  def params_for_assistance_request( assistance_request_class=AssistanceRequest )
+    # Only trust the params listed by the class `fields` method
+    params.fetch(:assistance_request, {}).permit( *assistance_request_class.fields )
+    # params.fetch(:assistance_request, {}).permit! # <-- This would trust everything in params[:assistance_request]
+  end
+
 end

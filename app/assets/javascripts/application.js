@@ -22,8 +22,7 @@
 //
 // Required by Blacklight
 //= require blacklight/blacklight
-//= require bootstrap-dropdown
-//= require bootstrap-popover
+//= require 'dtu_rails_common'
 //= require_tree .
 
 // Spin.js

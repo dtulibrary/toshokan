@@ -1,25 +1,25 @@
-Given /^I(?:'m| am) on the "request assistance" form$/ do
+Given(/^I(?:'m| am) on the "request assistance" form$/) do
   visit new_assistance_request_path
 end
 
-Given /^I(?:'m| am) on the "request assistance" form for "(.*?)"$/ do |genre|
+Given(/^I(?:'m| am) on the "request assistance" form for "(.*?)"$/) do |genre|
   @genre = genre
   visit new_assistance_request_path(:genre => genre.gsub(' ', '_'))
 end
 
-{ 
+{
   'journal article'    => ['article', 'journal', 'automatic cancellation', 'notes'],
   'conference article' => ['article', 'conference', 'automatic cancellation', 'notes'],
   'book'               => ['book', 'automatic cancellation', 'notes']
 }.each do |genre, sections|
-  Given %r{^I(?:'ve| have) submitted a valid assistance request for "#{genre}"$} do 
+  Given %r{^I(?:'ve| have) submitted a valid assistance request for "#{genre}"$} do
     step %{I'm on the "request assistance" form for "#{genre}"}
     sections.each do |section|
       step %{I fill in the "#{section}" form section with valid data}
     end
     step %{I click "Send request"}
   end
-  
+
   Then %r{^I should see the "request assistance" confirmation page for "#{genre}"$} do
     step %{I should see "Please confirm your assistance request"}
     sections.each do |section|
@@ -33,11 +33,11 @@ end
   end
 end
 
-When /^I go to the "request assistance" form for "(.*?)"$/ do |genre|
+When(/^I go to the "request assistance" form for "(.*?)"$/) do |genre|
   step %{I'm on the "request assistance" form for "#{genre}"}
 end
 
-When /^I go to the "request assistance" form$/ do
+When(/^I go to the "request assistance" form$/) do
   step %{I'm on the "request assistance" form}
 end
 
@@ -46,38 +46,38 @@ end
 #   I fill in the "article", "journal" form sections with valid data
 #   I fill in the "article" and "journal" form sections with valid data
 #   I fill in the "article", "journal" and "notes" form sections with valid data
-When /^I fill in the (".*") form sections with valid data$/ do |sections|
-  sections.scan /"(.*?)"/ do |section, _|
+When(/^I fill in the (".*") form sections with valid data$/) do |sections|
+  sections.scan(/"(.*?)"/) do |section, _|
     step %{I fill in the "#{section}" form section with valid data}
   end
 end
 
-When /^I fill in the "request assistance" form with valid data$/ do
+When(/^I fill in the "request assistance" form with valid data$/) do
   step %{I fill in the #{form_sections[@genre].collect {|s| "\"#{s}\""}.join ','} form sections with valid data}
 end
 
-When /^I select pickup location "(.*?)"$/ do |location|
+When(/^I select pickup location "(.*?)"$/) do |location|
   within locator_for_section('pickup-location') do
     choose(location)
     submitted_data['pickup_location'] = value
   end
 end
 
-When /^I select automatic cancellation "(.*?)"$/ do |value|
+When(/^I select automatic cancellation "(.*?)"$/) do |value|
   within locator_for_section('automatic-cancellation') do
     choose(value)
-    submitted_data['automatic cancellation'] = value
+    submitted_data['auto_cancel'] = value
   end
 end
 
-Then /^I should see the (".*") form sections with the submitted$/ do |sections|
-  sections.scan /"(.*?)"/ do |section, _|
+Then(/^I should see the (".*") form sections with the submitted$/) do |sections|
+  sections.scan(/"(.*?)"/) do |section, _|
     step %{I should see the "#{section}" form section with the submitted data}
   end
 end
 
-Then /^I should see the (".*") sections with the submitted data$/ do |sections|
-  sections.scan /"(.*?)"/ do |section, _|
+Then(/^I should see the (".*") sections with the submitted data$/) do |sections|
+  sections.scan(/"(.*?)"/) do |section, _|
     step %{I should see the "#{section}" section with the submitted data}
   end
 end
@@ -91,7 +91,7 @@ end
   Then %r{^I should see the "#{section}" form section with the submitted data$} do
     within locator_for_section(section) do
       submitted_data[section].each do |field, value|
-        find_field(field).value.should == value
+        expect(find_field(field).value).to eq value
       end
     end
   end
@@ -106,11 +106,11 @@ end
   end
 end
 
-When /^I fill in the "automatic cancellation" form section with valid data$/ do
+When(/^I fill in the "automatic cancellation" form section with valid data$/) do
   step %{I select automatic cancellation "3 months"}
 end
 
-Then /^I should see the "physical location" section with the submitted data$/ do
+Then(/^I should see the "physical location" section with the submitted data$/) do
   within locator_for_section('physical-location') do
     @current_user.user_data['address'].reject {|k,v| v.blank? || k == 'country'}.each do |k,v|
       step %{I should see "#{v}"}
@@ -118,21 +118,21 @@ Then /^I should see the "physical location" section with the submitted data$/ do
   end
 end
 
-Then /^I should see the "pickup location" section with the submitted data$/ do
+Then(/^I should see the "pickup location" section with the submitted data$/) do
   within locator_for_section('pickup-location') do
     step %{I should see "Pick-up location"}
     step %{I should see "#{submitted_data['pickup_location']}"}
   end
 end
 
-Then /^I should see the "automatic cancellation" section with the submitted data$/ do
+Then(/^I should see the "automatic cancellation" section with the submitted data$/) do
   within locator_for_section('automatic-cancellation') do
     step %{I should see "Last date of interest"}
     step %{I should see "#{submitted_data['auto_cancel']}"}
   end
 end
 
-Then /^I should(n't| not)? see the "request assistance" form links$/ do |negate|
+Then(/^I should(n't| not)? see the "request assistance" form links$/) do |negate|
   step %{I should#{negate} see the "Journal article" link}
   step %{I should#{negate} see the "Conference article" link}
   step %{I should#{negate} see the "Book" link}
@@ -142,21 +142,21 @@ end
 #   I should see the "Confirm" buttons
 #   I should see the "Back" and "Confirm" buttons
 #   I should see the "Back", "New" and "Confirm" buttons
-Then /^I should see the (".*") buttons$/ do |buttons|
-  buttons.scan /"(.*?)"/ do |button,_|
+Then(/^I should see the (".*") buttons$/) do |buttons|
+  buttons.scan(/"(.*?)"/) do |button,_|
     step %{I should see the "#{button}" button}
   end
 end
 
-Then /^I should see the "(.*?)" button$/ do |button|
-  page.should have_button(button)
+Then(/^I should see the "(.*?)" button$/) do |button|
+  expect(page).to have_button(button)
 end
 
-Then /^I should(?:n't| not) see the "(.*?)" section$/ do |section|
-  page.should_not have_sections([section])
+Then(/^I should(?:n't| not) see the "(.*?)" section$/) do |section|
+  expect(page).to_not have_sections([section])
 end
 
-Then /^I should see the "(article|journal|notes|conference|book|publisher)" section$/ do |section|
+Then(/^I should see the "(article|journal|notes|conference|book|publisher)" section$/) do |section|
   within locator_for_section(section) do
     section_fields[section].each do |field_label|
       step %{I should see "#{field_label}"}
@@ -164,26 +164,26 @@ Then /^I should see the "(article|journal|notes|conference|book|publisher)" sect
   end
 end
 
-Then /^I should see the "email" section$/ do
+Then(/^I should see the "email" section$/) do
   within '.email-section' do
     step %{I should see "Email"}
   end
 end
 
-Then /^I should see the "physical location" section$/ do
+Then(/^I should see the "physical location" section$/) do
   within '.physical-location-section' do
     step %{I should see "Physical location"}
   end
 end
 
-Then /^I should see the "pickup location" section$/ do
+Then(/^I should see the "pickup location" section$/) do
   within '.pickup-location-section' do
     step %{I should see "Lyngby"}
     step %{I should see "Ballerup"}
   end
 end
 
-Then /^I should see the "automatic cancellation" section$/ do
+Then(/^I should see the "automatic cancellation" section$/) do
   within '.automatic-cancellation-section' do
     ['6 months', '3 months', '1 month'].each do |text|
       step %{I should see "#{text}"}
@@ -191,40 +191,40 @@ Then /^I should see the "automatic cancellation" section$/ do
   end
 end
 
-Then /^I should see the proper required fields in the "(.*?)" section$/ do |section|
+Then(/^I should see the proper required fields in the "(.*?)" section$/) do |section|
   (required_section_fields[section] || []).each do |required_field|
     within locator_for_section(section) do
       # The following is really ugly but neither of
-      # find_field(required_field).should have_css('.required')
-      # (find_field(required_field)['class'] || '').split.should include?('required')
+      # expect( find_field(required_field) ).to have_css('.required')
+      # expect( (find_field(required_field)['class'] || '').split ).to include?('required')
       # worked for me so this is the current working solution
-      (find_field(required_field)['class'] || '').split.any? {|c| c == 'required'}.should be_true
+      expect( (find_field(required_field)['class'] || '').split.any? {|c| c == 'required'} ).to be_truthy
     end
   end
 end
 
-Then /^I should see the proper optional fields in the "(.*?)" section$/ do |section|
+Then(/^I should see the proper optional fields in the "(.*?)" section$/) do |section|
   (optional_section_fields[section] || []).each do |optional_field|
     within locator_for_section(section) do
       # See comment from step for required fields
-      (find_field(optional_field)['class'] || '').split.any? {|c| c == 'required'}.should be_false
+      expect( (find_field(optional_field)['class'] || '').split.any? {|c| c == 'required'}).to be_falsey
     end
   end
 end
 
-Then /^I should see errors in the (".*") fields in the "(.*?)" form section$/ do |fields, section|
-  fields.scan /"(.*?)"/ do |field, _|
+Then(/^I should see errors in the (".*") fields in the "(.*?)" form section$/) do |fields, section|
+  fields.scan(/"(.*?)"/) do |field, _|
     step %{I should see an error in the "#{field}" field in the "#{section}" form section}
   end
 end
 
-Then /^I should see an error in the "(.*?)" field in the "(.*?)" form section$/ do |field, section|
+Then(/^I should see an error in the "(.*?)" field in the "(.*?)" form section$/) do |field, section|
   within locator_for_section(section) do
-    (find_field(field)['class'] || '').split.any? {|c| c == 'error'}.should be_true
+    expect( (find_field(field)['class'] || '').split.any? {|c| c == 'error'}).to be_truthy
   end
 end
 
-Then /^I should see the submitted data$/ do
+Then(/^I should see the submitted data$/) do
   submitted_data.each do |section, fields|
     if fields.is_a? Hash
       fields.each do |field, value|
@@ -239,9 +239,9 @@ end
 
 def check_form_correctness sections, negate = false
   if negate
-    page.should_not have_sections(sections)
+    expect(page).to_not have_sections(sections)
   else
-    page.should have_sections(sections)
+    expect(page).to have_sections(sections)
     sections.each do |section|
       step %{I should see the proper required fields in the "#{section}" section}
       step %{I should see the proper optional fields in the "#{section}" section}
@@ -262,7 +262,7 @@ def submitted_data= value
 end
 
 def fill_in_section section, fields
-  within ".#{section.gsub ' ', '-'}-section" do 
+  within ".#{section.gsub ' ', '-'}-section" do
     fields.each do |field, value|
       step %{I fill in "#{field}" with "#{value}"}
     end
@@ -271,14 +271,14 @@ end
 
 def form_sections
   {
-    'journal article'    => ['article', 'journal', 'notes'],
-    'conference article' => ['article', 'conference', 'notes'],
-    'book'               => ['book', 'notes']
+    'journal article'    => ['article', 'journal', 'notes', 'automatic cancellation'],
+    'conference article' => ['article', 'conference', 'notes', 'automatic cancellation'],
+    'book'               => ['book', 'notes', 'automatic cancellation']
   }
 end
 
 def valid_section_data
-  { 
+  {
     'article' => {
       'Title'  => 'An article about stuff',
       'Author' => 'Some Dude',

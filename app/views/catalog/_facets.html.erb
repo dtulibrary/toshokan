@@ -4,11 +4,9 @@
   <div class="facets-collapse">
   <%= render_facet_partials %>
   <% if can? :tag, Bookmark %>
-    <hr/>
     <%= render_tag_partials %>
   <% end %>
   <% if has_search_parameters? && (current_user.student? || current_user.employee?)%>
-    <hr>
     <%= render 'cant_find_links' %>
   <% end %>
   </div>

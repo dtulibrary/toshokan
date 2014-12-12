@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="span3">
+  <div class="col-md-3">
     <%= render 'article_section' %>
   </div>
-  <div class="span3">
+  <div class="col-md-3">
     <%= render 'conference_section' %>
   </div>
-  <div class="span3">
+  <div class="col-md-3">
     <%= render 'email_section' %>
     <% if can? :select, :pickup_location %>
       <%= render 'pickup_location_section' %>
@@ -13,7 +13,7 @@
       <%= render 'physical_location_section' %>
     <% end %>
   </div>
-  <div class="span3">
+  <div class="col-md-3">
     <%= render 'automatic_cancellation_section' %>
     <%= render 'notes_section' %>
     <%= render 'submit_section' %>

@@ -1,0 +1,19 @@
+<h5 style="margin: 8px 15px">Find orders</h5>
+<div class="well" style="padding: 15px">
+  <%= form_tag orders_path, :class => 'clearfix', :method => :get do %>
+    <% [:email, :date].each do |facet_type| %>
+      <%= hidden_field_tag facet_type, params[facet_type] unless params[facet_type].blank? %>
+    <% end %>
+    <% if can? :view_any, Order %>
+      <%= label_tag :q_email, 'Email' %>
+      <%= text_field_tag :q_email, params[:q_email], :class => 'input-block-level' %>
+    <% end %>
+    <%= label_tag :q_orderid, 'Order ID' %>
+    <%= text_field_tag :q_orderid, params[:q_orderid], :class => 'input-block-level' %>
+    <% if can? :view, :extended_info %>
+      <%= label_tag :q_supplier_order_id, 'Supplier order ID' %>
+      <%= text_field_tag :q_supplier_order_id, params[:q_supplier_order_id], :class => 'input-block-level' %>
+    <% end %>
+    <%= button_tag 'Search', :class => 'btn btn-primary pull-right' %>
+  <% end %>
+</div>

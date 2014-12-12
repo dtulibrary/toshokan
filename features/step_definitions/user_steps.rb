@@ -1,18 +1,18 @@
 # encoding: utf-8
 
-Given /^I(?:'ve not| have(?: not|n't)) logged in$/ do
+Given(/^I(?:'ve not| have(?: not|n't)) logged in$/) do
   # For narrative purposes in features
 end
 
-Given /^I(?:'ve| have) logged in(.*)$/ do |m|
+Given(/^I(?:'ve| have) logged in(.*)$/) do |m|
   step %{I'm logged in#{m}}
 end
 
-Then /^the(?: current)? user should be "(.*?)"$/ do |username|
-  find('#util-links #current-user').should have_content username
+Then(/^the(?: current)? user should be "(.*?)"$/) do |username|
+  expect( find('#util-links #current-user') ).to have_content username
 end
 
-Given /^the following DTU employee users? exists?:$/ do |table|
+Given(/^the following DTU employee users? exists?:$/) do |table|
   table.map_column!('roles') { |roles| roles.scan(/"(.*?)"/).flatten }
   table.hashes.each do |hash|
     hash['name'] ||= 'John Doe'
@@ -23,64 +23,64 @@ Given /^the following DTU employee users? exists?:$/ do |table|
   end
 end
 
-Given /^user with identifier "(.*?)" has role "(.*?)"$/ do |arg1, arg2|
+Given(/^user with identifier "(.*?)" has role "(.*?)"$/) do |arg1, arg2|
   user = User.find_by_identifier(arg1)
   user.roles << Role.find_by_name(arg2)
   user.save!
 end
 
-Given /^I'm logged in as user with the role "(.*?)"$/ do |arg1|
+Given(/^I'm logged in as user with the role "(.*?)"$/) do |arg1|
   role = Role.find_by_name(arg1)
   raise "Role doesn't exist for name #{arg1}" unless role
-  user = User.new(identifier: arg1+'_test_id', username: arg1+'_test_username', provider: 'dtu_cas') 
+  user = User.new(identifier: arg1+'_test_id', username: arg1+'_test_username', provider: 'dtu_cas')
   user.roles = [role]
   user.save!
   log_in(user)
 end
 
-Given /^I'm logged in as user with identifier "(.*?)"?$/ do |arg1|
+Given(/^I'm logged in as user with identifier "(.*?)"?$/) do |arg1|
   log_in(User.find_by_identifier(arg1))
 end
 
-Given /^I'm logged in(?: as user with no roles?)?$/ do
+Given(/^I'm logged in(?: as user with no roles?)?$/) do
   log_in(mock_user('12345678'))
 end
 
-Given /^I'm logged in as a public user with email "(.*?)"$/ do |arg1|
+Given(/^I'm logged in as a public user with email "(.*?)"$/) do |arg1|
   log_in(mock_public_user('12345678', arg1))
 end
 
-Given /^I log in$/ do
+Given(/^I log in$/) do
   steps %{
     Given I'm logged in
   }
 end
 
-Given /^I'm logged in as a DTU (user|employee|student|guest)$/ do |arg1|
+Given(/^I'm logged in as a DTU (user|employee|student|guest)$/) do |arg1|
   log_in(mock_dtu_user('12345678', 'fake.email@example.com', arg1, 'Fake Name'))
 end
 
-Given /^I'm logged in as a DTU (user|employee|student|guest) with name "([^\"]*?)"$/ do |arg1, arg2|
+Given(/^I'm logged in as a DTU (user|employee|student|guest) with name "([^\"]*?)"$/) do |arg1, arg2|
   log_in(mock_dtu_user('12345678', 'fake.email@example.com', arg1, arg2))
 end
 
-Given /^I'm logged in as a DTU (user|employee|student|guest) with email "(.*?)" and name "(.*?)"$/ do |arg1, arg2, arg3|
+Given(/^I'm logged in as a DTU (user|employee|student|guest) with email "(.*?)" and name "(.*?)"$/) do |arg1, arg2, arg3|
   log_in(mock_dtu_user('12345678', arg2, arg1, arg3))
 end
 
-Given /^I'm logged in as a public user$/ do
+Given(/^I'm logged in as a public user$/) do
   log_in(mock_public_user('87654321', 'fake.email@example.com'))
 end
 
-Given /^I(?:'m| am) a walk-in user$/ do
-  ApplicationController.stub(:walk_in_request?).and_return(true)
+Given(/^I(?:'m| am) a walk-in user$/) do
+  allow(ApplicationController).to receive(:walk_in_request?).and_return(true)
 end
 
-Given /^I'm an anonymous user$/ do
+Given(/^I'm an anonymous user$/) do
 
 end
 
-Given /^I'm logged out$/ do
+Given(/^I'm logged out$/) do
 
 end
 
@@ -98,7 +98,7 @@ def log_in(user)
   @current_user = user
 end
 
-Given /^I log out$/ do
+Given(/^I log out$/) do
   click_link 'Log out'
 end
 
@@ -117,11 +117,11 @@ def mock_dtu_user(identifier, email='fake.email@example.com', user_type='employe
   names = name.split(" ", 2)
   user_type = 'dtu_empl' if user_type == 'employee'
   mock_user(identifier, email, {
-    :provider => 'dtu', 
+    :provider => 'dtu',
     :dtu => {
-      :cwis => '1234', 
-      :firstname => names[0], 
-      :lastname => names[1], 
+      :cwis => '1234',
+      :firstname => names[0],
+      :lastname => names[1],
       :user_type => user_type,
       :org_units => ['58']
     },

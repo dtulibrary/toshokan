@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="span9">
+  <div class="col-md-9">
     <h4><%= t 'toshokan.catalog.no_hits.title' %></h4>
     <p style="margin-bottom: 3em"><%= t 'toshokan.catalog.no_hits.text' %></p>
 
@@ -23,9 +23,9 @@
     <% if can? :request, :assistance -%>
       <div class="row">
         <% [:journal_article, :conference_article, :book].each do |genre| -%>
-          <div class="span3">
+          <div class="col-md-4">
             <%= link_to t("toshokan.assistance_requests.genres.#{genre}"),
-                new_assistance_request_path(:genre => genre), :class => 'btn request-assistance-link' %>
+                new_assistance_request_path(:genre => genre), :class => 'btn btn-default request-assistance-link' %>
           </div>
         <% end %>
       </div>

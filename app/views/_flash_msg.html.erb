@@ -1,15 +1,14 @@
 <div class="flash_messages">
-  <% [:success, :notice, :error, :alert].each do |type| %>
-    <%- alert_class = type == :notice ? 'info' : type %>
+  <% {:success => :success, :notice => :info, :error => :danger, :alert => :warning}.each do |type, alert_class| %>
     <% if flash[type].respond_to? :each %>
       <% flash[type].each do |msg| %>
-        <div class="alert alert-<%=alert_class%>"><%= msg %>
-           <a class="close" data-dismiss="alert" href="#">&times;</a>
+        <div class="alert alert-<%= alert_class %> alert-dismissable">
+           <a class="close" data-dismiss="alert" href="#">&times;</a><%= msg %>
         </div>
       <% end %>
     <% elsif flash[type] %>
-      <div class="alert alert-<%=alert_class%>"><%= flash[type] %>
-         <a class="close" data-dismiss="alert" href="#">&times;</a>
+      <div class="alert alert-<%= alert_class %> alert-dismissable">
+         <a class="close" data-dismiss="alert" href="#">&times;</a><%= flash[type] %>
       </div>
     <% end %>
   <% end %>

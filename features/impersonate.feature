@@ -19,7 +19,7 @@ Scenario: User with User Support role searches for another user to impersonate
   Given I'm logged in as user with identifier "1234"
     And I click "Switch user"
     And I fill in "user_q" with "User"
-    And I click "Search"
+    And I click "Search for user"
     And I should see "Support User 2" in the list of users
     And I should see "Regular User" in the list of users
     And I should not see "Support User 1" in the list of users

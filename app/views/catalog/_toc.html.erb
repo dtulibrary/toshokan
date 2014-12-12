@@ -1,14 +1,14 @@
 <% if toc && !toc[:issues].blank? %>
   <hr/>
   <div class="row toc">
-    <div class="span2">
+    <div class="col-md-3">
       <%= render_toc toc %>
       <% if toc[:truncated] %>
         <%= link_to t('toshokan.catalog.toc.show_full'), catalog_path(params.merge(:all => '✓')) %>
       <% end %>
     </div>
 
-    <div class="span7">
+    <div class="col-md-9">
       <% if toc[:current_issue] %>
         <p>
           <div class="pull-right">

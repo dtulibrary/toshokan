@@ -35,6 +35,36 @@ module OrdersHelper
     "<div class=\"steps\">#{steps.join(' &rarr; ')}</div>".html_safe
   end
 
+  def render_order_facet_label type, term
+    if @facet_labels[type].try :[], term
+      @facet_labels[type][term]
+    elsif term
+      t "toshokan.orders.facets.#{type}.values.#{term}", :default => term
+    else
+      t "toshokan.orders.facets.#{type}.values.nil"
+    end
+  end
+
+  def render_remove_order_facet_link type, term
+    link_to '<i class="icon-times"></i>'.html_safe, 
+            orders_path(params.except(:page).merge({ type => @filter_queries[type].reject {|e| e == term} })),
+            :title => 'Remove filter', :class => 'remove'
+  end
+
+  def render_add_order_facet_link type, term
+    link_to render_order_facet_label(type, term),
+            orders_path(params.except(:page).merge({ type => ((@filter_queries[type] || []) + [term]) })),
+            :title => 'Add filter', :class => 'facet_select'
+  end
+
+  def order_facet_active? type
+    !@filter_queries[type].blank?
+  end
+
+  def order_facet_term_selected? type, term
+    (@filter_queries[type] || []).include? term
+  end
+
   def format_price price, currency = :DKK
     "%s %6.2f" % [currency, price.to_f/100]
     #number_to_currency price.to_f/100, :unit => currency.to_s, :format => '%u %n'

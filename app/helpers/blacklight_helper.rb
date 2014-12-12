@@ -4,14 +4,16 @@ module BlacklightHelper
   # Override blacklight document actions to exclude 'Folder' and 'Bookmarks'
   # and instead render 'Tagging' functionality
   def render_index_doc_actions (document, options={})
+    wrapping_class = options.delete(:wrapping_class) || "index-document-functions"
+
     content = []
     content << render_tag_control(document) if can? :tag, Bookmark
-    content_tag("div", content.join("\n").html_safe, :class=>"documentFunctions")
+    content_tag("div", content.join("\n").html_safe, :class => wrapping_class)
   end
 
   # Override blacklight citation_title since it doesn't handle multi-valued title field
   def citation_title document
-    title = document[blacklight_config.show.html_title]
+    title = document[blacklight_config.show.title_field]
     (title.kind_of? Array) ? title.first : title
   end
 
@@ -59,13 +61,6 @@ module BlacklightHelper
       Rails.logger.warn("Search url could not be rendered from #{params.inspect}")  
       ""
     end
-  end
-
-  def render_search_bar
-    local_params = params
-    local_params = (session[:search] || {}).deep_merge(local_params) unless params[:ignore_search]
-
-    render :partial => 'catalog/search_form', :locals => {:local_params => local_params}
   end
 
   def should_render_index_field? document, solr_field

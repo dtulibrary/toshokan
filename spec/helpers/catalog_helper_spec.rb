@@ -1,59 +1,35 @@
-require "spec_helper"
+require "rails_helper"
 
 describe CatalogHelper do
 
-  describe '#normalize_year' do
-    it 'does not modify three- or four-digit years' do
-       helper.normalize_year(2006, 2, 2012).should eq 2006
+  describe 'show_pagination?' do
+    before do
+      # Using an instance variable instead of let() because that's how the helper method gets @response in runtime
+      @response = Blacklight::SolrResponse.new({},{})
     end
-
-    it 'does not modify three- or four-digit years' do
-      helper.normalize_year(569, 2, 2012).should eq 569
+    it "should return false if there is no document limit or if there is only one page" do
+      @response = double("SolrResponse", limit_value:0)
+      expect( helper.show_pagination? ).to be_falsey
+      @response = double("SolrResponse", limit_value:50, total_pages:1)
+      expect( helper.show_pagination? ).to be_falsey
     end
-
-    it 'should convert one- or two-digit years to four-digit' do
-      helper.normalize_year(12, 2, 2012).should eq 2012
-      helper.normalize_year(20, 2, 2012).should eq 1920
+    it "should return true if there is no document limit or if there is only one page" do
+      @response = double("SolrResponse", limit_value:50, total_pages:2)
+      expect( helper.show_pagination? ).to be_truthy
     end
+  end
 
-    it 'should convert one- or two-digit years correctly when near end of century' do
-      helper.normalize_year(12, 2, 2099).should eq 2012
-      helper.normalize_year(01, 2, 2099).should eq 2101
-      helper.normalize_year(01, 2, 2099).should eq 2101
+  describe "extra_body_classes" do
+    it "adds controller name and action with blacklight-prefix" do
+      allow(helper).to receive(:params).and_return({})
+      allow(helper).to receive(:controller).and_return(double(controller_name:"fake", action_name:"show"))
+      expect(helper.extra_body_classes).to eq ["blacklight-fake", "blacklight-fake-show"]
+    end
+    it "uses defaults if params[:resolve] is set" do
+      allow(helper).to receive(:params).and_return({resolve:"foo"})
+      expect(helper.extra_body_classes).to eq ["blacklight-catalog", "blacklight-catalog-show"]
     end
   end
 
 
-  describe '#normalize_range' do
-    it 'does not modify a valid range' do
-      range = {'begin' => '2006', 'end' => '2012'}
-      assert(range == normalize_year_range(range))
-    end
-
-    it 'does not modify open ranges' do
-      range = {'begin' => '2006', 'end' => ''}
-      helper.normalize_year_range(range).should eq range
-
-      range = {'begin' => '', 'end' => '2012'}
-      helper.normalize_year_range(range).should eq range
-
-      range = {'begin' => '', 'end' => ''}
-      helper.normalize_year_range(range).should eq range
-    end
-
-    it 'should convert non-integer arguments into open ends' do
-      range = {'begin' => 'a', 'end' => '2012'}
-      helper.normalize_year_range(range).should eq({'begin' => '', 'end' => '2012'})
-    end
-
-    it 'should convert one/two digit years to four-digit' do
-      range = {'begin' => '06', 'end' => '12'}
-      helper.normalize_year_range(range).should eq({'begin' => '2006', 'end' => '2012'})
-    end
-
-    it 'should push end to begin if delta is negative' do
-      range = {'begin' => '2012', 'end' => '2006'}
-      helper.normalize_year_range(range).should eq({'begin' => '2012', 'end' => '2012'})
-    end
-  end
 end

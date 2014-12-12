@@ -1,0 +1,1 @@
+BibTeX.log = Rails.logger

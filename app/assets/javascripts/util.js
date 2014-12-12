@@ -1,7 +1,7 @@
 
 function addErrorFlashMessage(message) {
   $("#main-flashes > .flash_messages").append(
-    '<div class="alert alert-error">'
+    '<div class="alert alert-danger alert-dismissable">'
     + message +
     '<a class="close" data-dismiss="alert" href="#">&times;</a></div>'
   );

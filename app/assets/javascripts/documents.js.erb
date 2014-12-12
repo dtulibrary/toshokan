@@ -33,13 +33,19 @@
     // add/remove journal alert
     $('.journal-alert').each ( function() {
       $(this).bind('ajax:success', function(evt, data, status, xhr) {
-        sibling = $(this).siblings().first();
-        if($(this).hasClass('add')) {
-          href = sibling.attr('href');
-          sibling.attr('href', href.substring(0, href.lastIndexOf('/') + 1) + data.id);
+        var visibleGroup = $(this).closest('li').find('.group').not('.hide');
+        var hiddenGroup  = $(this).closest('li').find('.group.hide');
+
+        if ($(this).hasClass('add')) {
+          // This was a successful add of an alert. We update the corresponding delete link with the alert id
+          var anchor = $(this).closest('li').find('a').not('add')[0];
+
+          anchor.href = anchor.href.substring(0, anchor.href.lastIndexOf('/')) + "/" + data.id;
         }
-        $(this).addClass('hidden');
-        sibling.removeClass('hidden');
+
+        // Switch visibility of add and delete
+        visibleGroup.addClass('hide');
+        hiddenGroup.removeClass('hide');
       });
     });
     $('.journal-alert').each ( function() {

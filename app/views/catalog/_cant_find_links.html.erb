@@ -1,16 +1,22 @@
 <% if show_feature? :cant_find_it %>
-  <div class="facet_limit cant-find-links">
-    <h5 class="twiddle">
-      <%= t 'toshokan.assistance_requests.menu_item.title' %>
-      <i class="icon-chevron"></i>
-    </h5>
-    <ul>
-      <% [:journal_article, :conference_article, :book].each do |genre| %>
-        <li>
-          <span class="selected hidden"></span>
-          <%= link_to t("toshokan.assistance_requests.genres.#{genre}"), new_assistance_request_path(:genre => genre) %>
-        </li>
-      <% end %>
-    </ul>
+  <div class="panel panel-default facet_limit cant-find-links">
+    <div class="collapse-toggle panel-heading" data-toggle="collapse" data-target="#cant-find-it">
+      <h5 class="panel-title">
+        <a href="#" data-no-turbolink="true"><%= t 'toshokan.assistance_requests.menu_item.title' %></a>
+      </h5>
+    </div>
+    <div id="cant-find-it" class="panel-collapse facet-content in">
+      <div class="panel-body">
+        <ul class="facet-values list-unstyled">
+          <% [:journal_article, :conference_article, :book].each do |genre| %>
+            <li>
+              <span class="facet-label">
+                <%= link_to t("toshokan.assistance_requests.genres.#{genre}"), new_assistance_request_path(:genre => genre) %>
+              </span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
   </div>
 <% end %>

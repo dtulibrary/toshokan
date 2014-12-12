@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
   protect_from_forgery
 
-  before_filter :disable_header_searchbar
 
   def index
     if can? :update, User
@@ -16,7 +15,7 @@ class UsersController < ApplicationController
         .page(params[:page] || 1)
         .per(params[:all] ? 100000 : 10)
 
-      @all_roles = Role.all :order => :name
+      @all_roles = Role.all.order :name
     else
       deny_access and return
     end
@@ -33,7 +32,7 @@ class UsersController < ApplicationController
           head :ok
         else
           # This is a regular form submit indicating for each role if it's set or not
-          target_user.roles = Role.all.collect { |role| role if params.has_key? role.id.to_s }.compact
+          target_user.roles = Role.all.collect { |r| r if params.has_key? r.id.to_s }.compact
           redirect_to users_path
         end
       rescue ActiveRecord::RecordNotFound

@@ -6,7 +6,7 @@
 
       $('.document').each(function() {
         var fulltext = $(this).find('.fulltext-options > ul');
-        if(fulltext.length) {
+        if(fulltext.length && $(this).find('.Z3988').length > 0) {
 
           var openUrl = $(this).find(".Z3988").attr("title"),
               spinner = $("<li />"),
@@ -48,7 +48,7 @@
     else if($('body.blacklight-catalog-show').length) {
 
       var fulltext = $(".fulltext-header");
-      if(fulltext.length) {
+      if(fulltext.length && $('.Z3988').length > 0) {
 
         var openUrl = $(".Z3988").attr("title"),
             spinProperties = {length: 4, width: 3, radius: 5, top: 0},
@@ -222,7 +222,7 @@
           "target"      : "_blank"
         });
 
-        action = $("<div />", {"class" : "btn-group nal"});
+        action = $("<div />", {"class" : "nal"});
         action.append(link);
 
         $.each(data.urls, function () {
@@ -240,11 +240,12 @@
           toshokan.nal.updateMap();
         });
 
-        $('#nal-locations-modal').on('shown', function () {
+        $('#nal-locations-modal').on('shown.bs.modal', function () {
           toshokan.nal.updateMap();
         });
 
         headerElm = otherHeader;
+        data.icon = 'icon-home';
         data.lead_text = data.button_text;
 
       } else {

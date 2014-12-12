@@ -64,7 +64,5 @@ Scenario: Finding all articles in issue from article
   When I have searched for "Journal of Software Engineering and Applications"
    And I click "Find all articles in same issue"
   Then I should see the result page
-   And I should see a limit constraint for "Articles in" 
+   And I should see a limit constraint for "Articles in"
    And I should see a limit constraint that begins with "Journal of Software Engineering and Applications"
-
-

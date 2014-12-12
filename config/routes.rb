@@ -4,6 +4,7 @@ Toshokan::Application.routes.draw do
 
     # Catalog and related
     Blacklight.add_routes(self)
+    get   '/metadata/:id',                          :to => 'metadata#show',                         :as => 'metadata'
     get   '/journal',                               :to => 'catalog#journal',                       :as => 'catalog_journal'
     get   '/mendeley',                              :to => 'catalog#mendeley_index',                :as => 'mendeley_index'
     get   '/mendeley/:id',                          :to => 'catalog#mendeley_show',                 :as => 'mendeley_show'
@@ -32,7 +33,7 @@ Toshokan::Application.routes.draw do
     get  '/orders/:uuid/status',                    :to => 'orders#status',                         :as => 'order_status'
     get  '/orders/:uuid/reorder',                   :to => 'orders#reorder',                        :as => 'order_reorder'
     post '/orders/:uuid/cancel',                    :to => 'orders#cancel',                         :as => 'order_cancel'   # DIBS callback
-    post '/orders/:uuid/receipt',                   :to => 'orders#receipt',                        :as => 'order_receipt'  # DIBS callback
+    post '/orders/:uuid/receipt',                   :to => 'orders#receipt',                        :as => 'dibs_order_receipt'  # DIBS callback
     get  '/orders/:uuid/receipt',                   :to => 'orders#receipt',                        :as => 'order_receipt'
     get  '/orders/:uuid/delivery',                  :to => 'orders#delivery',                       :as => 'order_delivery' # DocDel callback
     get  '/orders/:uuid/resend',                    :to => 'orders#resend',                         :as => 'order_resend_library_support'
@@ -63,13 +64,13 @@ Toshokan::Application.routes.draw do
 
 
     # Search history
-    put    '/search_history/save/:id',              :to => 'search_history#save',                   :as => 'save_search'
-    put    '/search_history/alert/:id',             :to => 'search_history#alert',                  :as => 'save_search_alert'
-    delete '/search_history/forget/:id',            :to => 'search_history#forget',                 :as => 'forget_search'
-    delete '/search_history/forget_alert/:id',      :to => 'search_history#forget_alert',           :as => 'forget_search_alert'
+    put    '/search_history/save/:id',              :to => 'search_history#save',                   :as => 'save_search_history'
+    put    '/search_history/alert/:id',             :to => 'search_history#alert',                  :as => 'alert_search_history'
+    delete '/search_history/forget/:id',            :to => 'search_history#forget',                 :as => 'forget_search_history'
+    delete '/search_history/forget_alert/:id',      :to => 'search_history#forget_alert',           :as => 'forget_search_history_alert'
     delete '/search_history/:id',                   :to => 'search_history#destroy',                :as => 'delete_search_history'
-    get    '/search_history/saved',                 :to => 'search_history#saved',                  :as => 'saved_searches'
-    get    '/search_history/alerted',               :to => 'search_history#alerted',                :as => 'alerted_searches'
+    get    '/search_history/saved',                 :to => 'search_history#saved',                  :as => 'saved_search_history'
+    get    '/search_history/alerted',               :to => 'search_history#alerted',                :as => 'alerted_search_history'
 
 
     # User management

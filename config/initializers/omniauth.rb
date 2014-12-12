@@ -1,9 +1,9 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
+  cas_url = Rails.application.config.auth[:cas_url]
   provider :cas,
-           :host  => Rails.application.config.auth[:cas_url].gsub(/^https?:\/\//, ''),
-           :ssl   => Rails.application.config.auth[:cas_url].start_with?('https://'),
-           :name  => :cas,
-           :setup => true
+           :url        => cas_url,
+           :name       => :cas,
+           :setup      => true
 
   provider :mendeley, Rails.application.config.mendeley[:client_id], Rails.application.config.mendeley[:secret],
            :site  => Rails.application.config.mendeley[:url],

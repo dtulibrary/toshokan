@@ -6,14 +6,14 @@
   &.impersonating {
     padding-left: 5px;
     padding-right: 5px;
-    @include border-radius(5px);
+    border-radius: 5px;
     background-color: $dtu_orange;
   }
   
   #login-popover {
     color: $dtu_grey_dark;
     a {
-      color: $white;
+      color: #fff;
       font-size: 0.9em;
       display: block;
     }

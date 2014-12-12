@@ -1,4 +1,4 @@
-<div class="span12">
+<div class="col-md-12">
   <h3 class="pagination-centered">About DTU Findit</h3>
   <p>DTU Findit is DTU Library's latest search, discover and delivery layer, which makes accesible to end users STM-relevant bibliographic data from all major STM publishers, a selection of abstract and indexing databases as well as a selection of open access repositories. Search access is provided through a fully automated acquisition, processing and indexing operation, and delivery access is done through a variation of ways in which the user can access the fulltext and/or related material. For a full list of content, please refer to
   <%- if current_user.dtu? -%><%=link_to("here", "http://api.libguides.com/api_box.php?iid=3935&bid=13937966", :target => "_blank")%><%- else -%><%=link_to("here", "http://api.libguides.com/api_box.php?iid=3935&bid=14267802", :target => "_blank")%><%- end -%>.</p>

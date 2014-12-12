@@ -1,8 +1,8 @@
 <div class="row">
-  <div class="span6">
+  <div class="col-md-6">
     <%= render 'show_book_section' %>
   </div>
-  <div class="span3">
+  <div class="col-md-3">
     <%= render 'show_email_section' %>
     <% if @assistance_request.pickup_location %>
       <%= render 'show_pickup_location_section' %>
@@ -10,7 +10,7 @@
       <%= render 'show_physical_location_section' %>
     <% end %>
   </div>
-  <div class="span3">
+  <div class="col-md-3">
     <%= render 'show_automatic_cancellation_section' %>
     <%= render 'show_notes_section' %>
   </div>

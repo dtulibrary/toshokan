@@ -1,12 +1,12 @@
-require 'spec_helper.rb'
+require 'rails_helper.rb'
 
 describe 'Riyosha' do
 
   describe '#find' do
     context 'when api request fails' do
       it 'returns nil' do
-        HTTParty.should_receive(:get) { raise Exception }
-        Riyosha.find('1234').should be_nil
+        expect(HTTParty).to receive(:get) { raise Exception }
+        expect(Riyosha.find('1234')).to be_nil
       end
     end
   end

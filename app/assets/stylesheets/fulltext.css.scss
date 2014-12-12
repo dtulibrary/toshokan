@@ -19,13 +19,19 @@ dd.fulltext-options {
     padding-left: 0px;
     margin-right: 10px;
   }
-  .getit {
-    margin-right: 65px;
-  }
 }
 
 #fulltext {
   padding-bottom: 10px;
+
+  li:first-child h4 {
+    margin-top: 0px; 
+  }
+
+  .btn-primary {
+    width: 100%;
+    box-sizing: border-box;
+  }
 
   .fulltext-item {
     line-height: 15px;
@@ -37,8 +43,8 @@ dd.fulltext-options {
       margin-right: 6px;
     }
     .leadtext {
-      float: left;
       margin-right: 15px;
+      margin-bottom: 0.5em;
       i.icon-openaccess {
         color: orange;
       }
@@ -57,9 +63,6 @@ dd.fulltext-options {
         background-color: $dtu_red_light;
         @include gradient-vertical($dtu_red,$dtu_red_light);
       }
-    }
-    a.btn-primary {
-      @include dtu-button;
     }
     .coverage {
       p {

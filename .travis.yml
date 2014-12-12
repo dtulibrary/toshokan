@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-  - 1.9.3
+  - 2.1.4
 before_script:
   - "bundle exec rake db:migrate jetty:start"
   - "sleep 15"

@@ -1,0 +1,54 @@
+<div id="feedback-modal" class="modal fade" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="feedbackModalLabel">
+          <%= t 'toshokan.modals.feedback.title' %>
+          <a class="close pull-right" data-dismiss="modal" data-target="#feedback-modal">&times;</a>
+        </h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="mendeley-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>
+          <%= t 'toshokan.modals.mendeley.title' %>
+          <a class="close pull-right" data-dismiss="modal" data-target="#mendeley-modal">&times;</a>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <iframe id="mendeley-iframe" src="about:blank"></iframe>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if !cookies[:shunt_hint] && params[:dlib] %>
+  <div id="dlib-modal" class="modal fade">
+    <div class="modal-header">
+      <h4>
+        DTU Findit has replaced DTU Digital Library
+        <a class="close pull-right" data-dismiss="modal">&times;</a>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <p>It is important that you log in as a DTU user to take full advantage of DTU Findit. Your browser will remember your initial choice.</p>
+    </div>
+    <div class="modal-footer">
+      <a href="http://libguides.dtu.dk/loader.php?type=d&id=937880" class="btn" target="_blank">Read more</a>
+      <%= link_to new_user_session_path(:url => request.fullpath, :only_dtu => true), :class => "btn btn-primary" do %>
+        <%= t('toshokan.header_links.login') %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

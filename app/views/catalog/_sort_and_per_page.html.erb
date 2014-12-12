@@ -1,7 +1,7 @@
 <% unless @document_list.empty? %>
   <div id="sortAndPerPage">
     <div class="page_links">
-      <%= render :partial => "paginate_compact" %>
+      <%= render :partial => "paginate_compact", :object => @response %>
     </div>
 
     <%= render :partial => 'sort_widget' %>
@@ -9,9 +9,5 @@
     <%= render :partial => 'per_page_widget' %>
 
     <%= render :partial => 'save_and_export_widget' %>
-
-    <% if can? :view_format, 'librarian' %>
-      <%= render :partial => 'display_format_widget' %>
-    <% end %>
   </div>
 <% end %>

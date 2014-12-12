@@ -1,8 +1,8 @@
 require 'uuidtools'
 
 class OrdersController < ApplicationController
-  
-  before_filter :disable_header_searchbar
+
+  include Blacklight::Catalog
 
   # Delivery is called from DocDel
   skip_before_filter :authenticate, :only => [:delivery]
@@ -44,7 +44,7 @@ class OrdersController < ApplicationController
     # This can be something like extracting an integer id from a string or similar.
     value_mappers = {}
 
-    value_mappers[:q_orderid] = -> v do 
+    value_mappers[:q_orderid] = -> v do
       # Either match a full DIBS order id like F00001234
       %r{^#{Orders.order_id_prefix.downcase}0*(\d+)$}.match(v.downcase).try(:[], 1) ||
       # or a DB id like 1234
@@ -58,7 +58,7 @@ class OrdersController < ApplicationController
     [:q_email, :q_orderid, :q_supplier_order_id].each do |q|
       if params[q] && !params[q].blank?
         value = params[q].strip
-        @orders = @orders.where "#{sql_map[q] || q} #{sql_operator_map[q] || 'LIKE'} ?", 
+        @orders = @orders.where "#{sql_map[q] || q} #{sql_operator_map[q] || 'LIKE'} ?",
                                 value_mappers[q].try(:call, value) || "%#{value}%"
       end
     end
@@ -67,7 +67,7 @@ class OrdersController < ApplicationController
     @facets = ActiveSupport::OrderedHash.new
     @facet_labels = {}
     @filter_queries = {}
-  
+
     if can? :view_any, Order # Perhaps this should be can? :view, :orders_facets
       # Apply user filter query
       if params[:user] && !params[:user].blank?
@@ -98,7 +98,7 @@ class OrdersController < ApplicationController
         @orders = @orders.where :supplier => params[:supplier].first
         @filter_queries[:supplier] = [params[:supplier]].flatten
       end
-  
+
       # Apply order status filter query
       if params[:delivery_status] && !params[:delivery_status].blank?
         if params[:delivery_status].first == 'requested'
@@ -143,7 +143,7 @@ class OrdersController < ApplicationController
           '1w'  => "<= #{7*24}",
           '1m'  => "<= #{4*7*24}",
           '3m'  => "<= #{3*4*7*24}",
-          '3m+' => "> #{3*4*7*24}", 
+          '3m+' => "> #{3*4*7*24}",
         }
 
         @orders = @orders.where "duration_hours #{expr[duration]}"
@@ -215,13 +215,13 @@ class OrdersController < ApplicationController
       groups.each do |g, count|
         unless g == '3m+'
           accum['3m'] += count if accum['3m'] && ['6h', '1d', '1w', '1m', '3m'].include?(g)
-          accum['1m'] += count if accum['1m'] && ['6h', '1d', '1w', '1m'].include?(g) 
-          accum['1w'] += count if accum['1w'] && ['6h', '1d', '1w'].include?(g) 
-          accum['1d'] += count if accum['1d'] && ['6h', '1d'].include?(g) 
+          accum['1m'] += count if accum['1m'] && ['6h', '1d', '1w', '1m'].include?(g)
+          accum['1w'] += count if accum['1w'] && ['6h', '1d', '1w'].include?(g)
+          accum['1d'] += count if accum['1d'] && ['6h', '1d'].include?(g)
           accum['6h'] += count if accum['6h'] && g == '6h'
         end
       end
-    
+
       # -- Sort by count descending
       @facets[:duration] = {}
       accum.sort {|a,b| b[1] <=> a[1]}.each {|g,count| @facets[:duration][g] = count}
@@ -256,7 +256,7 @@ class OrdersController < ApplicationController
                                   .count
 
     end
-   
+
     # Reject facets with no terms
     @facets.reject! {|k,v| v.empty?}
 
@@ -277,7 +277,7 @@ class OrdersController < ApplicationController
   end
 
   # Create a new order based on URL parameters "open_url" and "supplier"
-  def new 
+  def new
     # User might have logged in or out on any of the order creation pages
     # Reset order creation to reflect price based on new user type
     if session[:order] && !params[:open_url] && !params[:supplier]
@@ -303,8 +303,8 @@ class OrdersController < ApplicationController
       price = PayIt::Prices.price current_user, @supplier, :DKK
       @order = Order.new({
         :uuid => UUIDTools::UUID.timestamp_create.to_s,
-        :open_url => @open_url, 
-        :supplier => @supplier, 
+        :open_url => @open_url,
+        :supplier => @supplier,
         :price => price,
         :vat => PayIt::Prices.vat(price),
         :currency => :DKK
@@ -321,7 +321,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  def create 
+  def create
     if session[:order]
       # Update order in session
       @order = session[:order]
@@ -360,7 +360,7 @@ class OrdersController < ApplicationController
             render :confirm
           else
             @order = renew_order @order
-            
+
             flash_errors errors
             render :new and return
           end
@@ -397,7 +397,7 @@ class OrdersController < ApplicationController
     new_order.customer_ref = nil
     new_order.flow.current_step = :delivery_info
     session[:order] = new_order
-    
+
     order.delete if order.persisted?
     new_order
   end
@@ -453,14 +453,14 @@ class OrdersController < ApplicationController
     end
   end
 
-  # Will be called by DIBS upon entering valid credit card info. 
+  # Will be called by DIBS upon entering valid credit card info.
   # Will be redirected to by DIBS when user goes to receipt.
   # Will be redirected to for non-payment orders.
   def receipt
     session.delete :order
 
     @order = Order.find_by_uuid params[:uuid]
-  
+
     @order.flow = OrderFlow.new current_user, @order.supplier
     @order.flow.current_step = :done
 
@@ -483,7 +483,7 @@ class OrdersController < ApplicationController
       else
       end
     end
-    
+
     # Ensure idempotency
     unless @order.delivery_status
       @order.order_events << OrderEvent.new(:name => :delivery_requested)
@@ -512,9 +512,9 @@ class OrdersController < ApplicationController
         @order.delivered_year = @order.delivered_at.year
         @order.delivered_month = @order.delivered_at.month
         @order.save!
-        
+
         SendIt.delay.send_delivery_mail @order, :url => params[:url], :order => {:status_url => order_status_url(@order.uuid)}
-        
+
         # Do not send receipt mails to DTU staff or when order has been reordered
         unless (@order.user && @order.user.employee?) || is_redelivery
           SendIt.delay.send_receipt_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
@@ -566,7 +566,7 @@ class OrdersController < ApplicationController
     if can?(:reorder, Order) && !order.cancelled?
       if order
         DocDel.delay.request_delivery order, order_delivery_url(order.uuid), :timecap_base => Time.now.iso8601 if DocDel.enabled?
-        order.delivery_status = :reordered      
+        order.delivery_status = :reordered
         order.order_events << OrderEvent.new(:name => 'reordered', :data => current_user.to_s)
         order.save!
         flash[:notice] = I18n.t 'toshokan.orders.flash_messages.reordered'
@@ -590,7 +590,7 @@ class OrdersController < ApplicationController
       else
         head :bad_request
       end
-    else 
+    else
       head :not_found
     end
   end

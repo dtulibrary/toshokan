@@ -3,15 +3,15 @@
 .modal-header {
   background: $dtu_red;
   color: #fff;
-  @include border-radius(5px 5px 0px 0px);
+  border-radius: 5px 5px 0px 0px;
 
   .close {
     color: #fff;
     margin-top: -2px;
-    @include opacity(70);
+    opacity: 70;
 
     &:hover {
-      @include opacity(100);
+      opacity: 100;
     }
   }
 
@@ -48,6 +48,7 @@
 }
 
 #nal-locations-modal {
+
   input {
     margin: 0px 0.5em 0px 0px;
   }
@@ -63,7 +64,7 @@
 
 #dtu-locations-modal {
   .modal-header {
-    :after{
+    &:after {
       clear: both;
       content: "";
       display: block;

@@ -4,8 +4,6 @@ require 'uri'
 class ApplicationController < ActionController::Base
   include Blacklight::Controller
 
-  layout 'blacklight'
-
   rescue_from ActionController::RoutingError, :with => :render_not_found
 
   protect_from_forgery
@@ -84,11 +82,6 @@ class ApplicationController < ActionController::Base
     else
       redirect_to authentication_required_path(:url => request.url, :dlib => params[:dlib])
     end
-  end
-
-  # Disable rendering the searchbar in the header
-  def disable_header_searchbar
-    @disable_header_searchbar = true
   end
 
   helper_method :guest_user, :current_or_guest_user

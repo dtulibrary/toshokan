@@ -2,7 +2,7 @@ class AssistanceRequest < ActiveRecord::Base
   belongs_to :user
   has_one :order
   validates :user_id, :presence => true
-  attr_protected :type, :user_id
+  #attr_protected :type, :user_id
   serialize :physical_location, JSON
 
   def self.auto_cancel_values_in_days
@@ -42,12 +42,29 @@ class AssistanceRequest < ActiveRecord::Base
         {:name => 'book_isbn',      :ou => 'isbn'},
         {:name => 'book_year',      :ou => 'date',   :required => true},
         {:name => 'book_publisher', :ou => 'pub'}
+      ],
+      'automatic cancellation' => [
+        {:name => 'auto_cancel'}
       ]
     }
   end
 
   def self.fields_for section
     form_sections[section]
+  end
+
+  def self.relevant_form_sections
+    ['article','journal','notes','conference','book','automatic cancellation']
+  end
+
+  def self.fields
+    if @fields.nil?
+      @fields = []
+      relevant_form_sections.each do |section|
+        @fields += fields_for(section).map {|field_info| field_info[:name].to_sym}
+      end
+    end
+    return @fields
   end
 
   def self.required_fields_for section

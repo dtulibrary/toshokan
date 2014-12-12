@@ -1,17 +1,15 @@
-class TagsController < CatalogController
-  before_filter :require_tag_ability
+class TagsController < ApplicationController
+  layout 'with_search_bar'
 
-  # don't execute filters from catalog controller to avoid
-  # messing up the search stored in session
-  skip_before_filter :search_session
-  skip_before_filter :history_session
-  skip_before_filter :delete_or_assign_search_session_params
-  skip_after_filter  :set_additional_search_session_values
+  include Toshokan::PerformsSearches
+  include Toshokan::Catalog
+
+  before_filter :require_tag_ability
 
   # Tag management actions
 
   def manage
-    @tags = current_user.tags.all(:order => 'name')
+    @tags = current_user.tags.all.order :name
   end
 
   # Document tagging actions
@@ -19,7 +17,7 @@ class TagsController < CatalogController
   def index
     _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
     @bookmark = current_user.bookmarks.find_by_document_id(@document.id)
-    @tags = current_user.tags.all(:order => 'name')
+    @tags = current_user.tags(:order => 'name')
     @return_url = request.url
     if params && params[:return_url]
       @return_url = params[:return_url]
@@ -34,15 +32,14 @@ class TagsController < CatalogController
   end
 
   def create
-    _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
+    @document = SolrDocument.new(SolrDocument.unique_key => params[:document_id])
     current_user.tag(@document, params[:tag_name])
 
     respond_to do | format |
       format.js   { render :partial => 'tags/tag_refresh' }
-      format.html { redirect_to only_path(params[:return_url])}
+      format.html { redirect_to only_path(params[:return_url]) }
     end
   end
-
 
   # Tag management and document tagging actions
 
@@ -51,8 +48,8 @@ class TagsController < CatalogController
     not_found unless tag
 
     if (params[:document_id])
-      _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
-      bookmark = current_user.bookmarks.find_by_document_id(@document.id)
+      @document = SolrDocument.new(SolrDocument.unique_key =>  params[:document_id])
+      bookmark = current_user.existing_bookmark_for(@document)
       bookmark.tags.delete(tag) if bookmark
     else
       tag.delete
@@ -60,7 +57,7 @@ class TagsController < CatalogController
 
     respond_to do | format |
       format.js   { render :partial => 'tags/tag_refresh' }
-      format.html { redirect_to only_path(params[:return_url])}
+      format.html { redirect_to only_path(params[:return_url]) }
     end
   end
 

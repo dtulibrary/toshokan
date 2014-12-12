@@ -4,7 +4,8 @@
   margin-bottom: 3em;
 
   input[type='text'], textarea {
-    @include input-block-level;
+    box-sizing: border-box;
+    width: 100%;
   }
 
   .section {

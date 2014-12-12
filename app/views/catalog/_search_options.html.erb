@@ -1,17 +1,16 @@
-<table id="search-options" class="table hide table-hover">
+<table id="search-options" class="table table-hover" role="menu" aria-labelledby="more-options">
   <tbody>
-    <% if (can? :view, :search_history) && (!@search_history.nil?) && (@search_history.length > 0) && !params[:q].blank? %>
+    <% if (can? :view, :search_history) && (!search_session['id'].nil?) && (@search_history.length > 0) && !params[:q].blank? %>
       <tr class="search-history-links">
         <td>
           <span>
-            <i class="icon-star-o"></i>
-            <%= link_to save_search_path(params[:s_id]), :title => t('toshokan.mylibrary.save'), :id => "search-summary-save" do %>
-               <%= t('toshokan.mylibrary.save') %>
+            <%= link_to save_search_path(search_session['id']), :title => t('toshokan.mylibrary.save'), :id => "search-summary-save" do %>
+               <i class="icon-star-o"></i><%= t('toshokan.mylibrary.save') %>
             <%- end -%>
           </span>
           <span>
-            <i class="icon-bell"></i>
-            <%= link_to save_search_alert_path(params[:s_id]), :title => t('toshokan.mylibrary.alert'), :id => "search-summary-alert" do %>
+            <%= link_to alert_search_history_path(search_session['id']), :title => t('toshokan.mylibrary.alert'), :id => "search-summary-alert" do %>
+              <i class="icon-bell"></i>
               <%= t('toshokan.mylibrary.alert') %>
             <%- end -%>
           </span>

@@ -9,7 +9,7 @@ class Order < ActiveRecord::Base
 
   before_save :set_derived_fields
 
-  attr_accessible :user, :uuid, :open_url, :supplier, :price, :vat, :currency, :email
+  #attr_accessible :user, :uuid, :open_url, :supplier, :price, :vat, :currency, :email
   attr_accessor :flow
 
   def set_derived_fields

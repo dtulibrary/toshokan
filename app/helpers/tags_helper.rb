@@ -37,7 +37,7 @@ module TagsHelper
       return_url = controller.params[:return_url]
       params_from_return_url = Rack::Utils.parse_nested_query(URI::parse(return_url).query)
       params_from_return_url.merge! params.slice(:refresh)
-      params = controller.params = params_from_return_url.with_indifferent_access
+      controller.params = params_from_return_url.with_indifferent_access
     end
 
     options[:locals][:tags].each do |tag|
@@ -73,11 +73,11 @@ module TagsHelper
   def tag_display_icon(tag_name)
     case tag_name
     when Tag.reserved_tag_all
-      content_tag(:i, '', :class => 'icon-empty')
+      content_tag(:i, '', :class => 'glyphicon glyphicon-star red')
     when Tag.reserved_tag_untagged
-      content_tag(:i, '', :class => 'icon-star')
+      content_tag(:i, '', :class => 'glyphicon glyphicon-tag')
     else
-      content_tag(:i, '', :class => 'icon-tag')
+      content_tag(:i, '', :class => 'glyphicon glyphicon-tag red')
     end
   end
 
@@ -105,8 +105,8 @@ module TagsHelper
     content_tag(:span,
                 tag_display(tag_name, options),
                 :class => "selected") +
-      link_to(content_tag(:i, '', :class => "icon-times") +
-                content_tag(:span, '[remove]', :class => 'hide-text'),
+      link_to(content_tag(:i, '', :class => "glyphicon glyphicon-remove") +
+                content_tag(:span, '[remove]', :class => 'sr-only'),
               remove_tag_params(tag_name, params),
               :class=>"remove")
   end
@@ -164,53 +164,6 @@ module TagsHelper
     new_params[:controller] = "catalog"
     new_params[:action] = "index"
     new_params
-  end
-
-  ##
-  # Add any existing tag filters, stored in app-level HTTP query
-  # as :t, to solr as appropriate :fq query.
-  def add_tag_fq_to_solr(solr_parameters, user_params)
-    # :fq, map from :t.
-    if ( user_params[:t])
-      t_request_params = user_params[:t]
-      solr_parameters[:fq] ||= []
-      t_request_params.each_pair do |t|
-        document_ids = []
-        tag_name = t.first
-        if tag_name == Tag.reserved_tag_all
-          document_ids = current_user.bookmarks.map(&:document_id);
-        elsif tag_name == Tag.reserved_tag_untagged
-          document_ids = current_user.bookmarks.find_all{|b| b.taggings.empty?}.map(&:document_id);
-        else
-          tag = current_user.tags.find_by_name(tag_name)
-          if tag
-            document_ids = tag.bookmarks.map(&:document_id)
-          end
-        end
-
-        if not document_ids.empty?
-          solr_parameters[:fq] << "#{SolrDocument.unique_key}:(#{document_ids.join(' OR ')})"
-        else
-          solr_parameters[:fq] << "#{SolrDocument.unique_key}:(NOT *)"
-        end
-      end
-
-    end
-  end
-
-  # true or false, depending on whether any tag name is in params
-  def any_tag_in_params?
-    params[:t] != nil
-  end
-
-  # true or false, depending on whether the tag name is in params[:t]
-  def tag_in_params?(tag_name)
-    params[:t] and params[:t][tag_name] and params[:t][tag_name] == '✓'
-  end
-
-  # True or false depending on whether the user has any tags
-  def tags_empty?
-    current_or_guest_user.owned_tags.empty?
   end
 
 end

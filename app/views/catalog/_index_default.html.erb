@@ -1,14 +1,22 @@
 <%# default partial to display solr document fields in catalog index view -%>
-<dl class="dl-horizontal dl-invert">
-  
-  <% index_fields(document).each do |solr_fname, field| -%>
-    <% if should_render_index_field? document, field %>
-	    <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_index_field_label document, :field => solr_fname %></dt>
-	    <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_index_field_value document, :field => solr_fname %></dd>
-    <% end -%>
-  <% end -%>
+<div class="row">
+  <div class="col-sm-9 col-lg-10">
+    <dl class="dl-horizontal dl-invert">
 
-  <%= render :partial => 'tags',     :locals => { :document => document}  %>
-  <%= render :partial => 'fulltext', :locals => { :document => document} %>
+      <% index_fields(document).each do |solr_fname, field| -%>
+        <% if should_render_index_field? document, field %>
+          <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_index_field_label document, :field => solr_fname %></dt>
+          <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_index_field_value document, :field => solr_fname %></dd>
+        <% end -%>
+      <% end -%>
 
-</dl>
+      <%= render :partial => 'tags',     :locals => { :document => document } %>
+      <%= render :partial => 'fulltext', :locals => { :document => document } %>
+      <%= render :partial => 'metadata', :locals => { :document => document } %>
+      <%= render :partial => 'openurl',  :locals => { :document => document } %>
+    </dl>
+  </div>
+  <div class="col-sm-3 col-lg-2">
+    <%= render_cover_image document %>
+  </div>
+</div>

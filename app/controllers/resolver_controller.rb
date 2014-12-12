@@ -1,6 +1,13 @@
-class ResolverController < CatalogController
+class ResolverController < ApplicationController
 
-  include ResolverHelper
+  include Toshokan::PerformsSearches
+  include Toshokan::Resolver
+
+  rescue_from RSolr::Error::Http do |exception|
+    flash[:error] ||= []
+    flash[:error] << exception.message
+    redirect_to :root
+  end
 
   def index
 

@@ -1,4 +1,32 @@
+#fulltext_tools li {
+  display: block;
+}
+
 .tools {
+  li {
+    display: table-row;
+
+    &.nav-header {
+      display: block;
+    }
+
+    & > i[class^="icon-"], & > .group > i[class^="icon-"] {
+      display: table-cell;
+      width: 2em;
+      text-align: center;
+      padding: 0px;
+      margin: 0px;
+    }
+
+    & > a, & > .group > a {
+      display: table-cell;
+    }
+  }
+
+  li:first-child h4 {
+    margin-top: 0px;
+  }
+
   li.nav-list-collapse {
     cursor: pointer;
 
@@ -22,8 +50,17 @@
     }
   }
 
-  .journal-alert.hidden {
-    display: none;
+  .journal-alert {
+    display: table-row;
+
+    i, a {
+      display: table-cell;
+    }
+
+    i {
+      width: 1.5em;
+    }
+
   }
 
   .journal-alert-header {

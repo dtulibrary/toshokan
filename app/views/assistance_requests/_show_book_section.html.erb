@@ -1,10 +1,10 @@
 <div class="section book-section">
   <h5 class="underlined"><%= t 'toshokan.assistance_requests.forms.sections.book.title' %></h5>
   <div class="row">
-    <div class="span3">
+    <div class="col-md-6">
       <%= render_section_fields ['title', 'year', 'author', 'edition'], @assistance_request, 'book_' %>
     </div>
-    <div class="span3">
+    <div class="col-md-6">
       <%= render_section_fields ['doi', 'isbn', 'publisher'], @assistance_request, 'book_' %>
       <% if @assistance_request.book_suggest %>
         <div><%= t 'toshokan.assistance_requests.forms.sections.book.suggested_for_purchase' %></div>

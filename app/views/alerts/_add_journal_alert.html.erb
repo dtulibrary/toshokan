@@ -2,14 +2,18 @@
   alert = Alert.find(current_user, {:query => document['issn_ss'].first})
   alert_id = alert.nil? ? "" : alert.id
 -%>
-<%= link_to alert_path(alert_id), :method => :delete, :title => "Remove journal alert", :remote => true,
-    :class => if alert.nil? then "hidden journal-alert" else "journal-alert" end do %>
-    <i class="icon-check-square-o"></i>
-  <em><%= t('toshokan.alerts.journal.add') %></em>
-<% end %>
-<%= link_to alerts_path("alert[alert_type]" => "journal", "alert[query]" => document['issn_ss'].first,
-      "alert[name]" => document['title_ts'].first), :method => :post, :title => "Add journal alert", :remote => true,
-    :class => if !alert.nil? then "hidden journal-alert add" else "journal-alert add" end do%>
-    <i class="icon-square-o"></i>
-  <em><%= t('toshokan.alerts.journal.add') %></em>
-<% end %>
+<div class="group <%= alert.nil? ? 'hide' : '' %>">
+  <i class="icon-check-square-o"></i>
+  <%= link_to t('toshokan.alerts.journal.add'), alert_path(alert_id),
+              :method => :delete, :title => "Remove journal alert", :remote => true,
+              :class => "journal-alert" %>
+</div>
+
+<div class="group <%= alert.nil? ? '' : 'hide' %>">
+  <i class="icon-square-o"></i>
+  <%= link_to t('toshokan.alerts.journal.add'), 
+              alerts_path("alert[alert_type]" => "journal", "alert[query]" => document['issn_ss'].first,
+                          "alert[name]" => document['title_ts'].first),
+              :method => :post, :title => "Add journal alert", :remote => true,
+              :class => "journal-alert add" %>
+</div>

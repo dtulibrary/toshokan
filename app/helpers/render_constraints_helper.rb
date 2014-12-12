@@ -3,22 +3,22 @@
 module RenderConstraintsHelper
   include Blacklight::RenderConstraintsHelperBehavior
 
-  def search_params localized_params = params
-    result = {}.with_indifferent_access
-
-    (!params[:ignore_search] && session[:search] || {}).each do |k,v|
-      result[k] = params.has_key?(k) ? params[k] : v
-    end
-    result
-  end
+  # def search_params localized_params = params
+  #   result = {}.with_indifferent_access
+  #
+  #   (!params[:ignore_search] && session[:search] || {}).each do |k,v|
+  #     result[k] = params.has_key?(k) ? params[k] : v
+  #   end
+  #   result
+  # end
 
   def query_has_constraints?(localized_params = params)
-    localized_params = search_params localized_params
+    # localized_params = search_params localized_params
     super or !(localized_params[:t].blank?) or !(localized_params[:l].blank?)
   end
 
   def render_constraints(localized_params = params)
-    localized_params = search_params localized_params
+    # localized_params = search_params localized_params
     (render_constraints_filters(localized_params) + render_constraints_limits(localized_params) + render_constraints_tags(localized_params)).html_safe
   end
 
@@ -76,7 +76,7 @@ module RenderConstraintsHelper
 
     values.map do |val|
       options[:remove] = url_for(remove_facet_params(facet, val, localized_params)) unless @disable_remove_filter 
-      render_constraint_element(facet_field_labels[facet], facet_display_value(facet, val), options) + "\n"    
+      render_constraint_element(facet_field_label(facet), facet_display_value(facet, val), options) + "\n"
     end 
   end 
 

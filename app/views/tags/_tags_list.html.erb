@@ -1,12 +1,14 @@
-<ul>
+<ul class="facet-values list-unstyled">
   <% tags.each do |tag| %>
     <li>
+      <span class="facet-label">
       <% if any_tag_in_params? && tag_in_params?(tag.name) %>
         <%= render_selected_tag_value tag.name %>
       <% else %>
         <%= render_tag_value tag.name, {:suppress_link => (tag.count == 0)} %>
       <% end %>
-      <span class="count"><%= tag.count %></span>
+      </span>
+      <span class="facet-count"><%= tag.count %></span>
     </li>
   <% end %>
 </ul>

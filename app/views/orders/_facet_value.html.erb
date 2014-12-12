@@ -1,0 +1,14 @@
+<% if order_facet_term_selected? type, term %>
+  <span class="facet-label">
+    <span class="selected">
+      <%= render_order_facet_label type, term %>
+    </span>
+    <%= render_remove_order_facet_link type, term %>
+  </span>
+  <span class="select facet-count"><%= number_with_delimiter count %></span>
+<% else %>
+  <span class="facet-label">
+    <%= render_add_order_facet_link type, term %>
+  </span>
+  <span class="facet-count"><%= number_with_delimiter count %></span>
+<% end %>
