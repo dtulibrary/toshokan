@@ -20,7 +20,7 @@
     <tr class="search_history">
       <td class="bordered"><i class="icon-clock-o"></i> <b>Recent History:</b></td>
     </tr>
-    <% @search_history.limit(20).each do |entry| %>
+    <% @search_history.limit(10).each do |entry| %>
       <tr class="search_history">
         <td class="entry">
           <%= link_to_search_history_item(entry.query_params, "<i class='icon-search invisible'></i>") %>
