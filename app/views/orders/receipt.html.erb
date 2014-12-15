@@ -9,7 +9,6 @@
           <%= t "toshokan.orders.text.#{@order.supplier}_html" %>
         </div>
         <%= t 'toshokan.orders.receipt_html', :status_link => @order_status_url %>
-        <p><%= link_back_to_catalog %></p>
       </div>
       <div class="col-md-6">
         <%= render 'order_summary' %>
