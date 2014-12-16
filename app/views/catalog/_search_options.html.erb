@@ -4,7 +4,7 @@
       <tr class="search-history-links">
         <td>
           <span>
-            <%= link_to save_search_path(search_session['id']), :title => t('toshokan.mylibrary.save'), :id => "search-summary-save" do %>
+            <%= link_to save_search_history_path(search_session['id']), :title => t('toshokan.mylibrary.save'), :id => "search-summary-save" do %>
                <i class="icon-star-o"></i><%= t('toshokan.mylibrary.save') %>
             <%- end -%>
           </span>
