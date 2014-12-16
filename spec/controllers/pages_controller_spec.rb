@@ -3,6 +3,13 @@ require 'rails_helper'
 require 'cancan/matchers'
 
 describe PagesController do
+  describe '#searchbox_styled' do
+    it 'does not send X-Frame-Options header' do
+      get :searchbox_styled
+      expect(response.headers).not_to have_key('X-Frame-Options')
+    end
+  end
+
   describe '#authentication_required' do
     let(:params) {
       { :url => root_url }
