@@ -8,7 +8,7 @@ gem 'blacklight', '~> 5.7'
 gem 'dtu_rails_common', :github => 'dtulibrary/dtu_rails_common'
 gem 'unicode'
 
-gem 'blacklight_range_limit'
+gem 'blacklight_range_limit', :github => 'dtulibrary/blacklight_range_limit'
 gem 'pg'
 gem 'unhappymapper', :require => 'happymapper'
 gem 'httparty'
