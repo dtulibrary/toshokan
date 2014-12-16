@@ -18,6 +18,11 @@ RSpec.configure do |config|
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
   #
+
+  config.mock_with :rspec do |mocks|
+    mocks.verify_partial_doubles = false
+  end
+
   # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr

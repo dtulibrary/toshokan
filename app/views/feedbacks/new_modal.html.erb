@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <h4 id="feedbackModalLabel">
+        <%= t 'toshokan.modals.feedback.title' %>
+        <a class="close pull-right" data-dismiss="modal" data-target="#feedback-modal">&times;</a>
+    </h4>
+</div>
+<div class="modal-body">
+    <%= render :partial => 'form', :locals => { :email => @email, :name => @name, :message => @message } %>
+</div>
+<div class="modal-footer">
+</div>

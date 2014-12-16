@@ -77,6 +77,10 @@ Toshokan::Application.routes.draw do
     resources :users,                               :only => [:index, :update, :destroy]
 
 
+    # Feedback
+    resource :feedback, :only => [:new, :create]
+
+
     # Semi-static pages
     get   '/pages/searchbox',                       :to => 'pages#searchbox',                       :as => 'searchbox'
     get   '/pages/search_homepage',                 :to => 'pages#searchbox_styled',                :as => 'searchbox_styled'
@@ -84,9 +88,6 @@ Toshokan::Application.routes.draw do
     get   '/pages/authentication_required_catalog', :to => 'pages#authentication_required_catalog', :as => 'authentication_required_catalog'
     get   '/about',                                 :to => 'pages#about'
 
-
-    # Temporary fix since BL 4.1 removed the POST route to feedback (but BL's code still seems to rely on it).
-    post  '/feedback',                              :to => 'feedback#show',                         :as => 'feedback'
 
     get   '/',                                      :to => 'catalog#index'
   end

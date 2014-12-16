@@ -1,4 +1,5 @@
 require 'httparty'
+require 'pp'
 
 class SendIt
   include Configured
@@ -218,7 +219,7 @@ class SendIt
     result = {}
     names.each do |name|
       # XXX: Rename form parameters like 'article_title' or 'publisher_name' to 'title' and 'name'
-      #      since they will appear in an object-style hash. 
+      #      since they will appear in an object-style hash.
       #      So 'article_title' will be in 'article' => { 'title' => ... }, etc.
       result[name.gsub /^(?:article|journal|proceedings|conference|book|publisher)_?(.*?)/, '\1'] = params[name] unless params[name].blank?
     end
@@ -251,8 +252,23 @@ class SendIt
 
     order.open_url.scan /([^&=]+)=([^&]*)/ do |k,v|
       local_params[:open_url][k] = URI.unescape(v.gsub '+', '%20') if k.start_with? 'rft'
-    end 
+    end
 
     send_mail 'failed_automatic_requests', local_params
+  end
+
+  def self.send_feedback_email(user, params = {})
+    local_params = params.merge(:to => SendIt.feedback_mail)
+    send_mail 'findit_feedback', local_params.merge(case
+                                                    when user.walk_in?
+                                                      { :user_info => 'Walk-in user',
+                                                        :subject   => '[DTU Library] Feedback from walk-in user' }
+                                                    when user.authenticated?
+                                                      { :user_info => user.user_data.pretty_inspect,
+                                                        :subject   => '[DTU Library] Feedback from authenticated user' }
+                                                    else
+                                                      { :user_info => 'Public user - not logged in',
+                                                        :subject   => '[DTU Library] Feedback from public user' }
+                                                    end)
   end
 end

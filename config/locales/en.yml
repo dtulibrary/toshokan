@@ -222,7 +222,7 @@ en:
           </div>"
     feedback:
       label: 'Feedback'
-      success_html: Your feedback has been sent. Thank you for taking the time to help us improve DTU Findit. <a href="#" data-dismiss="modal">Close this dialog</a>
+      success_html: <p>Your feedback has been sent. Thank you for taking the time to help us improve DTU Findit.</p> <p><a href="#" data-dismiss="modal" class="btn btn-primary">Close this dialog</a></p>
       message_html: Your message
       name_html: Your name
       email_html: Your email address

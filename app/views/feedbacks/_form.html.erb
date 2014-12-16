@@ -1,10 +1,10 @@
 <%= form_tag feedback_path, :remote => request.xhr? do %>
   <%= label_tag 'message', "#{t 'toshokan.feedback.message_html'} <b class=\"dtu-red\">*</b>".html_safe %>
-  <%= text_area_tag 'message', params[:message], :tabindex => 1 %>
+  <%= text_area_tag 'message', message, :tabindex => 1 %>
   <%= label_tag 'name', t('toshokan.feedback.name_html') %>
-  <%= text_field_tag 'name', params[:name], :tabindex => 2 %>
+  <%= text_field_tag 'name', name, :tabindex => 2 %>
   <%= label_tag 'email', "#{t 'toshokan.feedback.email_html'} <b class=\"dtu-red\">*</b>".html_safe %>
-  <%= text_field_tag 'email', params[:email], :tabindex => 3 %>
+  <%= text_field_tag 'email', email, :tabindex => 3 %>
   <div style="margin: 10px 0px;">
     <%= t 'toshokan.forms.required_fields_html' %>
   </div>

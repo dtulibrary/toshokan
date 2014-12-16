@@ -148,6 +148,7 @@ module Toshokan
       :delay_jobs            => true,
       :delivery_support_mail => '',
       :book_suggest_mail     => '',
+      :feedback_mail         => '',
     }
 
     config.library_support = {
