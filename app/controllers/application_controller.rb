@@ -216,6 +216,11 @@ class ApplicationController < ActionController::Base
     GoogleAnalytics.set_custom_variable name, value
   end
 
+  # use this as an after_action to allow rendering in iframe on external site
+  def allow_iframe
+    response.headers.except! 'X-Frame-Options'
+  end
+
   # Call this to bail out quickly and easily when something is not found.
   # It will be rescued and rendered as a 404
   def not_found
