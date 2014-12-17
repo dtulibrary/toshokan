@@ -66,6 +66,8 @@ module Toshokan
     # Sanitize UTF8 input
     config.middleware.insert_before "Rack::Runtime", Rack::UTF8Sanitizer
 
+    # Make IE behave as a browser
+    config.action_dispatch.default_headers.merge!('X-UA-Compatible' => 'IE=edge')
 
     # Config to be overriden by local settings
     config.time_zone                      = 'CET'
