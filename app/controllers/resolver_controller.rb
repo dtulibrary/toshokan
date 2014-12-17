@@ -1,4 +1,4 @@
-class ResolverController < ApplicationController
+class ResolverController < CatalogController
 
   include Toshokan::PerformsSearches
   include Toshokan::Resolver
@@ -10,7 +10,6 @@ class ResolverController < ApplicationController
   end
 
   def index
-
     # get params from request query string to maintain multiple values with the same key
     openurl_params = CGI::parse(request.query_string)
 
@@ -22,7 +21,7 @@ class ResolverController < ApplicationController
         val.map! {|v| URI.unescape(v.to_s) }
       end
     end
-   openurl_params.delete_if{|k,v| k.start_with?("assistance") }
+    openurl_params.delete_if{|k,v| k.start_with?("assistance") }
 
     if(msg = redirect_to_sfx(openurl_params))
 
@@ -59,7 +58,7 @@ class ResolverController < ApplicationController
           # remove context object params in order to not include in search form hidden fields
           params.slice!(:controller, :action)
           params[:resolve] = true
-          render('catalog/show') and return
+          render('show') and return
         when 1
           # One record is found from the reference
           log_resolver_request("Found record #{@document.id}", openurl_params, request)

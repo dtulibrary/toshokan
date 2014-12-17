@@ -1,4 +1,4 @@
-<% if can? :view, :metadata %>
+<% if can? :view, :metadata && document[:cluster_id_ss] %>
   <dl class="dl-horizontal dl-invert">
     <dt>Detailed metadata</dt>
     <dd>
