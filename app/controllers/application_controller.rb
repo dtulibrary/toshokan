@@ -65,6 +65,7 @@ class ApplicationController < ActionController::Base
     # We force authentication in two situations:
     #  - The user has successfully logged in via DTU Cas before (i.e. the shunt cookie is set to 'dtu')
     #  - The user has never been logged in before  (i.e. the shunt hint cookie is not set), and originates from an identified campus IP
+    return false if walk_in_request?
     can?(:login, User) && (cookies[:shunt] == 'dtu') || (!cookies[:shunt_hint] && campus_request? && !params[:dlib])
   end
 
