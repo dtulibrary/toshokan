@@ -9,13 +9,9 @@ module MetricsHelper
   end
 
   def render_metrics document
-    result = ''
-    metrics.each do |e|
-      if send("render_#{e}?", document)
-        result += content_tag('div', send(e, document), :class => 'metric')
-      end
-    end
-    result.html_safe
+    metrics.select { |e| send("render_#{e}?", document) }.collect { |e|
+      content_tag( 'div', send(e, document), :class => 'metric' )
+    }.join.html_safe
   end
 
 end
