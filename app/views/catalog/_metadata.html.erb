@@ -1,8 +1,8 @@
-<% if can? :view, :metadata && document[:cluster_id_ss] %>
+<% if can?(:view, :metadata) && document[SolrDocument.unique_key] %>
   <dl class="dl-horizontal dl-invert">
     <dt>Detailed metadata</dt>
     <dd>
-      <%= link_to 'Open', metadata_path(document[:cluster_id_ss]), :target => '_blank', :class => 'btn btn-default btn-xs' %>
+      <%= link_to 'Open', metadata_path(:id => document[SolrDocument.unique_key]), :target => '_blank', :class => 'btn btn-default btn-xs' %>
     </dd>
   </dl>
 <% end %>
