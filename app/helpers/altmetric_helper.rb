@@ -1,5 +1,9 @@
 module AltmetricHelper
 
+  def render_altmetric_badge?(document)
+    mendeley_identifiers(document).any? { |k,v| [:doi, :pmid, :arxiv].include? k }
+  end
+
   def altmetric_badge(document, opts={})
     content_tag :div, class:'altmetric-wrapper' do
       identifiers = mendeley_identifiers(document)

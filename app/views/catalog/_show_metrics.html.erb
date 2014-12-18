@@ -1,9 +1,4 @@
 <div id="metrics" class="well tools">
   <h4><%= t 'toshokan.tools.metrics.title' %></h4>
-  <div class="metric">
-    <%= altmetric_badge(@document) %>
-  </div>
-  <div class="metric">
-    <%= dtu_orbit_backlink(@document) %>
-  </div>
+  <%= render_metrics(@document) %>
 </div>
