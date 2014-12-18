@@ -11,6 +11,9 @@ class CatalogController < ApplicationController
   before_filter :inject_last_query_into_params, only:[:show]
 
   configure_blacklight do |config|
+    # Ensure I18n load paths are loaded
+    Dir[Rails.root + 'config/locales/**/*.{rb,yml}'].each { |path| I18n.load_path << path }
+
     # Set resolver params
     config.resolver_params = {
       "mm" => "100%"
