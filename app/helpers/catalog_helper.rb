@@ -21,4 +21,18 @@ module CatalogHelper
     ['blacklight-' + controller_name, 'blacklight-' + [controller_name, controller_action].join('-')]
   end
 
+  # Extends default behavior to inject .homegrown class if content is from "local" source
+  def render_document_class(document = @document)
+    document_classes = super(document) ? [super(document)] : []
+    if homegrown_content?(document)
+      document_classes << "homegrown"
+    end
+    return document_classes.join(' ')
+  end
+
+  # Returns true if the document is from a "local" source
+  def homegrown_content?(document = @document)
+    ['orbit','sorbit'].include? document["source_ss"].first
+  end
+
 end
