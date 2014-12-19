@@ -2,6 +2,7 @@ class SearchHistoryController < ApplicationController
   layout 'with_search_bar'
 
   include Blacklight::Catalog::SearchContext
+  include Toshokan::BuildsToc
 
   before_filter :require_search_history_ability
 
