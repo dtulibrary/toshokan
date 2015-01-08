@@ -32,7 +32,7 @@ module CatalogHelper
 
   # Returns true if the document is from a "local" source
   def homegrown_content?(document = @document)
-    ['orbit','sorbit'].include? document["source_ss"].first
+    (document['source_ss'] || []).any? { |s| ['orbit','sorbit'].include? s }
   end
 
 end
