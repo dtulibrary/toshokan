@@ -1,15 +1,18 @@
 (function ($) {
     // Launch Mendeley Web Importer
     $(function () {
-        $('body').on('click', '.save-to-mendeley', function () {
+        $('body').on('click', '.save-to-mendeley-api', function () {
             var script = document.createElement('script')
             script.setAttribute('src','https://www.mendeley.com/minified/bookmarklet.js');
             $('body').append(script);
             return false;
         });
+
+        $('#documents .save-to-mendeley').parent().remove();
     });
     
     // Use Mendeley API
+    /*
     $(function () {
         $('body').on('click', '.save-to-mendeley-api', function () {
             $('#mendeley-modal').modal('show');
@@ -39,6 +42,7 @@
             return true;
         });
     });
+    */
 
     
 })(jQuery);
