@@ -1,0 +1,17 @@
+<%# default partial to display solr document fields in catalog show view -%>
+<%# Overrides blacklight version to make local boost feature work equally on search results AND show page.   -flyingzumwalt 08 Jan 2015 %>
+<div class="row">
+    <div class="col-sm-12 col-lg-12">
+        <%- if homegrown_content?(document) %>
+            <%= image_tag 'dtulogo_white.png', class:"homegrown-indicator" %>
+        <%end%>
+        <dl class="dl-horizontal  dl-invert metadata">
+          <% document_show_fields(document).each do |solr_fname, field| -%>
+              <% if should_render_show_field? document, field %>
+                  <dt class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_label document, :field => solr_fname %></dt>
+                  <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value document, :field => solr_fname %></dd>
+              <% end -%>
+          <% end -%>
+        </dl>
+    </div>
+</div>

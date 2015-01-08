@@ -10,6 +10,10 @@ Then(/^I should see "(.*?)" with(out)? local boost$/) do |title,negate|
   end
 end
 
+Then(/^the document should(n't| not)? have local boost$/) do |negate|
+  expect(page).send( (negate ? :to_not : :to), have_css('.document.homegrown') )
+end
+
 # XPath query for finding the .document div that corresponds to the given title
 # (finds the .document div that's showing the given title as its index_title link)
 def xpath_for_document(title)

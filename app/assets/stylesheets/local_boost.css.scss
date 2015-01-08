@@ -1,6 +1,5 @@
-#documents .document.homegrown {
+.document.homegrown {
   .documentHeader .index_title {
-    font-weight: bold;
   }
   @media (min-width: $screen-sm-min) {
     img.homegrown-indicator {
@@ -14,7 +13,10 @@
       border-left: 28px solid #D59292;
       padding-left: 25px;
       dt {
-        width: 93px; // reduce witdh to accommodate the 28px border and 15px margin on the dl
+        width: 93px; // reduce width to accommodate the 28px border and 15px margin on the dl
+      }
+      dd {
+        margin-left: 115px; // reduce indent to accommodate the 28px border and 15px margin on the dl
       }
     }
   }
@@ -23,9 +25,6 @@
     dl.metadata {
       border-left: 2px solid #D59292;
       padding-left: 5px;
-//      dt {
-//        width: 93px; // reduce witdh to accommodate the 28px border and 15px margin on the dl
-//      }
     }
   }
 
