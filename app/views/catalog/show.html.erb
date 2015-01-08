@@ -1,11 +1,11 @@
-<div id="content" class="col-md-9 show-document">
+<div id="content" class="col-md-9 col-sm-8 show-document">
 
   <%= render 'previous_next_doc' %>
 
-  <% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name) %>
+  <% @page_title = t('blacklight.search.show.title', :document_title => document_show_html_title, :application_name => application_name).html_safe %>
 
   <%# this should be in a partial -%>
-  <div id="document" class="<%= render_document_class %>">
+  <div id="document" class="document <%= render_document_class %>" itemscope itemtype="<%= @document.itemtype %>">
     <div id="<%= @document.id.to_s.parameterize %>">
 
       <% if params[:assistance_request] %>
@@ -16,18 +16,17 @@
 
       <div class="document media">
         <span class="pull-right hidden-phone">
-          <% if can? :tag, Bookmark %>
-          <div class="documentFunctions">
-            <% if params[:resolve].blank? %>
-              <%= render_tag_control @document %>
-            <% end %>
-          </div>
-          <% end %>
-
-          <% # Cover image %>
           <%= render_cover_image @document %>
         </span>
         <div class="media-body">
+          <h4>
+            <%= document_heading @document %>
+            <% if can? :tag, Bookmark %>
+              <% if params[:resolve].blank? %>
+                <%= render_index_doc_actions @document, :wrapping_class => 'index-document-functions' %>
+              <% end %>
+            <% end %>
+          </h4>
           <%= render_document_partial @document, :show %>
         </div>
         <%= render 'nal_modal' %>

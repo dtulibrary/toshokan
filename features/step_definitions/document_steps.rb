@@ -4,7 +4,6 @@ end
 
 When(/^I click on the title for the first of the results$/) do
   first('.index_title > a').click
-  #first('.index_title').find('a').click
 end
 
 When(/^I go to the next document$/) do
