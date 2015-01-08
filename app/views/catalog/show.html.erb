@@ -7,6 +7,23 @@
   <%# this should be in a partial -%>
   <div id="document" class="document <%= render_document_class %>" itemscope itemtype="<%= @document.itemtype %>">
     <div id="<%= @document.id.to_s.parameterize %>">
+      <% # Test display style for header + document functions 
+         # TODO: Put in helper + css and use on both index and show page if agreed upon
+      %>
+      <div style="display: table-row">
+        <div style="display: table-cell">
+          <h4>
+            <%= document_heading @document %>
+          </h4>
+        </div>
+        <div style="display: table-cell; width: 95px">
+          <% if can? :tag, Bookmark %>
+            <% if params[:resolve].blank? %>
+              <%= render_index_doc_actions @document, :wrapping_class => 'index-document-functions' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
 
       <% if params[:assistance_request] %>
         <%= render 'assistance_resolver' %>
@@ -14,19 +31,11 @@
 
       <% # bookmark/folder functions -%>
 
-      <div class="document media">
+      <div class="media">
         <span class="pull-right hidden-phone">
           <%= render_cover_image @document %>
         </span>
         <div class="media-body">
-          <h4>
-            <%= document_heading @document %>
-            <% if can? :tag, Bookmark %>
-              <% if params[:resolve].blank? %>
-                <%= render_index_doc_actions @document, :wrapping_class => 'index-document-functions' %>
-              <% end %>
-            <% end %>
-          </h4>
           <%= render_document_partial @document, :show %>
         </div>
         <%= render 'nal_modal' %>
