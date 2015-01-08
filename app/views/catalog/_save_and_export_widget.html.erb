@@ -1,5 +1,5 @@
 <div id="save_and_export-dropdown" class="dropdown pull-right  hidden-phone">
-  <%= link_to((t('toshokan.tools.save_and_export') + ' <span class="caret"></span>').html_safe, "#", :class => 'btn btn-default dropdown-toggle', 'data-toggle' => 'dropdown') %>
+  <%= link_to(('<span class="icon-share-square-o"></span>' + t('toshokan.tools.save_and_export') + ' <span class="caret"></span>').html_safe, "#", :class => 'btn btn-default dropdown-toggle', 'data-toggle' => 'dropdown') %>
   <ul class="dropdown-menu">
       <% if show_feature?(:mendeley) %>
         <li role="presentation"><%= link_to(content_tag('i', '', :class => 'icon-mendeley') + t('toshokan.tools.mendeley'), '#', :class => 'save-to-mendeley-api', :role => 'menuitem') %></li>
