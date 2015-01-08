@@ -16,7 +16,7 @@
             <%= document_heading @document %>
           </h4>
         </div>
-        <div style="display: table-cell; width: 95px">
+        <div style="display: table-cell; white-space: nowrap; text-align: right">
           <% if can? :tag, Bookmark %>
             <% if params[:resolve].blank? %>
               <%= render_index_doc_actions @document, :wrapping_class => 'index-document-functions' %>
