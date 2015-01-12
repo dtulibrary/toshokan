@@ -10,7 +10,7 @@
     }
     dl.metadata {
       margin-left: 15px;
-      border-left: 28px solid #D59292;
+      border-left: 28px solid #999;
       padding-left: 25px;
       dt {
         width: 93px; // reduce width to accommodate the 28px border and 15px margin on the dl
@@ -23,9 +23,8 @@
   @media (max-width: $screen-sm-min) {
     img.homegrown-indicator { display:none; }
     dl.metadata {
-      border-left: 2px solid #D59292;
+      border-left: 2px solid #999;
       padding-left: 5px;
     }
   }
-
 }
