@@ -41,18 +41,16 @@
                                t('toshokan.assistance_requests.forms.field_labels.book_isbn') %>
         <%= labeled_text_field 'assistance_request', 'book_publisher',
                                t('toshokan.assistance_requests.forms.field_labels.book_publisher') %>
-        <% if show_feature? :book_suggest %>
-          <div class="checkbox-group">
-            <%= check_box_tag 'assistance_request[book_suggest]' %>
-            <%= label_tag 'assistance_request[book_suggest]', 
-                          t('toshokan.assistance_requests.forms.sections.book.suggest_for_purchase.title') %>
-          </div>
-          <p class="indented">
-            <small class="dtu-grey">
-              <%= t 'toshokan.assistance_requests.forms.sections.book.suggest_for_purchase.text_html' %>
-            </small>
-          </p>
-        <% end %>
+        <div class="checkbox-group">
+          <%= check_box_tag 'assistance_request[book_suggest]' %>
+          <%= label_tag 'assistance_request[book_suggest]',
+                        t('toshokan.assistance_requests.forms.sections.book.suggest_for_purchase.title') %>
+        </div>
+        <p class="indented">
+          <small class="dtu-grey">
+            <%= t 'toshokan.assistance_requests.forms.sections.book.suggest_for_purchase.text_html' %>
+          </small>
+        </p>
       <% end %>
     </div>
   </div>
