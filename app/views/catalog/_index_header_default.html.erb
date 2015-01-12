@@ -3,13 +3,18 @@
       How many bootstrap columns need to be reserved
       for bookmarks control depends on size. 
   -%>
-   <h5 class="index_title">
-   <% counter = document_counter_with_offset(document_counter) %>
-   <span class="document-counter">
-   <%= t('blacklight.search.documents.counter', :counter => counter) if counter %>
-   </span>
-   <%= link_to_document document, :label=>document_show_link_field(document), :counter => counter %>
-   <% # bookmark functions for items/docs -%>
-   <%= render_index_doc_actions document, :wrapping_class => "index-document-functions" %>
-  </h5>
+  <div style="display:table-row">
+    <div style="display:table-cell">
+      <h5 class="index_title">
+        <% counter = document_counter_with_offset(document_counter) %>
+        <span class="document-counter">
+        <%= t('blacklight.search.documents.counter', :counter => counter) if counter %>
+        </span>
+        <%= link_to_document document, :label=>document_show_link_field(document), :counter => counter %>
+      </h5>
+    </div>
+    <div style="display:table-cell">
+      <%= render_index_doc_actions document, :wrapping_class => "index-document-functions" %>
+    </div>
+  </div>
 </div>

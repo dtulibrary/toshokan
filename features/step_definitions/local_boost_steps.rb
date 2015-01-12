@@ -17,5 +17,5 @@ end
 # XPath query for finding the .document div that corresponds to the given title
 # (finds the .document div that's showing the given title as its index_title link)
 def xpath_for_document(title)
-  "//div[contains(@class,'document') and div/h5[contains(@class,'index_title')]/a[text()='#{title}']]"
+  "//div[contains(@class,'document') and div/div/div/h5[contains(@class,'index_title')]/a[text()='#{title}']]"
 end
