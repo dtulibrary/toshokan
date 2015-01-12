@@ -3,6 +3,12 @@
     $(function () {
         $('body').on('click', '.save-to-mendeley-api', function () {
             var script = document.createElement('script')
+            $('.hide-from-mendeley').removeClass('hide-from-mendeley').addClass('Z3988');
+            if ($(this).attr('data-document')) {
+              $(this).closest('.document').find('.Z3988').addClass('no-remove');
+              $('.Z3988').not('.no-remove').addClass('hide-from-mendeley').removeClass('Z3988');
+              $('.Z3988').removeClass('no-remove');
+            }
             script.setAttribute('src','https://www.mendeley.com/minified/bookmarklet.js');
             $('body').append(script);
             return false;
