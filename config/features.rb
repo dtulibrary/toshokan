@@ -8,12 +8,12 @@ FeatureFlipper.features do
   end
 
   in_state :staging do
-    feature :mendeley, :description => "Use Mendeley API instead of Web Importer"
   end
 
   in_state :live do
     feature :alis, :description => "Show loan info from Alis"
     feature :cff_resolver, :description => "Use OpenURL resolver in CFFs"
+    feature :mendeley, :description => "Use Mendeley API instead of Web Importer"
   end
 
 end
