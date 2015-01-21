@@ -353,7 +353,7 @@ en:
         book: 'Book'
         journal: 'Journal'
         other: 'Other'
-        thesis: 'Student thesis'
+        thesis: 'Thesis'
       find_in_issue: 'Find all articles in same issue'
       find_by_author: "Find other material by %{author}"
       find_about_subject: "Find other material about %{subject}"
