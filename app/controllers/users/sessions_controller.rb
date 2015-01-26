@@ -164,6 +164,13 @@ class Users::SessionsController < ApplicationController
           redirect_to switch_user_path
           return
         end
+        
+        # Update user info on switch user
+        user_data = Riyosha.find(new_user_id)
+        if user_data
+          user = User.create_or_update_with_user_data(new_user.provider, user_data)
+        end
+
         logger.info "User #{current_user.id}(#{current_user}) impersonates #{new_user.id}(#{new_user})"
         session[:user_id] = new_user.id
       end
