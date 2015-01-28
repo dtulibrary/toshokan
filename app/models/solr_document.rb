@@ -165,15 +165,29 @@ class SolrDocument
 
   private
 
+  # Map format to OpenURL genre
+  def openurl_genre format
+    {
+      'other' => 'unknown',
+    }[format.to_s] || format.to_s
+  end
+
+  # Map format to OpenURL format
+  def openurl_format format
+    {
+      'article' => 'journal',
+    }[format.to_s] || format.to_s
+  end
+
   def create_openurl
     # Note that multiple values for a metadata key (i.e. rft.au) is currently not supported
     # (not supported by the OpenURL gem)
 
+    genre  = openurl_genre(self[:format])
+    format = openurl_format(self[:format])
+
     @context_object = OpenURL::ContextObject.new
     @context_object.referrer.add_identifier('info:sid/findit.dtu.dk')
-    format = self[:format]
-    genre = format
-    format = "journal" if format == "article"
     @context_object.referent.set_format(format)
     @context_object.referent.set_metadata('genre', genre)
 
@@ -191,12 +205,14 @@ class SolrDocument
     self.to_semantic_values.each do |field, value|
       case field
       when :title
-        key = "atitle"
-        if format == "book"
-          key = "btitle"
-        elsif format == "journal" && genre != "article"
-          key = "jtitle"
-        end
+        key =
+          if format == "book"
+            'btitle'
+          elsif format == "journal" && genre != "article"
+            'jtitle'
+          else
+            'atitle'
+          end
         @context_object.referent.set_metadata(key, value.first)
       when :journal
         @context_object.referent.set_metadata("jtitle", value.first)
