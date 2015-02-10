@@ -168,7 +168,7 @@ class SolrDocument
   # Map format to OpenURL genre
   def openurl_genre format
     {
-      'other' => 'unknown',
+      'other' => 'article',
     }[format.to_s] || format.to_s
   end
 
@@ -176,6 +176,7 @@ class SolrDocument
   def openurl_format format
     {
       'article' => 'journal',
+      'other'   => 'journal',
     }[format.to_s] || format.to_s
   end
 
