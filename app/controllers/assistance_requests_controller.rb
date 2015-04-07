@@ -22,9 +22,23 @@ class AssistanceRequestsController < ApplicationController
 
   def new
     if can? :request, :assistance
-      @genre = genre_from params
+      if params[:record_id]
+        begin
+          response, document = get_solr_response_for_doc_id(params[:record_id])
+          # No CFF for journals
+          head :bad_argument and return if document['format'] == 'journal'
 
-      if @genre
+          @genre = determine_assistance_request_genre(document)
+          # No pre-populated CFF for journal articles, conference articles or books
+          head :not_found and return if [:journal_article, :conference_article, :book].include? @genre
+
+          params.merge! :assistance_request => document_to_assistance_request_params(document, @genre), :genre => @genre
+          @assistance_request = assistance_request_from(params)
+        rescue Blacklight::Exceptions::InvalidSolrID
+          head :not_found and return
+        end
+      elsif params[:genre]
+        @genre              = genre_from(params)
         @assistance_request = assistance_request_from(params) || assistance_request_for(@genre)
         head :bad_argument and return unless @assistance_request
       else
@@ -48,10 +62,6 @@ class AssistanceRequestsController < ApplicationController
 
           action = params[:button] || :create
 
-          unless can? :select, :pickup_location
-            assistance_request.physical_location = current_user.address
-          end
-
           case action.to_sym
           when :confirm
             if assistance_request.valid?
@@ -74,9 +84,14 @@ class AssistanceRequestsController < ApplicationController
               order.order_events << OrderEvent.new(:name => 'request_manual', :data => assistance_request.id)
               order.save!
 
-              LibrarySupport.delay.submit_assistance_request current_user, assistance_request, assistance_request_url(:id => assistance_request.id)
-              SendIt.delay.send_book_suggestion current_user, assistance_request if assistance_request.book_suggest
-              flash[:notice] = 'Your request was sent to a librarian'
+              if assistance_request.is_a?(PatentAssistanceRequest)
+                SendIt.delay.send_patent_request(assistance_request)
+                flash[:notice] = "Your request was sent to DTU PatLib"
+              else
+                LibrarySupport.delay.submit_assistance_request current_user, assistance_request, assistance_request_url(:id => assistance_request.id)
+                SendIt.delay.send_book_suggestion current_user, assistance_request if assistance_request.book_suggest
+                flash[:notice] = 'Your request was sent to a librarian'
+              end
               redirect_to order_status_path(:uuid => order.uuid)
             else
               flash[:error] = assistance_request.errors
@@ -86,8 +101,8 @@ class AssistanceRequestsController < ApplicationController
             @genre = genre
             @assistance_request = assistance_request
 
-            if show_feature?(:cff_resolver)
-              if assistance_request.valid?
+            if assistance_request.valid?
+              unless action == :back
                 Rails.logger.info "CFF request"
                 if params[:resolved]
                   Rails.logger.info "CFF ignored resolver results"
@@ -103,17 +118,11 @@ class AssistanceRequestsController < ApplicationController
                     redirect_to resolve_path + "?#{openurl_str}&#{{'assistance_request' => params['assistance_request']}.to_query}&assistance_genre=#{params["genre"]}" and return
                   end
                 end
-              else
-                flash.now[:error] = 'One or more required fields are empty'
-                params.delete :button
-                render :new
               end
             else
-              unless assistance_request.valid?
-                flash.now[:error] = 'One or more required fields are empty'
-                params.delete :button
-                render :new
-              end
+              flash.now[:error] = 'One or more required fields are empty'
+              params.delete :button
+              render :new
             end
           end
         else
@@ -121,18 +130,6 @@ class AssistanceRequestsController < ApplicationController
         end
       else
         head :bad_request
-      end
-    else
-      head :not_found
-    end
-  end
-
-  def show
-    if can? :request, :assistance
-      if AssistanceRequest.exists? params[:id]
-        @assistance_request = AssistanceRequest.find params[:id]
-      else
-        head :not_found
       end
     else
       head :not_found
@@ -155,30 +152,130 @@ class AssistanceRequestsController < ApplicationController
     end
   end
 
-  def genre_from params
+  def genre_from(params)
     params[:genre].to_sym if params[:genre]
   end
 
-  def assistance_request_from params
-    case genre_from params
-    when :journal_article
-      JournalArticleAssistanceRequest.new params_for_assistance_request(JournalArticleAssistanceRequest)
-    when :conference_article
-      ConferenceArticleAssistanceRequest.new params_for_assistance_request(ConferenceArticleAssistanceRequest)
-    when :book
-      BookAssistanceRequest.new params_for_assistance_request(BookAssistanceRequest)
+  def determine_assistance_request_genre(document)
+    return :thesis  if document['format'] == 'thesis'
+    return :journal if document['format'] == 'journal'
+
+    if document.has_key?('subformat_s')
+      case document['subformat_s']
+      when 'report'
+        :report
+      when 'standard'
+        :standard
+      when 'patent'
+        :patent
+      when 'journal_article'
+        :journal_article
+      when 'conference_paper'
+        :conference_article
+      when 'book'
+        :book
+      else
+        :other
+      end
+    else
+      case document['format']
+      when 'article'
+        :journal_article
+      when 'book'
+        :book
+      when 'other'
+        :other
+      end
     end
   end
 
-  def assistance_request_for genre
-    case genre
-    when :journal_article
-      JournalArticleAssistanceRequest.new
-    when :conference_article
-      ConferenceArticleAssistanceRequest.new
-    when :book
-      BookAssistanceRequest.new
+  # Returns a proc that will get the contents of a doc field or return '?'
+  # Used to populate required fields
+  # TODO: This is the easy solution. Would be nice if required fields
+  #       were turned off when populating from a record but that requires
+  #       changes to the model validations and stuff on the lower levels.
+  def required_field_proc(doc_field)
+    -> { (doc_field.is_a?(Array) ? doc_field.first : doc_field) || '?' }
+  end
+
+  def document_to_assistance_request_params(document, genre)
+    logger.debug "Document is #{document}"
+
+    assistance_request_params = 
+      case genre
+      when :thesis
+        { 'thesis_title'     => required_field_proc(document['title_ts']),
+          'thesis_author'    => required_field_proc(document['author_ts']),
+          'thesis_publisher' => 'publisher_ts',
+          'thesis_type'      => -> { subformat_to_thesis_type(document['subformat_s']) },
+          'thesis_year'      => required_field_proc(document['pub_date_tis']),
+          'thesis_pages'     => 'journal_page_ssf' }
+      when :report
+        { 'report_title'     => required_field_proc(document['title_ts']),
+          'report_author'    => 'author_ts',
+          'report_publisher' => 'publisher_ts',
+          'report_doi'       => 'doi_ss',
+          'host_title'       => 'journal_title_ss',
+          'host_isxn'        => -> { (document['issn_ss'] || document['isbn_ss'] || []).join(',') },
+          'host_volume'      => 'journal_vol_ssf',
+          'host_issue'       => 'journal_issue_ssf',
+          'host_year'        => required_field_proc(document['pub_date_tis']),
+          'host_pages'       => 'journal_page_ssf' }
+      when :standard
+        { 'standard_title'     => required_field_proc(document['title_ts']),
+          'standard_subtitle'  => 'subtitle_ts',
+          'standard_publisher' => 'publisher_ts',
+          'standard_doi'       => 'doi_ss',
+          'standard_isbn'      => -> { (document['isbn_ss'] || []).join(',') },
+          'standard_year'      => required_field_proc(document['pub_date_tis']),
+          'standard_pages'     => 'journal_page_ssf' }
+      when :patent
+        { 'patent_title'    => 'title_ts',
+          'patent_inventor' => 'author_ts',
+          'patent_year'     => required_field_proc(document['pub_date_tis']),
+          'patent_country'  => 'publication_place_ts' }
+      when :other
+        { 'other_title'     => required_field_proc(document['title_ts']),
+          'other_author'    => 'author_ts',
+          'other_publisher' => 'publisher_ts',
+          'other_doi'       => 'doi_ss',
+          'host_title'      => 'journal_title_ss',
+          'host_isxn'       => -> { (document['issn_ss'] || document['isbn_ss'] || []).join(',') },
+          'host_volume'     => 'journal_vol_ssf',
+          'host_issue'      => 'journal_issue_ssf',
+          'host_year'       => required_field_proc(document['pub_date_tis']),
+          'host_pages'      => 'journal_page_ssf' }
+      else
+        {}
+      end
+      
+    logger.debug "Assistance request params is #{assistance_request_params}"
+
+    result = {}
+
+    assistance_request_params.each do |ar_field, doc_field|
+      if doc_field.is_a?(Proc)
+        result[ar_field] = doc_field.()
+      else
+        result[ar_field] = document[doc_field].is_a?(Array) ? document[doc_field].try(:first) : document[doc_field]
+      end
     end
+
+    logger.debug "Assistance request is #{result}"
+    result
+  end
+
+  def subformat_to_thesis_type(subformat)
+    subformat
+  end
+
+  def assistance_request_from params
+    type = Module.const_get("#{params[:genre]}_assistance_request".classify)
+    type.new params_for_assistance_request(type)
+  end
+
+  def assistance_request_for genre
+    Module.const_get("#{params[:genre]}_assistance_request".classify).new
   end
 
   def params_for_assistance_request( assistance_request_class=AssistanceRequest )

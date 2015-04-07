@@ -4,6 +4,10 @@ module DocumentHelper
     I18n.t("toshokan.catalog.formats.#{args[:document][args[:field]]}")
   end
 
+  def render_subtype args
+    I18n.t("toshokan.catalog.subformats.#{args[:document][args[:field]]}")
+  end
+
   # needed for synthesized records via resolver
   def render_link_rel_alternates(document=@document, options = {})
     params[:resolve].blank? ? super : ""

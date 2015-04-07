@@ -90,7 +90,7 @@ module OrdersHelper
 
   def render_order_item order
     if order.assistance_request_id
-      render :partial => '/orders/assistance_request_item', :locals => {:order => order}
+      render :partial => "/orders/#{order.assistance_request.class.name.underscore}_item", :locals => {:order => order, :assistance_request => order.assistance_request}
     else
       render :partial => '/orders/article_item', :locals => {:order => order}
     end
@@ -100,6 +100,8 @@ module OrdersHelper
   end
 
   def render_order_event_data order, event
+    return if event.name == 'request_manual'
+
     case event.name
     when /.*confirmed/
       t 'toshokan.orders.supplier_order_id', :supplier => t("toshokan.orders.suppliers.#{order.supplier}"), :order_id => order.supplier_order_id
@@ -110,11 +112,15 @@ module OrdersHelper
     when 'delivery_manual'
       url = "#{LibrarySupport.url}/issues/#{event.data}"
       link_to url, url
-    when 'request_manual'
-      link_to t('toshokan.orders.view_order'), assistance_request_path(:id => order.assistance_request_id)
     else
       event.data
     end
   end
 
+  def render_scan_option?
+    can?(:order, :article) && 
+    (params[:resolve].blank? || can?(:search, :dtu)) &&
+    (@document['format'] == 'article') &&
+    (@document['subformat_s'].blank? || @document['subformat_s'] == 'journal_article')
+  end
 end

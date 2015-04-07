@@ -1,0 +1,21 @@
+<h4><%= assistance_request.report_title %></h4>
+<% unless assistance_request.report_doi.blank? %>
+  <div>
+    DOI: <%= assistance_request.report_doi %>
+  </div>
+<% end %>
+<% unless assistance_request.report_number.blank? %>
+  <div>
+    Report number: <%= assistance_request.report_number %>
+  </div>
+<% end %>
+<div>
+  By <%= assistance_request.report_author || '?' %>
+</div>
+<% unless assistance_request.report_publisher.blank? %>
+  <div>
+    Published by <%= assistance_request.report_publisher %>
+  </div>
+<% end %>
+
+

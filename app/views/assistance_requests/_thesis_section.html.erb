@@ -1,0 +1,57 @@
+<div class="section thesis-section">
+  <h5 class="underlined">
+    <%= t 'toshokan.assistance_requests.forms.sections.thesis.title' %>
+  </h5>
+  <div class="row">
+    <div class="col-md-6">
+      <% if params[:button] == 'create' -%>
+        <%= render :partial => 'submitted_values',
+          :locals => {
+            :field_prefix => 'thesis_',
+            :fields => ['title', 'author', 'affiliation', 'publisher']
+          } %>
+      <% else -%>
+        <%= labeled_text_field 'assistance_request', 'thesis_title',
+                               t('toshokan.assistance_requests.forms.field_labels.thesis_title'),
+                               :required => true %>
+        <%= labeled_text_field 'assistance_request', 'thesis_author',
+                               t('toshokan.assistance_requests.forms.field_labels.thesis_author'),
+                               :required => true %>
+        <%= labeled_text_field 'assistance_request', 'thesis_affiliation',
+                               t('toshokan.assistance_requests.forms.field_labels.thesis_affiliation') %>
+        <%= labeled_text_field 'assistance_request', 'thesis_publisher',
+                               t('toshokan.assistance_requests.forms.field_labels.thesis_publisher') %>
+      <% end %>
+    </div>
+    <div class="col-md-6">
+      <% if params[:button] == 'create' -%>
+        <% unless @assistance_request.thesis_type.blank? %>
+          <dl>
+            <dt><%= t('toshokan.assistance_requests.forms.field_labels.thesis_type') %></dt>
+            <dd><tt><%= t("toshokan.assistance_requests.thesis_types.#{@assistance_request.thesis_type}") %></tt></dd>
+          </dl>
+        <% end %>
+        <%= render :partial => 'submitted_values',
+          :locals => {
+            :field_prefix => 'thesis_',
+            :fields => ['year', 'pages']
+          } %>
+      <% else -%>
+
+        <%= label_tag 'assistance_request[thesis_type]', t('toshokan.assistance_requests.forms.field_labels.thesis_type') %>
+        <%= select_tag 'assistance_request[thesis_type]', thesis_type_options(@assistance_request), :include_blank => 'Select' %>
+        <div class="row">
+          <div class="col-md-6">
+            <%= labeled_text_field 'assistance_request', 'thesis_year',
+                                   t('toshokan.assistance_requests.forms.field_labels.thesis_year'),
+                                   :required => true %>
+          </div>
+          <div class="col-md-6">
+            <%= labeled_text_field 'assistance_request', 'thesis_pages',
+                                   t('toshokan.assistance_requests.forms.field_labels.thesis_pages') %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

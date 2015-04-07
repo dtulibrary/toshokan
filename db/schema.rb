@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141208130818) do
+ActiveRecord::Schema.define(version: 20150304133938) do
 
   create_table "assistance_requests", force: true do |t|
     t.string   "type"
@@ -46,6 +46,43 @@ ActiveRecord::Schema.define(version: 20141208130818) do
     t.text     "auto_cancel"
     t.boolean  "book_suggest",          default: false
     t.text     "library_support_issue"
+    t.text     "thesis_title"
+    t.text     "thesis_author"
+    t.text     "thesis_affiliation"
+    t.text     "thesis_publisher"
+    t.text     "thesis_type"
+    t.text     "thesis_year"
+    t.text     "thesis_pages"
+    t.text     "report_title"
+    t.text     "report_author"
+    t.text     "report_publisher"
+    t.text     "report_doi"
+    t.text     "report_number"
+    t.text     "host_title"
+    t.text     "host_isxn"
+    t.text     "host_volume"
+    t.text     "host_issue"
+    t.text     "host_year"
+    t.text     "host_pages"
+    t.text     "host_series"
+    t.text     "standard_title"
+    t.text     "standard_subtitle"
+    t.text     "standard_publisher"
+    t.text     "standard_doi"
+    t.text     "standard_number"
+    t.text     "standard_isbn"
+    t.text     "standard_year"
+    t.text     "standard_pages"
+    t.text     "patent_title"
+    t.text     "patent_inventor"
+    t.text     "patent_number"
+    t.text     "patent_year"
+    t.text     "patent_country"
+    t.text     "other_title"
+    t.text     "other_author"
+    t.text     "other_publisher"
+    t.text     "other_doi"
+    t.text     "physical_delivery"
   end
 
   create_table "bookmarks", force: true do |t|

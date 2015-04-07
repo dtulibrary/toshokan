@@ -1,0 +1,45 @@
+<div class="section patent-section">
+  <h5 class="underlined">
+    <%= t 'toshokan.assistance_requests.forms.sections.patent.title' %>
+  </h5>
+  <div class="row">
+    <div class="col-md-6">
+      <% if params[:button] == 'create' %>
+        <%= render :partial => 'submitted_values',
+          :locals => {
+            :field_prefix => 'patent_',
+            :fields => ['title', 'inventor', 'number']
+          } %>
+      <% else %>
+        <%= labeled_text_field 'assistance_request', 'patent_title',
+                               t('toshokan.assistance_requests.forms.field_labels.patent_title'),
+                               :required => true %>
+        <%= labeled_text_field 'assistance_request', 'patent_inventor',
+                               t('toshokan.assistance_requests.forms.field_labels.patent_inventor') %>
+        <%= labeled_text_field 'assistance_request', 'patent_number',
+                               t('toshokan.assistance_requests.forms.field_labels.patent_number') %>
+      <% end %>
+    </div>
+    <div class="col-md-6">
+      <% if params[:button] == 'create' %>
+        <%= render :partial => 'submitted_values',
+          :locals => {
+            :field_prefix => 'patent_',
+            :fields => ['year', 'country']
+          } %>
+      <% else %>
+        <div class="row">
+          <div class="col-md-6">
+            <%= labeled_text_field 'assistance_request', 'patent_year',
+                                   t('toshokan.assistance_requests.forms.field_labels.patent_year'),
+                                   :required => true %>
+          </div>
+          <div class="col-md-6">
+            <%= labeled_text_field 'assistance_request', 'patent_country',
+                                   t('toshokan.assistance_requests.forms.field_labels.patent_country') %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

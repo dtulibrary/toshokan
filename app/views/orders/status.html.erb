@@ -2,9 +2,20 @@
   <div class="col-md-6">
     <h4><%= t 'toshokan.orders.order_status' %></h4>
 
-    <dl>
-      <%= render @order.order_events %>
-    </dl>
+    <% if @order.assistance_request_id && @order.assistance_request.is_a?(PatentAssistanceRequest) %>
+      <p>
+        An email with the patent request has been sent to DTU PatLib on your behalf and a copy was sent to you.
+      </p>
+      <p>
+        Patent requests are handled via email communication with DTU PatLib after the initial request
+        has been made in DTU Findit. This means you will not see any status updates for the patent
+        request on this page.
+      </p>
+    <% else %>
+      <dl>
+        <%= render @order.order_events %>
+      </dl>
+    <% end %>
 
     <% if can?(:reorder, Order) && !@order.cancelled? && !@order.assistance_request_id %>
       <p><%= link_to t('toshokan.orders.reorder'), order_reorder_path(@order.uuid) %></p>

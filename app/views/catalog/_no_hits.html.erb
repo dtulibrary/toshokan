@@ -21,8 +21,8 @@
     <% end -%>
 
     <% if can? :request, :assistance -%>
-      <div class="row">
-        <% [:journal_article, :conference_article, :book].each do |genre| -%>
+      <div class="row cant-find-links">
+        <% [:journal_article, :conference_article, :book, :thesis, :report, :standard, :patent].each do |genre| -%>
           <div class="col-md-4">
             <%= link_to t("toshokan.assistance_requests.genres.#{genre}"),
                 new_assistance_request_path(:genre => genre), :class => 'btn btn-default request-assistance-link' %>

@@ -1,0 +1,30 @@
+<h4>
+  <%= assistance_request.standard_title %>
+  <% unless assistance_request.standard_subtitle.blank? %>
+    <br>
+    <small><%= assistance_request.standard_subtitle %></small>
+  <% end %>
+</h4>
+<% unless assistance_request.standard_doi.blank? %>
+  <div>
+    DOI: <%= assistance_request.standard_doi %>
+  </div>
+<% end %>
+<% unless assistance_request.standard_number.blank? %>
+  <div>
+    Standard number: <%= assistance_request.standard_number %>
+  </div>
+<% end %>
+<% unless assistance_request.standard_isbn.blank? %>
+  <div>
+    ISBN: <%= assistance_request.standard_isbn %>
+  </div>
+<% end %>
+<div>
+  Published in <%= assistance_request.standard_year %><%= assistance_request.standard_publisher.blank? ? '' : ' by ' + assistance_request.standard_publisher %>
+</div>
+<% unless assistance_request.standard_pages.blank? %>
+  <div>
+    Pages: <%= assistance_request.standard_pages %>
+  </div>
+<% end %>

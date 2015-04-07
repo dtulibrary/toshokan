@@ -1,0 +1,13 @@
+<div class="well search-tips">
+  <% if @genre != :other %>
+    <h4><%= t('toshokan.assistance_requests.search_tips.title.specific_genre', 
+              :genre => t("toshokan.assistance_requests.genres.#{@genre}").downcase) %>:</h4>
+  <% else %>
+    <h4><%= t 'toshokan.assistance_requests.search_tips.title.generic' %>:</h4>
+  <% end %>
+  <ul class="">
+    <% search_tips(@genre).each do |search_tip| %>
+      <li><%= search_tip.html_safe %></li>
+    <% end %>
+  </ul>
+</div>

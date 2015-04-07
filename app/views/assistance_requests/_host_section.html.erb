@@ -1,0 +1,38 @@
+<div class="section host-section">
+  <h5 class="underlined">
+    <%= t 'toshokan.assistance_requests.forms.sections.host.title' %>
+  </h5>
+  <% if params[:button] == 'create' -%>
+    <%= render :partial => 'submitted_values', 
+      :locals => { 
+        :field_prefix => 'host_', 
+        :fields => ['title', 'isxn', 'volume', 'issue', 'year', 'pages']
+      } %>
+  <% else -%>
+    <%= labeled_text_field 'assistance_request', 'host_title',
+                           t('toshokan.assistance_requests.forms.field_labels.host_title') %>
+    <%= labeled_text_field 'assistance_request', 'host_isxn',
+                           t('toshokan.assistance_requests.forms.field_labels.host_isxn') %>
+    <div class="row">
+      <div class="col-md-6">
+        <%= labeled_text_field 'assistance_request', 'host_volume',
+                               t('toshokan.assistance_requests.forms.field_labels.host_volume') %>
+      </div>
+      <div class="col-md-6">
+        <%= labeled_text_field 'assistance_request', 'host_issue',
+                               t('toshokan.assistance_requests.forms.field_labels.host_issue') %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <%= labeled_text_field 'assistance_request', 'host_year',
+                               t('toshokan.assistance_requests.forms.field_labels.host_year'),
+                               :required => true %>
+      </div>
+      <div class="col-md-6">
+        <%= labeled_text_field 'assistance_request', 'host_pages',
+                               t('toshokan.assistance_requests.forms.field_labels.host_pages') %>
+      </div>
+    </div>
+  <% end -%>
+</div>

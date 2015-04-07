@@ -151,6 +151,7 @@ module Toshokan
       :delivery_support_mail => '',
       :book_suggest_mail     => '',
       :feedback_mail         => '',
+      :patlib_mail           => '',
     }
 
     config.library_support = {

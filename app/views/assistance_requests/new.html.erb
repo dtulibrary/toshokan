@@ -1,12 +1,11 @@
 <% if can? :request, :assistance -%>
   <div class="col-md-12 request-assistance-form">
-    <h4>Have DTU Library get the 
-      <%= t("toshokan.assistance_requests.genres.#{@genre}").downcase %> for you
-      <span style="font-size: 0.8em; font-weight: normal">
-        [<a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=15084512">What's this?</a>]
-      </span>
-    </h4>
+    <%= render 'search_tips' %>
+    <h4>If unsuccessful, have DTU Library get it for you</h4>
     <%= form_tag assistance_requests_path(:genre => @genre) do %>
+      <% if params[:record_id] %>
+        <%= hidden_field_tag :record_id, params[:record_id] %>
+      <% end %>
       <%= render @assistance_request.class.name.underscore %>
     <% end %>
   </div>

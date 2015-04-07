@@ -12,8 +12,17 @@ Given(/^I(?:'ve| have) searched for "(.*?)"$/) do |q|
 end
 
 When(/^I search for "(.*?)"$/) do |query|
+  ensure_on_catalog_page
   fill_in('q', :with => query)
   click_button('Find it')
+end
+
+When %r{^I search for something that gives zero hits$} do
+  step %{I search for "source:undefined_source"}
+end
+
+When %r{^I search for something that gives one or more hits$} do
+  step %{I search for "*:*"}
 end
 
 Given(/^I search for "(.*?)" in the title$/) do |query|
@@ -28,10 +37,12 @@ Given(/^I search for "(.*?)" in the "(.*?)" field$/) do |query, field|
 end
 
 Given(/^I(?:'ve| have) limited the "(.*?)" facet to "(.*?)"$/) do |facet_name, facet_value|
-  click_link(facet_value)
+  within '#facets' do
+    click_link(facet_value)
+  end
 end
 
-Then(/^I should see the result page$/) do
+Then(/^I should see the (?:search )?result page$/) do
   expect(current_path).to match(/^\/(en|da)\/catalog$/)
 end
 
@@ -55,4 +66,12 @@ end
 
 Then(/^I should(n't| not)? see the "can't find it\?" links$/) do |negate|
   expect(page).send(negate ? :to_not : :to, have_selector('.cant-find-links'))
+end
+
+def ensure_on_catalog_page
+  begin
+    page.find_button 'Find it'
+  rescue Capybara::ElementNotFound
+    visit catalog_index_path
+  end
 end

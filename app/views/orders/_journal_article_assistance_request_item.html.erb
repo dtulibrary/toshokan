@@ -1,0 +1,4 @@
+<b>Journal article:</b>
+<% ['article', 'journal'].each do |section| %>
+  <%= render :partial => "orders/#{section}_info", :locals => {:assistance_request => assistance_request} %>
+<% end %>

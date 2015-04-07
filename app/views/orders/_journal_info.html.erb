@@ -1,0 +1,13 @@
+<div class="host">
+  In
+  <span class="title"><%= assistance_request.journal_title %></span>
+  <% case %>
+  <% when ['volume', 'issue', 'year', 'pages'].none? {|field| assistance_request.send("journal_#{field}").blank?} %>
+    &mdash; <%= assistance_request.journal_volume %> (<%= assistance_request.journal_issue %>), <%= assistance_request.journal_year %>, p. <%= assistance_request.journal_pages %>
+  <% when ['volume', 'year', 'pages'].none? {|field| assistance_request.send("journal_#{field}").blank?} %>
+    &mdash; <%= assistance_request.journal_volume %>, <%= assistance_request.journal_year %>, p. <%= assistance_request.journal_pages %>
+  <% end %>
+  <% unless assistance_request.journal_issn.blank? %>
+    <div>ISSN: <%= assistance_request.journal_issn %></div>
+  <% end %>
+</div>

@@ -15,14 +15,11 @@ Then (/^I should(n't| not)? see the search page$/) do |negate|
 end
 
 Then (/^I should(n't| not)? see the "(.*?)" link$/) do |negate, expected|
-  found = false
-  # Test all links
-  page.body.scan(/<a .*?>(.*?)<\/a>/) do |link, _|
-    # Trim spaces, normalize spaces, remove markup
-    actual = link.gsub(/^\s+|<.*?>|\s+$/, '').gsub(/\s+/, ' ')
-    found ||= actual == expected
+  begin
+    expect(find_link(expected).visible?).to (negate ? be_falsey : be_truthy)
+  rescue Capybara::ElementNotFound => e
+    raise e unless negate
   end
-  expect(found).to (negate ? be_falsey : be_truthy)
 end
 
 Then (/^render the page$/) do

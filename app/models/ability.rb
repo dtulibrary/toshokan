@@ -18,8 +18,16 @@ class Ability
     when user.dtu?
       # Logged in using DTU CAS
       can :search,  :dtu
-      can :request, :assistance      if user.employee? || user.student?
-      can :view,    :my_publications if user.employee?
+      
+      if user.employee?
+        can :request, :assistance
+        can :request, :deliver_by_internal_mail
+        can :view,    :my_publications
+      end
+
+      if user.student?
+        can :request, :assistance
+      end
     when user.public?
       # Logged in from outside DTU Campus
       can :search,  :public

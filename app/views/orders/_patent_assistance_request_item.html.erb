@@ -1,0 +1,4 @@
+<b>Patent:</b>
+<% ['patent'].each do |section| %>
+  <%= render :partial => "orders/#{section}_info", :locals => {:assistance_request => assistance_request} %>
+<% end %>

@@ -3,13 +3,17 @@
 .request-assistance-form {
   margin-bottom: 3em;
 
-  input[type='text'], textarea {
+  input[type='text'], textarea, select {
     box-sizing: border-box;
     width: 100%;
   }
 
   .section {
     margin-bottom: 2em;
+  }
+
+  .search-tips li {
+    margin-bottom: 0px;
   }
 }
 

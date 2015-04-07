@@ -1,0 +1,7 @@
+<div class="host">
+  At
+  <span class="title"><%= assistance_request.conference_title %></span>, <%= assistance_request.conference_year %>
+  <% unless assistance_request.conference_isxn.blank? %>
+    <div>ISSN or ISBN: <%= assistance_request.conference_isxn %></div>
+  <% end %>
+</div>

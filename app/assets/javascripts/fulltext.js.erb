@@ -44,30 +44,35 @@
           }
         }
       });
-    }
-    else if($('body.blacklight-catalog-show').length) {
-
+    } else if ($('body.blacklight-catalog-show').length > 0) {
       var fulltext = $(".fulltext-header");
-      if(fulltext.length && $('.Z3988').length > 0) {
 
-        var openUrl = $(".Z3988").attr("title"),
-            spinProperties = {length: 4, width: 3, radius: 5, top: 0},
-            showBookLoan = openUrl.indexOf("alis_id") > -1,
-            count = showBookLoan ? 2 : 1,
-            epilogue =
-              function() {
-                count--;
-                if(count == 0) {
-                  fulltext.spin(false);
-                  if($(".getit-entry").children().length == 0) {
-                    if(showBookLoan) {
-                      fulltext.after("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available_alis') %></p></li>");
-                    } else {
-                      fulltext.after("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available') %></p></li>");
-                    }
-                  }
-                }
+      if (fulltext.length && $('.Z3988').length > 0) {
+        var openUrl              = $(".Z3988").attr("title");
+        var spinProperties       = { length: 4, width: 3, radius: 5, top: 0 };
+        var showBookLoan         = openUrl.indexOf("alis_id") > -1;
+        var count                = showBookLoan ? 2 : 1;
+        var accessProhibited     = $('#fulltext .fulltext-item.access-prohibited');
+        var requestAssistance    = $('#fulltext .fulltext-item.request-assistance');
+        var existingGetItEntries = $('#fulltext .getit-entry').length;
+
+        var epilogue = function() {
+          count--;
+          if(count == 0) {
+            fulltext.spin(false);
+            if($(".getit-entry").length == existingGetItEntries) {
+              if(showBookLoan) {
+                fulltext.after("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available_alis') %></p></li>");
+              } else if (requestAssistance.length > 0) {
+                requestAssistance.removeClass('hide');
+              } else if (accessProhibited.length > 0) {
+                accessProhibited.removeClass('hide');
+              } else {
+                fulltext.after("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available') %></p></li>");
               }
+            }
+          }
+        };
 
         var placeholder = $("<li />");
         fulltext.after(placeholder);
@@ -199,13 +204,13 @@
       var headerElm = elm;
       var headerSelector;
 
-      if(data.subtype.match(/_scan/) && $(".order-scan").length > 0) {
-
-        action = data.subtype == "rd_scan" ? $("li.order-rd-scan > form") : $("li.order-dtu-scan > form");
-        $(action).find("button").text(data.button_text);
-        data.lead_text = action.attr("data-price");
-        $(action).addClass("getit-entry");
-
+      if(data.subtype.match(/_scan/)) {
+        if ($(".order-scan").length > 0) {
+          action = data.subtype == "rd_scan" ? $("li.order-rd-scan > form") : $("li.order-dtu-scan > form");
+          $(action).find("button").text(data.button_text);
+          data.lead_text = action.attr("data-price");
+          $(action).addClass("getit-entry");
+        }
       } else if(data.subtype.match(/nal/)) {
 
         var otherHeader = elm.parent().find(".other-header")

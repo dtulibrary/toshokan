@@ -16,7 +16,7 @@ class LibrarySupport
     }
 
     issue_description = []
-    issue_description << "#{phonebook_link_for(order.user) || user}, #{send_mail_link}, requested the following but the request was cancelled from the supplier:\n" if order.user
+    issue_description << "#{phonebook_link_for(order.user) || order.user}, #{send_mail_link}, requested the following but the request was cancelled from the supplier:\n" if order.user
     issue_description << '<pre>' 
     issue_description << order.document.reject {|k,vs| k.to_s == 'open_url' || vs.blank?}
                                        .collect {|k,vs| "#{I18n.t "toshokan.catalog.show_field_labels.#{k}"}:\n   #{vs.first}"}
@@ -62,7 +62,7 @@ class LibrarySupport
     item_description = description_for assistance_request, genre
 
     # Append indented user notes to item description
-    item_description += "\n---\nNotes from user:\n   #{assistance_request.notes.gsub /\n/, "\n   "}\n" unless assistance_request.notes.blank?
+    item_description += "\n\n== Notes from user ==========\n\n   #{assistance_request.notes.gsub /\n/, "\n   "}\n" unless assistance_request.notes.blank?
 
     send_mail_link = send_mail_link_for user, {
       'subject'  => "Regarding your #{genre.to_s.gsub /_/, ' '} request",
@@ -72,10 +72,25 @@ class LibrarySupport
     issue_description = []
     issue_description << "User #{phonebook_link_for user} ( CWIS: #{user.user_data['dtu']['matrikel_id']}; #{send_mail_link} ) requests the following:"
     issue_description << "<pre>\n#{item_description}\n</pre>"
+
+    issue_description << I18n.t("toshokan.assistance_requests.forms.sections.physical_delivery.values.#{assistance_request.physical_delivery}")
+    if assistance_request.physical_delivery == 'internal_mail'
+      issue_description << "<pre>#{user.address.reject {|k,v| v.blank?}.collect {|k,v| v}.join("\n")}</pre>"
+    end
+
     issue_description << "\"View request in DTU Findit\":#{assistance_request_url}" if assistance_request.id
 
+    redmine_project_id = 
+      if assistance_request.book_suggest
+        :book_suggestions
+      elsif [:thesis, :report, :standard, :other].include? genre
+        :other
+      else
+        genre
+      end
+
     issue = {
-      :project_id    => LibrarySupport.project_ids[assistance_request.book_suggest ? :book_suggestions : genre],
+      :project_id    => LibrarySupport.project_ids[redmine_project_id],
       :description   => issue_description.join("\n\n"),
       :subject       => "#{user} requests \"#{title}\""[0..254],
       :custom_fields => [
@@ -89,10 +104,12 @@ class LibrarySupport
     }
 
     case assistance_request.auto_cancel
-    when '14'
-      issue[:due_date] = Time.now.to_date + 14
     when '30'
-      issue[:due_date] = Time.now.to_date + 30
+      issue[:due_date] = Time.now.to_date + 1.month
+    when '90'
+      issue[:due_date] = Time.now.to_date + 3.months
+    when '180'
+      issue[:due_date] = Time.now.to_date + 6.months
     end
 
     response = redmine.create_issue issue
@@ -142,6 +159,24 @@ class LibrarySupport
         {
           :book => [:title, :year, :author, :edition, :doi, :isbn, :publisher],
         }
+      when :thesis
+        {
+          :thesis => [:title, :author, :affiliation, :publisher, :type, :year, :pages],
+        }
+      when :report
+        {
+          :report => [:title, :author, :publisher, :doi, :number],
+          :host   => [:title, :isxn, :volume, :issue, :year, :pages, :series],
+        }
+      when :standard
+        {
+          :standard => [:title, :subtitle, :publisher, :doi, :number, :isbn, :year, :pages],
+        }
+      when :other
+        {
+          :other => [:title, :author, :publisher, :doi],
+          :host  => [:title, :isxn, :volume, :issue, :year, :pages, :series],
+        }
       else
         Rails.logger.error "Unknown assistance request genre: #{genre || 'nil'}"
         raise ArgumentError.new "genre should be one of :journal_article, :conference_article or :book, but was #{genre || 'nil'}"
@@ -149,14 +184,14 @@ class LibrarySupport
 
     result = []
     sections.each do |section, fields|
-      section_result = []
+      section_result = ["== #{section.capitalize} ==========\n"]
       fields.each do |field|
         value = assistance_request.send "#{section}_#{field}"
-        section_result << "#{section.capitalize} #{field}:\n   #{value.gsub /\n/, "\n   "}" unless value.blank?
+        section_result << "#{field.capitalize}:\n   #{value.gsub /\n/, "\n   "}" unless value.blank? || value == '?'
       end
-      result << section_result.join("\n")
+      result << section_result.join("\n") if section_result.size > 1
     end
-    result.join "\n---\n"
+    result.join "\n\n"
   end
 
   def self.failed_from_for supplier

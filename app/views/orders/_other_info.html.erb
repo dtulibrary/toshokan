@@ -1,0 +1,12 @@
+<h4><%= assistance_request.other_title %></h4>
+<% unless assistance_request.other_author.blank? %>
+  <div class="authors">
+    By <%= assistance_request.other_author %>
+  </div>
+<% end %>
+<div class="publisher">
+  Published by <%= assistance_request.other_publisher %>
+</div>
+<% unless assistance_request.other_doi.blank? %>
+  <div>DOI: <%= assistance_request.other_doi %></div>
+<% end %>

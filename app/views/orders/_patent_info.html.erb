@@ -1,0 +1,14 @@
+<h4><%= assistance_request.patent_title %></h4>
+<% unless assistance_request.patent_inventor.blank? %>
+  <div>
+    Inventor: <%= assistance_request.patent_inventor %>
+  </div>
+<% end %>
+<% unless assistance_request.patent_number.blank? %>
+  <div>
+    Patent number: <%= assistance_request.patent_number %>
+  </div>
+<% end %>
+<div>
+  Obtained in <%= assistance_request.patent_country.blank? ? '' : assistance_request.patent_country %> in <%= assistance_request.patent_year %>
+</div>

@@ -5,22 +5,25 @@
     <dt>Last date of interest</dt>
     <dd>
       <tt>
-        <%= l (assistance_request.created_at.to_date + assistance_request.auto_cancel.to_i), :format => :long %> 
+        <%= l (assistance_request.created_at.to_date + (assistance_request.auto_cancel.to_i / 30).months), :format => :long %> 
         (<%= t "toshokan.assistance_requests.forms.sections.automatic_cancellation.values.#{assistance_request.auto_cancel}" %>)
       </tt>
     </dd>
   <% end %>
-<% if assistance_request.pickup_location %>
-  <dt>Pick-up location</dt>
-  <dd><%= t "toshokan.assistance_requests.forms.sections.pickup_location.values.#{assistance_request.pickup_location}_html" %></dd>
-<% else %>
-  <dt>Deliver electronically to</dt>
+  <dt>Electronic delivery</dt>
   <dd><tt><%= assistance_request.email %></tt></dd>
-  <dt>Deliver physically to</dt>
-  <dd><tt><%= render_user_address assistance_request.user %></tt></dd>
-<% end %>
-<% if assistance_request.notes %>
-  <dt>Your notes</dt>
-  <dd><tt><%= assistance_request.notes %></tt></dd>
-<% end %>
+  <% unless assistance_request.physical_delivery.blank? %>
+    <dt>Physical delivery</dt>
+    <dd>
+      <% if assistance_request.physical_delivery == 'internal_mail' %>
+        <tt><%= render_user_address(assistance_request.user) %></tt>
+      <% else %>
+        <tt><%= t "toshokan.assistance_requests.forms.sections.physical_delivery.values.#{assistance_request.physical_delivery}" %></tt>
+      <% end %>
+    </dd>
+  <% end %>
+  <% if assistance_request.notes %>
+    <dt>Your notes</dt>
+    <dd><tt><%= assistance_request.notes %></tt></dd>
+  <% end %>
 </dl>

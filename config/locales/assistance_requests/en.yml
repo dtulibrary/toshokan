@@ -1,6 +1,32 @@
 en:
   toshokan:
     assistance_requests:
+      search_tips:
+        title:
+          specific_genre: "Please try the following in your search for the %{genre}"
+          generic: "Please try the following in your search"
+        general:
+          - 'Broaden your search by removing one or more search terms or filters you may have applied. Check out the <a href="" target="_blank">general search help</a>.'
+        journal_article:
+          - '<a href="http://scholar.google.com" target="_blank">Google Scholar</a>'
+        conference_article:
+          - '<a href="http://scholar.google.com" target="_blank">Google Scholar</a>'
+        book:
+          - 'Danish union catalogue, <a href="http://www.bibliotek.dk" target="_blank">bibliotek.dk</a>'
+          - '<a href="http://books.google.com" target="_blank">Google Books</a>'
+        thesis:
+        report:
+        standard:
+          - '<a href="http://sd.ds.dk" target="_blank">Danish Standards</a> &mdash; national standardisation organisation in Denmark (with full texts)'
+        patent:
+          - '<a href="http://www.epo.org/searching/free/espacenet.html" target="_blank">Espacenet</a> patent search'
+        other:
+          - '<a href="http://www.forskningsdatabasen.dk" target="_blank">Danish Research Database</a>'
+          - '<a href="http://scholar.google.com" target="_blank">Google Scholar</a>'
+      thesis_types:
+        master: Master
+        phd: PhD
+        doctoral: Doctoral
       menu_item:
         title: "Can't find it?"
       need_to_login:
@@ -9,38 +35,71 @@ en:
           You have requested a page that is only available to DTU employees and students.
           If you have the proper credentials, please log in by clicking the log in button
           in the upper right corner.
-      new:
-        title: Request librarian's assistance
-        text_html: 
-          '<p>
-            Please fill out the following form with as much information as you have 
-            about the %{genre} you are looking for
-          </p>
-          <p>
-            A librarian will be assigned to your request.
-          </p>
-          <p style="margin-bottom: 3em">
-            <a href="http://api.libguides.com/api_box.php?iid=3935&bid=15084512" target="_blank">Learn about the DTU Library request service</a>
-          </p>'
       forms:
         field_labels:
           article_title: Title
           article_author: Author
           article_doi: DOI
+
           journal_title: Title
           journal_issn: ISSN
           journal_volume: Volume
           journal_issue: Issue
           journal_year: Year
           journal_pages: Pages
+
+          host_title: Title
+          host_isxn: ISSN or ISBN
+          host_volume: Volume
+          host_issue: Issue
+          host_year: Year
+          host_pages: Pages
+
+          thesis_title: Title
+          thesis_author: Author
+          thesis_affiliation: Affiliation
+          thesis_publisher: Publisher
+          thesis_type: Type
+          thesis_year: Year
+          thesis_pages: Pages
+
+          report_title: Title
+          report_author: Author
+          report_publisher: Publisher
+          report_doi: DOI
+          report_number: Report Number
+
+          standard_title: Title
+          standard_subtitle: Subtitle
+          standard_publisher: Publisher
+          standard_doi: DOI
+          standard_number: Standard Number
+          standard_isbn: ISBN
+          standard_year: Year
+          standard_pages: Pages
+
+          patent_title: Title
+          patent_inventor: Inventor
+          patent_number: Patent Number
+          patent_year: Year
+          patent_country: Country
+
+          other_title: Title
+          other_author: Author
+          other_publisher: Publisher
+          other_doi: DOI
+
           notes: Notes
+
           proceedings_title: Title
+
           conference_title: Title
           conference_location: Location
           conference_year: Year
           conference_number: Number
           conference_isxn: ISSN or ISBN
           conference_pages: Pages
+
           book_title: Title
           book_author: Author
           book_edition: Edition
@@ -68,6 +127,18 @@ en:
                 'Please state in the note field, why DTU Library should acquire this book.<br>
                 <a target="_blank" href="http://www.dtic.dtu.dk/english/servicemenu/find/borrow/suggest/criteria">Criteria for acquisition</a>'
             suggested_for_purchase: Suggested for acquisition.
+          thesis:
+            title: Thesis
+          report:
+            title: Report
+          host:
+            title: Host
+          standard:
+            title: Standard
+          patent:
+            title: Patent
+          other:
+            title: Other
           conference: 
             title: From conference
           email:
@@ -77,17 +148,27 @@ en:
             title: In journal
           notes: 
             title: Your notes
-          physical_location:
-            title: Physical location
-            text: For material that can only be delivered in physical form.
+          physical_delivery:
+            title: Physical delivery
+            values:
+              internal_mail: Send by DTU Internal Mail to
+              pickup_lyngby: "Pick-up: DTU Library Lyngby"
+              pickup_ballerup: "Pick-up: DTU Library Ballerup"
           pickup_location:
             title: Pick-up location
             text: For material that can only be delivered in physical form.
             values:
               ballerup_html: <b>Ballerup Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Diplom,+Lautrupvang,+Ballerup&hl=da&sll=55.59332,13.426026&sspn=2.318732,7.13562&oq=dtu+diplom&hq=DTU+Diplom,+Lautrupvang,+Ballerup&t=m&z=16">Map view</a>)<br>Lautrupvang 15<br>2750 Ballerup
               lyngby_html: <b>Lyngby Campus</b> (<a target="_blank" href="https://maps.google.dk/maps?q=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,+Anker+Engelunds+Vej,+Kongens+Lyngby&hl=da&sll=55.73121,12.396566&sspn=0.009025,0.027874&hq=DTU+Bibliotek+%2F+Danmarks+Tekniske+Informationscenter,&hnear=Anker+Engelunds+Vej,+2800+Kongens+Lyngby&t=m&z=16">Map view</a>)<br>Building 101<br>Anker Engelunds Vej 1<br>2800 Kgs. Lyngby 
+          electronic_delivery:
+            title: Electronic delivery
       genres:
         journal_article: Journal article
         conference_article: Conference article
         book: Book
+        thesis: Thesis
+        report: Report
+        standard: Standard
+        patent: Patent
+        other: Other
 

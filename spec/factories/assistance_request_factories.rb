@@ -68,4 +68,66 @@ FactoryGirl.define do
 
     initialize_with { attributes }
   end
+
+  factory :thesis_assistance_request do
+    thesis_title  'Thesis Title'
+    thesis_author 'Thesis Author'
+    thesis_year   '1999'
+  end
+
+  factory :thesis_assistance_request_form_post, :class => Hash do
+    assistance_request { attributes_for :thesis_assistance_request }
+    genre :thesis
+
+    initialize_with { attributes }
+  end
+
+  factory :report_assistance_request do
+    report_title 'Report Title'
+    host_year  '1999'
+  end
+
+  factory :report_assistance_request_form_post, :class => Hash do
+    assistance_request { attributes_for :report_assistance_request }
+    genre :report
+
+    initialize_with { attributes }
+  end
+
+  factory :standard_assistance_request do
+    standard_title 'Standard Title'
+    standard_year  '1999'
+  end
+
+  factory :standard_assistance_request_form_post, :class => Hash do
+    assistance_request { attributes_for :standard_assistance_request }
+    genre :standard
+
+    initialize_with { attributes }
+  end
+
+  factory :patent_assistance_request do
+    patent_title 'Patent Title'
+    patent_year '1999'
+  end
+
+  factory :patent_assistance_request_form_post, :class => Hash do
+    assistance_request { attributes_for :patent_assistance_request }
+    genre :patent
+
+    initialize_with { attributes }
+  end
+  
+  factory :other_assistance_request do
+    other_title 'Other Title'
+    host_year  '1999'
+  end
+
+  factory :other_assistance_request_form_post, :class => Hash do
+    assistance_request { attributes_for :other_assistance_request }
+    genre :other
+
+    initialize_with { attributes }
+  end
+
 end

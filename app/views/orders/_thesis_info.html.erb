@@ -1,0 +1,15 @@
+<h4><%= assistance_request.thesis_title %></h4>
+<div>
+  By <%= assistance_request.thesis_author || '?' %>
+</div>
+<% unless assistance_request.thesis_affiliation.blank? %>
+  <div>
+    Affiliation: <%= assistance_request.thesis_affiliation %>
+  </div>
+<% end %>
+<div>
+  Published in <%= assistance_request.thesis_year %><%= assistance_request.thesis_publisher.blank? ? '' : ' by ' + assistance_request.thesis_publisher %>
+</div>
+<% unless assistance_request.thesis_pages.blank? %>
+  Pages: <%= assistance_request.thesis_pages %>
+<% end %>

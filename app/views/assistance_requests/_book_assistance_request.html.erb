@@ -3,12 +3,8 @@
     <%= render 'book_section' %>
   </div>
   <div class="col-md-3">
-    <%= render 'email_section' %>
-    <% if can? :select, :pickup_location %>
-      <%= render 'pickup_location_section' %>
-    <% else %>
-      <%= render 'physical_location_section' %>
-    <% end %>
+    <%= render 'electronic_delivery_section' %>
+    <%= render 'physical_delivery_section' %>
   </div>
   <div class="col-md-3">
     <%= render 'automatic_cancellation_section' %>

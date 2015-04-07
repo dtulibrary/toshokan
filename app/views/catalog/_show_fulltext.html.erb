@@ -1,7 +1,7 @@
   <ul id="fulltext" class="list-unstyled">
     <li class="fulltext-header"><h4><%= t('toshokan.tools.fulltext') %></h4></li>
 
-    <% if (can? :order, :article)  && (params[:resolve].blank? || (params[:resolve] && (can? :search, :dtu))) %>
+    <% if render_scan_option? %>
       <% # Quick-fix for getting conf title to DocDel when no journal title is available.
          open_url = @document.export_as_openurl_ctx_kev
          open_url += "&rft.jtitle=#{URI.encode_www_form_component @document['conf_title_ts'].first}" if @document['conf_title_ts'] && !@document['journal_title_ts'] %>
@@ -10,6 +10,27 @@
       </li>
       <li class="order-dtu-scan order-scan hide">
         <%= render :partial => 'order_scan_form', :locals => { :supplier => :dtu, :open_url => open_url, :index => false } %>
+      </li>
+    <% end %>
+
+    <% if render_assistance_request_option? %>
+      <li class="fulltext-item getit-entry request-assistance hide">
+        <strong>Request</strong>
+        <p>
+          <small>Request document from DTU Library Document Supply Service.</small>
+        </p>
+        <div class="fulltext-action">
+          <%= link_to 'Request', new_assistance_request_path(:record_id => @document['cluster_id_ss'].first), :class => 'btn btn-primary btn-small' %>
+        </div>
+      </li>
+    <% end %>
+
+    <% if render_access_prohibited_option? %>
+      <li class="fulltext-item getit-entry access-prohibited hide">
+        <strong><i class="icon-ban"></i>Access Prohibited</strong>
+        <p>
+          <small>Access to this document is prohibited.</small>
+        </p>
       </li>
     <% end %>
 

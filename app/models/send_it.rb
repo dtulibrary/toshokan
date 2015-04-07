@@ -33,6 +33,23 @@ class SendIt
     end
   end
 
+  def self.send_patent_request assistance_request
+    patent_info = {}
+   
+    [:title, :inventor, :number, :year, :country].each do |field|
+      field_value = assistance_request.send("patent_#{field}")
+      patent_info[field] = field_value unless field_value.blank?
+    end
+
+    send_mail 'patlib', {
+      :to       => SendIt.patlib_mail,
+      :reply_to => assistance_request.user.email,
+      :cc       => assistance_request.user.email,
+      :user     => assistance_request.user.to_s,
+      :patent   => patent_info
+    }
+  end
+
   def self.send_order_mail template, order, params = {}
     send_mail template, {
       :to => order.email,
@@ -101,135 +118,6 @@ class SendIt
     send_mail 'book_suggestion', mail_params
   end
 
-  def self.send_request_assistance_mail genre, user, params = {}
-    title = ''
-
-    case genre
-    when :journal_article
-      type = 'article'
-      title = params[:article_title]
-    when :conference_article
-      type = 'conference_article'
-      title = params[:article_title]
-    when :book
-      type = 'book'
-      title = params[:book_title]
-    else
-      type = 'article'
-      title = params[:article_title]
-    end
-
-    local_params = {
-      :to => SendIt.delivery_support_mail,
-      :type => type,
-      :title => title,
-      :user => {
-        :email => user.email,
-        :name => "#{user}#{user.dtu? ? " (CWIS: #{user.user_data['dtu']['matrikel_id']})" : ""}",
-      }
-    }
-
-    local_params.deep_merge! article_params params
-    local_params.deep_merge! journal_params params
-    local_params.deep_merge! conference_params params
-    local_params.deep_merge! proceedings_params params
-    local_params.deep_merge! book_params params
-    local_params.deep_merge! publisher_params params
-    local_params.deep_merge! notes_params params
-    local_params.deep_merge! automatic_cancellation_params params
-
-    if params[:pickup_location].blank?
-      local_params[:user].deep_merge! ({:address => user.address})
-    elsif user.address
-      local_params.deep_merge! pickup_location_params params
-    end
-
-    send_mail 'library_assistance', local_params
-    send_mail 'library_assistance', local_params.merge({ :to => SendIt.book_suggest_mail }) if params[:book_suggest] && !SendIt.book_suggest_mail.blank?
-  end
-
-  def self.article_params params
-    result = {}
-    if params['article_title']
-      result[:article] = extract_params ['article_title', 'article_author', 'article_doi'], params
-    end
-    result
-  end
-
-  def self.journal_params params
-    result = {}
-    if params['journal_title']
-      result[:journal] = extract_params ['journal_title', 'journal_issn', 'journal_volume', 'journal_issue', 'journal_year', 'journal_pages'], params
-    end
-    result
-  end
-
-  def self.conference_params params
-    result = {}
-    if params['conference_title']
-      result[:conference] = extract_params ['conference_title', 'conference_location', 'conference_number', 'conference_year'], params
-    end
-    result
-  end
-
-  def self.proceedings_params params
-    result = {}
-    if params['proceedings_title']
-      result[:proceedings] = extract_params ['proceedings_title', 'proceedings_isxn', 'proceedings_pages'], params
-    end
-    result
-  end
-
-  def self.book_params params
-    result = {}
-    if params['book_title']
-      result[:book] = extract_params ['book_title', 'book_author', 'book_edition', 'book_doi', 'book_isbn', 'book_suggest'], params
-    end
-    result
-  end
-
-  def self.publisher_params params
-    result = {}
-    if params['publisher_name']
-      result[:publisher] = extract_params ['publisher_name'], params
-    end
-    result
-  end
-
-  def self.pickup_location_params params
-    extract_params ['pickup_location'], params
-  end
-
-  def self.notes_params params
-    extract_params ['notes'], params
-  end
-
-  def self.automatic_cancellation_params params
-    case params['auto_cancel']
-    when '14'
-      { :auto_cancel => Time.now.to_date + 14 }
-    when '30'
-      { :auto_cancel => Time.now.to_date + 30 }
-    else
-      {}
-    end
-  end
-
-  def self.extract_params names, params
-    result = {}
-    names.each do |name|
-      # XXX: Rename form parameters like 'article_title' or 'publisher_name' to 'title' and 'name'
-      #      since they will appear in an object-style hash.
-      #      So 'article_title' will be in 'article' => { 'title' => ... }, etc.
-      result[name.gsub /^(?:article|journal|proceedings|conference|book|publisher)_?(.*?)/, '\1'] = params[name] unless params[name].blank?
-    end
-    result
-  end
-
-  def self.send_article_assistance_mail user, params = {}
-    send_request_assistance_mail :journal_article, user, params
-  end
-
   def self.send_failed_automatic_request_mail order, reason = nil
     local_params = {
       :to => SendIt.delivery_support_mail,
@@ -259,16 +147,20 @@ class SendIt
 
   def self.send_feedback_email(user, params = {})
     local_params = params.merge(:to => SendIt.feedback_mail)
-    send_mail 'findit_feedback', local_params.merge(case
-                                                    when user.walk_in?
-                                                      { :user_info => 'Walk-in user',
-                                                        :subject   => '[DTU Library] Feedback from walk-in user' }
-                                                    when user.authenticated?
-                                                      { :user_info => user.user_data.pretty_inspect,
-                                                        :subject   => '[DTU Library] Feedback from authenticated user' }
-                                                    else
-                                                      { :user_info => 'Public user - not logged in',
-                                                        :subject   => '[DTU Library] Feedback from public user' }
-                                                    end)
+    local_params.merge!(
+      case
+      when user.walk_in?
+        { :user_info => 'Walk-in user',
+          :subject   => '[DTU Library] Feedback from walk-in user' }
+      when user.authenticated?
+        { :user_info => user.user_data.pretty_inspect,
+          :subject   => '[DTU Library] Feedback from authenticated user' }
+      else
+        { :user_info => 'Public user - not logged in',
+          :subject   => '[DTU Library] Feedback from public user' }
+      end
+    )
+
+    send_mail('findit_feedback', local_params)
   end
 end

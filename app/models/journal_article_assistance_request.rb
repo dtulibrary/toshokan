@@ -1,5 +1,5 @@
 class JournalArticleAssistanceRequest < AssistanceRequest
-  validates :article_title, :journal_title, :journal_volume, :journal_issue, :journal_year, :journal_pages, :presence => true
+  validates :article_title, :journal_title, :journal_volume, :journal_year, :journal_pages, :presence => true
 
   def genre
     :journal_article

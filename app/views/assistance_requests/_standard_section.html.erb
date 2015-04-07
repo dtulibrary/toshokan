@@ -1,0 +1,51 @@
+<div class="section standard-section">
+  <h5 class="underlined">
+    <%= t 'toshokan.assistance_requests.forms.sections.standard.title' %>
+  </h5>
+  <div class="row">
+    <div class="col-md-6">
+      <% if params[:button] == 'create' %>
+        <%= render :partial => 'submitted_values',
+          :locals => {
+            :field_prefix => 'standard_',
+            :fields => ['title', 'subtitle', 'publisher', 'doi', 'number']
+          } %>
+      <% else %>
+        <%= labeled_text_field 'assistance_request', 'standard_title', 
+                               t('toshokan.assistance_requests.forms.field_labels.standard_title'),
+                               :required => true %>
+        <%= labeled_text_field 'assistance_request', 'standard_subtitle',
+                               t('toshokan.assistance_requests.forms.field_labels.standard_subtitle') %>
+        <%= labeled_text_field 'assistance_request', 'standard_publisher',
+                               t('toshokan.assistance_requests.forms.field_labels.standard_publisher') %>
+        <%= labeled_text_field 'assistance_request', 'standard_doi',
+                               t('toshokan.assistance_requests.forms.field_labels.standard_doi') %>
+        <%= labeled_text_field 'assistance_request', 'standard_number',
+                               t('toshokan.assistance_requests.forms.field_labels.standard_number') %>
+      <% end %>
+    </div>
+    <div class="col-md-6">
+      <% if params[:button] == 'create' %>
+        <%= render :partial => 'submitted_values',
+          :locals => {
+            :field_prefix => 'standard_',
+            :fields => ['isbn', 'year', 'pages']
+          } %>
+      <% else %>
+        <%= labeled_text_field 'assistance_request', 'standard_isbn',
+                               t('toshokan.assistance_requests.forms.field_labels.standard_isbn') %>
+        <div class="row">
+          <div class="col-md-6">
+            <%= labeled_text_field 'assistance_request', 'standard_year',
+                                   t('toshokan.assistance_requests.forms.field_labels.standard_year'),
+                                   :required => true %>
+          </div>
+          <div class="col-md-6">
+            <%= labeled_text_field 'assistance_request', 'standard_pages',
+                                   t('toshokan.assistance_requests.forms.field_labels.standard_pages') %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

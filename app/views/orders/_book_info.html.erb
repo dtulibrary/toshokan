@@ -1,0 +1,27 @@
+<h4><%= assistance_request.book_title %></h4>
+<% unless assistance_request.book_edition.blank? %>
+  <div>
+    Edition: <%= assistance_request.book_edition %>
+  </div>
+<% end %>
+<% unless assistance_request.book_doi.blank? %>
+  <div>
+    DOI: <%= assistance_request.book_doi %>
+  </div>
+<% end %>
+<% unless assistance_request.book_isbn.blank? %>
+  <div>
+    ISBN: <%= assistance_request.book_isbn %>
+  </div>
+<% end %>
+<div>
+  By <%= assistance_request.book_author || '?' %>
+</div>
+<div>
+  Published in <%= assistance_request.book_year %>
+  <% unless assistance_request.book_publisher.blank? %>
+    by <%= assistance_request.book_publisher %>
+  <% end %>
+</div>
+
+

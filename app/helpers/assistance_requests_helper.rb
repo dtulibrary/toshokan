@@ -61,4 +61,34 @@ module AssistanceRequestsHelper
     (html + '</dl>').html_safe
   end
 
+  def search_tips(genre)
+    if t("toshokan.assistance_requests.search_tips.#{@genre}").is_a?(Array)
+      t("toshokan.assistance_requests.search_tips.general") +
+      t("toshokan.assistance_requests.search_tips.#{@genre}")
+    else
+      t("toshokan.assistance_requests.search_tips.general")
+    end
+  end
+
+  def thesis_type_options(assistance_request)
+    html = ''
+    ['master', 'phd', 'doctoral'].each do |type|
+      html += "<option value=\"#{type}\"#{ type == assistance_request.thesis_type ? ' selected="selected"' : '' }>#{t "toshokan.assistance_requests.thesis_types.#{type}"}</option>"
+    end
+    html.html_safe
+  end
+
+  def render_assistance_request_option?
+    can?(:request, :assistance) && (
+      # Article subtypes
+      (@document['format'] == 'article' && ['conference_paper', 'bookchapter'].include?(@document['subformat_s'])) ||
+      # Book subtypes
+      (@document['format'] == 'book' && @document['subformat_s'].blank?) ||
+      # Thesis subtypes
+      (@document['format'] == 'thesis' && (@document['subformat_s'].blank? || ['doctoral', 'phd'].include?(@document['subformat_s']))) ||
+      # Other
+      @document['format'] == 'other'
+    )
+  end
+
 end

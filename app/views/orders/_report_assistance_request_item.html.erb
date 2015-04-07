@@ -1,0 +1,4 @@
+<b>Report:</b>
+<% ['report', 'host'].each do |section| %>
+  <%= render :partial => "orders/#{section}_info", :locals => {:assistance_request => assistance_request} %>
+<% end %>

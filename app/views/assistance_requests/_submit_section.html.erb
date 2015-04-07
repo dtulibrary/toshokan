@@ -1,10 +1,17 @@
 <div class="section submit-section clearfix">
+  <% if params[:record_id] %>
+    <%= hidden_field_tag 'resolved', true %> 
+  <% end %>
   <div class="btn-group pull-right">
     <% if params[:button] == 'create' -%>
-      <%= button_tag 'Back', :class => 'btn btn-default' %>
+      <% unless params[:record_id] %>
+        <%= button_tag 'Back', :value => 'back', :class => 'btn btn-default' %>
+      <% end %>
       <%= button_tag 'Confirm request', :value => 'confirm', :class => 'btn btn-primary' %>
     <% else -%>
-      <%= button_tag 'Clear', :class => 'btn btn-default', :type => 'reset' %>
+      <% unless params[:record_id] %>
+        <%= button_tag 'Clear', :class => 'btn btn-default', :type => 'reset' %>
+      <% end %>
       <%= button_tag 'Send request', :value => 'create', :class => 'btn btn-primary' %>
     <% end -%>
   </div>

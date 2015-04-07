@@ -1,0 +1,4 @@
+<b>Book:</b>
+<% ['book'].each do |section| %>
+  <%= render :partial => "orders/#{section}_info", :locals => {:assistance_request => assistance_request} %>
+<% end %>

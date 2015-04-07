@@ -6,6 +6,9 @@ module FacetsHelper
     if field == 'format'
       item = Blacklight::SolrResponse::Facets::FacetItem.new(item) unless item.respond_to? :label
       item.label = t "toshokan.catalog.formats.#{item.label}"
+    elsif field == 'subformat_s'
+      item = Blacklight::SolrResponse::Facets::FacetItem.new(item) unless item.respond_to? :label
+      item.label = t "toshokan.catalog.subformats.#{item.label}"
     end
     super
   end

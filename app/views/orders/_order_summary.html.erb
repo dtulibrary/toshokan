@@ -2,7 +2,9 @@
   <h5 class="header"><%= t 'toshokan.orders.your_order' %><%= @order.persisted? ? ": #{@order.dibs_order_id}" : ''%></h5>
   <hr>
   <div class="items">
-    <%= render :partial => 'article_item', :locals => {:order => @order} %>
+    <div class="metadata">
+      <%= render_order_item(@order) %>
+    </div>
     <% unless @order.assistance_request %>
       <div><%= t 'toshokan.orders.price_excl_vat' %> <%= render_formatted_price @order.price, @order.currency %></div>
     <% end %>
