@@ -25,16 +25,12 @@ class AssistanceRequestsController < ApplicationController
       if params[:record_id]
         begin
           response, document = get_solr_response_for_doc_id(params[:record_id])
-          # No CFF for journals
-          head :bad_argument and return if document['format'] == 'journal'
-
           @genre = determine_assistance_request_genre(document)
-          # No pre-populated CFF for journal articles, conference articles or books
-          head :not_found and return if [:journal_article, :conference_article, :book].include? @genre
-
+          head :not_found and return unless @genre
           params.merge! :assistance_request => document_to_assistance_request_params(document, @genre), :genre => @genre
           @assistance_request = assistance_request_from(params)
         rescue Blacklight::Exceptions::InvalidSolrID
+          logger.debug "Document with cluster id #{params[:record_id]} not found"
           head :not_found and return
         end
       elsif params[:genre]
@@ -157,8 +153,14 @@ class AssistanceRequestsController < ApplicationController
   end
 
   def determine_assistance_request_genre(document)
-    return :thesis  if document['format'] == 'thesis'
-    return :journal if document['format'] == 'journal'
+    # No CFF for journals
+    return if document['format'] == 'journal'
+    # No CFF for printed and electronic books (unspecified books have CFF)
+    return if document['format'] == 'book' && ['printed', 'ebook'].include?(document['subformat_s'])
+    # No pre-populated CFF for journal articles
+    return if document['format'] == 'article' && document['subformat_s'] == 'journal_article'
+
+    return :thesis if document['format'] == 'thesis'
 
     if document.has_key?('subformat_s')
       case document['subformat_s']
@@ -172,8 +174,6 @@ class AssistanceRequestsController < ApplicationController
         :journal_article
       when 'conference_paper'
         :conference_article
-      when 'book'
-        :book
       else
         :other
       end
@@ -203,6 +203,14 @@ class AssistanceRequestsController < ApplicationController
 
     assistance_request_params = 
       case genre
+      when :conference_article
+        { 'article_title'    => required_field_proc(document['title_ts']),
+          'article_author'   => 'author_ts',
+          'article_doi'      => 'doi_ss',
+          'conference_title' => required_field_proc(document['conf_title_ts']),
+          'conference_isxn'  => -> { (document['issn_ss'] || document['isbn_ss'] || []).join(',') },
+          'conference_year'  => required_field_proc(document['pub_date_tis']),
+          'conference_pages' => required_field_proc(document['journal_page_ssf']) }
       when :thesis
         { 'thesis_title'     => required_field_proc(document['title_ts']),
           'thesis_author'    => required_field_proc(document['author_ts']),

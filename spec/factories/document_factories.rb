@@ -20,7 +20,14 @@ FactoryGirl.define do
     factory :book do
       title_ts    ['Book title']
       format      'book'
-      subformat_s 'book'
+
+      factory :ebook do
+        subformat_s 'ebook'
+      end
+
+      factory :pbook do
+        subformat_s 'printed'
+      end
     end
 
     factory :thesis do

@@ -6,7 +6,7 @@ en:
           specific_genre: "Please try the following in your search for the %{genre}"
           generic: "Please try the following in your search"
         general:
-          - 'Broaden your search by removing one or more search terms or filters you may have applied. Check out the <a href="" target="_blank">general search help</a>.'
+          - 'Broaden your search by removing one or more search terms or filters you may have applied. Check out the <a href="http://api.libguides.com/api_box.php?iid=3935&bid=14174533" target="_blank">general search help</a>.'
         journal_article:
           - '<a href="http://scholar.google.com" target="_blank">Google Scholar</a>'
         conference_article:

@@ -84,9 +84,7 @@ describe AssistanceRequestsController do
 
         context 'when record exists' do
           {
-            'journal_article'    => '123', 
-            'conference_article' => '234', 
-            'book'               => '345'
+            'journal_article' => '123',
           }.each do |genre, record_id|
             context "when record is a #{genre}" do
               it 'returns an HTTP 404' do
@@ -98,14 +96,16 @@ describe AssistanceRequestsController do
           end
 
           {
-            'thesis'   => '123',
-            'report'   => '123',
-            'standard' => '123',
-            'patent'   => '123'
+            'conference_article' => '123',
+            'thesis'             => '234',
+            'report'             => '345',
+            'standard'           => '456',
+            'patent'             => '567',
+            'book'               => '678'
           }.each do |genre, record_id|
             context "when record is a #{genre}" do
               before do
-                allow(subject).to receive(:get_solr_response_for_doc_id).with('123').and_return([{}, FactoryGirl.build(genre)])
+                allow(subject).to receive(:get_solr_response_for_doc_id).with(record_id).and_return([{}, FactoryGirl.build(genre)])
               end
 
               it 'assigns the genre' do
