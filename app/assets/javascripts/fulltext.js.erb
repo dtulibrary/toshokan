@@ -2,27 +2,26 @@
 (function ($) {
 
   $(function () {
-    if($('body.blacklight-catalog-index').length) {
+    if ($('body.blacklight-catalog-index').length) {
 
       $('.document').each(function() {
         var fulltext = $(this).find('.fulltext-options > ul');
-        if(fulltext.length && $(this).find('.Z3988').length > 0) {
 
-          var openUrl = $(this).find(".Z3988").attr("title"),
-              spinner = $("<li />"),
-              showBookLoan = openUrl.indexOf("alis_id") > -1,
-              count = showBookLoan ? 2 : 1,
-              epilogue =
-                function() {
-                  count--;
-                  if(count == 0) {
-                    spinner.spin(false);
-                    spinner.remove();
-                    if(fulltext.find('.getit-entry').length == 0) {
-                      fulltext.prepend("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available') %></p></li>");
-                    }
-                  }
-                };
+        if (fulltext.length && $(this).find('.Z3988').length > 0) {
+          var openUrl = $(this).find(".Z3988").attr("title");
+          var spinner = $("<li />"),
+          var showBookLoan = openUrl.indexOf("alis_id") > -1,
+          var count = showBookLoan ? 2 : 1,
+          var epilogue = function() {
+            count--;
+            if (count == 0) {
+              spinner.spin(false);
+              spinner.remove();
+              if (fulltext.find('.getit-entry').length == 0) {
+                fulltext.prepend("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available') %></p></li>");
+              }
+            }
+          };
 
           fulltext.prepend(spinner.spin());
           spinner.spin({ length: 3, width: 2, radius: 4, left: -2, top: -14 });
@@ -34,7 +33,7 @@
             epilogue
           );
 
-          if(showBookLoan) {
+          if (showBookLoan) {
             addResource(
               openUrl,
               "loan",
@@ -58,9 +57,9 @@
 
         var epilogue = function() {
           count--;
-          if(count == 0) {
+          if (count == 0) {
             fulltext.spin(false);
-            if($(".getit-entry").length == existingGetItEntries) {
+            if (($(".getit-entry").length - $('.getit-entry .nal').length) == existingGetItEntries) {
               if(showBookLoan) {
                 fulltext.after("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available_alis') %></p></li>");
               } else if (requestAssistance.length > 0) {
@@ -84,8 +83,7 @@
           epilogue
         );
 
-        if(showBookLoan) {
-
+        if (showBookLoan) {
           var bookPlaceholder = $("<li />", {"class" : "getit-entry loan"});
           fulltext.after(bookPlaceholder);
           addResource(
@@ -132,8 +130,7 @@
   /*** Layout functions ***/
 
   var layoutIndex = function (elm, data) {
-    if(data != null) {
-
+    if (data != null) {
       var item = $("<li />", {
         "class"          : "getit-entry",
         text             : data.list_text,
@@ -141,17 +138,18 @@
         "data-toggle"    : "tooltip",
         "data-placement" : "bottom"
       });
-      if(data.tool_tip) {
+
+      if (data.tool_tip) {
         $(item).tooltip();
       }
+
       $(item).prepend("<i class='" + data.icon + "'></i>");
       elm.append(item);
     }
   };
 
   var layoutIndexLoan = function (elm, data) {
-    if(data != null) {
-
+    if (data != null) {
       item_text = data.summary.text_long != null ? data.summary.text_long : data.summary.text;
 
       var item = $("<li />", {
@@ -166,8 +164,7 @@
   };
 
   var layoutShowLoan = function (elm, data, count) {
-
-    if(data != null) {
+    if (data != null) {
       var template =
         "{{#location_list}} \
          <div><ul {{#url}}class='with-link'{{/url}} {{^url}}class='no-link'{{/url}}> \
@@ -177,12 +174,11 @@
          </ul></div> \
          {{/location_list}}";
 
-      if(data.locations) {
-
+      if (data.locations) {
         elm.append("<strong><i class='icon-books'></i> <%= I18n.t('toshokan.tools.borrow') %></strong> \
                     <p><small><%= I18n.t('toshokan.tools.borrow_dtu') %></small></p>");
 
-        for(var k in data.locations) {
+        for (var k in data.locations) {
           elm.append ($('<p class="location"><small><i class="icon-map-marker dtu-red"></i> <a href="#dtu-locations-modal" data-toggle="modal" id="location-link">' + k + ' </a></small></p>'));
           elm.append(
             Mustache.render(
@@ -198,21 +194,19 @@
   }
 
   var layoutShow = function (elm, data, count) {
-
-    if(data != null) {
+    if (data != null) {
       var action = null;
       var headerElm = elm;
       var headerSelector;
 
-      if(data.subtype.match(/_scan/)) {
+      if (data.subtype.match(/_scan/)) {
         if ($(".order-scan").length > 0) {
           action = data.subtype == "rd_scan" ? $("li.order-rd-scan > form") : $("li.order-dtu-scan > form");
           $(action).find("button").text(data.button_text);
           data.lead_text = action.attr("data-price");
           $(action).addClass("getit-entry");
         }
-      } else if(data.subtype.match(/nal/)) {
-
+      } else if (data.subtype.match(/nal/)) {
         var otherHeader = elm.parent().find(".other-header")
         otherHeader.show();
         headerSelector = '.other-header';
@@ -254,7 +248,6 @@
         data.lead_text = data.button_text;
 
       } else {
-
         action = $("<a/>", {
           text          : data.button_text,
           "class"       : "fulltext btn btn-primary btn-small",
@@ -265,8 +258,7 @@
         });
       }
 
-      if(action != null) {
-
+      if (action != null) {
         $(action).tooltip();
 
         var template =
@@ -310,7 +302,7 @@
               }
            };
         };
-        if(data.holdings_list) {
+        if (data.holdings_list) {
           data.holdings_list.sort(function(a, b) { return a.fromyear - b.fromyear; }).reverse;
         }
         var item = Mustache.render(template, data);
