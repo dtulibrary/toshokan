@@ -1,6 +1,8 @@
 module RSolr
   class Connection
 
+    alias_method :execute_without_rails_caching_and_retries, :execute
+
     def try_request(h, request, options = {})
       options = {
         :retries => 0,
@@ -71,7 +73,6 @@ module RSolr
       response
     end
 
-    alias_method :execute_without_rails_caching_and_retries, :execute
 
   end
 
