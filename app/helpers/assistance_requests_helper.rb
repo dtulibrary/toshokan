@@ -78,16 +78,16 @@ module AssistanceRequestsHelper
     html.html_safe
   end
 
-  def render_assistance_request_option?
+  def render_assistance_request_option? document
     can?(:request, :assistance) && (
       # Article subtypes
-      (@document['format'] == 'article' && ['conference_paper', 'bookchapter'].include?(@document['subformat_s'])) ||
+      (document['format'] == 'article' && ['conference_paper', 'bookchapter'].include?(document['subformat_s'])) ||
       # Book subtypes
-      (@document['format'] == 'book' && @document['subformat_s'].blank?) ||
+      (document['format'] == 'book' && document['subformat_s'].blank?) ||
       # Thesis subtypes
-      (@document['format'] == 'thesis' && (@document['subformat_s'].blank? || ['doctoral', 'phd'].include?(@document['subformat_s']))) ||
+      (document['format'] == 'thesis' && (document['subformat_s'].blank? || ['doctoral', 'phd'].include?(document['subformat_s']))) ||
       # Other
-      @document['format'] == 'other'
+      document['format'] == 'other'
     )
   end
 

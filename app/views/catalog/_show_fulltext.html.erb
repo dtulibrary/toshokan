@@ -1,7 +1,7 @@
   <ul id="fulltext" class="list-unstyled">
     <li class="fulltext-header"><h4><%= t('toshokan.tools.fulltext') %></h4></li>
 
-    <% if render_scan_option? %>
+    <% if render_scan_option?(@document) %>
       <% # Quick-fix for getting conf title to DocDel when no journal title is available.
          open_url = @document.export_as_openurl_ctx_kev
          open_url += "&rft.jtitle=#{URI.encode_www_form_component @document['conf_title_ts'].first}" if @document['conf_title_ts'] && !@document['journal_title_ts'] %>
@@ -13,7 +13,7 @@
       </li>
     <% end %>
 
-    <% if render_assistance_request_option? %>
+    <% if render_assistance_request_option?(@document) %>
       <li class="fulltext-item getit-entry request-assistance hide">
         <strong><i class="icon-file"></i>Request</strong>
         <p>
@@ -25,7 +25,7 @@
       </li>
     <% end %>
 
-    <% if render_access_prohibited_option? %>
+    <% if render_access_prohibited_option?(@document) %>
       <li class="fulltext-item getit-entry access-prohibited hide">
         <strong><i class="icon-ban"></i>Access Prohibited</strong>
         <p>

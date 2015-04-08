@@ -117,10 +117,10 @@ module OrdersHelper
     end
   end
 
-  def render_scan_option?
+  def render_scan_option? document
     can?(:order, :article) && 
     (params[:resolve].blank? || can?(:search, :dtu)) &&
-    (@document['format'] == 'article') &&
-    (@document['subformat_s'].blank? || @document['subformat_s'] == 'journal_article')
+    (document['format'] == 'article') &&
+    (document['subformat_s'].blank? || document['subformat_s'] == 'journal_article')
   end
 end

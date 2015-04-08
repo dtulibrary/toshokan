@@ -12,13 +12,22 @@
           var spinner = $("<li />");
           var showBookLoan = openUrl.indexOf("alis_id") > -1;
           var count = showBookLoan ? 2 : 1;
+          var requestAssistance    = fulltext.find('.getit-entry.request-assistance');
+          var accessProhibited     = fulltext.find('.getit-entry.access-prohibited');
+          var existingGetItEntries = fulltext.find('.getit-entry').length;
           var epilogue = function() {
             count--;
             if (count == 0) {
               spinner.spin(false);
               spinner.remove();
-              if (fulltext.find('.getit-entry').length == 0) {
-                fulltext.prepend("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available') %></p></li>");
+              if (fulltext.find('.getit-entry').length == existingGetItEntries) {
+                if (requestAssistance.length > 0) {
+                  requestAssistance.removeClass('hide');
+                } else if (accessProhibited.length > 0) {
+                  accessProhibited.removeClass('hide');
+                } else {
+                  fulltext.find('.getit-entry.not_available').removeClass('hide');
+                }
               }
             }
           };

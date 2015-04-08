@@ -1,8 +1,17 @@
-<% if !document['format'].eql? "journal" %>
+<% unless document['format'] == "journal" %>
   <dl class="dl-horizontal dl-invert">
     <dt>Availability</dt>
     <dd class="fulltext-options">
         <ul class="list-inline">
+          <% if render_assistance_request_option?(document) %>
+            <li class="getit-entry request-assistance hide"><i class="icon-file"></i>Request</li>
+          <% end %>
+          <% if render_access_prohibited_option?(document) %>
+            <li class="getit-entry access-prohibited hide"><i class="icon-ban"></i>Access prohibited</li>
+          <% end %>
+          <li class="getit-entry not-available hide">
+            <p><%= t 'toshokan.tools.not_available' %></p>
+          </li>
           <li class="getit pull-right">
             <%= link_to catalog_path(document.id) do %>
               <%= t('toshokan.availability.getit') %> <i class="icon-arrow-circle-right getit"></i>
