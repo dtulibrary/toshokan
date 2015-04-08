@@ -9,9 +9,9 @@
 
         if (fulltext.length && $(this).find('.Z3988').length > 0) {
           var openUrl = $(this).find(".Z3988").attr("title");
-          var spinner = $("<li />"),
-          var showBookLoan = openUrl.indexOf("alis_id") > -1,
-          var count = showBookLoan ? 2 : 1,
+          var spinner = $("<li />");
+          var showBookLoan = openUrl.indexOf("alis_id") > -1;
+          var count = showBookLoan ? 2 : 1;
           var epilogue = function() {
             count--;
             if (count == 0) {
