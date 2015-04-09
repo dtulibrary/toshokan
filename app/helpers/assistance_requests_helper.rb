@@ -63,8 +63,12 @@ module AssistanceRequestsHelper
 
   def search_tips(genre)
     if t("toshokan.assistance_requests.search_tips.#{@genre}").is_a?(Array)
-      t("toshokan.assistance_requests.search_tips.general") +
-      t("toshokan.assistance_requests.search_tips.#{@genre}")
+      if @genre == :patent
+        t("toshokan.assistance_requests.search_tips.#{@genre}")
+      else
+        t("toshokan.assistance_requests.search_tips.general") +
+        t("toshokan.assistance_requests.search_tips.#{@genre}")
+      end
     else
       t("toshokan.assistance_requests.search_tips.general")
     end
