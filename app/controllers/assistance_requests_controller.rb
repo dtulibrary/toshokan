@@ -211,6 +211,14 @@ class AssistanceRequestsController < ApplicationController
           'conference_isxn'  => -> { (document['issn_ss'] || document['isbn_ss'] || []).join(',') },
           'conference_year'  => required_field_proc(document['pub_date_tis']),
           'conference_pages' => required_field_proc(document['journal_page_ssf']) }
+      when :book
+        { 'book_title'     => required_field_proc(document['title_ts']),
+          'book_year'      => required_field_proc(document['pub_date_tis']),
+          'book_author'    => 'author_ts',
+          'book_edition'   => 'edition_ssf',
+          'book_doi'       => 'doi_ss',
+          'book_isbn'      => -> { (document['isbn_ss'] || []).join(',') },
+          'book_publisher' => 'publisher_ts' }
       when :thesis
         { 'thesis_title'       => required_field_proc(document['title_ts']),
           'thesis_author'      => required_field_proc(document['author_ts']),
