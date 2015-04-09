@@ -84,7 +84,7 @@ class AssistanceRequestsController < ApplicationController
                 SendIt.delay.send_patent_request(assistance_request)
                 flash[:notice] = "Your request was sent to DTU PatLib"
               else
-                LibrarySupport.delay.submit_assistance_request current_user, assistance_request, assistance_request_url(:id => assistance_request.id)
+                LibrarySupport.delay.submit_assistance_request current_user, assistance_request, order_status_url(:uuid => order.uuid)
                 SendIt.delay.send_book_suggestion current_user, assistance_request if assistance_request.book_suggest
                 flash[:notice] = 'Your request was sent to a librarian'
               end
@@ -212,12 +212,13 @@ class AssistanceRequestsController < ApplicationController
           'conference_year'  => required_field_proc(document['pub_date_tis']),
           'conference_pages' => required_field_proc(document['journal_page_ssf']) }
       when :thesis
-        { 'thesis_title'     => required_field_proc(document['title_ts']),
-          'thesis_author'    => required_field_proc(document['author_ts']),
-          'thesis_publisher' => 'publisher_ts',
-          'thesis_type'      => -> { subformat_to_thesis_type(document['subformat_s']) },
-          'thesis_year'      => required_field_proc(document['pub_date_tis']),
-          'thesis_pages'     => 'journal_page_ssf' }
+        { 'thesis_title'       => required_field_proc(document['title_ts']),
+          'thesis_author'      => required_field_proc(document['author_ts']),
+          'thesis_affiliation' => 'affiliation_ts',
+          'thesis_publisher'   => 'publisher_ts',
+          'thesis_type'        => -> { subformat_to_thesis_type(document['subformat_s']) },
+          'thesis_year'        => required_field_proc(document['pub_date_tis']),
+          'thesis_pages'       => 'journal_page_ssf' }
       when :report
         { 'report_title'     => required_field_proc(document['title_ts']),
           'report_author'    => 'author_ts',

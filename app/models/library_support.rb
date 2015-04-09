@@ -54,7 +54,7 @@ class LibrarySupport
     end
   end
 
-  def self.submit_assistance_request user, assistance_request, assistance_request_url, reordered = false
+  def self.submit_assistance_request user, assistance_request, status_url, reordered = false
     genre            = assistance_request.genre
     title            = assistance_request.title
     author           = assistance_request.author
@@ -78,7 +78,7 @@ class LibrarySupport
       issue_description << "<pre>#{user.address.reject {|k,v| v.blank?}.collect {|k,v| v}.join("\n")}</pre>"
     end
 
-    issue_description << "\"View request in DTU Findit\":#{assistance_request_url}" if assistance_request.id
+    issue_description << "\"View order in DTU Findit\":#{status_url}" if assistance_request.id
 
     redmine_project_id = 
       if assistance_request.book_suggest

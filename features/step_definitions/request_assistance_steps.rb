@@ -211,7 +211,7 @@ Then(/^I should see the "automatic cancellation" section with the submitted data
 end
 
 Then(/^I should(n't| not)? see the "request assistance" form links$/) do |negate|
-  ['Journal article', 'Conference article', 'Book', 'Thesis', 'Report', 'Standard', 'Patent'].each do |link|
+  ['Journal article', 'Conference paper', 'Book', 'Thesis', 'Report', 'Standard', 'Patent'].each do |link|
     step %{I should#{negate} see the "#{link}" link}
   end
 end
@@ -386,7 +386,7 @@ end
 def form_link_titles
   {
     'journal article'    => 'Journal article',
-    'conference article' => 'Conference article',
+    'conference article' => 'Conference paper',
     'book'               => 'Book',
     'thesis'             => 'Thesis',
     'report'             => 'Report',
