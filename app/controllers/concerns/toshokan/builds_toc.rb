@@ -108,7 +108,7 @@ module Toshokan
 
     def dissect_toc_key(key)
       issn, year_prime, vol, issue = key.split('|')
-      return issn, 2020-year_prime.to_i, vol.to_i, issue.to_i
+      return issn, 2099-year_prime.to_i, vol.to_i, issue.to_i
     end
 
   end
