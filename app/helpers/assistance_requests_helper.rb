@@ -61,13 +61,7 @@ module AssistanceRequestsHelper
     (html + '</dl>').html_safe
   end
 
-  def render_search_tips?
-    params[:record_id].blank?
-  end
-
   def search_tips(genre)
-    return if params[:record_id]
-
     if t("toshokan.assistance_requests.search_tips.#{@genre}").is_a?(Array)
       if @genre == :patent
         t("toshokan.assistance_requests.search_tips.#{@genre}")
