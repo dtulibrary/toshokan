@@ -22,6 +22,13 @@ GIT
       sass-rails (>= 3.2)
 
 GIT
+  remote: git://github.com/dtulibrary/findit_font.git
+  revision: 90b65f2d3553cd8240a4e9a9ff551b30ed54a10c
+  specs:
+    findit_font (0.0.1)
+      railties (~> 4.1)
+
+GIT
   remote: git://github.com/dtulibrary/metastore-test_data.git
   revision: 52a2e16c856bcf1a2679a0b969f68ef8023bc5cf
   specs:
@@ -424,6 +431,7 @@ DEPENDENCIES
   eventmachine (~> 1.0.0.rc4)
   factory_girl_rails (~> 4.0)
   feature_flipper
+  findit_font!
   foreman
   hashie
   hirb

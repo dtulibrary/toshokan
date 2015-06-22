@@ -39,6 +39,7 @@ group :assets do
   gem 'therubyracer', :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
   gem 'autoprefixer-rails'
+  gem 'findit_font', :github => 'dtulibrary/findit_font'
 end
 
 group :test do
