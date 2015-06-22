@@ -38,7 +38,6 @@ group :assets do
 
   gem 'therubyracer', :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
-  gem 'findit_font', :github => 'dtulibrary/findit_font'
   gem 'autoprefixer-rails'
 end
 
@@ -81,5 +80,5 @@ group :development do
 end
 
 # Deploy with Capistrano
-gem 'capistrano', '~> 2.15'
 gem 'rvm-capistrano', '~> 1.2.5'
+gem 'capistrano', '~> 2.15'
