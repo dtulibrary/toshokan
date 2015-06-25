@@ -35,6 +35,7 @@ gem 'rack-utf8_sanitizer', '~> 1.1.0'
 # in production environments by default.
 group :assets do
   gem 'sass-rails'
+  gem 'sprockets', '~> 2.8'
 
   gem 'therubyracer', :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
