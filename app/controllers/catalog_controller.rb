@@ -80,7 +80,7 @@ class CatalogController < ApplicationController
     # facet bar
     #config.add_facet_field 'format', :collapse => false
     config.add_facet_field 'format', :collapse => false
-    config.add_facet_field 'subformat_s', :collapse => false
+    #config.add_facet_field 'subformat_s', :collapse => false
     config.add_facet_field 'pub_date_tsort', :label => I18n.t('blacklight.search.fields.facet.pub_date_tsort'), :range => true
     config.add_facet_field 'author_facet', :limit => 20
     config.add_facet_field 'journal_title_facet', :limit => 20
@@ -100,7 +100,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'pub_date_tis', :format => ['book']
     config.add_index_field 'journal_page_ssf', :format => ['book']
     config.add_index_field 'format', :helper_method => :render_type
-    config.add_index_field 'subformat_s', :helper_method => :render_subtype
+    #config.add_index_field 'subformat_s', :helper_method => :render_subtype
     config.add_index_field 'doi_ss'
     config.add_index_field 'publisher_ts', :format => ['book', 'journal']
     config.add_index_field 'abstract_ts', :helper_method => :snip_abstract
@@ -119,7 +119,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'journal_title_ts', :format => ['article'], :helper_method => :render_journal_info_show
     config.add_show_field 'conf_title_ts', :helper_method => :render_conference_info_show
     config.add_show_field 'format', :helper_method => :render_type
-    config.add_show_field 'subformat_s', :helper_method => :render_subtype
+    #config.add_show_field 'subformat_s', :helper_method => :render_subtype
     config.add_show_field 'publisher_ts'
     config.add_show_field 'isbn_ss'
     config.add_show_field 'issn_ss'
