@@ -8,7 +8,7 @@ module BlacklightHelper
 
     content = []
     content << render_tag_control(document) if can? :tag, Bookmark
-    content_tag("div", content.join("\n").html_safe, :class => wrapping_class)
+    content_tag("div", content.join("\n").html_safe, :class => wrapping_class) unless content.empty?
   end
 
   # Override blacklight citation_title since it doesn't handle multi-valued title field
