@@ -29,44 +29,44 @@ class SolrDocument
   # Recommendation: Use field names from Dublin Core
   use_extension( Blacklight::Solr::Document::DublinCore)
   field_semantics.merge!(
-                         # DC, BibTeX, Ris
-                         :title => "title_ts",
-                         :language => "language_ss",
-                         :format => "format",
-                         :publisher => "publisher_ts",
-                         # DC
-                         :subject => "keywords_ts",
-                         :description => "abstract_ts",
-                         :creator => "author_ts",
-                         :date => "pub_date_tis",
-                         :identifier => "doi_s",
-                         # BibTeX, Ris
-                         :author => "author_ts",
-                         :editor => "editor_ts",
-                         :journal => "journal_title_ts",
-                         :volume => "journal_vol_ssf",
-                         :number => "journal_issue_ssf",
-                         :pages => "journal_page_ssf",
-                         :year => "pub_date_tis",
-                         :issn => "issn_ss",
-                         :isbn => "isbn_ss",
-                         :abstract => "abstract_ts",
-                         :doi => "doi_ss",
-                         :keywords => "keywords_ts",
-                         # OpenURL
-                         :genre => "format",
-                         :atitle => "title_ts",
-                         :btitle => "title_ts",
-                         :au => "author_ts",
-                         :spage => "journal_page_ssf",
-                         :jtitle => "journal_title_ts",
-                         :volume => "journal_vol_ssf",
-                         :issue => "journal_issue_ssf",
-                         :date => "pub_date_tis",
-                         # issn, isbn shared with BibTex & Ris
-                         # Other
-                         :affiliation => "affiliation_ts"
-                         )
+     # DC, BibTeX, Ris
+     :title       => "title_ts",
+     :language    => "language_ss",
+     :format      => "format",
+     :publisher   => "publisher_ts",
+     # DC
+     :subject     => "keywords_ts",
+     :description => "abstract_ts",
+     :creator     => "author_ts",
+     :date        => "pub_date_tis",
+     :identifier  => "doi_s",
+     # BibTeX, Ris
+     :author      => "author_ts",
+     :editor      => "editor_ts",
+     :journal     => "journal_title_ts",
+     :volume      => "journal_vol_ssf",
+     :number      => "journal_issue_ssf",
+     :pages       => "journal_page_ssf",
+     :year        => "pub_date_tis",
+     :issn        => "issn_ss",
+     :isbn        => "isbn_ss",
+     :abstract    => "abstract_ts",
+     :doi         => "doi_ss",
+     :keywords    => "keywords_ts",
+     # OpenURL
+     :genre       => "format",
+     :atitle      => "title_ts",
+     :btitle      => "title_ts",
+     :au          => "author_ts",
+     :spage       => "journal_page_ssf",
+     :jtitle      => "journal_title_ts",
+     :volume      => "journal_vol_ssf",
+     :issue       => "journal_issue_ssf",
+     :date        => "pub_date_tis",
+     # issn, isbn shared with BibTex & Ris
+     # Other
+     :affiliation => "affiliation_ts"
+   )
 
   def export_as_openurl_ctx_kev(format = nil)
     @context_object ||= create_openurl
