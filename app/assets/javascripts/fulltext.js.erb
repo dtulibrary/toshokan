@@ -74,9 +74,7 @@
 
             // Check if we need to display some other static options
             if (($(".getit-entry").length - $('.getit-entry .nal').length) == existingGetItEntries) {
-              if (showBookLoan) {
-                fulltext.after("<li class='getit-entry'><p><%= I18n.t('toshokan.tools.not_available_alis') %></p></li>");
-              } else if (requestAssistance.length > 0) {
+              if (showBookLoan || requestAssistance.length > 0) {
                 requestAssistance.removeClass('hide');
               } else if (accessProhibited.length > 0) {
                 accessProhibited.removeClass('hide');
