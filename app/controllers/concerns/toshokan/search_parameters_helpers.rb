@@ -1,5 +1,11 @@
 module Toshokan
   module SearchParametersHelpers
+    def add_format_filter solr_parameters = {}, user_parameters = {}
+      solr_parameters[:fq] ||= []
+      solr_parameters[:fq] << "format:(article OR book OR journal OR thesis OR other)"
+      solr_parameters
+    end
+
     def add_access_filter solr_parameters = {}, user_parameters = {}
       solr_parameters[:fq] ||= []
       solr_parameters[:fq] << "access_ss:#{Rails.application.config.search[:dtu]}" if can? :search, :dtu
