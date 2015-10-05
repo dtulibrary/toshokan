@@ -52,22 +52,23 @@ class SendIt
 
   def self.send_order_mail template, order, params = {}
     send_mail template, {
-      :to => order.email,
-      :from => Orders.reply_to_email,
+      :to    => order.email,
+      :from  => Orders.reply_to_email,
       :order => {
-        :id => order.dibs_order_id,
-        :title => order.document['title_ts'].first,
-        :journal => order.document['journal_title_ts'].first,
-        :author => order.document['author_ts'].first,
-        :amount => order.price,
-        :vat => order.vat,
-        :currency => order.currency,
-        :customer_ref => order.customer_ref,
-        :total => (order.price + order.vat),
-        :vat_pct => 25,
+        :id             => order.dibs_order_id,
+        :title          => order.document['title_ts'].first,
+        :journal        => order.document['journal_title_ts'].first,
+        :author         => order.document['author_ts'].first,
+        :amount         => order.price,
+        :vat            => order.vat,
+        :currency       => order.currency,
+        :customer_ref   => order.customer_ref,
+        :total          => (order.price + order.vat),
+        :vat_pct        => 25,
         :masked_card_no => order.masked_card_number,
-        :drm => order.drm?,
-        :paid => order.payment_status == :authorized,
+        :drm            => order.drm?,
+        :paid           => order.payment_status == :authorized,
+        :supplier       => order.supplier,
       }
     }.deep_merge(params)
   end
@@ -97,8 +98,7 @@ class SendIt
     mail_params = {
       :to    => SendIt.book_suggest_mail,
       :from  => user.email,
-      :book  => {
-      },
+      :book  => {},
       :notes => assistance_request.notes,
       :user  => {
         :name => user.to_s,
