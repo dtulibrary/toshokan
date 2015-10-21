@@ -1,5 +1,6 @@
 class Redmine
-  def initialize url, api_key
+  def initialize url, api_key, options = {:timeout => 60}
+    @options = options
     @url     = url
     @api_key = api_key
   end
@@ -11,7 +12,7 @@ class Redmine
   def send_get_request path, params = {}
     url = "#{@url}/#{path}.json?#{params.merge({ :key => @api_key }).collect {|k,v| "#{k}=#{URI.encode_www_form_component v}"}.join('&')}"
 
-    response = HTTParty.get url
+    response = HTTParty.get url, :timeout => @options[:timeout]
 
     if response.code == 200
       JSON.parse response.body
@@ -33,6 +34,7 @@ class Redmine
     logger.info "Sending create request to redmine at #{@url}:\n#{request.to_json}"
 
     response = HTTParty.post url, {
+      :timeout => @options[:timeout],
       :headers => {
         'Content-Type' => 'application/json'
       },

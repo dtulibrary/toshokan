@@ -143,11 +143,13 @@ module Toshokan
     config.doc_del = {
       :url     => '',
       :enabled => true,
+      :timeout => 10*60, # 10 minutes
     }
 
     config.send_it = {
       :url                   => '',
       :delay_jobs            => true,
+      :timeout               => 10*60, # 10 minutes
       :delivery_support_mail => '',
       :book_suggest_mail     => '',
       :feedback_mail         => '',
@@ -156,6 +158,7 @@ module Toshokan
 
     config.library_support = {
       :url         => '',
+      :timeout     => 10*60, # 10 minutes
       :api_key     => '',
       :reply_to    => '',
       :project_ids => {

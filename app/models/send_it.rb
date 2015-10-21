@@ -18,7 +18,8 @@ class SendIt
         default_params[:priority] = 'now' unless SendIt.delay_jobs?
 
         response = HTTParty.post url, {
-          :body => default_params.deep_merge(params).to_json,
+          :timeout => SendIt.timeout,
+          :body    => default_params.deep_merge(params).to_json,
           :headers => { 'Content-Type' => 'application/json' }
         }
 

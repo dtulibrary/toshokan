@@ -29,16 +29,29 @@ class DocDel
     params[:user_id] = order.user.identifier if order.user
     params[:timecap_base] = options[:timecap_base] || Time.now.iso8601
 
-    Rails.logger.info "Sending order to DocDel: URL = #{DocDel.url}, params = #{params}"
+    Rails.logger.info "Sending order to DocDel (timing out in #{DocDel.timeout} seconds):\nURL = #{DocDel.url},\nparams = #{params}"
 
-    response = HTTParty.post "#{DocDel.url}/rest/orders.json", :body => params
+    save_order = false
+    begin
+      response = HTTParty.post "#{DocDel.url}/rest/orders.json", :timeout => DocDel.timeout, :body => params
+    rescue Net::ReadTimeout
+      Rails.logger.error "Read DocDel response timed out after #{DocDel.timeout} seconds when posting delivery request to DocDel"
+      # We miss the DocDel order id when timing out but we assume the order went through
+      # so we don't end up ordering the same thing multiple times.
+      save_order = true
+    end
 
     if response.code == 200
+      save_order = true
       remote_order = ActiveSupport::JSON.decode response.body
       order.docdel_order_id = remote_order['id']
+    end
+
+    if save_order
       is_redelivery = order.delivery_status == :reordered
       order.delivery_status = is_redelivery ? :redelivery_requested : :delivery_requested
       order.save!
+      Rails.logger.info "Order (ID: #{order.id}) was saved"
     else
       Rails.logger.error "Error communicating with DocDel for order #{order.dibs_order_id}:\nResponse: HTTP #{response.code}\nResponse body:\n#{response.body}"
       raise "Error communicating with DocDel"

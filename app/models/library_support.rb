@@ -4,7 +4,7 @@ class LibrarySupport
   include Configured
 
   def self.redmine
-    Redmine.new LibrarySupport.url, LibrarySupport.api_key
+    Redmine.new LibrarySupport.url, LibrarySupport.api_key, :timeout => LibrarySupport.timeout
   end
 
   def self.submit_failed_request order, order_url, options = {}
