@@ -1,6 +1,7 @@
 GIT
   remote: git://github.com/dtulibrary/blacklight_range_limit.git
-  revision: a4fdba8819e44d09920e1b4203724a64dabdc4a0
+  revision: da3ca02cea6adfd981406b46db32fd930f10ee6b
+  ref: da3ca02cea6adfd981406b46db32fd930f10ee6b
   specs:
     blacklight_range_limit (5.0.2)
       blacklight (>= 5.0.0.pre4, < 6)
