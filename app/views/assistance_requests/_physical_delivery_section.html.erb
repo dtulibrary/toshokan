@@ -22,7 +22,7 @@
             <tt><%= render_user_address current_user %></tt>
           </p>
         <% end %>
-        <%= radio_button_tag 'assistance_request[physical_delivery]', 'pickup_lyngby', false %>
+        <%= radio_button_tag 'assistance_request[physical_delivery]', 'pickup_lyngby', cannot?(:request, :deliver_by_internal_mail) %>
         <%= label_tag 'assistance_request_physical_delivery_pickup_lyngby', 
                       (t('toshokan.assistance_requests.forms.sections.physical_delivery.values.pickup_lyngby') +
                       '<div>View <a href="http://www.bibliotek.dtu.dk/servicemenu/besoeg/aabning#lyngby" target="_blank">hours &amp; address</a></div>').html_safe%>
