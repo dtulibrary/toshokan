@@ -94,6 +94,36 @@
         </lst>
     </requestHandler>
 
+    <!-- spellcheck ("did you mean") -->
+
+    <requestHandler class="org.apache.solr.handler.component.SearchHandler" name="/spell">
+        <lst name="defaults">
+            <str name="spellcheck">true</str>
+            <str name="spellcheck.dictionary">default</str>
+            <str name="spellcheck.onlyMorePopular">true</str>
+            <str name="spellcheck.count">5</str>
+            <str name="spellcheck.collate">true</str>
+        </lst>
+        <arr name="components">
+            <str>spellcheck</str>
+        </arr>
+    </requestHandler>
+
+    <!-- auto-complete (for auto-correct as you type) -->
+
+    <requestHandler class="org.apache.solr.handler.component.SearchHandler" name="/complete">
+        <lst name="defaults">
+            <str name="spellcheck">true</str>
+            <str name="spellcheck.dictionary">completions</str>
+            <str name="spellcheck.onlyMorePopular">true</str>
+            <str name="spellcheck.count">5</str>
+            <str name="spellcheck.collate">true</str>
+        </lst>
+        <arr name="components">
+            <str>completions</str>
+        </arr>
+    </requestHandler>
+
     <requestHandler name="/ping" class="solr.SearchHandler" default="false">
         <lst name="defaults">
             <str name="echoParams">explicit</str>
@@ -760,6 +790,26 @@
             </fragmentsBuilder>
 
         </highlighting>
+    </searchComponent>
+
+    <searchComponent class="solr.SpellCheckComponent" name="completions">
+        <lst name="spellchecker">
+            <str name="name">completions</str>
+            <str name="classname">org.apache.solr.spelling.suggest.Suggester</str>
+            <str name="lookupImpl">org.apache.solr.spelling.suggest.tst.TSTLookupFactory</str>
+            <!-- Alternatives to lookupImpl:
+                 org.apache.solr.spelling.suggest.fst.FSTLookupFactory   [finite state automaton]
+                 org.apache.solr.spelling.suggest.fst.WFSTLookupFactory [weighted finite state automaton]
+                 org.apache.solr.spelling.suggest.jaspell.JaspellLookupFactory [default, jaspell-based]
+                 org.apache.solr.spelling.suggest.tst.TSTLookupFactory   [ternary trees]
+            -->
+            <str name="field">spell</str>  <!-- the indexed field to derive suggestions from -->
+            <float name="threshold">0.005</float>
+            <str name="buildOnCommit">true</str>
+            <!--
+                  <str name="sourceLocation">american-english</str>
+            -->
+        </lst>
     </searchComponent>
 
     <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
