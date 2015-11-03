@@ -12,7 +12,7 @@ class SuggestionsController < ApplicationController
   # Expects solr to have a 'complete' SearchHandler configured to suggest completions
   def completion
     query_response = blacklight_solr.get 'complete', params: query_params
-    render json: parse_suggestions(query_response)
+    render json: parse_suggestions(query_response).values.first
   end
 
   private

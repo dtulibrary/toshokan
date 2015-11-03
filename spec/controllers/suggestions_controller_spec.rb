@@ -11,7 +11,7 @@ describe SuggestionsController do
   end
 
   describe 'completion' do
-    let(:expected_response) { {'metod' => ["metodyka", "metodą", "metody"]} }
+    let(:expected_response) { ["metodyka", "metodą", "metody"] }
     it 'suggests completions for a word' do
       get :completion, q: 'metod'
       expect(response.body).to eq(expected_response.to_json)

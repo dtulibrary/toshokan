@@ -60,22 +60,6 @@
       return false;
     });
 
-    $("#q").keydown(function (event) {
-      if ($.ui.keyCode.SPACE == event.which && event.ctrlKey) {
-        toggleSearchSyntax();
-        return false;
-      } else if (syntaxVisible) {
-        if ($.ui.keyCode.ESCAPE == event.which) {
-          toggleSearchSyntax();
-          return false;
-        }
-      }
-
-      if (undo.enabled) {
-        disableUndo();
-      }
-    });
-
     function enableUndo() {
       undo.text = $("#q").val();
       $("#search-clear").hide();

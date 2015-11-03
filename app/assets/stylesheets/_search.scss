@@ -7,7 +7,7 @@
     width: 110px;
   }
 
-  .text-field-with-icons {
+  .text-field-with-icons, .tt-suggestion {
     background-color: #fff;
     border: 1px solid #d4d4d4;
     padding: 2px 5px;
@@ -41,7 +41,7 @@
     }
   }
 
-  #q {
+  #q, .tt-hint, .tt-suggestion {
     width: 376px;
     border: none;
     padding: 0px;

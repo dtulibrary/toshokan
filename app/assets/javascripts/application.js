@@ -19,6 +19,10 @@
 //= require 'blacklight_range_limit'
 
 //= require jquery_ujs
+
+// Typeahead
+//=require typeahead.bundle.js
+
 //
 // Required by Blacklight
 //= require blacklight/blacklight
