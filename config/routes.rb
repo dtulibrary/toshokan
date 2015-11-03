@@ -58,6 +58,10 @@ Toshokan::Application.routes.draw do
     get   'tags',                                   :to => 'tags#manage',                           :as => 'manage_tags'
 
 
+    # Suggestions
+    get   '/suggest/spelling',                      :to => "suggestions#spelling"
+    get   '/suggest/completion',                    :to => "suggestions#completion"
+
     # Alerts
     get   '/alerts/find/',                          :to => "alerts#find"
     resources :alerts,                              :except => [:edit, :update]
