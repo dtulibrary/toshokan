@@ -863,9 +863,6 @@
   </initParams>
 
   <initParams path="/update/**">
-    <lst name="defaults">
-      <str name="update.chain">files-update-processor</str>
-    </lst>
   </initParams>
 
   <!-- Solr Cell Update Request Handler

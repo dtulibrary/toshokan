@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: git://github.com/flyingzumwalt/solr_wrapper.git
-  revision: 31b365b41f5a9425f8024b92fdc00d02155041fe
+  revision: 3a0428180de7af8aff979490d0fcb0cea030adda
   specs:
     solr_wrapper (0.2.0)
       ruby-progressbar

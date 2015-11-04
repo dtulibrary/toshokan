@@ -482,7 +482,7 @@
   <dynamicField name="*_ts"  type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
 
   <dynamicField name="*_tsort" type="tint" indexed="true" stored="false" multiValued="false" required="false" />
-  <dynamixField name="*_sort"  type="string" indexed="true" stored="false" multiValued="false" required="false" />
+  <dynamicField name="*_sort"  type="string" indexed="true" stored="false" multiValued="false" required="false" />
   <dynamicField name="*_facet" type="string" indexed="true" stored="true" multiValued="true" />
   <dynamicField name="*_json"  type="string" indexed="false" stored="true" multiValued="false" />
 

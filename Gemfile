@@ -55,7 +55,7 @@ group :test do
 end
 
 group :test, :development do
-  gem 'solr_wrapper', github: 'flyingzumwalt/solr_wrapper'
+  gem 'solr_wrapper', github:'flyingzumwalt/solr_wrapper'
   gem 'rspec-rails'
   gem 'metastore-test_data', :github => 'dtulibrary/metastore-test_data'
   gem 'sqlite3'
