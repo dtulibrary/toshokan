@@ -33,6 +33,14 @@ GIT
       rails
       rsolr
 
+GIT
+  remote: git://github.com/flyingzumwalt/solr_wrapper.git
+  revision: 31b365b41f5a9425f8024b92fdc00d02155041fe
+  specs:
+    solr_wrapper (0.2.0)
+      ruby-progressbar
+      rubyzip
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -339,6 +347,7 @@ GEM
       sexp_processor (~> 4.0)
     ruby_parser (3.5.0)
       sexp_processor (~> 4.1)
+    rubyzip (1.1.7)
     rvm-capistrano (1.2.7)
       capistrano (>= 2.0.0)
     safe_yaml (1.0.4)
@@ -433,7 +442,6 @@ DEPENDENCIES
   hashie
   hirb
   httparty
-  jettywrapper
   jquery-rails (~> 2.3.0)
   kaminari
   launchy
@@ -460,6 +468,7 @@ DEPENDENCIES
   simplecov
   simplecov-html
   simplecov-rcov
+  solr_wrapper!
   sprockets (~> 2.8)
   sqlite3
   therubyracer
