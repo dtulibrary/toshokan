@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: git://github.com/flyingzumwalt/solr_wrapper.git
-  revision: 3a0428180de7af8aff979490d0fcb0cea030adda
+  revision: 88e23e05016a904fc5a5cb6dd152d764b9695771
   specs:
     solr_wrapper (0.2.0)
       ruby-progressbar
@@ -323,7 +323,7 @@ GEM
     require_all (1.3.2)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
-    rsolr (1.0.10)
+    rsolr (1.0.13)
       builder (>= 2.1.2)
     rspec-core (3.1.7)
       rspec-support (~> 3.1.0)

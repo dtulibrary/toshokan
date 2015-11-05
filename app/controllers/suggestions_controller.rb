@@ -5,7 +5,7 @@ class SuggestionsController < ApplicationController
   # Expects solr to have a 'spell' SearchHandler configured to return spelling suggestions
   def spelling
     query_response = blacklight_solr.get 'spell', params: query_params
-    render json: parse_suggestions(query_response)
+    render json: sort_suggestions_by_freq(parse_suggestions(query_response))
   end
 
   # Suggests completions for a word
@@ -32,9 +32,28 @@ class SuggestionsController < ApplicationController
     suggestions_as_hash = {}
     suggestions_array = query_response['spellcheck']['suggestions']
     suggestions_array.each_with_index do |value, index|
-      return suggestions_as_hash if index == suggestions_array.length-2
+      # solr 4.x includes the collations at the end of the suggestions array
+      unless query_response['spellcheck'].has_key?('collations')
+        return suggestions_as_hash if index == suggestions_array.length-2
+      end
       suggestions_as_hash[value] = suggestions_array[index+1]['suggestion'] if index%2 == 0
     end
+    suggestions_as_hash
   end
+
+  def sort_suggestions_by_freq(suggestions_hash)
+    sorted_hash = {}
+    suggestions_hash.each_pair do |term,term_suggestions|
+      if term_suggestions.first.kind_of? Hash
+        sorted_term_suggestions = term_suggestions.sort { |x,y| y['freq'] <=> x['freq'] }
+        # only return the 'word' in the suggestions array
+        sorted_hash[term] = sorted_term_suggestions.map {|term_suggestion| term_suggestion['word']}
+      else
+        sorted_hash[term] = term_suggestions
+      end
+    end
+    sorted_hash
+  end
+
 
 end

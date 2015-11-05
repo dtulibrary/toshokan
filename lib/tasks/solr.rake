@@ -14,7 +14,8 @@ namespace :solr do
   task :setup_and_import => :environment do
     Rake::Task["solr:clean"].execute
     Rake::Task["solr:config"].execute
-    Rake::Task["solr:import:all"].execute
+    Rake::Task["solr:import:metastore"].execute
+    Rake::Task["solr:import:toc"].execute
   end
 
   desc 'Configure solr with toc and metastore collections'
