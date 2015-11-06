@@ -14,6 +14,9 @@ class CatalogController < ApplicationController
     # Ensure I18n load paths are loaded
     Dir[Rails.root + 'config/locales/**/*.{rb,yml}'].each { |path| I18n.load_path << path }
 
+    config.solr_path = 'toshokan'
+    config.document_solr_path = 'toshokan_document'
+
     # Set resolver params
     config.resolver_params = {
       "mm" => "100%"
@@ -29,7 +32,6 @@ class CatalogController < ApplicationController
 
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
-      :qt => '/toshokan',
       :q => '*:*',
       :rows => 10
     }
@@ -39,7 +41,6 @@ class CatalogController < ApplicationController
     ## parameters included in the Blacklight-jetty document requestHandler.
     #
     config.default_document_solr_params = {
-      :qt => '/toshokan_document',
       :q => "{!raw f=#{SolrDocument.unique_key} v=$id}"
     #  ## These are hard-coded in the blacklight 'document' requestHandler
     #  # :fl => '*',
