@@ -1,6 +1,6 @@
 module DtuOrbitHelper
 
-  def render_link_to_dtu_orbit? document
+  def should_render_link_to_dtu_orbit? document
     (document['backlink_ss'] || []).any? { |l| l.start_with? 'http://orbit.dtu.dk' }
   end
 

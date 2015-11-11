@@ -5,7 +5,7 @@ module IsiHelper
     document['isi_url_ssf'].first
   end
 
-  def render_link_to_isi? document
+  def should_render_link_to_isi? document
     isi_url(document)
   end
 

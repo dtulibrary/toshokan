@@ -84,6 +84,11 @@ module Toshokan
       :pub => 'dtupub'
     }
 
+    config.cover_images = {
+        :url => 'http://staging.imageservice.cvt.dk/api',
+        :api_key => '6OH43Y6XJ1Ar3C8xYUhv'
+    }
+
     config.auth = {
       :stub    => false,
       :cas_url => '',

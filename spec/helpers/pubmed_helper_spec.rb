@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe PubmedHelper do
   
-  describe '#render_link_to_pubmed?' do
+  describe '#should_render_link_to_pubmed?' do
     before do
       @document = SolrDocument.new
     end
@@ -18,20 +18,20 @@ describe PubmedHelper do
         end
 
         it 'returns true' do
-          expect( render_link_to_pubmed? @document ).to be_truthy
+          expect( should_render_link_to_pubmed? @document ).to be_truthy
         end
       end
 
       context 'when document has no pubmed url' do
         it 'returns false' do
-          expect( render_link_to_pubmed? @document ).to be_falsey
+          expect( should_render_link_to_pubmed? @document ).to be_falsey
         end
       end
     end
 
     context 'when document has no pubmed source' do
       it 'returns false' do
-        expect( render_link_to_pubmed? @document ).to be_falsey
+        expect( should_render_link_to_pubmed? @document ).to be_falsey
       end
     end
   end

@@ -5,7 +5,7 @@ module PubmedHelper
     "#{document['pubmed_url_ssf'].first}?otool=#{Rails.application.config.pubmed[:dtu_id]}"
   end
 
-  def render_link_to_pubmed? document
+  def should_render_link_to_pubmed? document
     pubmed_url(document)
   end
 

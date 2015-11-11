@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe IsiHelper do
   
-  describe '#render_link_to_isi?' do
+  describe '#should_render_link_to_isi?' do
     before do
       @document = SolrDocument.new
     end
@@ -18,20 +18,20 @@ describe IsiHelper do
         end
 
         it 'returns true' do
-          expect( render_link_to_isi? @document ).to be_truthy
+          expect( should_render_link_to_isi? @document ).to be_truthy
         end
       end
 
       context 'when document has no isi url' do
         it 'returns false' do
-          expect( render_link_to_isi? @document ).to be_falsey
+          expect( should_render_link_to_isi? @document ).to be_falsey
         end
       end
     end
 
     context 'when document has no isi source' do
       it 'returns false' do
-        expect( render_link_to_isi? @document ).to be_falsey
+        expect( should_render_link_to_isi? @document ).to be_falsey
       end
     end
   end

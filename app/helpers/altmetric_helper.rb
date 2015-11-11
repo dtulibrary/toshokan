@@ -1,6 +1,6 @@
 module AltmetricHelper
 
-  def render_altmetric_badge?(document)
+  def should_render_altmetric_badge?(document)
     mendeley_identifiers(document).any? { |k,v| [:doi, :pmid, :arxiv].include? k }
   end
 

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe DtuOrbitHelper do
 
-  describe '#render_link_to_dtu_orbit?' do
+  describe '#should_render_link_to_dtu_orbit?' do
     before do
       @document = SolrDocument.new
     end
@@ -18,26 +18,26 @@ describe DtuOrbitHelper do
         end
 
         it 'returns true' do
-          expect( render_link_to_dtu_orbit? @document ).to be_truthy
+          expect( should_render_link_to_dtu_orbit? @document ).to be_truthy
         end
       end
 
       context 'when document only has non-orbit backlinks' do
         it 'returns false' do
-          expect( render_link_to_dtu_orbit? @document ).to be_falsey
+          expect( should_render_link_to_dtu_orbit? @document ).to be_falsey
         end
       end
 
       context 'when document has no backlinks' do
         it 'returns false' do
-          expect( render_link_to_dtu_orbit? @document ).to be_falsey
+          expect( should_render_link_to_dtu_orbit? @document ).to be_falsey
         end
       end
     end
 
     context 'when document has no orbit source' do
       it 'returns false' do
-        expect( render_link_to_dtu_orbit? @document ).to be_falsey
+        expect( should_render_link_to_dtu_orbit? @document ).to be_falsey
       end
     end
   end
