@@ -13,13 +13,31 @@ module DocumentHelper
     params[:resolve].blank? ? super : ""
   end
 
-  def snip_abstract args
-    render_abstract_snippet args[:document]
+  def render_abstract_with_highlights args
+    document ||= args[:document]
+    snippets = []
+    field_value = (document['abstract_ts'] || ['No abstract']).first
+    snippets << truncate(field_value, length: 300, separator:'')
+    if document.has_highlight_field?('abstract_ts')
+      highlights = document.highlight_field('abstract_ts').map {|hl| hl.html_safe}
+      # if the first highlight is ~300 characters then use it as the main abstract value
+      snippets[0] = highlights.shift if highlights.first.length > 297
+      snippets += highlights
+    end
+
+    return render_snippets(snippets)
   end
 
-  def render_abstract_snippet document
-    snippet = (document['abstract_ts'] || ['No abstract']).first
-    return snippet.size > 300 ? snippet.slice(0, 300) + '...' : snippet
+  def render_snippets(snippets)
+    rendered_snippets = []
+    snippets.each_with_index do |snippet, index|
+      snippet = "...#{snippet}" unless index == 0 || snippet[0..2] == '...'
+      snippet << "..." unless snippet[-3..-1] == '...'
+      css_classes = ['snippet']
+      css_classes << 'supplemental' if index > 0
+      rendered_snippets << content_tag(:div, snippet.html_safe, :class => css_classes.join(' '))
+    end
+    rendered_snippets
   end
 
   def render_author_links args
@@ -30,8 +48,28 @@ module DocumentHelper
     end
   end
 
+
+  def highlighted_author_list args
+    document ||= args[:document]
+    field = args[:field]
+    all_values = args[:document][args[:field]]
+    if document.has_highlight_field?(field)
+      highlighted_authors = document.highlight_field(field)
+      highlighted_authors.each do |highlighted|
+        all_values.map! do |v|
+          if v == highlighted.gsub('<em>','').gsub('</em>','')
+            highlighted
+          else
+            v
+          end
+        end
+      end
+    end
+    all_values
+  end
+
   def render_shortened_author_links args
-    render_author_list args[:document][args[:field]], { :max_length => 3, :append => I18n.t('toshokan.catalog.shortened_list.et_al') }
+    render_author_list highlighted_author_list(args), { :max_length => 3, :append => I18n.t('toshokan.catalog.shortened_list.et_al') }
   end
 
   def render_author_list authors, options = {}

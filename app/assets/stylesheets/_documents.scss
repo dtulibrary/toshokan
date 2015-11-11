@@ -28,6 +28,14 @@
       margin-right: 10px; 
     }
   }
+  .index_title, dl.metadata dd {
+    em {
+      font-weight: bold;
+    }
+    .snippet.supplemental {
+      background-color: #f2dede;
+    }
+  }
 }
 
 // Show view

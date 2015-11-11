@@ -11,6 +11,39 @@ describe CatalogController do
     ability
   }
 
+  describe '#blacklight_config' do
+    describe '.document_presenter_class' do
+      subject { controller.blacklight_config.document_presenter_class }
+      it { is_expected.to eq DtuDocumentPresenter }
+    end
+    describe '.solr_path' do
+      subject { controller.blacklight_config.solr_path }
+      it { is_expected.to eq 'toshokan' }
+    end
+    describe '.document_solr_path' do
+      subject { controller.blacklight_config.document_solr_path }
+      it { is_expected.to eq 'toshokan_document' }
+    end
+    describe 'default_solr_params' do
+      subject { controller.blacklight_config.default_solr_params }
+      it 'includes params for hit highlighting' do
+        expect(subject).to include(
+                               :hl => true,
+                               'hl.snippets' => 3,
+                               'hl.usePhraseHighlighter' => true,
+                               'hl.fl' => 'title_ts, author_ts, journal_title_ts, conf_title_ts, abstract_ts, publisher_ts',
+                               'hl.fragsize' => 300
+                           )
+      end
+    end
+    it 'enables highlighting for some fields' do
+      ['author_ts', 'journal_title_ts', 'publisher_ts', 'abstract_ts'].each do |field|
+        field_config = controller.blacklight_config.index_fields[field]
+        expect(field_config.highlight).to eq true
+      end
+    end
+  end
+
   describe "#index" do
 
     let!(:user) {

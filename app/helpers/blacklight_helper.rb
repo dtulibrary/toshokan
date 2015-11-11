@@ -1,6 +1,10 @@
 module BlacklightHelper
   include Blacklight::BlacklightHelperBehavior
 
+  def presenter_class
+    blacklight_config.document_presenter_class
+  end
+
   # Override blacklight document actions to exclude 'Folder' and 'Bookmarks'
   # and instead render 'Tagging' functionality
   def render_index_doc_actions (document, options={})

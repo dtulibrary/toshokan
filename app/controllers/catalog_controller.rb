@@ -16,6 +16,7 @@ class CatalogController < ApplicationController
 
     config.solr_path = 'toshokan'
     config.document_solr_path = 'toshokan_document'
+    config.document_presenter_class = DtuDocumentPresenter
 
     # Set resolver params
     config.resolver_params = {
@@ -33,7 +34,12 @@ class CatalogController < ApplicationController
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
       :q => '*:*',
-      :rows => 10
+      :rows => 10,
+      :hl => true,
+      'hl.snippets' => 3,
+      'hl.usePhraseHighlighter' => true,
+      'hl.fl' => 'title_ts, author_ts, journal_title_ts, conf_title_ts, abstract_ts, publisher_ts',
+      'hl.fragsize' => 300
     }
 
     ## Default parameters to send on single-document requests to Solr. These
@@ -95,16 +101,16 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     #   The ordering of the field names is the order of the display
-    config.add_index_field 'author_ts', :helper_method => :render_shortened_author_links
-    config.add_index_field 'journal_title_ts', :format => ['article'], :helper_method => :render_journal_info_index
-    config.add_index_field 'conf_title_ts', :format => ['article'], :helper_method => :render_conference_info_index, :suppressed_by => ['journal_title_ts']
+    config.add_index_field 'author_ts', :helper_method => :render_shortened_author_links, :highlight => true
+    config.add_index_field 'journal_title_ts', :format => ['article'], :helper_method => :render_journal_info_index, :highlight => true
+    config.add_index_field 'conf_title_ts', :format => ['article'], :helper_method => :render_conference_info_index, :suppressed_by => ['journal_title_ts'], :highlight => true
     config.add_index_field 'pub_date_tis', :format => ['book']
     config.add_index_field 'journal_page_ssf', :format => ['book']
     config.add_index_field 'format', :helper_method => :render_type
     #config.add_index_field 'subformat_s', :helper_method => :render_subtype
     config.add_index_field 'doi_ss'
-    config.add_index_field 'publisher_ts', :format => ['book', 'journal']
-    config.add_index_field 'abstract_ts', :helper_method => :snip_abstract
+    config.add_index_field 'publisher_ts', :format => ['book', 'journal'], :highlight => true
+    config.add_index_field 'abstract_ts', :helper_method => :render_abstract_with_highlights, :highlight => true, separator: ''
     config.add_index_field 'issn_ss', :format => ['journal']
     config.add_index_field 'dissertation_date_ssf', :helper_method => :render_dissertation_date, :format => ['thesis']
 
