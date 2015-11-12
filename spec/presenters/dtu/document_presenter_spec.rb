@@ -1,11 +1,14 @@
 require 'rails_helper'
 
-describe DtuDocumentPresenter do
+describe Dtu::DocumentPresenter do
   let(:source_doc) { {} }
   let(:solr_response) { nil }
   let(:document) { SolrDocument.new(source_doc, solr_response) }
   let(:presenter) { described_class.new(document, CatalogController.new) }
 
+  it 'includes Dtu::DocumentPresenter::Metrics' do
+    expect(described_class.included_modules).to include(Dtu::DocumentPresenter::Metrics)
+  end
   describe 'render_document_index_label' do
     subject { presenter.render_document_index_label(label: :title_ts) }
     before do

@@ -6,6 +6,6 @@ describe BlacklightHelper do
   end
   describe 'presenter' do
     subject { helper.presenter_class }
-    it { is_expected.to eq DtuDocumentPresenter }
+    it { is_expected.to eq Dtu::DocumentPresenter }
   end
 end

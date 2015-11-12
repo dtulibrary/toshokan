@@ -19,7 +19,7 @@ module Toshokan
 
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/lib/document)
-    config.eager_load_paths += %W(#{config.root}/lib/document)
+    config.eager_load_paths += %W(#{config.root}/lib/document #{config.root}/app/presenters/concerns)
     config.railties_order = [:main_app, DtuRailsCommon::Engine, Blacklight::Engine, :all]
 
     # Only load the plugins named here, in the order given (default is alphabetical).

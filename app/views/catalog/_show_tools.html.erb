@@ -8,8 +8,6 @@
     <%= render 'show_journal_rank_tools' %>
     </div>
   <% else %>
-    <% if render_metrics? @document %>
-      <%= render 'show_metrics' %>
-    <% end %>
+    <%= render 'show_metrics' %>
   <% end %>
 <% end %>

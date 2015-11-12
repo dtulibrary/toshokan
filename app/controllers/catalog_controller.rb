@@ -16,7 +16,7 @@ class CatalogController < ApplicationController
 
     config.solr_path = 'toshokan'
     config.document_solr_path = 'toshokan_document'
-    config.document_presenter_class = DtuDocumentPresenter
+    config.document_presenter_class = Dtu::DocumentPresenter
 
     # Set resolver params
     config.resolver_params = {

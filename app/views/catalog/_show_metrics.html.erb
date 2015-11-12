@@ -1,4 +1,7 @@
-<div id="metrics" class="well tools">
-  <h4><%= t 'toshokan.tools.metrics.title' %></h4>
-  <%= render_metrics(@document) %>
-</div>
+<% document_presenter ||= present(@document) %>
+<% if document_presenter.has_metrics? %>
+    <div id="metrics" class="well tools">
+      <h4><%= t 'toshokan.tools.metrics.title' %></h4>
+      <%= document_presenter.render_metrics %>
+    </div>
+<% end %>
