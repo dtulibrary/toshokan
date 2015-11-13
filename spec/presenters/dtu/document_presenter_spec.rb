@@ -6,6 +6,9 @@ describe Dtu::DocumentPresenter do
   let(:document) { SolrDocument.new(source_doc, solr_response) }
   let(:presenter) { described_class.new(document, CatalogController.new) }
 
+  it 'sets the config to blacklight_config by default' do
+    expect(presenter.instance_variable_get(:@configuration)).to eq CatalogController.blacklight_config
+  end
   it 'includes Dtu::DocumentPresenter::Metrics' do
     expect(described_class.included_modules).to include(Dtu::DocumentPresenter::Metrics)
   end

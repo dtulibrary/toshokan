@@ -10,7 +10,9 @@ module Dtu
     # @see https://github.com/projectblacklight/blacklight/issues/1328
     # @see https://github.com/projectblacklight/blacklight/issues/1329
     def initialize(object, view_context, configuration=nil)
+      configuration = view_context.try(:blacklight_config) if configuration.nil?
       super
+      @configuration = configuration
       @controller = view_context # for compatibility with Blacklight::DocumentPresenter
       @document = object # for compatibility with Blacklight::DocumentPresenter
     end
