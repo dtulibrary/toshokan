@@ -2,7 +2,7 @@ module Dtu::DocumentPresenter::Metrics
 
   # Metrics that might be rendered for each document
   def metrics_presenter_classes
-    [Dtu::Metrics::AltmetricPresenter, Dtu::Metrics::IsiPresenter, Dtu::Metrics::DtuOrbitPresenter, Dtu::Metrics::PubmedPresenter]
+    @configuration.try(:metrics_presenter_classes) ? @configuration.metrics_presenter_classes : [Dtu::Metrics::AltmetricPresenter, Dtu::Metrics::IsiPresenter, Dtu::Metrics::DtuOrbitPresenter, Dtu::Metrics::PubmedPresenter]
   end
 
   def metrics_presenters

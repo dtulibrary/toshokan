@@ -17,6 +17,7 @@ class CatalogController < ApplicationController
     config.solr_path = 'toshokan'
     config.document_solr_path = 'toshokan_document'
     config.document_presenter_class = Dtu::DocumentPresenter
+    config.metrics_presenter_classes = [Dtu::Metrics::AltmetricPresenter, Dtu::Metrics::IsiPresenter, Dtu::Metrics::DtuOrbitPresenter, Dtu::Metrics::PubmedPresenter]
 
     # Set resolver params
     config.resolver_params = {
