@@ -42,10 +42,6 @@ describe CatalogController do
         expect(field_config.highlight).to eq true
       end
     end
-    describe 'metrics_presenter_classes' do
-      subject { controller.blacklight_config.metrics_presenter_classes }
-      it { is_expected.to eq [Dtu::Metrics::AltmetricPresenter, Dtu::Metrics::IsiPresenter, Dtu::Metrics::DtuOrbitPresenter, Dtu::Metrics::PubmedPresenter] }
-    end
   end
 
   describe "#index" do

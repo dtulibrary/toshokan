@@ -10,7 +10,7 @@ module Toshokan
       include Toshokan::MendeleyController
       include Toshokan::NormalizesYears
 
-      helper_method :journal_id_for_issns, :add_limit_fq_to_solr
+      helper_method :journal_id_for_issns
     end
 
     # Overrides Blacklight::Catalog#has_search_parameters? to know about DTU-specific query parameters
@@ -22,7 +22,7 @@ module Toshokan
       params.delete('per_page')
       params['page'] = 1
       params['rows'] = blacklight_config.max_per_page
-      (response, document_list) = get_search_results(params, extra_search_params)
+      (response, document_list) = search_results(params, extra_search_params)
 
       case format_name
         when :bib
@@ -35,32 +35,6 @@ module Toshokan
           bibliography.map{|entry| entry.to_s}.join("\n")
         when :ris
           document_list.map{|document| document.export_as(:ris)}.join("\n\n")
-      end
-    end
-
-    ##
-    # Add any existing limits, stored in app-level HTTP query
-    # as :l, to solr as appropriate :fq query.
-    def add_limit_fq_to_solr(solr_parameters, user_params)
-      # :fq, map from :l.
-      if ( user_params[:l])
-        l_request_params = user_params[:l]
-
-        solr_parameters[:fq] ||= []
-        l_request_params.each_pair do |l|
-          limit_name = l.first
-          limit_value = l.second
-          if limit_value.is_a? Hash
-            limit_value = limit_value[:value]
-          end
-
-          field_config = blacklight_config[:limit_fields][limit_name]
-          solr_parameters[:fq] << field_config[:fields].map { |field|
-            "#{field}:\"#{limit_value}\""
-          }.join(' OR ')
-        end
-
-        solr_parameters
       end
     end
 

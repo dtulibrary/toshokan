@@ -121,8 +121,8 @@ module Toshokan
 
       params.merge!({:rows => 2, :echoParams => 'all'}).merge!(blacklight_config[:resolver_params])
 
-      res = blacklight_solr.send_and_receive('resolve', :params => add_inclusive_access_filter(params))
-      solr_response = Blacklight::SolrResponse.new(res, params)
+      res = repository.connection.send_and_receive('resolve', :params => add_inclusive_access_filter(params))
+      solr_response = Blacklight::Solr::Response.new(res, params)
       count = 0
       unless solr_response.docs.empty?
         document = SolrDocument.new(solr_response.docs.first, solr_response)

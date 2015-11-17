@@ -27,7 +27,7 @@ class SolrDocument < Dtu::SolrDocument
   # single valued. See Blacklight::Solr::Document::ExtendableClassMethods#field_semantics
   # and Blacklight::Solr::Document#to_semantic_values
   # Recommendation: Use field names from Dublin Core
-  use_extension( Blacklight::Solr::Document::DublinCore)
+  use_extension( Blacklight::Document::DublinCore)
   field_semantics.merge!(
      # DC, BibTeX, Ris
      :title       => "title_ts",

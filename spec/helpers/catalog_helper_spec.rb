@@ -5,7 +5,7 @@ describe CatalogHelper do
   describe 'show_pagination?' do
     before do
       # Using an instance variable instead of let() because that's how the helper method gets @response in runtime
-      @response = Blacklight::SolrResponse.new({},{})
+      @response = Blacklight::Solr::Response.new({},{})
     end
     it "should return false if there is no document limit or if there is only one page" do
       @response = double("SolrResponse", limit_value:0)

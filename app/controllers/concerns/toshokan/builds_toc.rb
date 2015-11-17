@@ -96,13 +96,13 @@ module Toshokan
     end
 
     def toc_solr_config
-      { :url => blacklight_solr_config[:toc_url] }
+      { :url => blacklight_config.connection_config[:toc_url] }
     end
 
     def articles_for toc_key, solr_params
       query = "toc_key_s:(#{toc_key})"
       sort  = 'journal_page_start_tsort asc'
-      articles = blacklight_solr.get(blacklight_config.solr_path, :params => solr_params.merge({:q => query, :sort => sort, :rows => 100}))
+      articles = repository.connection.get(blacklight_config.solr_path, :params => solr_params.merge({:q => query, :sort => sort, :rows => 100}))
       articles.dup.with_indifferent_access
     end
 

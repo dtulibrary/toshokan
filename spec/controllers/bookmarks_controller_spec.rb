@@ -78,7 +78,7 @@ describe BookmarksController do
       context 'when bookmark exists' do
         before do
           existing_bookmark.save
-          allow(controller).to receive(:get_solr_response_for_doc_id).and_return([nil,document])
+          allow(controller).to receive(:fetch).and_return([nil,document])
         end
 
         it "deletes the bookmark from the user's bookmarks" do

@@ -7,7 +7,8 @@ describe Toshokan::Catalog do
   describe "export_search_result" do
     it "exports ris" do
       allow_any_instance_of(SolrDocument).to receive(:export_as).with(:ris).and_return("BIBEXPORT")
-      expect(controller.export_search_result(:ris, {q:"Polski"}, {})).to eq("BIBEXPORT\n\nBIBEXPORT\n\nBIBEXPORT\n\nBIBEXPORT")
+      expected_result = Array.new(10) { "BIBEXPORT" }.join("\n\n")
+      expect(controller.export_search_result(:ris, {q:"Polski"}, {})).to eq(expected_result)
     end
     it "exports bib" do
       pending "This appears to be broken.  Is it used?"

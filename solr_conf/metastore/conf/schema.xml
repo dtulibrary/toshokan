@@ -508,7 +508,7 @@
 
   <!-- "spell" field used by spellchecker components -->
 
-  <!-- "textSpell" fieldType defines a general text field that has reasonable, generic
+  <!-- "spell_en" fieldType defines a general text field that has reasonable, generic
        cross-language defaults: it tokenizes with StandardTokenizer,
        removes stop words from case-insensitive "lang/stopwords_en.txt"
        (empty by default), and down cases.  At query time only, it

@@ -4,12 +4,12 @@ gem 'rails', '~> 4.1.0'
 gem 'activerecord-session_store'
 
 gem 'jquery-rails', '~> 2.3.0'
-gem 'blacklight', '~> 5.7'
-gem 'dtu_rails_common', :github => 'dtulibrary/dtu_rails_common'
-gem 'dtu_blacklight_common', github: 'dtulibrary/dtu_blacklight_common'
+gem 'blacklight', '5.16.3'
+gem 'dtu_rails_common', github: 'dtulibrary/dtu_rails_common'
+gem 'dtu_blacklight_common', github: 'dtulibrary/dtu_blacklight_common', branch: 'blacklight5.16'
 gem 'unicode'
 
-gem 'blacklight_range_limit', :github => 'dtulibrary/blacklight_range_limit', :ref => 'da3ca02cea6adfd981406b46db32fd930f10ee6b'
+gem 'blacklight_range_limit', '~> 5.2.0'
 gem 'pg'
 gem 'unhappymapper', :require => 'happymapper'
 gem 'httparty'
@@ -58,7 +58,7 @@ end
 group :test, :development do
   gem 'solr_wrapper', github:'flyingzumwalt/solr_wrapper'
   gem 'rspec-rails'
-  gem 'metastore-test_data', :github => 'dtulibrary/metastore-test_data'
+  gem 'metastore-test_data', github: 'flyingzumwalt/metastore-test_data', branch: 'uses_blacklight_yml'
   gem 'sqlite3'
 end
 

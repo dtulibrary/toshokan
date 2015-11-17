@@ -4,14 +4,9 @@ module Toshokan
 
     included do
       include Blacklight::Controller
-      include Blacklight::SolrHelper
-      include Blacklight::Catalog::SearchContext
+      include Blacklight::SearchHelper
+      include Blacklight::SearchContext
       include Toshokan::SearchParametersHelpers
-
-      self.solr_search_params_logic += [:add_tag_fq_to_solr]
-      self.solr_search_params_logic += [:add_limit_fq_to_solr]
-      self.solr_search_params_logic += [:add_access_filter]
-      self.solr_search_params_logic += [:add_format_filter]
     end
 
     # Overrides Blacklight::Catalog::SearchContext#find_or_initialize_search_session_from_params

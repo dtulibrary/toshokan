@@ -5,7 +5,7 @@ class BookmarksController < ApplicationController
   before_filter :require_tag_ability
 
   def update
-    _, @document = get_solr_response_for_doc_id(params[:id], add_access_filter)
+    _, @document = fetch(params[:id], add_access_filter)
     current_or_guest_user.existing_bookmark_for(@document) || current_user.bookmarks.create(document: @document)
 
     respond_to do | format |
@@ -15,7 +15,7 @@ class BookmarksController < ApplicationController
   end
 
   def destroy
-    _, @document = get_solr_response_for_doc_id(params[:id], add_access_filter)
+    _, @document = fetch(params[:id], add_access_filter)
     bookmark = current_user.existing_bookmark_for(@document)
     not_found unless bookmark
     current_or_guest_user.bookmarks.delete(bookmark) if bookmark

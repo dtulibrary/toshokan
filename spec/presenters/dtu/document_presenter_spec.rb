@@ -7,7 +7,7 @@ describe Dtu::DocumentPresenter do
   let(:presenter) { described_class.new(document, CatalogController.new) }
 
   it 'sets the config to blacklight_config by default' do
-    expect(presenter.instance_variable_get(:@configuration)).to eq CatalogController.blacklight_config
+    expect(presenter.instance_variable_get(:@configuration)).to eq presenter.instance_variable_get(:@view_context ).blacklight_config
   end
   it 'includes Dtu::DocumentPresenter::Metrics' do
     expect(described_class.included_modules).to include(Dtu::DocumentPresenter::Metrics)
@@ -51,7 +51,7 @@ describe Dtu::DocumentPresenter do
     context 'when highlights are NOT available' do
       before do
         allow(document).to receive(:has_highlight_field?).with('publisher_ts').and_return(false)
-        expect(document).to receive(:get).with('publisher_ts', {:sep=>nil}).and_return('stored field value')
+        expect(document).to receive(:fetch).with('publisher_ts', field_config.default).and_return('stored field value')
       end
       it 'returns the stored value of the field' do
         expect(subject).to eq 'stored field value'

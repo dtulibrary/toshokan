@@ -10,20 +10,26 @@ describe DocumentHelper do
     expect( render_type(document:document, field:"type_facet") ).to eq(I18n.t("toshokan.catalog.formats.article"))
   end
   describe "render_link_rel_alternates" do
-    it "returns an empty string if params[:resolve] is set" do
-      allow(helper).to receive(:params).and_return({resolve:["foo"]})
-      expect(helper.render_link_rel_alternates(document)).to eq("")
+    let(:document_presenter) { CatalogController.blacklight_config.document_presenter_class.new(document, view) }
+    subject { helper.render_link_rel_alternates(document) }
+    context "if params[:resolve] is set" do
+      before do
+        allow(helper).to receive(:params).and_return({resolve:["foo"]})
+      end
+      it "returns an empty string" do
+        expect(subject).to eq("")
+      end
     end
-    it "renders links (default blacklight behavior) if params[:resolve] is empty" do
-      # Confirm that default behavior is triggered.
-      # Actual test coverage for this behavior is in blacklight.
-      allow(helper).to receive(:polymorphic_url).and_return("/link/to/format")
-      tmp_value = Capybara.ignore_hidden_elements
-      Capybara.ignore_hidden_elements = false
-      expect(helper.render_link_rel_alternates(document)).to have_selector("link")
-      allow(helper).to receive(:params).and_return({resolve:[]})
-      expect(helper.render_link_rel_alternates(document)).to have_selector("link")
-      Capybara.ignore_hidden_elements = tmp_value
+    context "if params resolve is blank" do
+      before do
+        allow(helper).to receive(:params).and_return({resolve: double(blank?:true)})
+      end
+      it "triggers the default blacklight behavior" do
+        # The default behavior (triggered by calling `super`) calls presenter(document).link_rel_alternates
+        allow(helper).to receive(:presenter).and_return(document_presenter)
+        expect(document_presenter).to receive(:link_rel_alternates).with({})
+        subject
+      end
     end
   end
 

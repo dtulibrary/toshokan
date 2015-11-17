@@ -201,7 +201,7 @@ class CatalogController < ApplicationController
       params.delete :from_resolver
     end
 
-    (@response, @document_list) = get_search_results(params, extra_search_params)
+    (@response, @document_list) = search_results(params, extra_search_params)
     @filters = params[:f] || []
 
     respond_to do |format|
@@ -229,14 +229,14 @@ class CatalogController < ApplicationController
     # override super#show to add access filters to request
     # and to add toc data to response
     begin
-      @response, @document = get_solr_response_for_doc_id nil, add_access_filter
+      @response, @document = fetch params[:id], add_access_filter
       @toc = toc_for @document, params, add_access_filter
 
     rescue Blacklight::Exceptions::InvalidSolrID
 
       # check whether document is available for dtu users if the user does not already have dtu search rights
       if can? :search, :public
-        @response, @document = get_solr_response_for_doc_id nil, {:fq => ["access_ss:#{Rails.application.config.search[:dtu]}"]}
+        @response, @document = fetch params[:id], {:fq => ["access_ss:#{Rails.application.config.search[:dtu]}"]}
         if @document.nil?
           not_found
         else

@@ -4,7 +4,7 @@ module CatalogHelper
 
   # Should we display the pagination controls?
   #
-  # @param [Blacklight::SolrResponse]
+  # @param [Blacklight::Solr::Response]
   # @return [Boolean]
   def show_pagination? response = nil
     response ||= @response

@@ -1,3 +1,4 @@
+require 'rsolr'
 module RSolr
   class Connection
 
