@@ -6,7 +6,6 @@ See http://findit.dtu.dk
 
 Toshokan means library in japanese.
 
-
 ## Requirements
 
 Using ruby 2.1.4. If you're using RVM, you might have to install using `rvm install 2.1.4 --disable-binary` to avoid errors with certificates.
