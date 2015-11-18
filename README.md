@@ -22,6 +22,13 @@ To start and stop solr, use
 
     $ rake solr:start    
     $ rake solr:stop
+    
+To refresh the configs for the collections (ie. metastore and toc) call this task with solr running:
+
+    $ rake solr:config_collections
+    $ rake solr:import
+
+Calling config_collections deletes the cores and re-creates them so you have to re-import the data after refreshign the configs.
 
 ## Test Data
 

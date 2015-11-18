@@ -1,14 +1,21 @@
 require 'net/http'
 
 namespace :solr do
-  SOLR_OPTIONS = {
+
+  task :environment do
+    SolrWrapper.default_instance_options[:download_dir] ||= Rails.root.to_s + '/tmp' if defined? Rails
+    SolrWrapper.default_instance_options.merge!({
       verbose: true,
       cloud: true,
       port: '8983',
       version: '5.3.1',
       instance_dir: 'solr',
       extra_lib_dir: 'solr_conf/lib'
-  }
+    })
+    @solr_instance = SolrWrapper.default_instance
+  end
+
+  SOLR_OPTIONS =
 
   desc 'Set up a clean solr, configure it and import sample data'
   task :setup_and_import => :environment do
@@ -20,20 +27,26 @@ namespace :solr do
 
   desc 'Configure solr with toc and metastore collections'
   task :config => :environment do
+    Rake::Task["solr:config_instance"].execute
+    puts "   starting solr to set up collections"
+    Rake::Task["solr:start"].execute
+    Rake::Task["solr:config_collections"].execute
+  end
+
+  desc 'Run the solr_instance configure method (copies lib directories etc).'
+  task :config_instance => :environment do
     puts "Stopping solr before configuring"
     Rake::Task["solr:stop"].execute
     puts "Configuring solr at #{File.expand_path(@solr_instance.solr_dir)}"
     @solr_instance.configure
-    puts "   starting solr to set up collections"
-    Rake::Task["solr:start"].execute
-    puts "   adding configs for metastore to zookeeper"
-    zk_upload_config(@solr_instance, 'metastore')
-    puts "   adding configs for toc to zookeeper"
-    zk_upload_config(@solr_instance, 'toc')
+  end
+
+  desc 'Configure collections in the solr cloud'
+  task :config_collections => :environment do
     puts "   creating metastore collection"
-    create_solr_collection(@solr_instance, 'metastore')
+    @solr_instance.create_or_update('metastore', dir:'solr_conf/metastore/conf')
     puts "   creating toc collection"
-    create_solr_collection(@solr_instance, 'toc')
+    @solr_instance.create_or_update('toc', dir:'solr_conf/toc/conf')
     puts "finished configuring. Solr is running."
   end
 
@@ -67,33 +80,6 @@ namespace :solr do
     rescue
       puts result
     end
-  end
-
-  # Use zookeeper cli script to upload configs for +collection_name+ into +solr_instance+
-  def zk_upload_config(solr_instance, collection_name, conf_dir=nil)
-    conf_dir ||= "solr_conf/#{collection_name}/conf"
-    zkhost = "localhost:#{solr_instance.port.to_i+1000}"
-    zkcli = "#{solr_instance.solr_dir}/server/scripts/cloud-scripts/zkcli.sh"
-    # make zookeeper script executable
-    File.chmod(0744, zkcli)
-    %x{#{zkcli} -cmd upconfig --confdir #{conf_dir} --confname #{collection_name} --zkhost #{zkhost} --solrhome #{File.expand_path(solr_instance.solr_dir)}}
-  end
-
-  # Tell solr admin api on +solr_instance+ to create a collection named +collection_name+
-  def create_solr_collection(solr_instance, collection_name)
-    begin
-      response = open "#{solr_instance.url}admin/collections?action=CREATE&name=#{collection_name}&numShards=1&replicationFactor=1&wt=json"
-    rescue OpenURI::HTTPError => e
-      begin
-        # If the collection already exists, this error is fine.
-        json = JSON.parse(e.io.read)
-        response = e.io
-        raise RuntimeError unless json['error']['msg'] == "collection already exists: #{collection_name}"
-      rescue
-        raise RuntimeError, "OpenURI::HTTPError: " + e.io.read
-      end
-    end
-    response.read
   end
 
 end
