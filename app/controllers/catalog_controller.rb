@@ -1,5 +1,4 @@
 # -*- encoding : utf-8 -*-
-require 'blacklight/catalog'
 require 'i18n'
 
 class CatalogController < ApplicationController
