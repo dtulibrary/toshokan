@@ -1,21 +1,20 @@
-require 'net/http'
-
+require 'solr_wrapper/rake_task'
 namespace :solr do
 
   task :environment do
+    SolrWrapper.default_instance_options = {
+        verbose: true,
+        cloud: true,
+        port: '8983',
+        version: '5.3.1',
+        instance_dir: 'solr',
+        extra_lib_dir: 'solr_conf/lib'
+    }
     SolrWrapper.default_instance_options[:download_dir] ||= Rails.root.to_s + '/tmp' if defined? Rails
-    SolrWrapper.default_instance_options.merge!({
-      verbose: true,
-      cloud: true,
-      port: '8983',
-      version: '5.3.1',
-      instance_dir: 'solr',
-      extra_lib_dir: 'solr_conf/lib'
-    })
-    @solr_instance = SolrWrapper.default_instance
+    # @solr_instance = SolrWrapper.default_instance
+    @solr_instance = SolrWrapper::Instance.new SolrWrapper.default_instance_options
+    puts @solr_instance.options
   end
-
-  SOLR_OPTIONS =
 
   desc 'Set up a clean solr, configure it and import sample data'
   task :setup_and_import => :environment do
@@ -25,29 +24,42 @@ namespace :solr do
     Rake::Task["solr:import:toc"].execute
   end
 
-  desc 'Configure solr with toc and metastore collections'
-  task :config => :environment do
-    Rake::Task["solr:config_instance"].execute
-    puts "   starting solr to set up collections"
-    Rake::Task["solr:start"].execute
-    Rake::Task["solr:config_collections"].execute
+  desc 'Run all solr config tasks'
+  task :config do
+    Rake::Task['solr:config:all'].invoke
   end
 
-  desc 'Run the solr_instance configure method (copies lib directories etc).'
-  task :config_instance => :environment do
-    puts "Stopping solr before configuring"
-    Rake::Task["solr:stop"].execute
-    puts "Configuring solr at #{File.expand_path(@solr_instance.solr_dir)}"
-    @solr_instance.configure
+  namespace :config do
+
+    desc 'Configure solr with toc and metastore collections'
+    task :all => :environment do
+      Rake::Task["solr:config:instance"].execute
+      puts "   starting solr to set up collections"
+      Rake::Task["solr:start"].execute
+      Rake::Task["solr:config:collections"].execute
+    end
+
+    desc 'Run the solr_instance configure method (copies lib directories etc).'
+    task :instance => :environment do
+      puts "Stopping solr before configuring"
+      Rake::Task["solr:stop"].execute
+      puts "Configuring solr at #{File.expand_path(@solr_instance.instance_dir)}"
+      @solr_instance.configure
+    end
+
+    desc 'Configure collections in the solr cloud'
+    task :collections => :environment do
+      puts "   creating metastore collection"
+      @solr_instance.create_or_update('metastore', dir:'solr_conf/metastore/conf')
+      puts "   creating toc collection"
+      @solr_instance.create_or_update('toc', dir:'solr_conf/toc/conf')
+      puts "finished configuring. Solr is running."
+    end
   end
 
-  desc 'Configure collections in the solr cloud'
-  task :config_collections => :environment do
-    puts "   creating metastore collection"
-    @solr_instance.create_or_update('metastore', dir:'solr_conf/metastore/conf')
-    puts "   creating toc collection"
-    @solr_instance.create_or_update('toc', dir:'solr_conf/toc/conf')
-    puts "finished configuring. Solr is running."
+  desc "Import all sample data into solr"
+  task :import do
+    Rake::Task['solr:import:all'].invoke
   end
 
   namespace :import do

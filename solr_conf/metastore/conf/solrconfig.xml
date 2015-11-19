@@ -913,7 +913,7 @@
       <str name="q.alt">*:*</str>
       <str name="bf">scale(min(max(pub_date_tsort,2010),2015),0,10)</str>
       <str name="q.op">AND</str>
-      <str name="mm">100%</str>
+      <str name="mm">99%</str>
       <str name="qf">
         title_ts^10
         subtitle_ts

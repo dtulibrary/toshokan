@@ -510,7 +510,7 @@
 
   <!-- "textSpell" fieldType defines a general text field that has reasonable, generic
        cross-language defaults: it tokenizes with StandardTokenizer,
-       removes stop words from case-insensitive "stopwords.txt"
+       removes stop words from case-insensitive "lang/stopwords_en.txt"
        (empty by default), and down cases.  At query time only, it
        also applies synonyms. -->
   <fieldType name="spell_en" class="solr.TextField" positionIncrementGap="100">
