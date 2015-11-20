@@ -15,6 +15,7 @@ class CatalogController < ApplicationController
     config.document_solr_path = 'toshokan_document'
     # config.document_presenter_class = Dtu::DocumentPresenter
     config.metrics_presenter_classes = [Dtu::Metrics::AltmetricPresenter, Dtu::Metrics::IsiPresenter, Dtu::Metrics::DtuOrbitPresenter, Dtu::Metrics::PubmedPresenter]
+    config.search_builder_class = Dtu::SearchBuilder
 
     # Set resolver params
     config.resolver_params = {
@@ -195,13 +196,7 @@ class CatalogController < ApplicationController
     #extra_head_content << view_context.auto_discovery_link_tag(:rss, url_for(params.merge(:format => 'rss')), :title => t('blacklight.search.rss_feed') )
     #extra_head_content << view_context.auto_discovery_link_tag(:atom, url_for(params.merge(:format => 'atom')), :title => t('blacklight.search.atom_feed') )
 
-    extra_search_params = {}
-    if params[:from_resolver]
-      extra_search_params = blacklight_config[:resolver_params]
-      params.delete :from_resolver
-    end
-
-    (@response, @document_list) = search_results(params, extra_search_params)
+    (@response, @document_list) = search_results(params, search_params_logic)
     @filters = params[:f] || []
 
     respond_to do |format|
@@ -229,8 +224,8 @@ class CatalogController < ApplicationController
     # override super#show to add access filters to request
     # and to add toc data to response
     begin
-      @response, @document = fetch params[:id], add_access_filter
-      @toc = toc_for @document, params, add_access_filter
+      @response, @document = fetch params[:id], search_builder.add_access_filter
+      @toc = toc_for @document, params, search_builder.add_access_filter
 
     rescue Blacklight::Exceptions::InvalidSolrID
 

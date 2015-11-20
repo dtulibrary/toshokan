@@ -39,7 +39,7 @@ module Toshokan
     end
 
     def journal_document_for_issns(issns)
-      response = get_solr_response_for_field_values("issn_ss", issns, add_access_filter({:fq => ['format:journal'], :rows => 1})).first
+      response = get_solr_response_for_field_values("issn_ss", issns, search_builder.add_access_filter({:fq => ['format:journal'], :rows => 1})).first
       documents = response[:response][:docs]
       documents.first unless documents.empty?
     end

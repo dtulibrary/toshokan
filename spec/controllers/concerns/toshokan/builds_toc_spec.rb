@@ -5,7 +5,6 @@ describe Toshokan::BuildsToc do
   controller(ApplicationController) do
     include Toshokan::BuildsToc
     include Blacklight::SearchHelper # provides blacklight_config
-    include Toshokan::SearchParametersHelpers # provides add_access_filter
   end
 
   it "provides dissect_toc_key helper method for views" do

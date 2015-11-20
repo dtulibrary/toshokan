@@ -6,7 +6,6 @@ module Toshokan
       include Blacklight::Controller
       include Blacklight::SearchHelper
       include Blacklight::SearchContext
-      include Toshokan::SearchParametersHelpers
     end
 
     # Overrides Blacklight::Catalog::SearchContext#find_or_initialize_search_session_from_params

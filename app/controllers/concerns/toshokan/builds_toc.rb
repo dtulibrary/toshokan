@@ -80,7 +80,7 @@ module Toshokan
           toc[:current_issue]  = issues[current_issue_index]
           toc[:next_issue]     = issues[current_issue_index-1] if current_issue_index > 0
           toc[:previous_issue] = issues[current_issue_index+1] if current_issue_index < issues.size-1
-          toc[:articles]       = articles_for(current_toc_key, add_access_filter)[:response][:docs]
+          toc[:articles]       = articles_for(current_toc_key, search_builder.add_access_filter)[:response][:docs]
         end
       end
 

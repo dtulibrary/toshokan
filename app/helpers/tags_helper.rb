@@ -49,9 +49,11 @@ module TagsHelper
 
   def count_documents_for_tag_and_search(tag, params)
     extra_search_params = {:rows => 0, :facet => false, :stat => false}
-    params = params.dup
-    params[:t] = {tag.name => '✓'}
-    (response, _) = controller.get_search_results(params, extra_search_params)
+    tag_search_params = {:rows => 0, :facet => false, :stat => false}.merge(params)
+    tag_search_params[:t] = {tag.name => '✓'}
+    # This line probably needs to be rewritten.
+    # Possibly this whole method belongs in a search builder?
+    (response, _) = controller.search_results(tag_search_params, controller.search_builder.default_processor_chain)
     response['response']['numFound']
   end
 
