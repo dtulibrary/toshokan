@@ -138,6 +138,7 @@ GEM
       csl (~> 1.2)
     code_analyzer (0.4.5)
       sexp_processor
+    coderay (1.1.0)
     colored (1.2)
     columnize (0.8.9)
     crack (0.4.2)
@@ -238,6 +239,7 @@ GEM
       ensure_valid_encoding
       scrub_rb (>= 1.0.1, < 2)
       unf
+    method_source (0.8.2)
     mime-types (2.99)
     mini_portile (0.6.2)
     minitest (5.8.3)
@@ -288,6 +290,13 @@ GEM
     paint (0.8.7)
     pg (0.17.1)
     pg (0.17.1-x86-mingw32)
+    pry (0.10.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-byebug (3.0.1)
+      byebug (~> 3.4)
+      pry (~> 0.10)
     puma (2.9.2)
       rack (>= 1.1, < 2.0)
     quiet_assets (1.0.3)
@@ -466,6 +475,7 @@ DEPENDENCIES
   openurl
   paint
   pg
+  pry-byebug
   puma
   quiet_assets
   rack-utf8_sanitizer (~> 1.1.0)

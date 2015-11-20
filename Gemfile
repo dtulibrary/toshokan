@@ -77,6 +77,7 @@ group :development do
   gem 'puma'
   gem 'quiet_assets'
   gem 'byebug'
+  gem 'pry-byebug'
   gem 'hirb'  # Used by rake steps
   gem 'foreman'
 end
