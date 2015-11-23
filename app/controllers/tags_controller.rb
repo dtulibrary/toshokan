@@ -15,7 +15,7 @@ class TagsController < ApplicationController
   # Document tagging actions
 
   def index
-    _, @document = get_solr_response_for_doc_id(params[:document_id], add_access_filter)
+    _, @document = get_solr_response_for_doc_id(params[:document_id], search_builder.add_access_filter)
     @bookmark = current_user.bookmarks.find_by_document_id(@document.id)
     @tags = current_user.tags(:order => 'name')
     @return_url = request.url

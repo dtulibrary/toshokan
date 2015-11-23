@@ -53,7 +53,7 @@ module TagsHelper
     tag_search_params[:t] = {tag.name => '✓'}
     # This line probably needs to be rewritten.
     # Possibly this whole method belongs in a search builder?
-    (response, _) = controller.search_results(tag_search_params, controller.search_builder.default_processor_chain)
+    (response, _) = controller.search_results(tag_search_params.with_indifferent_access, controller.search_builder.default_processor_chain)
     response['response']['numFound']
   end
 

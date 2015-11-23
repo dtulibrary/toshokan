@@ -18,11 +18,11 @@ module Toshokan
       result = super || !params[:t].blank? || !params[:l].blank? || !params[:resolve].blank?
     end
 
-    def export_search_result(format_name, params, extra_search_params)
+    def export_search_result(format_name, params)
       params.delete('per_page')
       params['page'] = 1
       params['rows'] = blacklight_config.max_per_page
-      (response, document_list) = search_results(params, extra_search_params)
+      (response, document_list) = search_results(params, search_builder_class.default_processor_chain)
 
       case format_name
         when :bib

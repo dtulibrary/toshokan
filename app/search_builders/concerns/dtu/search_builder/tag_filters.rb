@@ -4,8 +4,8 @@ module Dtu
       # Add any existing tag filters, stored in app-level HTTP query
       # as :t, to solr as appropriate :fq query.
       def add_tag_fq_to_solr(solr_parameters)
-        if blacklight_params[:t]
-          t_request_params = blacklight_params[:t]
+        t_request_params = blacklight_params.with_indifferent_access[:t]
+        if t_request_params
           solr_parameters[:fq] ||= []
           t_request_params.each_pair do |t|
             tag_name = t.first

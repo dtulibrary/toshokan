@@ -1,3 +1,6 @@
+# If the Alert service is unavailable, you can set
+# Alert.test_mode = true
+Alert.url = 'http://staging.alerting.cvt.dk'
 Toshokan::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 

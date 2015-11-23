@@ -196,7 +196,7 @@ class CatalogController < ApplicationController
     #extra_head_content << view_context.auto_discovery_link_tag(:rss, url_for(params.merge(:format => 'rss')), :title => t('blacklight.search.rss_feed') )
     #extra_head_content << view_context.auto_discovery_link_tag(:atom, url_for(params.merge(:format => 'atom')), :title => t('blacklight.search.atom_feed') )
 
-    (@response, @document_list) = search_results(params, search_params_logic)
+    (@response, @document_list) = search_results(params, search_builder_class.default_processor_chain)
     @filters = params[:f] || []
 
     respond_to do |format|
@@ -211,7 +211,7 @@ class CatalogController < ApplicationController
         @document_list.first.export_formats.each_key do | format_name |
           # It's important that the argument to send be a symbol;
           # if it's a string, it makes Rails unhappy for unclear reasons.
-          format.send(format_name.to_sym) { render :text => export_search_result(format_name, params, extra_search_params), :layout => false }
+          format.send(format_name.to_sym) { render :text => export_search_result(format_name, params), :layout => false }
         end
       end
     end

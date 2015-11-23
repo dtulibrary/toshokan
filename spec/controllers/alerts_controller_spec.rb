@@ -12,7 +12,9 @@ describe AlertsController do
     allow( controller ).to receive(:current_ability).and_return(ability)
     ability
   }
-
+  before do
+    allow(Alert).to receive(:test_mode).and_return(false)
+  end
   describe "#index" do
     
     context "with ability to alert" do

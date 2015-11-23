@@ -1,3 +1,4 @@
+Alert.test_mode = true
 Toshokan::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 

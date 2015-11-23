@@ -14,9 +14,9 @@ module Toshokan
     end
 
     def inject_last_query_into_params
-      if current_search_session
+      if current_search_session && !params[:ignore_search]
         current_search_params = current_search_session.query_params.empty? ? {} : current_search_session.query_params
-        params.merge!(current_search_params.reject {|k,v| ["controller","action"].include?(k)}) unless params[:ignore_search]
+        params.merge!(current_search_params.reject {|k,v| ["controller","action"].include?(k)})
       end
     end
 

@@ -6,8 +6,8 @@ module Dtu
       # as :l, to solr as appropriate :fq query.
       def add_limit_fq_to_solr(solr_parameters)
         # :fq, map from :l.
-        if ( blacklight_params[:l])
-          l_request_params = blacklight_params[:l]
+        if ( blacklight_params[:l] || blacklight_params['l'])
+          l_request_params = blacklight_params.with_indifferent_access[:l]
 
           solr_parameters[:fq] ||= []
           l_request_params.each_pair do |l|

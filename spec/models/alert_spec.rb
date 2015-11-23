@@ -5,6 +5,7 @@ describe Alert do
   it_behaves_like "ActiveModel"
 
   before do
+    allow(Alert).to receive(:test_mode).and_return(false)
     @alert = Alert.new({:query => "123"})
   end
 
