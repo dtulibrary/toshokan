@@ -13,14 +13,16 @@ Feature: Paginate search results
 
   Scenario: A result set that fits within the inner window of the pagination
     When I search for "technology"
-    Then I should see page links from 1 to 5
+    Then the link to page 1 should appear as the current page
+    And  I should see page links from 2 to 5
     And  the next page link should be active
     But  the previous page link should be inactive
     And  I should not see any page gaps
 
   Scenario: A result set that doesn't fit within the inner window of the pagination
     When I search for "*"
-    Then I should see page links from 1 to 5
+    Then the link to page 1 should appear as the current page
+    Then I should see page links from 2 to 5
     And  I should see the forward page gap
     And  the next page link should be active
     But  the previous page link should be inactive
@@ -28,7 +30,8 @@ Feature: Paginate search results
   Scenario: Moving into a result set that fits within the inner window of the pagination
     When I search for "technology"
     And  I go to the next page of the result set
-    Then I should see page links from 1 to 5
+    Then the link to page 2 should appear as the current page
+    Then I should see page links from 3 to 5
     And  the next page link should be active
     And  the previous page link should be active
     But  I should not see any page gaps
@@ -37,8 +40,9 @@ Feature: Paginate search results
     When I search for "*"
     And  I go to page 5 of the result set
     And  I go to the next page of the result set
-    Then I should see page links from 2 to 10
+    Then the link to page 6 should appear as the current page
+    And  I should see page links from 2 to 5
+    And  I should see page links from 7 to 10
     And  the next page link should be active
     And  the previous page link should be active
     And  I should see both page gaps
-

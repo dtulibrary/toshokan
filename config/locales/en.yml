@@ -152,6 +152,7 @@ en:
       isi: "Web of Science®"
       orbit: "DTU Orbit"
     tools:
+      cite: "Cite"
       cite_and_export: "Cite and export"
       save_and_export: "Save and export"
       bibtex: "Export to BibTeX"

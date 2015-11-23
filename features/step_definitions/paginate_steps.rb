@@ -10,6 +10,10 @@ Then(/^I should see page links from (\d+) to (\d+)$/) do |from, to|
   }
 end
 
+Then(/^the link to page (\d+) should appear as the current page$/) do |page_number|
+  expect( find('.pagination ul li', :text => page_number)[:class] ).to include('active')
+end
+
 Then(/^the (next|previous) page link should be active$/) do |link_type|
   expect( find('.pagination ul li', :text => (link_type == 'next' ? 'Next »' : '« Previous'))[:class] ).to_not include('disabled')
 end
@@ -19,16 +23,16 @@ Then(/^the (next|previous) page link should be inactive$/) do |link_type|
 end
 
 Then(/^I should see the (forward|backward) page gap$/) do |gap_type|
-  expect( all('.pagination ul li a')[gap_type == 'forward' ? -1 : -2].text).to eq'…'
+  expect( all('.pagination ul li')[gap_type == 'forward' ? -1 : -2].text).to eq'…'
 end
 
 Then(/^I should not see the (forward|backward) page gap$/) do |gap_type|
-  expect( find('.pagination ul li a')[gap_type == 'forward' ? -1 : 2].text).to eq'…'
+  expect( find('.pagination ul li')[gap_type == 'forward' ? -1 : 2].text).to eq'…'
 end
 
 Then(/^I should see both page gaps$/) do
-  expect(all('.pagination ul li a')[2].text).to eq '…'
-  expect(all('.pagination ul li a')[-1].text).to eq '…'
+  expect(all('.pagination ul li')[2].text).to eq '…'
+  expect(all('.pagination ul li')[-1].text).to eq '…'
 end
 
 Then(/^I should not see any page gaps$/) do
