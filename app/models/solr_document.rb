@@ -6,7 +6,7 @@ class SolrDocument < Dtu::SolrDocument
   include Configured
   include Blacklight::Solr::Document
 
-  self.unique_key = SolrDocument.document_id
+  self.unique_key = ::SolrDocument.document_id
 
   SolrDocument.use_extension(Reference)
 

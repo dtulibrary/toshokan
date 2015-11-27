@@ -17,9 +17,9 @@ module Dtu
 
       def fq_for_document_ids(document_ids)
         if !document_ids.empty?
-          "#{SolrDocument.unique_key}:(#{document_ids.join(' OR ')})"
+          "#{::SolrDocument.unique_key}:(#{document_ids.join(' OR ')})"
         else
-          "#{SolrDocument.unique_key}:(NOT *)"
+          "#{::SolrDocument.unique_key}:(NOT *)"
         end
       end
 
