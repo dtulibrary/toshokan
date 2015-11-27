@@ -913,6 +913,12 @@
       <str name="q.alt">*:*</str>
       <str name="bf">scale(min(max(pub_date_tsort,2010),2015),0,10)</str>
       <str name="q.op">AND</str>
+      <!--
+        Reduced from 99% to 79% to accommodate phrases with three stopwords
+        This is a temporary fix until edismax supports mm.autoRelax or mergeStopwords
+        See https://issues.apache.org/jira/browse/SOLR-3085
+            https://issues.apache.org/jira/browse/SOLR-7862
+      -->
       <str name="mm">79%</str>
       <str name="qf">
         title_ts^10

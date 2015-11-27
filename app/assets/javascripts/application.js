@@ -20,9 +20,6 @@
 
 //= require jquery_ujs
 
-// Typeahead
-//=require typeahead.bundle.js
-
 //
 // Required by Blacklight
 //= require blacklight/blacklight
@@ -45,3 +42,6 @@
 
 // Mustache templating
 //=require jquery.mustache.js
+
+// Auto-suggest, etc. from dtu_blacklight_common
+// require dtu/dtu

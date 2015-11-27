@@ -10,12 +10,13 @@ GIT
 
 GIT
   remote: git://github.com/dtulibrary/dtu_blacklight_common.git
-  revision: 10753e1697ca338895005b3479b67d2fab3e0625
+  revision: 5ff25763dcd9bd81acd677a0688b45c7c86b380b
   specs:
     dtu_blacklight_common (0.0.1)
       blacklight (~> 5.7.0)
       rails (~> 4.1)
       solr_wrapper
+      twitter-typeahead-rails (~> 0.11)
 
 GIT
   remote: git://github.com/dtulibrary/dtu_rails_common.git
@@ -44,7 +45,7 @@ GIT
 
 GIT
   remote: git://github.com/flyingzumwalt/solr_wrapper.git
-  revision: 3c23d1ff84e99560740f56a46a586a37f985407e
+  revision: e5b36673f966876148e15102f0c67339790ec183
   specs:
     solr_wrapper (0.4.0)
       ruby-progressbar
@@ -399,6 +400,10 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
+    twitter-typeahead-rails (0.11.1)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.5.3)

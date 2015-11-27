@@ -1,5 +1,7 @@
 Toshokan::Application.routes.draw do
 
+  mount DtuBlacklightCommon::Engine, at: '/'
+
   scope "(:locale)", :locale => /en|da/ do
 
     # Catalog and related
