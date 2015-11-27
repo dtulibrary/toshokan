@@ -13,22 +13,11 @@ Using ruby 2.1.4. If you're using RVM, you might have to install using `rvm inst
 
 ## Solr
 
-Install a clean copy of solr and configure it to have our "toc" and "metadata" collections
-
-    $ rake solr:clean
-    $ rake solr:config
-
-To start and stop solr, use
-
-    $ rake solr:start    
-    $ rake solr:stop
+To do everything with one rake task - install clean copy of solr, configure it and import the data: 
     
-To refresh the configs for the collections (ie. metastore and toc) call this task with solr running:
+    $ rake solr:setup_and_import    
 
-    $ rake solr:config_collections
-    $ rake solr:import
-
-Calling config_collections deletes the cores and re-creates them so you have to re-import the data after refreshign the configs.
+The full set of solr rake tasks are documented in the [README file of the dtu_blacklight_common gem](https://github.com/dtulibrary/dtu_blacklight_common#solr). 
 
 ## Test Data
 
@@ -38,12 +27,13 @@ To index the test/sample data, run
 
 ## Testing
 
-Install up solr, configure it and import the data with one rake task: 
+Install solr, configure it and import the data with one rake task: 
     
     $ rake solr:setup_and_import
 
 Then migrate the database and run the tests
 
+    $ rake solr:setup_and_import
     $ rake db:migrate
     $ rake db:seed
     $ rake db:test:prepare
