@@ -942,25 +942,12 @@
         doi_ss
       </str>
       <str name="pf">
-        title_ts^5
-        subtitle_ts
-        abstract_ts
-        author_ts
-        editor_ts
-        affiliation_ts
-        keywords_ts
-        issn_ss
-        isbn_ss
-        journal_title_ts
-        title_abbr_ts
-        title_orig_ts
-        publisher_ts
-        pub_date_tis
-        journal_vol_tsort
-        journal_issue_tsort
-        journal_part_sort
-        journal_page_start_tsort
-        doi_ss
+        title_txt^10
+        subtitle_txt
+        abstract_txt^5
+        author_txt
+        editor_txt
+        affiliation_txt
       </str>
       <str name="author_qf">
         author_ts

@@ -459,7 +459,7 @@
   <dynamicField name="*_txt_da" type="text_da" indexed="true" stored="true"/>
   <dynamicField name="*_tdts" type="tdates" indexed="true" stored="true"/>
   <dynamicField name="attr_*" type="text_general" multiValued="true" indexed="true" stored="true"/>
-  <dynamicField name="*_txt" type="text_general" indexed="true" stored="true"/>
+  <dynamicField name="*_txt" type="text_general" indexed="true" stored="false"/>
   <dynamicField name="*_dts" type="date" multiValued="true" indexed="true" stored="true"/>
   <dynamicField name="*_tis" type="tints" indexed="true" stored="true"/>
   <dynamicField name="*_tls" type="tlongs" indexed="true" stored="true"/>
@@ -500,6 +500,16 @@
   <dynamixField name="*_sort"  type="string" indexed="true" stored="false" multiValued="false" required="false" />
   <dynamicField name="*_facet" type="string" indexed="true" stored="true" multiValued="true" />
   <dynamicField name="*_json"  type="string" indexed="false" stored="true" multiValued="false" />
+
+  <!-- Index unstemmed copies of title, abstract, etc. for boosting exact phrase matches
+       Note: we made *_txt non-stored to avoid unnecessary duplication in the index -->
+  <copyField source="abstract_ts"        dest="abstract_txt" />
+  <copyField source="title_ts"        dest="title_txt" />
+  <copyField source="subtitle_ts"        dest="subtitle_txt" />
+  <copyField source="author_ts"        dest="author_txt" />
+  <copyField source="editor_ts"        dest="editor_txt" />
+  <copyField source="affiliation_ts"        dest="affiliation_txt" />
+
 
   <copyField source="author_ts"        dest="author_facet" />
   <copyField source="journal_title_ts" dest="journal_title_facet" />
