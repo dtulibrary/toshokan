@@ -123,6 +123,13 @@ class CatalogController < ApplicationController
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
     config.add_search_field 'all_fields'
 
+    config.add_search_field 'original_config' do |field|
+      field.solr_local_parameters = {
+          :qf => '$original_qf',
+          :pf => '$original_pf'
+      }
+    end
+
     config.add_search_field 'title' do |field|
       field.solr_local_parameters = {
           :qf => '$title_qf',
