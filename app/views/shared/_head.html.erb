@@ -1,4 +1,4 @@
 <link href="<%= opensearch_catalog_path(:format => 'xml', :only_path => false) %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
 <% if Rails.application.config.respond_to?(:google) && Rails.application.config.google.try(:[], :maps_v3).try(:[], :api_key) %>
-  <script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.config.google[:maps_v3][:api_key] %>&sensor=false"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.config.google[:maps_v3][:api_key] %>"></script>
 <% end %>
