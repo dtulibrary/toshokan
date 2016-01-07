@@ -911,7 +911,7 @@
       <str name="defType">dtic_edismax</str>
       <str name="echoParams">explicit</str>
       <str name="q.alt">*:*</str>
-      <str name="bf">scale(min(max(pub_date_tsort,2010),2015),0,10)</str>
+      <str name="bf">scale(min(max(pub_date_tsort,2010),2016),0,10)</str>
       <str name="bf">scale(mendeley_count_i,0,75)</str>
       <str name="q.op">AND</str>
       <!--
