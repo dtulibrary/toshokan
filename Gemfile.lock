@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/dtulibrary/dtu_rails_common.git
-  revision: be157283743ab4d11b55ada41d87ef4d3cc8eeec
+  revision: 584e1df5ffa79ac7801380b715e59fbfb240ae99
   specs:
     dtu_rails_common (0.0.3)
       bootstrap-sass (~> 3.3.0)
@@ -395,7 +395,7 @@ GEM
     unicode (0.4.4.2)
     unicode (0.4.4.2-x86-mingw32)
     uuidtools (2.1.5)
-    warden (1.2.3)
+    warden (1.2.4)
       rack (>= 1.0)
     webmock (1.20.4)
       addressable (>= 2.3.6)
@@ -470,4 +470,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.10.2
+   1.10.6
