@@ -1,6 +1,28 @@
 en:
   blacklight:
     application_name: 'DTU Findit'
+    service_menu:
+      about: 'About DTU Findit'
+      other_search_tools: 'Other search tools'
+      borrow_books: 'How to borrow books'
+      reference_mgmt: 'Reference management'
+      industry_public: 'For industry and the public'
+      opening: 'Opening hours'
+      exhibit : 'Exhibitions and events'
+      innovation: 'Innovation environment'
+      study: 'Study environment and IT'
+      training: 'Training and counseling'
+      publishing: 'Research publishing'
+      student: 'Student theses'
+      copyright: 'Copyright'
+      openaccess: 'Open access'
+      bibliometrics: 'Bibliometrics and ranking'
+      news_calendar: 'News and calendar'
+      contact: 'Contact us'
+      staff: 'Staff and organisation'
+      mission_vision: 'About DTU Library'
+      projects: 'Projects and partners'
+
     search:
       start_over: 'New Search'
       form:
