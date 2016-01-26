@@ -1,16 +1,23 @@
-findit_jetty:
-  image: jetty
-  container_name: findit_jetty
+findit-solr:
+  image: solr:5.3
+  container_name: findit-solr
   volumes:
-    - "./jetty:/var/lib/jetty/webapps"
+    - "./spec/fixtures:/fixtures"
   ports:
-    - "8983:8080"
-    - "8984:8443"
+    - "8983:8983"
+
+  #TODO: create cores
+  #either run this from outside 'docker exec -it --user=solr findit-solr bin/solr...'
+  #or first go into the machine 'docker exec -it ' and perform the following:
+  #bin/solr create_core -c metastore
+  #bin/solr create_core -c toc
+  #bin/post -c metastore /fixtures/solr_data.xml
+  #bin/post -c toc /fixtures/toc_data.xml
 
 db:
   image: postgres
 
-findit_web:
+findit-web:
   build: .
   command: bundle exec rails s -p 3000 -b '0.0.0.0'
   volumes:
@@ -19,9 +26,8 @@ findit_web:
     - "3000:3000"
   links:
     #    - findit_db #TODO share postgres db with riyosha?
-    - findit_jetty
     - db
-
+    - findit-solr
 
 
 
