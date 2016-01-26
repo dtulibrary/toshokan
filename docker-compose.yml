@@ -1,0 +1,27 @@
+findit_jetty:
+  image: jetty
+  container_name: findit_jetty
+  volumes:
+    - "./jetty:/var/lib/jetty/webapps"
+  ports:
+    - "8983:8080"
+    - "8984:8443"
+
+db:
+  image: postgres
+
+findit_web:
+  build: .
+  command: bundle exec rails s -p 3000 -b '0.0.0.0'
+  volumes:
+    - .:/myapp
+  ports:
+    - "3000:3000"
+  links:
+    #    - findit_db #TODO share postgres db with riyosha?
+    - findit_jetty
+    - db
+
+
+
+
