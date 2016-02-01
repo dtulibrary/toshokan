@@ -7,8 +7,20 @@ development: &default
   password:
   host: findit-db
 
-test:
-  <<: *default
-  database: myapp_test
+#test:
+#  <<: *default
+#  database: myapp_test
 
 
+test: &test
+  adapter: sqlite3
+  encoding: utf8
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
+
+cucumber:
+  <<: *test
+
+<%= file = File.join("config", "database.local.yml")
+  IO.read(file) if File.exist?(file) %>
