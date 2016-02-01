@@ -1,6 +1,6 @@
 # TODO commands that need to be run:
-#docker exec -it --user=solr findit-solr bin/solr create_core -c metastore
-#docker exec -it --user=solr findit-solr bin/solr create_core -c toc
+#docker exec -it --user=solr findit-solr bin/solr create_collection -c metastore
+#docker exec -it --user=solr findit-solr bin/solr create_collection -c toc
 
 # And from within the container:
 #docker exec --it findit-solr bash
@@ -15,8 +15,10 @@ findit-solr:
   container_name: findit-solr
   volumes:
     - "./spec/fixtures:/fixtures"
+    - "./controller/src/main/resources/solr:/config"
   ports:
     - "8983:8983"
+  command: "/opt/solr/bin/solr -f -c"
 
 findit-db:
   image: postgres
