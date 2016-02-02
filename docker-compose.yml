@@ -11,14 +11,7 @@
 #docker-compose run findit-web bundle exec rake db:migrate
 
 findit-solr:
-  image: solr:5.3
-  container_name: findit-solr
-  volumes:
-    - "./spec/fixtures:/fixtures"
-    - "./controller/src/main/resources/solr:/config"
-  ports:
-    - "8983:8983"
-  command: "/opt/solr/bin/solr -f -c"
+  build: dockerfiles/solr
 
 findit-db:
   image: postgres
