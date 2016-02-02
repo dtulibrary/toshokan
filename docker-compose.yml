@@ -11,7 +11,7 @@
 #docker-compose run findit-web bundle exec rake db:migrate
 
 findit-solr:
-  build: dockerfiles/solr
+  build: "https://github.com/dtulibrary/solr_with_fixtures.git"
 
 findit-db:
   image: postgres
