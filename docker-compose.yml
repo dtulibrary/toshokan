@@ -1,22 +1,14 @@
 # TODO commands that need to be run:
-#docker exec -it --user=solr findit-solr bin/solr create_collection -c metastore
-#docker exec -it --user=solr findit-solr bin/solr create_collection -c toc
-
-# And from within the container:
-#docker exec --it findit-solr bash
-#bin/post -c metastore /fixtures/solr_data.xml
-#bin/post -c toc /fixtures/toc_data.xml
-
 # create the db (only the first time)
 #docker-compose run findit-web bundle exec rake db:migrate
 
-findit-solr:
+solr:
   build: "https://github.com/dtulibrary/solr_with_fixtures.git"
 
-findit-db:
+db:
   image: postgres
 
-findit-web:
+web:
   build: .
   command: bundle exec rails s -p 3000 -b '0.0.0.0'
   volumes:
@@ -24,8 +16,8 @@ findit-web:
   ports:
     - "3000:3000"
   links:
-    - findit-db
-    - findit-solr
+    - db
+    - solr
 
 
 
