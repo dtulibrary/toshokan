@@ -1,23 +1,23 @@
 # TODO commands that need to be run:
 # create the db (only the first time)
-#docker-compose run findit-web bundle exec rake db:migrate
+#docker-compose run web rake db:setup
 
-solr:
-  build: "https://github.com/dtulibrary/solr_with_fixtures.git"
+version: '2'
 
-db:
-  image: postgres
+services:
+  solr:
+    build: "https://github.com/dtulibrary/solr_with_fixtures.git"
 
-web:
-  build: .
-  command: bundle exec rails s -p 3000 -b '0.0.0.0'
-  volumes:
-    - .:/myapp
-  ports:
-    - "3000:3000"
-  links:
-    - db
-    - solr
+  db:
+    image: postgres
+
+  web:
+    build: .
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
 
 
 
