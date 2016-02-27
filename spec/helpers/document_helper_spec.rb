@@ -85,8 +85,15 @@ describe DocumentHelper do
       end
     end
   end
-  it "renders author_link" do
-    expect(helper.render_author_link("Joan Didion")).to have_link("Joan Didion", :href=>catalog_index_path("l[author]"=>"Joan Didion"))
+  describe "render_author_link" do
+    it 'renders a link to search for more items by that author' do
+      expect(helper.render_author_link("Joan Didion")).to have_link("Joan Didion", :href=>catalog_index_path("l[author]"=>"Joan Didion"))
+    end
+    it 'strips html tags out of the link href and the tooltip' do
+      rendered = helper.render_author_link("Joan <em>Didion</em>")
+      expect(rendered).to have_link("Joan <em>Didion</em>", :href=>catalog_index_path("l[author]"=>"Joan Didion"))
+      expect(rendered).to have_link("Find other material by Joan Didion")
+    end
   end
   it "renders keyword_links"  do
     document = SolrDocument.new("keywords"=>["love", "joy", "equanimity", "compassion"])

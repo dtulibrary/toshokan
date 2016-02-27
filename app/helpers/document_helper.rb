@@ -53,9 +53,10 @@ module DocumentHelper
   end
 
   def render_author_link author, suppress_link = false
+    sanitized_author_name = strip_tags(author)
     link_to_unless( suppress_link, author,
-                    set_limit_params_and_redirect(:author, author),
-                    { :title => I18n.t('toshokan.catalog.find_by_author', :author => author), :data => { :toggle => 'tooltip' } })
+                    set_limit_params_and_redirect(:author, sanitized_author_name),
+                    { :title => I18n.t('toshokan.catalog.find_by_author', :author => sanitized_author_name), :data => { :toggle => 'tooltip' } })
   end
 
   def render_keyword_links args
