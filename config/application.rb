@@ -87,7 +87,7 @@ module Toshokan
     config.auth = {
       :stub    => false,
       :cas_url => 'http://auth-web:3000',
-      :api_url => '',
+      :api_url => 'http://auth-web:3000/rest',
       :ip      => {
         :walk_in  => [],
         :campus   => [],
@@ -96,12 +96,12 @@ module Toshokan
     }
 
     config.cover_images = {
-      :url     => 'http://covers:3000',
+      :url     => 'http://covers-web:3000',
       :api_key => ''
     }
 
     config.getit = {
-        :url => 'http://getit-web:9292'
+        :url => 'http://getit-web:3000'
     }
 
     config.action_mailer.smtp_settings = {
@@ -207,7 +207,7 @@ module Toshokan
     }
 
     config.alert = {
-      :url       => 'http://localhost',
+      :url       => 'http://alert-web:3000',
       :test_mode => false,
     }
 
