@@ -914,42 +914,8 @@
       <str name="bf">scale(min(max(pub_date_tsort,2010),2016),0,10)</str>
       <str name="bf">scale(mendeley_count_i,0,75)</str>
       <str name="q.op">AND</str>
-      <!--
-        Reduced from 99% to 79% to accommodate phrases with three stopwords
-        This is a temporary fix until edismax supports mm.autoRelax or mergeStopwords
-        See https://issues.apache.org/jira/browse/SOLR-3085
-            https://issues.apache.org/jira/browse/SOLR-7862
-      -->
-      <str name="mm">79%</str>
-      <str name="qf">
-        title_ts^10
-        subtitle_ts
-        abstract_ts
-        author_ts
-        editor_ts
-        affiliation_ts
-        keywords_ts
-        issn_ss
-        isbn_ss
-        journal_title_ts
-        title_abbr_ts
-        title_orig_ts
-        publisher_ts
-        pub_date_tis
-        journal_vol_tsort
-        journal_issue_tsort
-        journal_part_sort
-        journal_page_start_tsort
-        doi_ss
-      </str>
-      <str name="pf">
-        title_txt^10
-        subtitle_txt
-        abstract_txt^5
-        author_txt
-        editor_txt
-        affiliation_txt
-      </str>
+
+      <str name="mm">99%</str>
 
       <str name="qf">
         title_txt^10
@@ -990,44 +956,10 @@
       </str>
 
       <!-- BEGIN temporary configuration -->
-
-      <str name="phrase_qf">
-        title_txt^10
-        title_ts^8
-        subtitle_txt
-        subtitle_ts
-        abstract_txt
-        abstract_ts
-        author_txt
-        author_ts
-        editor_txt
-        editor_ts
-        affiliation_txt
-        affiliation_ts
-        keywords_facet
-        keywords_ts
-        issn_ss
-        isbn_ss
-        journal_title_ts
-        title_abbr_ts
-        title_orig_ts
-        publisher_ts
-        pub_date_tis
-        journal_vol_tsort
-        journal_issue_tsort
-        journal_part_sort
-        journal_page_start_tsort
-        doi_ss
-      </str>
-      <str name="phrase_pf">
-        title_txt^10
-        subtitle_txt
-        abstract_txt^5
-        author_txt
-        editor_txt
-        affiliation_txt
-        keywords_facet
-      </str>
+      <!--
+           original_qf and original_pf have the settings
+           from before November 2015, for A/B testing
+      -->
 
       <str name="original_qf">
         title_ts^10
