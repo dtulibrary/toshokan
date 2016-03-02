@@ -86,8 +86,8 @@ module Toshokan
 
     config.auth = {
       :stub    => false,
-      :cas_url => 'http://auth-web:3000',
-      :api_url => 'http://auth-web:3000/rest',
+      :cas_url => 'http://localhost:3001',
+      :api_url => 'http://localhost:3001/rest',
       :ip      => {
         :walk_in  => [],
         :campus   => [],
@@ -101,7 +101,7 @@ module Toshokan
     }
 
     config.getit = {
-        :url => 'http://getit-web:3000'
+        :url => 'http://localhost:3003'
     }
 
     config.action_mailer.smtp_settings = {
