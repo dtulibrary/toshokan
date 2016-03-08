@@ -1,0 +1,49 @@
+
+<div class="section physical-delivery-section">
+  <h5 class="underlined">
+    <%= t 'toshokan.assistance_requests.forms.sections.physical_delivery.title' %>
+  </h5>
+  <% if params[:button] == 'create' %>
+    <p>yes -------------------------</p>
+    <p class="indented">
+
+
+
+      <%#= hidden_field_tag 'assistance_request[physical_delivery]', params[:assistance_request][:physical_delivery] %>
+
+
+      <%# if params[:assistance_request][:physical_delivery] == 'internal_mail' %>
+        <tt><%= render_user_address(current_user) %></tt>
+      <%# else %>
+        <%#= t "toshokan.assistance_requests.forms.sections.physical_delivery.values.#{params[:assistance_request][:physical_delivery]}" %>
+
+        <%=  t "toshokan.orders.by" %>
+
+      <%# end %>
+    </p>
+
+
+  <% else %>
+    <p>no ------------------ </p>
+    <div class="clearfix">
+      <div class="radio-group">
+        <% if can? :request, :deliver_by_internal_mail %>
+          <%= radio_button_tag 'assistance_request[physical_delivery]', 'internal_mail', true %>
+          <%= label_tag 'assistance_request_physical_delivery_internal_mail',
+                        t('toshokan.assistance_requests.forms.sections.physical_delivery.values.internal_mail') %>
+          <p class="indented" style="clear:left">
+            <tt><%= render_user_address current_user %></tt>
+          </p>
+        <% end %>
+        <%= radio_button_tag 'assistance_request[physical_delivery]', 'pickup_lyngby', cannot?(:request, :deliver_by_internal_mail) %>
+        <%= label_tag 'assistance_request_physical_delivery_pickup_lyngby', 
+                      (t('toshokan.assistance_requests.forms.sections.physical_delivery.values.pickup_lyngby') +
+                      '<div>View <a href="http://www.bibliotek.dtu.dk/servicemenu/besoeg/aabning#lyngby" target="_blank">hours &amp; address</a></div>').html_safe%>
+        <%= radio_button_tag 'assistance_request[physical_delivery]', 'pickup_ballerup' %>
+        <%= label_tag 'assistance_request_physical_delivery_pickup_ballerup', 
+                      (t('toshokan.assistance_requests.forms.sections.physical_delivery.values.pickup_ballerup') +
+                      '<div>View <a href="http://www.bibliotek.dtu.dk/servicemenu/besoeg/aabning#ballerup" target="_blank">hours &amp; address</a></div>').html_safe%>
+      </div>
+    </div>
+  <% end %>
+</div>
