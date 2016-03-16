@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150304133938) do
+ActiveRecord::Schema.define(version: 20160316120645) do
 
   create_table "assistance_requests", force: true do |t|
     t.string   "type"
@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(version: 20150304133938) do
     t.text     "delivered_year"
     t.text     "delivered_month"
     t.integer  "duration_hours"
+    t.text     "physical_delivery"
   end
 
   add_index "orders", ["docdel_order_id"], name: "index_orders_on_docdel_order_id"

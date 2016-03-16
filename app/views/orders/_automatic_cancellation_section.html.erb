@@ -5,12 +5,16 @@
   <p><%= t 'toshokan.assistance_requests.forms.sections.automatic_cancellation.text' %></p>
   <% if params[:button] == 'create' -%>
     <p class="indented">
-      <% if @assistance_request.auto_cancel.blank? %>
+    
+    <%= @order.open_url %>
+
+      <%# if @assistance_request.auto_cancel.blank? %>
+
         <%= t 'toshokan.assistance_requests.forms.sections.automatic_cancellation.values.never' %>
-      <% else %>
-        <%= hidden_field_tag 'assistance_request[auto_cancel]', @assistance_request.auto_cancel %>
-        <tt><%= t "toshokan.assistance_requests.forms.sections.automatic_cancellation.values.#{@assistance_request.auto_cancel}" %></tt>
-      <% end %>
+      <%# else %>
+        <%#= hidden_field_tag 'assistance_request[auto_cancel]', @assistance_request.auto_cancel %>
+        <tt><%#= t "toshokan.assistance_requests.forms.sections.automatic_cancellation.values.#{@assistance_request.auto_cancel}" %></tt>
+      <%# end %>
     </p>
   <% else -%>
     <div class="radio-group">

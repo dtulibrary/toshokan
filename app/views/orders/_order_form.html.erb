@@ -14,12 +14,8 @@
     <%= text_field_tag :customer_ref, params[:customer_ref] %>
   <% end %>
 
-  <br />
-
   <%= render 'physical_delivery_section' %>
-  <%#= render 'automatic_cancellation_section' %>
 
-  
   <% if @order.flow.fields.include? :terms_accepted %>
     <%= check_box_tag :terms_accepted, params[:terms_accepted] %>
     <%= render_terms_accepted_label %>
