@@ -24,7 +24,8 @@ GIT
 
 GIT
   remote: git://github.com/dtulibrary/metastore-test_data.git
-  revision: 52a2e16c856bcf1a2679a0b969f68ef8023bc5cf
+  revision: d23794adc85f14ea94f114cf36edaf7aa814d9a1
+  ref: HEAD
   specs:
     metastore-test_data (0.0.1)
       highline
@@ -468,3 +469,6 @@ DEPENDENCIES
   unicode
   uuidtools
   webmock
+
+BUNDLED WITH
+   1.11.2

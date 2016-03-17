@@ -84,6 +84,8 @@
         <dynamicField name="ignored_*" type="ignored"                                    multiValued="true"/>
         <dynamicField name="random_*"  type="random" />
 
+        <!-- For storing non-indexed JSON structures. Useful for adding structured data to be used by consumer -->
+        <dynamicField name="*_json" type="string" indexed="false" stored="true" multiValued="false" />
     </fields>
 
     <uniqueKey>id</uniqueKey>

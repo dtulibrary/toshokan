@@ -10,6 +10,17 @@ Then(/^I should see "(.*?)" with(out)? local boost$/) do |title,negate|
   end
 end
 
+Then %r{^(all|none)(?: of)? the documents should have local boost$} do |specifier|
+  all_documents = all('.document')
+  all_homegrown = all('.document.homegrown')
+
+  if specifier == 'all'
+    expect(all_homegrown.size).to eq(all_documents.size)
+  else
+    expect(all_homegrown.size).to eq(0)
+  end
+end
+
 Then(/^the document should(n't| not)? have local boost$/) do |negate|
   expect(page).send( (negate ? :to_not : :to), have_css('.document.homegrown') )
 end

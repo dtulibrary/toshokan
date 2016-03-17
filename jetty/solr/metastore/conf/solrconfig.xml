@@ -573,7 +573,7 @@
             <str name="facet.threads">4</str>
         </lst>
         <lst name="appends">
-            <str name="fq">access_ss:ddf_publ</str>
+            <str name="fq">access_ss:ddf_publ AND format:(article OR journal OR book OR thesis OR other)</str>
         </lst>
     </requestHandler>
 
@@ -585,7 +585,7 @@
             <str name="q">{!raw f=id v=$id}</str> <!-- use id=666 instead of q=id:666 -->
         </lst>
         <lst name="appends">
-            <str name="fq">access_ss:ddf_publ</str>
+            <str name="fq">access_ss:ddf_publ AND format:(article OR journal OR book OR thesis OR other)</str>
         </lst>
     </requestHandler>
 
