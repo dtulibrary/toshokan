@@ -32,8 +32,9 @@
 
 // Show view
 #document {
-}
-
-.document {
-  text-align: justify;
+  .document {
+    dd.blacklight-abstract_ts {
+      text-align: justify;
+    }
+  }
 }
