@@ -46,18 +46,17 @@ module DocumentHelper
   end
 
   def render_author author, options = {}
-    "<span class=\"author\">#{render_author_link(author, options[:suppress_link])}</span>"
+    extra_content = options[:extra_content] || ''
+    "<span class=\"author\">#{render_author_link(author, options[:suppress_link])}#{extra_content}</span>"
   end
 
   def render_author_list authors, associations, options = {}
     if associations.nil?
       list = authors.map { |author| render_author(author, options) }
     else
-      list = []
-      authors.each_with_index do |author, i|
-        html = render_author(author, options)
-        html += "<sup>#{associations[i]+1}</sup>" unless associations[i].nil?
-        list << html
+      list = authors.each_with_index.map do |author, i|
+        options[:extra_content] = "<sup>#{associations[i]+1}</sup>" unless associations[i].nil?
+        render_author(author, options)
       end
     end
 
@@ -84,7 +83,7 @@ module DocumentHelper
   end
 
   def render_affiliations args
-    args[:document][args[:field]].each_with_index.map {|aff, i| "<span class=\"affiliation\">#{aff}</span><sup>#{i+1}</sup>" }.join('<br>').html_safe
+    args[:document][args[:field]].each_with_index.map {|aff, i| "<span class=\"affiliation\"><sup>#{i+1}</sup> #{aff}</span>" }.join('<hr style="margin: 0.25em 0">').html_safe
   end
 
 end
