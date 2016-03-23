@@ -22,30 +22,43 @@ module DocumentHelper
     return snippet.size > 300 ? snippet.slice(0, 300) + '...' : snippet
   end
 
+  def associations(document, role)
+    return [] if document['affiliation_associations_json'].blank?
+    ActiveSupport::JSON.decode(document['affiliation_associations_json'])[role]
+  end
+
   def render_author_links args
-    if args[:document]['author_affiliation_ssf']
-      render_author_list args[:document]['author_affiliation_ssf'].first, {:author_with_affiliation => true}
-    else
-      render_author_list args[:document][args[:field]]
-    end
+    document = args[:document]
+    render_author_list(document[args[:field]], associations(document, "author"))
+  end
+
+  def render_editor_links args
+    document = args[:document]
+    render_author_list(document[args[:field]], associations(document, "editor"))
   end
 
   def render_shortened_author_links args
-    render_author_list args[:document][args[:field]], { :max_length => 3, :append => I18n.t('toshokan.catalog.shortened_list.et_al') }
+    document = args[:document]
+    render_author_list(document[args[:field]], nil, {
+      :max_length => 3, 
+      :append     => I18n.t('toshokan.catalog.shortened_list.et_al')
+    })
   end
 
-  def render_author_list authors, options = {}
-    if options[:author_with_affiliation]
-      affiliations = ActiveSupport::JSON.decode(authors)
-      list = []
-      affiliations.collect do |affiliation|
-        if affiliation.has_key?('au')
-          sup_tag = affiliations.size > 1 ? content_tag(:sup, affiliations.index(affiliation) + 1) : ''
-          list.concat(affiliation['au'].map { |author| content_tag(:span, :class => "author") { render_author_link(author, options[:suppress_link]).safe_concat(sup_tag)}})
-        end
-      end
+  def render_author author, options = {}
+    "<span class=\"author\">#{render_author_link(author, options[:suppress_link])}</span>"
+  end
+
+  def render_author_list authors, associations, options = {}
+    if associations.nil?
+      list = authors.map { |author| render_author(author, options) }
     else
-      list = authors.map { |author| content_tag(:span, render_author_link(author, options[:suppress_link]), :class => "author") }
+      list = []
+      authors.each_with_index do |author, i|
+        html = render_author(author, options)
+        html += "<sup>#{associations[i]+1}</sup>" unless associations[i].nil?
+        list << html
+      end
     end
 
     case
@@ -71,16 +84,7 @@ module DocumentHelper
   end
 
   def render_affiliations args
-    if args[:document]['author_affiliation_ssf']
-      affiliations = ActiveSupport::JSON.decode(args[:document]['author_affiliation_ssf'].first)
-      affiliations.collect do |affiliation|
-        sup_tag = affiliations.size > 1 ? content_tag(:sup, affiliations.index(affiliation) + 1) : ''
-        content_tag(:span) { content_tag(:span, "#{affiliation['aff']}").safe_concat(sup_tag) }
-      end.join('<br>').html_safe
-    else
-      affiliations = args[:document][args[:field]]
-      affiliations.collect { |affiliation| content_tag(:span, affiliation)}.join('<br>').html_safe
-    end
+    args[:document][args[:field]].each_with_index.map {|aff, i| "<span class=\"affiliation\">#{aff}</span><sup>#{i+1}</sup>" }.join('<br>').html_safe
   end
 
 end

@@ -112,8 +112,8 @@ class CatalogController < ApplicationController
     config.add_show_field 'subtitle_ts'
     config.add_show_field 'title_abbr_ts'
     config.add_show_field 'author_ts', :helper_method => :render_author_links
-    config.add_show_field 'affiliation_ts', :format => ['book', 'article'], :helper_method => :render_affiliations
-    config.add_show_field 'editor_ts', :helper_method => :render_author_links
+    config.add_show_field 'affiliation_ts', :format => ['book', 'article', 'thesis'], :helper_method => :render_affiliations
+    config.add_show_field 'editor_ts', :helper_method => :render_editor_links
     config.add_show_field 'pub_date_tis', :format => ['book']
     config.add_show_field 'journal_page_ssf', :format => ['book']
     config.add_show_field 'journal_title_ts', :format => ['article'], :helper_method => :render_journal_info_show

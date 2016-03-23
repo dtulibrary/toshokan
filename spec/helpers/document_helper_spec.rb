@@ -43,18 +43,6 @@ describe DocumentHelper do
     end
   end
 
-  describe "render_author_links" do
-    it "handles authors with affiliations" do
-      document = SolrDocument.new("authors"=>authors, "author_affiliation_ssf"=>[authors_with_affiliations])
-      expect(helper).to receive(:render_author_list).with(authors_with_affiliations, {:author_with_affiliation => true})
-      helper.render_author_links(document:document, field:"authors")
-    end
-    it "handles authors without affiliations" do
-      document = SolrDocument.new("authors"=>authors)
-      expect(helper).to receive(:render_author_list).with(authors)
-      helper.render_author_links(document:document, field:"authors")
-    end
-  end
   it "renders shortened_author_links" do
     document = SolrDocument.new("authors"=>authors)
     expected_append =  I18n.t('toshokan.catalog.shortened_list.et_al')
@@ -64,28 +52,20 @@ describe DocumentHelper do
   end
   describe "render_author_list" do
     it "renders author_list" do
-      rendered = helper.render_author_list authors
+      rendered = helper.render_author_list authors, nil
       authors.each do |author|
         expect(rendered).to have_link_to_search_for("l[author]", author)
       end
     end
     it "allows limiting list length" do
-      expect( helper.render_author_list(authors, {max_length:2}).split("; ").length ).to eq 2
-      expect( helper.render_author_list(authors, {max_length:3}).split("; ").length ).to eq 3
-      expect( helper.render_author_list(authors, {max_length:100}).split("; ").length ).to eq authors.length
+      expect( helper.render_author_list(authors, nil, {max_length:2}).split("; ").length ).to eq 2
+      expect( helper.render_author_list(authors, nil, {max_length:3}).split("; ").length ).to eq 3
+      expect( helper.render_author_list(authors, nil, {max_length:100}).split("; ").length ).to eq authors.length
     end
     it "allows appending a suffix at the end of the list" do
       to_append = "&tc.."
-      rendered = helper.render_author_list authors, {append:to_append}
+      rendered = helper.render_author_list authors, nil, {append:to_append}
       expect( rendered[-to_append.length..rendered.length] ).to eq to_append
-    end
-    context "when authors have affiliations" do
-      it "renders the author list with links to find other material by each author" do
-        rendered = helper.render_author_list authors_with_affiliations, {:author_with_affiliation => true}
-        expect(rendered).to have_link_to_search_for("l[author]", "Zhusubaliyev, Z.T.")
-        expect(rendered).to have_link_to_search_for("l[author]", "Laugesen, Jakob Lund")
-        expect(rendered).to have_link_to_search_for("l[author]", "Mosekilde, Erik")
-      end
     end
   end
   it "renders author_link" do
@@ -96,18 +76,6 @@ describe DocumentHelper do
     rendered = helper.render_keyword_links(document:document, field:"keywords")
     ["love", "joy", "equanimity", "compassion"].each do |keyword|
       expect(rendered).to have_link_to_search_for("l[subject]", keyword)
-    end
-  end
-  describe "render_affiliations" do
-    context "when author_affiliation_ssf is set" do
-      it "includes affiliation info" do
-        document = SolrDocument.new("author_affiliation_ssf"=>[authors_with_affiliations])
-        expect(helper.render_affiliations(document:document,field:"authors")).to eq("<span><span>none</span><sup>1</sup></span><br><span><span>Department of Structural Engineering and Materials, Technical University of Denmark</span><sup>2</sup></span><br><span><span>Department of Physics, Technical University of Denmark</span><sup>3</sup></span>")
-      end
-    end
-    it "defaults to wrapping the author values in <span> elements"  do
-      document = SolrDocument.new("authors"=>authors)
-      expect(helper.render_affiliations(document:document,field:"authors")).to eq("<span>Marie Shelley</span><br><span>Emily Brontë</span><br><span>Charlotte Brontë</span><br><span>George Eliot</span>")
     end
   end
 

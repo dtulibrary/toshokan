@@ -30,7 +30,7 @@
                   <div class="pull-right"><%= article[:journal_page_ssf].first %></div>
                 <% end %>
                 <% if article[:author_ts] %>
-                  <div class="pull-left"><em><%= render_author_list article[:author_ts], { :suppress_link => true, :max_length => 1, :append => I18n.t('toshokan.catalog.shortened_list.et_al') } %></em><div>
+                  <div class="pull-left"><em><%= render_author_list article[:author_ts], nil, { :suppress_link => true, :max_length => 1, :append => I18n.t('toshokan.catalog.shortened_list.et_al') } %></em><div>
                 <% end %>
               </li>
             <% end %>
