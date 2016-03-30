@@ -1,9 +1,8 @@
 require "rails_helper"
 
 describe AltmetricHelper do
-  let(:document) { SolrDocument.new("doi_ss"=>["10.1016/j.tcs.2009.09.015"], "source_id_ss"=>[]) }
-
   describe '#altmetric_badge' do
+    let(:document) { SolrDocument.new('doi_ss' => ['10.1016/j.tcs.2009.09.015'], 'source_id_ss'=>[]) }
     it 'renders altmetric badge for the document' do
       expect( helper.altmetric_badge(document) ).to have_xpath("//div[@class=\"altmetric-embed\" and @data-doi=\"10.1016/j.tcs.2009.09.015\"]")
     end
@@ -25,4 +24,34 @@ describe AltmetricHelper do
     end
   end
 
+  describe '#render_altmetric_badge?' do
+    let(:document) { SolrDocument.new('source_id_ss' => []) }
+    subject { helper.render_altmetric_badge?(document) }
+    before do
+      document['pub_date_tis'] = [date]
+    end
+    context 'when there are valid identifiers' do
+      before do
+        document[:doi_ss] = ['10.1016/j.tcs.2009.09.015']
+      end
+      context 'when the document is from before 2011' do
+        let(:date) { '2010' }
+        it { should be false }
+      end
+      context 'when the document is from after 2011' do
+        let(:date) { '2011' }
+        it { should be true }
+      end
+    end
+    context 'when there are no identifiers' do
+      context 'when the document is from before 2011' do
+        let(:date) { '2010' }
+        it { should be false }
+      end
+      context 'when the document is from after 2011' do
+        let(:date) { '2011' }
+        it { should be false }
+      end
+    end
+  end
 end
