@@ -1,12 +1,11 @@
 module IsiHelper
 
   def isi_url document
-    return nil if document['isi_url_ssf'].blank?
-    document['isi_url_ssf'].first
+    @isi_url ||= document.backlinks.select {|bl| bl.include? 'isiknowledge'}.first
   end
 
   def render_link_to_isi? document
-    isi_url(document)
+    isi_url(document).present?
   end
 
   def link_to_isi document
@@ -16,6 +15,6 @@ module IsiHelper
       :class  => 'isi-backlink',
       :target => '_blank',
       :title  => t('toshokan.tools.metrics.isi.title'))
-      
+
   end
 end

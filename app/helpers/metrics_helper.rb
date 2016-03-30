@@ -1,7 +1,7 @@
 module MetricsHelper
-  
+
   def metrics
-    ['altmetric_badge', 'link_to_dtu_orbit', 'link_to_pubmed', 'link_to_isi']
+    ['altmetric_badge', 'link_to_dtu_orbit', 'link_to_pubmed', 'link_to_isi', 'link_to_scopus']
   end
 
   def render_metrics? document

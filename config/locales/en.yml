@@ -194,6 +194,8 @@ en:
           title: "View publication in PubMed"
         isi:
           title: "View publication in Web of Science®"
+        scopus:
+          title: 'View publication in Scopus'
       nal:
         title: 'On-site use at other libraries'
         map: 'Map'

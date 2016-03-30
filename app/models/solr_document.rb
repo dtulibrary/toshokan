@@ -163,6 +163,10 @@ class SolrDocument
     doc
   end
 
+  def backlinks
+    self['backlink_ss'] || []
+  end
+
   private
 
   # Map format to OpenURL genre
