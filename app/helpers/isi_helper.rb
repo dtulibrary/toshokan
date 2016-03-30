@@ -1,9 +1,9 @@
 module IsiHelper
 
   def isi_url document
-    document.backlinks.select {|bl| bl.include? 'isiknowledge'}.first
+    @isi_url ||= document.backlinks.select {|bl| bl.include? 'isiknowledge'}.first
   end
-  
+
   def render_link_to_isi? document
     isi_url(document).present?
   end
