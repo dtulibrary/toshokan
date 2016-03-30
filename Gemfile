@@ -57,7 +57,7 @@ end
 group :test, :development do
   gem 'jettywrapper'
   gem 'rspec-rails'
-  gem 'metastore-test_data', :github => 'dtulibrary/metastore-test_data', :ref => 'HEAD'
+  gem 'metastore-test_data', :github => 'dtulibrary/metastore-test_data'
   gem 'sqlite3'
 end
 

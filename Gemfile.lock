@@ -24,8 +24,7 @@ GIT
 
 GIT
   remote: git://github.com/dtulibrary/metastore-test_data.git
-  revision: d23794adc85f14ea94f114cf36edaf7aa814d9a1
-  ref: HEAD
+  revision: e59dd2849999195b516cf0b35ed76a4e96f73ad9
   specs:
     metastore-test_data (0.0.1)
       highline
