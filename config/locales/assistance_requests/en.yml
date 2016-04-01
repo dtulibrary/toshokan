@@ -119,13 +119,13 @@ en:
               '90': 3 months
               '180': 6 months
               never: Not selected
-          book: 
+          book:
             title: Book
             suggest_for_purchase:
               title: Suggest for acquisition
-              text_html: 
+              text_html:
                 'Please state in the note field, why DTU Library should acquire this book.<br>
-                <a target="_blank" href="http://www.dtic.dtu.dk/english/servicemenu/find/borrow/suggest/criteria">Criteria for acquisition</a>'
+                <a target="_blank" href="http://www.bibliotek.dtu.dk/english/servicemenu/find/borrow/suggest/criteria">Criteria for acquisition</a>'
             suggested_for_purchase: Suggested for acquisition.
           thesis:
             title: Thesis

@@ -301,7 +301,7 @@ en:
           common: You can request assistance from a DTU librarian, who will try to find
             what you are looking for and send it to you.
           dtu: "Please select the type of material you are looking for:"
-          non_dtu_html: <a href="http://www.dtic.dtu.dk/english/servicemenu/find/industry_public" target="_blank">Learn about the DTU Library Corporate service</a>
+          non_dtu_html: <a href="http://www.bibliotek.dtu.dk/english/servicemenu/find/industry_public" target="_blank">Learn about the DTU Library Corporate service</a>
           looking_for: I am looking for a
         tags:
           title: No saved references match the filter(s) you applied.

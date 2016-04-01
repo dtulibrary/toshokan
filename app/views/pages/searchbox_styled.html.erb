@@ -2,18 +2,18 @@
 <div>
   <div class="logo">
     <a href="http://findit.dtu.dk" target="_parent">
-      <img src="http://www.dtic.dtu.dk/~/media/Andre_Universitetsenheder/Bibliotek/DTU_Findit/dtu_findit.ashx">
+      <img src="http://www.bibliotek.dtu.dk/~/media/Andre_Universitetsenheder/Bibliotek/DTU_Findit/dtu_findit.ashx">
     </a>
   </div>
   <div>
     <div id="searchbar" data-placeholder-focus="false" class="clearfix">
-      <div class="pull-left external-searchbox">    
+      <div class="pull-left external-searchbox">
         <form action="/catalog" method="get" target="_parent">
           <div class="text-field-with-icons">
-            <%= text_field_tag :q, params[:q], 
-                               :class       => "search_q q", 
-                               :id          => "q", 
-                               :placeholder => t('blacklight.search.form.q'), 
+            <%= text_field_tag :q, params[:q],
+                               :class       => "search_q q",
+                               :id          => "q",
+                               :placeholder => t('blacklight.search.form.q'),
                                :style       => (params['width'] ? '' : "width:#{params['width']}px") %>
           </div>
           <button type="submit" class="btn btn-primary search-btn" id="search">
@@ -22,7 +22,7 @@
           </button>
         </form>
         <p>&mdash; <%=t('toshokan.pages.searchbox')%></p>
-      </div>  
-    </div>      
+      </div>
+    </div>
   </div>
 </div>

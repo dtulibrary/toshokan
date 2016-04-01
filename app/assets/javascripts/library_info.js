@@ -6,7 +6,7 @@ toshokan.libraries = {
        "da": "DTU Bibliotek",
        "en": "DTU Library",
      },
-     "url": "http://www.dtic.dtu.dk/",
+     "url": "http://www.bibliotek.dtu.dk/english",
      "image": "dtu_small.png",
      "googleMapsInfo": {
        "lat_center":  55.760591,
@@ -37,7 +37,7 @@ toshokan.libraries = {
            "reference": "CqQBlAAAAHfVWUlVtmnJK54LWHKNpDXGkN86Owg0Av9Emiydt4w1RcQd3VRZxboVxEcl9TXLKWZSVdNqBMNaPYjLmxWERHSj6JXQszZaj4klUJo26tyr5mtyk6rqh4K5mmFYBLqC2SdWDzzKg6-Vd-9CokuZySmed0ldX2oYU3-QDQep0eBiwd9bcbpDyoO8zrcgp5wCSSCJlqeMYh-qigQYN02sdGcSEGb9rIxtXsxRy-UeSPfhWg8aFFeShdK8aTckLoNU6WkfTj1q5Ojl",
          },
          "openingHoursInfo": {
-           "url":       "http://www.dtic.dtu.dk/servicemenu/besoeg/aabning#lyngby"
+           "url":       "http://www.bibliotek.dtu.dk/servicemenu/besoeg/aabning#lyngby"
          }
        },
        {
@@ -63,7 +63,7 @@ toshokan.libraries = {
            "reference": "",
          },
          "openingHoursInfo": {
-           "url":       "http://www.dtic.dtu.dk/servicemenu/besoeg/aabning#ballerup"
+           "url":       "http://www.bibliotek.dtu.dk/servicemenu/besoeg/aabning#ballerup"
          }
        }
      ]
