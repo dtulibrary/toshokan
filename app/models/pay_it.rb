@@ -84,7 +84,7 @@ module PayIt
           order.save!
           case response.body
           when /status=ACCEPTED/
-            Rails.logger.info "Successfully canced payment in DIBS for order id = #{order.dibs_order_id}."
+            Rails.logger.info "Successfully cancelled payment in DIBS for order id = #{order.dibs_order_id}."
           when /status=DECLINED/
             Rails.logger.info "Payment could not be cancelled in DIBS for order id = #{order.dibs_order_id} - see DIBS reason code:\n#{response.body}"
           else
@@ -151,6 +151,9 @@ module PayIt
           },
           :dtu => {
             :DKK => 0
+          },
+          :tib => {
+            :DKK => 0
           }
         },
         :dtu_student => {
@@ -158,6 +161,9 @@ module PayIt
             :DKK => 4000
           },
           :dtu => {
+            :DKK => 0
+          },
+          :tib => {
             :DKK => 0
           }
         },
@@ -167,6 +173,9 @@ module PayIt
           },
           :dtu => {
             :DKK => 24000
+          },
+          :tib => {
+            :DKK => 24000
           }
         },
         :dtu_expense => {
@@ -174,6 +183,9 @@ module PayIt
             :DKK => 19200
           },
           :dtu => {
+            :DKK => 0
+          },
+          :tib => {
             :DKK => 0
           }
         }
