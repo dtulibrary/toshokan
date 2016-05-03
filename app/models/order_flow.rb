@@ -34,15 +34,15 @@ class OrderFlow
   def self.delivery_info_fields_matrix
     {
       :dtu_staff => {
-        :rd => [:email],
+        :rd  => [:email],
         :dtu => [:email]
       },
       :dtu_student => {
-        :rd => [:email, :terms_accepted],
+        :rd  => [:email, :terms_accepted],
         :dtu => [:email]
       },
       :public => {
-        :rd => [:email, :terms_accepted, :customer_ref, :requirements],
+        :rd  => [:email, :terms_accepted, :customer_ref, :requirements],
         :dtu => [:email, :terms_accepted, :customer_ref, :requirements]
       }
     }
@@ -51,15 +51,15 @@ class OrderFlow
   def self.order_steps_matrix
     {
       :dtu_staff => {
-        :rd => [:delivery_info, :confirm, :done],
+        :rd  => [:delivery_info, :confirm, :done],
         :dtu => [:delivery_info, :confirm, :done]
       },
       :dtu_student => {
-        :rd => [:delivery_info, :confirm, :payment, :done],
+        :rd  => [:delivery_info, :confirm, :payment, :done],
         :dtu => [:delivery_info, :confirm, :done]
       },
       :public => {
-        :rd => [:delivery_info, :confirm, :payment, :done],
+        :rd  => [:delivery_info, :confirm, :payment, :done],
         :dtu => [:delivery_info, :confirm, :payment, :done]
       }
     }

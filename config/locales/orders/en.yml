@@ -94,6 +94,7 @@ en:
             rd: Reprints Desk
             dtu: DTU Local scan
             dtu_manual: Library Support
+            tib: TIB Hannover
         delivery_status:
           title: Order status
           values:
@@ -190,6 +191,7 @@ en:
       order_scan: 
         dtu_html: Order Scan<br>DTU Print Collection 
         rd_html: Order Scan
+        tib_html: Order Scan
       order_status: Order Status
       paid_with_card: Using credit card %{card_no}
       pay: Pay
@@ -236,12 +238,16 @@ en:
         rd: Reprints Desk
         dtu: DTU DocDel
         dtu_manual: Library Support
+        tib: TIB Hannover
       supplier_order_id: '%{supplier} order ID: %{order_id}'
       terms_of_service: Terms and conditions
       text:
         dtu_html: 
           Locating the article on our <b>daily</b> routine, DTU Library will scan the article and deliver it to you.
         rd_html: 
+          Using our international scanning services, DTU Library will order a scan of the article and deliver 
+          it to you.
+        tib_html:
           Using our international scanning services, DTU Library will order a scan of the article and deliver 
           it to you.
       thank_you: Thank you for your order!
