@@ -47,6 +47,7 @@ en:
         subformat_s: 'Subtype'
         language_ss: 'Language'
         conf_title_ts: 'Proceedings'
+        series_title_ts: 'Series title'
         subtitle_ts: 'Subtitle'
         journal_page_ssf: 'Pages'
         journal_vol_ssf: 'Volume'

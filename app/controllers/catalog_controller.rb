@@ -114,9 +114,9 @@ class CatalogController < ApplicationController
     config.add_show_field 'author_ts', :helper_method => :render_author_links
     config.add_show_field 'affiliation_ts', :format => ['book', 'article', 'thesis'], :helper_method => :render_affiliations
     config.add_show_field 'editor_ts', :helper_method => :render_editor_links
-    config.add_show_field 'pub_date_tis', :format => ['book']
+    config.add_show_field 'pub_date_tis', :format => ['book','thesis']
     config.add_show_field 'journal_page_ssf', :format => ['book']
-    config.add_show_field 'journal_title_ts', :format => ['article'], :helper_method => :render_journal_info_show
+    config.add_show_field 'journal_title_ts', :format => ['article','thesis'], :helper_method => :render_journal_info_show
     config.add_show_field 'conf_title_ts', :helper_method => :render_conference_info_show
     config.add_show_field 'format', :helper_method => :render_type
     #config.add_show_field 'subformat_s', :helper_method => :render_subtype
@@ -130,6 +130,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'udc_ss'
     config.add_show_field 'dissertation_date_ssf', :helper_method => :render_dissertation_date, :format => ['thesis']
     config.add_show_field 'supervisor_ts', :helper_method => :render_author_links
+    config.add_show_field 'series_title_ts'
 
     # "fielded" search configuration. Used by pulldown among other places.
     # For supported keys in hash, see rdoc for Blacklight::SearchFields
