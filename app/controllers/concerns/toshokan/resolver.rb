@@ -119,10 +119,11 @@ module Toshokan
 
     def get_resolver_result(params)
 
-      params.merge!({:qt => '/resolve', :rows => 2, :echoParams => 'all'}).merge!(blacklight_config[:resolver_params])
-
-      res = blacklight_solr.send_and_receive(blacklight_config.solr_path, :params => add_inclusive_access_filter(params))
-      solr_response = Blacklight::SolrResponse.new(res, params)
+      params.merge!({:qt => '/resolve', :rows => 2, :echoParams => 'all'})
+          .merge!(blacklight_config[:resolver_params])
+      updated_params = strip_whitespace(params)
+      res = blacklight_solr.send_and_receive(blacklight_config.solr_path, :params => add_inclusive_access_filter(updated_params))
+      solr_response = Blacklight::SolrResponse.new(res, updated_params)
       count = 0
       unless solr_response.docs.empty?
         document = SolrDocument.new(solr_response.docs.first, solr_response)
@@ -138,6 +139,17 @@ module Toshokan
         end
       end
       [count, solr_response, document]
+    end
+
+    # This can be replaced with .transform_values(&:strip)
+    # when we have Active Support 4.2.1 or greater
+    def strip_whitespace(old_hash)
+      new_hash = {}
+      old_hash.each do |k,v|
+        val = v.is_a?(String) ? v.strip : v
+        new_hash[k] = val
+      end
+      new_hash
     end
 
     def solr_params_to_blacklight_query(params)
