@@ -27,6 +27,16 @@ Then(/^I should get a "(.*?)" file$/) do |extension|
   end
 end
 
+Then %r{^I should see the (".*") fields$} do |fields|
+  fields.scan(/"(.+?)"/) do |field,_|
+    step "I should see the \"#{field}\" field"
+  end
+end
+
+Then %r{^I should see the "(.+?)" field$} do |field|
+  step "I should see \"#{field}\""
+end
+
 Given(/^I go to the record page for "(.*?)"$/) do |title|
   step "I have searched for \"title:(#{title})\""
   step "I click the link \"#{title}\""

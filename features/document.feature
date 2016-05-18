@@ -7,6 +7,7 @@ Scenario: User wants to see the details for a single record
   When I have searched for "A Codebook Design Method for Robust VQ-Based Face Recognition Algorithm"
    And I click on the first document	  
   Then I should see the page for a single document
+   And I should see the "Authors", "Journal", "Type", "ISSN" and "DOI" fields
 
 Scenario: Export record in BibTex format
   When I go to the record page for "A Codebook Design Method for Robust VQ-Based Face Recognition Algorithm"
