@@ -44,7 +44,7 @@ en:
         udc_ss: 'UDC'
         title_abbr_ts: 'Alternative titles'
         format: 'Type'
-        subformat_s: 'Subtype'
+        subformat_s: 'Document type'
         language_ss: 'Language'
         conf_title_ts: 'Proceedings'
         series_title_ts: 'Series title'
