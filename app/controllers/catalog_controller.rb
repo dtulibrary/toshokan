@@ -201,8 +201,8 @@ class CatalogController < ApplicationController
     # except in the relevancy case).
     config.add_sort_field 'score desc, pub_date_tsort desc, journal_vol_tsort desc, journal_issue_tsort desc, journal_page_start_tsort asc, title_sort asc', :label => 'relevance'
     config.add_sort_field 'pub_date_tsort desc, journal_vol_tsort desc, journal_issue_tsort desc, journal_page_start_tsort asc, title_sort asc', :label => 'publication year'
-    config.add_sort_field 'author_sort asc, title_sort asc', :label => 'author A-Z'
-    config.add_sort_field 'author_sort desc, title_sort asc', :label => 'author Z-A'
+    config.add_sort_field 'author_sort asc, title_sort asc', :label => 'first author A-Z'
+    config.add_sort_field 'author_sort desc, title_sort asc', :label => 'first author Z-A'
     config.add_sort_field 'title_sort asc, pub_date_tsort desc', :label => 'title'
 
     # If there are more than this many search results, no spelling ("did you
