@@ -17,51 +17,51 @@ module Toshokan
         ).each {|n| self.send("create_#{n}_facet")}
       end
 
-			def create_user_facet
-				@facets[:user] = ActiveSupport::OrderedHash.new
-				@facet_labels[:user] = {}
-				@orders.where('user_id is not null').group('user_id').reorder('count_all desc').limit(20).count.each do |user_id, count|
-					user_id = user_id.to_s
-					@facets[:user][user_id] = count
-					user = User.find user_id
-					if user.dtu?
-						@facet_labels[:user][user_id] = "#{user} (CWIS: #{user.user_data["dtu"]["matrikel_id"]})"
-					else
-						@facet_labels[:user][user_id] = user.to_s
-					end
-				end
+      def create_user_facet
+        @facets[:user] = ActiveSupport::OrderedHash.new
+        @facet_labels[:user] = {}
+        @orders.where('user_id is not null').group('user_id').reorder('count_all desc').limit(20).count.each do |user_id, count|
+          user_id = user_id.to_s
+          @facets[:user][user_id] = count
+          user = User.find user_id
+          if user.dtu?
+            @facet_labels[:user][user_id] = "#{user} (CWIS: #{user.user_data["dtu"]["matrikel_id"]})"
+          else
+            @facet_labels[:user][user_id] = user.to_s
+          end
+        end
       end
 
       def create_user_type_facet
-				@facets[:user_type] = @orders.group('user_type')
-																		 .reorder('count_all desc')
-																		 .count
+        @facets[:user_type] = @orders.group('user_type')
+                                     .reorder('count_all desc')
+                                     .count
 
       end
 
       def create_org_unit_facet
-				@facets[:org_unit] = @orders.where('org_unit is not null')
-																		.group('org_unit')
-																		.reorder('count_all desc')
-																		.count
+        @facets[:org_unit] = @orders.where('org_unit is not null')
+                                    .group('org_unit')
+                                    .reorder('count_all desc')
+                                    .count
       end
 
       def create_origin_facet
-				@facets[:origin] = @orders.group('origin')
-																	.reorder('count_all desc')
-																	.count
+        @facets[:origin] = @orders.group('origin')
+                                  .reorder('count_all desc')
+                                  .count
       end
 
       def create_status_facet
-				cases = {
-					'initiated'            => 'requested',
-					'delivery_requested'   => 'requested',
-					'redelivery_requested' => 'requested'
-				}.collect {|k,v| "when '#{k}' then '#{v}'"}.join ' '
+        cases = {
+          'initiated'            => 'requested',
+          'delivery_requested'   => 'requested',
+          'redelivery_requested' => 'requested'
+        }.collect {|k,v| "when '#{k}' then '#{v}'"}.join ' '
 
-				@facets[:delivery_status] = @orders.group("case delivery_status #{cases} else delivery_status end")
-																					 .reorder('count_all desc')
-																					 .count
+        @facets[:delivery_status] = @orders.group("case delivery_status #{cases} else delivery_status end")
+                                           .reorder('count_all desc')
+                                           .count
       end
 
       def create_duration_facet
