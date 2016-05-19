@@ -3,6 +3,7 @@ require 'uuidtools'
 class OrdersController < ApplicationController
 
   include Blacklight::Catalog
+  include Toshokan::Orders
 
   # Delivery is called from DocDel
   skip_before_filter :authenticate, :only => [:delivery]
@@ -24,241 +25,22 @@ class OrdersController < ApplicationController
     # enters the database.
     @orders = Order.where('delivery_status is not null').order('created_at desc')
 
-    unless can? :view_any, Order
-      @orders = @orders.where 'user_id = ?', current_user.id
+    # Regular users can only view their own orders
+    @orders = @orders.where 'user_id = ?', current_user.id unless can? :view_any, Order
+
+    apply_query_params
+
+    if can? :view_any, Order
+      @facets = ActiveSupport::OrderedHash.new
+      @facet_labels = {}
+      @filter_queries = {}
+
+      apply_filter_queries
+      create_facets
+
+      # Reject facets with no terms
+      @facets.reject! {|k,v| v.empty?}
     end
-
-    # Translate query and facet fields to valid model fields/functions
-    sql_map = {
-      :date                => 'date(orders.created_at)',
-      :q_email             => 'orders.email',
-      :q_orderid           => 'orders.id',
-      :q_supplier_order_id => 'orders.supplier_order_id'
-    }
-
-    sql_operator_map = {
-      :q_orderid => '=',
-    }
-
-    # Translate certain query params to the form used in the model.
-    # This can be something like extracting an integer id from a string or similar.
-    value_mappers = {}
-
-    value_mappers[:q_orderid] = -> v do
-      # Either match a full DIBS order id like F00001234
-      %r{^#{Orders.order_id_prefix.downcase}0*(\d+)$}.match(v.downcase).try(:[], 1) ||
-      # or a DB id like 1234
-      /^(\d+)$/.match(v).try(:[], 1) ||
-      # Default to an id that will not match any order.
-      0
-    end
-
-    # Apply query params.
-    # Don't wrap value in "%...%" for values returned by a value mapper.
-    [:q_email, :q_orderid, :q_supplier_order_id].each do |q|
-      if params[q] && !params[q].blank?
-        value = params[q].strip
-        @orders = @orders.where "#{sql_map[q] || q} #{sql_operator_map[q] || 'LIKE'} ?",
-                                value_mappers[q].try(:call, value) || "%#{value}%"
-      end
-    end
-
-    # Create facets
-    @facets = ActiveSupport::OrderedHash.new
-    @facet_labels = {}
-    @filter_queries = {}
-
-    if can? :view_any, Order # Perhaps this should be can? :view, :orders_facets
-      # Apply user filter query
-      if params[:user] && !params[:user].blank?
-        @orders = @orders.where :user_id => params[:user].first
-        @filter_queries[:user] = [params[:user]].flatten
-      end
-
-      # Apply user type filter query
-      if params[:user_type] && !params[:user_type].blank?
-        @orders = @orders.where :user_type => params[:user_type].first
-        @filter_queries[:user_type] = [params[:user_type]].flatten
-      end
-
-      # Apply org_unit filter query
-      if params[:org_unit] && !params[:org_unit].blank?
-        @orders = @orders.where :org_unit => params[:org_unit].first
-        @filter_queries[:org_unit] = [params[:org_unit]].flatten
-      end
-
-      # Apply origin filter query
-      if params[:origin] && !params[:origin].blank?
-        @orders = @orders.where :origin => params[:origin].first
-        @filter_queries[:origin] = [params[:origin]].flatten
-      end
-
-      # Apply supplier filter query
-      if params[:supplier] && !params[:supplier].blank?
-        @orders = @orders.where :supplier => params[:supplier].first
-        @filter_queries[:supplier] = [params[:supplier]].flatten
-      end
-
-      # Apply order status filter query
-      if params[:delivery_status] && !params[:delivery_status].blank?
-        if params[:delivery_status].first == 'requested'
-          @orders = @orders.where :delivery_status => ['initiated', 'requested', 'delivery_requested', 'redelivery_requested']
-        else
-          @orders = @orders.where :delivery_status => params[:delivery_status].first
-        end
-        @filter_queries[:delivery_status] = [params[:delivery_status]].flatten
-      end
-
-      # Apply order start year filter query
-      if params[:order_start_year] && !params[:order_start_year].blank?
-        @orders = @orders.where :created_year => params[:order_start_year].first
-        @filter_queries[:order_start_year] = [params[:order_start_year]].flatten
-      end
-
-      # Apply order start month filter query
-      if params[:order_start_month] && !params[:order_start_month].blank?
-        @orders = @orders.where :created_month => params[:order_start_month].first
-        @filter_queries[:order_start_month] = [params[:order_start_month]].flatten
-      end
-
-      # Apply order end year filter query
-      if params[:order_end_year] && !params[:order_end_year].blank?
-        @orders = @orders.where :delivered_year => params[:order_end_year].first
-        @filter_queries[:order_end_year] = [params[:order_end_year]].flatten
-      end
-
-      # Apply order end month filter query
-      if params[:order_end_month] && !params[:order_end_month].blank?
-        @orders = @orders.where :delivered_month => params[:order_end_month].first
-        @filter_queries[:order_end_month] = [params[:order_end_month]].flatten
-      end
-
-      # Apply order duration filter query
-      if params[:duration] && !params[:duration].blank?
-        duration = params[:duration].last
-        Rails.logger.debug "Selecting duration #{duration}"
-        expr = {
-          '6h'  => '<= 6',
-          '1d'  => '<= 24',
-          '1w'  => "<= #{7*24}",
-          '1m'  => "<= #{4*7*24}",
-          '3m'  => "<= #{3*4*7*24}",
-          '3m+' => "> #{3*4*7*24}",
-        }
-
-        @orders = @orders.where "duration_hours #{expr[duration]}"
-        @filter_queries[:duration] = [duration].flatten
-      end
-
-      # User facet
-      @facets[:user] = ActiveSupport::OrderedHash.new
-      @facet_labels[:user] = {}
-      @orders.where('user_id is not null').group('user_id').reorder('count_all desc').limit(20).count.each do |user_id, count|
-        user_id = user_id.to_s
-        @facets[:user][user_id] = count
-        user = User.find user_id
-        if user.dtu?
-          @facet_labels[:user][user_id] = "#{user} (CWIS: #{user.user_data["dtu"]["matrikel_id"]})"
-        else
-          @facet_labels[:user][user_id] = user.to_s
-        end
-      end
-
-      # User type facet
-      @facets[:user_type] = @orders.group('user_type')
-                                   .reorder('count_all desc')
-                                   .count
-
-      # Institute facet
-      @facets[:org_unit] = @orders.where('org_unit is not null')
-                                  .group('org_unit')
-                                  .reorder('count_all desc')
-                                  .count
-
-      # Order origin facet
-      @facets[:origin] = @orders.group('origin')
-                                .reorder('count_all desc')
-                                .count
-
-      # Order status facet
-      cases = {
-        'initiated'            => 'requested',
-        'delivery_requested'   => 'requested',
-        'redelivery_requested' => 'requested'
-      }.collect {|k,v| "when '#{k}' then '#{v}'"}.join ' '
-
-      @facets[:delivery_status] = @orders.group("case delivery_status #{cases} else delivery_status end")
-                                         .reorder('count_all desc')
-                                         .count
-
-      # Order duration facet
-      cases = {
-        6        => '6h',
-        24       => '1d',
-        7*24     => '1w',
-        4*7*24   => '1m',
-        3*4*7*24 => '3m',
-      }.collect {|k,v| "when duration_hours <= #{k} then '#{v}'"}.join ' '
-
-      # -- Get non-overlapping intervals
-      groups = @orders.where('duration_hours is not null')
-                      .group("case #{cases} else '3m+' end")
-                      .reorder('count_all desc')
-                      .count
-
-      # -- Accumulate overlapping intervals
-      accum = {}
-      groups.each do |g, count|
-        accum[g] = g == '3m+' ? count : 0
-      end
-
-      groups.each do |g, count|
-        unless g == '3m+'
-          accum['3m'] += count if accum['3m'] && ['6h', '1d', '1w', '1m', '3m'].include?(g)
-          accum['1m'] += count if accum['1m'] && ['6h', '1d', '1w', '1m'].include?(g)
-          accum['1w'] += count if accum['1w'] && ['6h', '1d', '1w'].include?(g)
-          accum['1d'] += count if accum['1d'] && ['6h', '1d'].include?(g)
-          accum['6h'] += count if accum['6h'] && g == '6h'
-        end
-      end
-
-      # -- Sort by count descending
-      @facets[:duration] = {}
-      accum.sort {|a,b| b[1] <=> a[1]}.each {|g,count| @facets[:duration][g] = count}
-
-      # Order start year facet
-      @facets[:order_start_year] = @orders.group('created_year')
-                                          .reorder('created_year desc')
-                                          .count
-
-      # Order start month facet
-      @facets[:order_start_month] = @orders.group('created_month')
-                                           .reorder('created_month asc')
-                                           .count
-      @facets[:order_start_month] = @facets[:order_start_month].sort {|a,b| a[0].to_i <=> b[0].to_i}
-
-      # Order end year facet
-      @facets[:order_end_year] = @orders.where('delivered_at is not null')
-                                        .group('delivered_year')
-                                        .reorder('delivered_year desc')
-                                        .count
-
-      # Order end month facet
-      @facets[:order_end_month] = @orders.where('delivered_at is not null')
-                                         .group('delivered_month')
-                                         .reorder('delivered_month asc')
-                                         .count
-      @facets[:order_end_month] = @facets[:order_end_month].sort {|a,b| a[0].to_i <=> b[0].to_i}
-
-      # Order supplier facet
-      @facets[:supplier] = @orders.group('supplier')
-                                  .reorder('count_all desc')
-                                  .count
-
-    end
-
-    # Reject facets with no terms
-    @facets.reject! {|k,v| v.empty?}
 
     @count          = @orders.count
     @orders         = @orders.page(params[:page] || 1).per(50) unless request.format == 'text/csv'
