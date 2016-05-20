@@ -1,56 +1,39 @@
 (function ($) {
+
+    var CitationCount = function(data){
+        var count = function(data, provider) {
+            if (data[provider] == undefined) return;
+            this.count = data[provider]['count'];
+            this.url = data[provider]['url'];
+            this.text = "<div><a href='" + this.url + "'> Citation count " + provider + ": " + this.count + "</a></div>";
+        };
+        this.elsevier = new count(data, 'elsevier');
+        this.wok = new count(data, 'wok');
+    };
   $(function() {
-    $('div[data-citation-count]').each(function (index, citationCountElement) {
-      var citationCountElement = $(citationCountElement);
-      var doi = citationCountElement.attr('data-doi');
-      // TODO TLNI: Get citation count (fix URL)
-      $.ajax("http://localhost:3003/citation_count/", {
-        data: {"doi": doi}
-      }).then(
+      var $citationCountElement = $('#citation_count_lookup');
+      if (!$citationCountElement) return;
+      var api = $citationCountElement.data('api');
+      var doi = $citationCountElement.data('doi');
+      var pmid = $citationCountElement.data('pmid');
+      var scopus_id = $citationCountElement.data('scopus_id');
+      $.ajax(api, {
+          data: {
+              doi: doi,
+              scopus_id: scopus_id,
+              pmid: pmid
+          }}).then(
         function(data, textStatus, jqXHR) {
-          var get_scopus_citation_count_from_data = function(data) {
-            if (data === undefined || data === null)
-              return "0";
-
-            var data_elsevier = data['elsevier'];
-
-            if (data_elsevier === undefined || data_elsevier === null)
-              return "0";
-
-            var data_elsevier_count = data_elsevier['count'];
-
-            if (data_elsevier_count === undefined || data_elsevier_count === null || data_elsevier_count === "")
-              return "0";
-
-            return data_elsevier_count;
-          };
-
-          var get_web_of_science_citation_count_from_data = function(data) {
-            if (data === undefined || data === null)
-              return "0";
-
-            var data_web_of_science = data['web_of_science'];
-
-            if (data_web_of_science === undefined || data_web_of_science === null)
-              return "0";
-
-            var data_web_of_science_count = data_web_of_science['count'];
-
-            if (data_web_of_science_count === undefined || data_web_of_science_count === null || data_web_of_science_count === "")
-              return "0";
-
-            return data_web_of_science_count;
-          };
-
-          var scopus_citation_count = get_scopus_citation_count_from_data(data);
-          var web_of_science_citation_count = get_web_of_science_citation_count_from_data(data);
-
-          citationCountElement.empty().html("<div>Scopus citation count: "+scopus_citation_count+"</div><div>ISI citation count: "+web_of_science_citation_count+"</div>");
+            var citeCount = new CitationCount(data);
+            var text = "";
+            if (!$.isEmptyObject(citeCount.elsevier)) text += citeCount.elsevier.text;
+            if (!$.isEmptyObject(citeCount.wok)) text += citeCount.wok.text;
+            $citationCountElement.empty().html(text);
         },
         function(jqXHR, textStatus, errorThrown) {
-          // TODO TLNI: Do something on error?
+            if (window.console !== undefined) {
+                console.error("Could not connect to citation count service: " + textStatus);
+            }
         });
     });
-
-  });
 })(jQuery);
