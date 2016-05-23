@@ -42,7 +42,10 @@ class Ability
         can :view_format, 'standard'
       end
 
-      can :update, User if user.roles.include? Role.find_by_code('ADM')
+      if user.roles.include? Role.find_by_code('ADM')
+        can :update, User
+        can :select, :supplier
+      end
 
       if user.roles.include? Role.find_by_code('SUP')
         can :switch, User if !user.impersonating?
