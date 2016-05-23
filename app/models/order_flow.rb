@@ -35,14 +35,17 @@ class OrderFlow
     {
       :dtu_staff => {
         :rd  => [:email],
+        :tib => [:email],
         :dtu => [:email]
       },
       :dtu_student => {
         :rd  => [:email, :terms_accepted],
+        :tib => [:email, :terms_accepted],
         :dtu => [:email]
       },
       :public => {
         :rd  => [:email, :terms_accepted, :customer_ref, :requirements],
+        :tib => [:email, :terms_accepted, :customer_ref, :requirements],
         :dtu => [:email, :terms_accepted, :customer_ref, :requirements]
       }
     }
@@ -52,14 +55,17 @@ class OrderFlow
     {
       :dtu_staff => {
         :rd  => [:delivery_info, :confirm, :done],
+        :tib => [:delivery_info, :confirm, :done],
         :dtu => [:delivery_info, :confirm, :done]
       },
       :dtu_student => {
         :rd  => [:delivery_info, :confirm, :payment, :done],
+        :tib => [:delivery_info, :confirm, :payment, :done],
         :dtu => [:delivery_info, :confirm, :done]
       },
       :public => {
         :rd  => [:delivery_info, :confirm, :payment, :done],
+        :tib => [:delivery_info, :confirm, :payment, :done],
         :dtu => [:delivery_info, :confirm, :payment, :done]
       }
     }

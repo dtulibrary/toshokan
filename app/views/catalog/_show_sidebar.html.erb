@@ -8,3 +8,17 @@
     </ul>
   </div>
 <% end %>
+
+<% if can? :select, :supplier %>
+  <div class="well tools">
+
+  <%
+    open_url = @document.export_as_openurl_ctx_kev
+    open_url += "&rft.jtitle=#{URI.encode_www_form_component @document['conf_title_ts'].first}" if @document['conf_title_ts'] && !@document['journal_title_ts'] %>
+
+    <p>Superusers can select which service to order from.</p>
+    <%= link_to "TIB", new_order_path(open_url: open_url, supplier: :tib), class: "btn btn-primary"  %>
+    <%= link_to "DTU", new_order_path(open_url: open_url, supplier: :dtu), class: "btn btn-primary"  %>
+    <%= link_to "ReprintsDesk", new_order_path(open_url: open_url, supplier: :rd), class: "btn btn-primary"  %>
+  </div>
+<% end %>

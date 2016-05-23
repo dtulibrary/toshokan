@@ -298,7 +298,6 @@ class OrdersController < ApplicationController
     if params[:open_url] && params[:supplier]
       @open_url = params[:open_url]
       @supplier = params[:supplier].to_sym
-      logger.debug "setting return_url :#{session[:order_return_url]}"
 
       price = PayIt::Prices.price current_user, @supplier, :DKK
       @order = Order.new({
