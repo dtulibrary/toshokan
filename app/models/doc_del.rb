@@ -21,7 +21,7 @@ class DocDel
     params = {
       :dibs_order_id => order.dibs_order_id,
       :open_url => order.open_url,
-      :supplier => supplier_map[order.supplier],
+      :supplier => supplier_map[order.supplier] || order.supplier,
       :email => order.email,
       :callback_url => callback_url
     }
