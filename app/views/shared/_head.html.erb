@@ -1,3 +1,14 @@
+<% if Rails.application.config.respond_to?(:siteimprove_cookie_policy) && Rails.application.config.siteimprove_cookie_policy.try(:[], :url) %>
+    <script type="text/javascript">
+    /*<![CDATA[*/
+    (function() {
+        var sz = document.createElement('script'); sz.type = 'text/javascript'; sz.async = true;
+        sz.src = '<%= Rails.application.config.siteimprove_cookie_policy[:url] %>';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sz, s);
+    })();
+    /*]]>*/
+    </script>
+<% end %>
 <link href="<%= opensearch_catalog_path(:format => 'xml', :only_path => false) %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
 <% if Rails.application.config.respond_to?(:google) && Rails.application.config.google.try(:[], :maps_v3).try(:[], :api_key) %>
   <script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.config.google[:maps_v3][:api_key] %>"></script>
