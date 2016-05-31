@@ -10,9 +10,9 @@ GIT
 
 GIT
   remote: git://github.com/dtulibrary/dtu_monitoring.git
-  revision: 6d3e2203a6a6e9f2fe461c3c5063316564f1808a
+  revision: f5e3cc11f9eb1b59f4576347755e5f49a4ab0495
   specs:
-    dtu_monitoring (0.2.0)
+    dtu_monitoring (1.2.0)
 
 GIT
   remote: git://github.com/dtulibrary/dtu_rails_common.git
@@ -431,7 +431,7 @@ DEPENDENCIES
   dalli
   database_cleaner
   delayed_job_active_record
-  dtu_monitoring (~> 0.2.0)!
+  dtu_monitoring (~> 1.2.0)!
   dtu_rails_common!
   eventmachine (~> 1.0.0.rc4)
   factory_girl_rails (~> 4.0)

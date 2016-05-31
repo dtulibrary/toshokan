@@ -6,7 +6,7 @@ gem 'activerecord-session_store'
 gem 'jquery-rails', '~> 2.3.0'
 gem 'blacklight', '~> 5.7'
 gem 'dtu_rails_common', :github => 'dtulibrary/dtu_rails_common'
-gem 'dtu_monitoring', '~> 0.2.0', :github => 'dtulibrary/dtu_monitoring'
+gem 'dtu_monitoring', '~> 1.2.0', :github => 'dtulibrary/dtu_monitoring'
 gem 'unicode'
 
 gem 'blacklight_range_limit', :github => 'dtulibrary/blacklight_range_limit', :ref => 'da3ca02cea6adfd981406b46db32fd930f10ee6b'

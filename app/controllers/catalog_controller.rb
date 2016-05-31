@@ -13,7 +13,8 @@ class CatalogController < ApplicationController
 
   def monitor_response
     return unless Rails.application.config.respond_to?(:monitoring_id)
-    DtuMonitoring::BlacklightResponse.delay.monitor(Rails.application.config.monitoring_id, @response, Time.now.to_i)
+    return unless @response.respond_to?(:to_json)
+    DtuMonitoring::BlacklightResponse.delay.monitor(Rails.application.config.monitoring_id, @response.to_json, Time.now.to_i)
   end
 
 
