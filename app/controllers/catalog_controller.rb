@@ -9,6 +9,12 @@ class CatalogController < ApplicationController
   include Toshokan::Catalog
 
   before_filter :inject_last_query_into_params, only:[:show]
+  after_filter :monitor_response, if: ->{ @response.present? }
+
+  def monitor_response
+    DtuMonitoring::BlacklightResponse.delay.monitor('findit_local', @response, Time.now.to_i)
+  end
+
 
   configure_blacklight do |config|
     # Ensure I18n load paths are loaded
