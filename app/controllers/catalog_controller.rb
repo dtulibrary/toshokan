@@ -12,7 +12,8 @@ class CatalogController < ApplicationController
   after_filter :monitor_response, if: ->{ @response.present? }
 
   def monitor_response
-    DtuMonitoring::BlacklightResponse.delay.monitor('findit_local', @response, Time.now.to_i)
+    return unless Rails.application.config.respond_to?(:monitoring_id)
+    DtuMonitoring::BlacklightResponse.monitor(Rails.application.config.monitoring_id, @response, Time.now.to_i)
   end
 
 
