@@ -3,8 +3,8 @@ require 'rails_helper'
 describe "FreeciteHelper::FreeciteRequest" do
   describe "#call" do
     it "returns a response with journal title, volume and pages" do
-			stub_request(:post, "http://freecite.library.brown.edu/citations/create").
-				to_return(
+      stub_request(:post, "http://freecite.library.brown.edu/citations/create").
+        to_return(
 :status => 200,
 :body => "<citations>
 <citation valid='false'><authors><author>A K Huber</author><author>M Falk</author><author>M Rohnke</author><author>B Luerssen</author><author>L Gregoratti</author><author>M Amati</author><author>J Janek</author></authors><journal>Physical Chemistry Chemical Physics 2012</journal><volume>14</volume><pages>751</pages><raw_string>Huber, A. K.; Falk, M.; Rohnke, M.; Luerssen, B.; Gregoratti, L.; Amati, M.; Janek, J. Physical Chemistry Chemical Physics 2012, 14, 751</raw_string></citation>
@@ -19,8 +19,8 @@ describe "FreeciteHelper::FreeciteRequest" do
     end
 
     it "returns a response with the unabbreviated names of the first author" do
-			stub_request(:post, "http://freecite.library.brown.edu/citations/create").
-				to_return(
+      stub_request(:post, "http://freecite.library.brown.edu/citations/create").
+        to_return(
 :status => 200,
 :body => "<citations>
 <citation valid='false'><authors><author>A K Huber</author><author>M Falk</author><author>M Rohnke</author><author>B Luerssen</author><author>L Gregoratti</author><author>M Amati</author><author>J Janek</author></authors><journal>Physical Chemistry Chemical Physics 2012</journal><volume>14</volume><pages>751</pages><raw_string>Huber, A. K.; Falk, M.; Rohnke, M.; Luerssen, B.; Gregoratti, L.; Amati, M.; Janek, J. Physical Chemistry Chemical Physics 2012, 14, 751</raw_string></citation>
