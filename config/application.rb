@@ -86,8 +86,8 @@ module Toshokan
 
     config.auth = {
       :stub    => false,
-      :cas_url => '',
-      :api_url => '',
+      :cas_url => 'http://localhost:3001/users',
+      :api_url => 'http://localhost:3001/rest',
       :ip      => {
         :walk_in  => [],
         :campus   => [],
@@ -96,12 +96,12 @@ module Toshokan
     }
 
     config.cover_images = {
-      :url     => '',
+      :url     => 'http://covers:3000',
       :api_key => ''
     }
 
     config.getit = {
-        :url => ''
+        :url => 'http://localhost:3003'
     }
 
     config.action_mailer.smtp_settings = {
@@ -141,14 +141,14 @@ module Toshokan
     }
 
     config.doc_del = {
-      :url     => '',
+      :url     => 'http://docdel:3000',
       :enabled => true,
       :timeout => 10*60, # 10 minutes
     }
 
     config.send_it = {
-      :url                   => '',
-      :delay_jobs            => true,
+      :url                   => 'http://sendit:3000',
+      :delay_jobs            => false,
       :timeout               => 10*60, # 10 minutes
       :delivery_support_mail => '',
       :book_suggest_mail     => '',
@@ -207,7 +207,7 @@ module Toshokan
     }
 
     config.alert = {
-      :url       => 'http://localhost',
+      :url       => 'http://alert:3000',
       :test_mode => false,
     }
 
