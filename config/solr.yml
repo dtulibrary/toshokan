@@ -12,10 +12,10 @@
 
 development:
   jetty_path: './jetty'
-  url: 'http://findit-solr:8983/solr/metastore'
-  toc_url: 'http://findit-solr:8983/solr/toc'
+  url: 'http://127.0.0.1:8983/solr/metastore'
+  toc_url: 'http://127.0.0.1:8983/solr/toc'
 
 test:
   jetty_path: './jetty'
-  url: 'http://findit-solr:8983/solr/metastore'
-  toc_url: 'http://findit-solr:8983/solr/toc'
+  url: 'http://127.0.0.1:8983/solr/metastore'
+  toc_url: 'http://127.0.0.1:8983/solr/toc'
