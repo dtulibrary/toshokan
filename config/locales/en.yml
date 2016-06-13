@@ -49,6 +49,7 @@ en:
         conf_title_ts: 'Proceedings'
         series_title_ts: 'Series title'
         subtitle_ts: 'Subtitle'
+        journal_subtitle_ts: 'Journal subtitle'
         journal_page_ssf: 'Pages'
         journal_vol_ssf: 'Volume'
         journal_issue_ssf: 'Issue'
