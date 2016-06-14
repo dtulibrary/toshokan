@@ -39,6 +39,8 @@ Toshokan::Application.routes.draw do
     get  '/orders/:uuid/resend',                    :to => 'orders#resend',                         :as => 'order_resend_library_support'
     post '/test_payment',                           :to => 'payment#credit_card',                   :as => 'payment'
 
+    # Refine Search
+    get  '/refine_search/parse_search_query',              :to => 'refine_search#parse_search_query',             :as => 'parse_search_query'
 
     # Assistance (Can't Find) forms
     resources :assistance_requests,                 :only => [:index, :new, :create, :show]

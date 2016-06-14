@@ -247,6 +247,7 @@ class CatalogController < ApplicationController
       params.delete :from_resolver
     end
 
+    @query = URI.encode((params[:q] || ""))
     (@response, @document_list) = get_search_results(params, extra_search_params)
     @filters = params[:f] || []
 

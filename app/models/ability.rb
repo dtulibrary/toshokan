@@ -45,6 +45,7 @@ class Ability
       if user.roles.include? Role.find_by_code('ADM')
         can :update, User
         can :select, :supplier
+        can :view, :refine_search_query
       end
 
       if user.roles.include? Role.find_by_code('SUP')
