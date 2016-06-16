@@ -213,7 +213,13 @@
 
       if (data.subtype.match(/_scan/)) {
         if ($(".order-scan").length > 0) {
-          action = data.subtype == "rd_scan" ? $("li.order-rd-scan > form") : $("li.order-dtu-scan > form");
+          if (data.subtype == "dtic_scan") {
+            action = $("li.order-dtu-scan > form");
+          } else if (data.subtype == "tib_scan") {
+            action = $("li.order-tib-scan > form");
+          } else if (data.subtype == "rd_scan") {
+            action = $("li.order-rd-scan > form");
+          }
           $(action).find("button").text(data.button_text);
           data.lead_text = action.attr("data-price");
           $(action).addClass("getit-entry");
