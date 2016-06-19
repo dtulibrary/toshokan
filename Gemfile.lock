@@ -201,6 +201,9 @@ GEM
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
+    introjs-rails (1.0.0)
+      sass-rails (>= 3.2)
+      thor (~> 0.14)
     jettywrapper (1.8.3)
       activesupport (>= 3.0.0)
       childprocess
@@ -440,6 +443,7 @@ DEPENDENCIES
   hashie
   hirb
   httparty
+  introjs-rails
   jettywrapper
   jquery-rails (~> 2.3.0)
   kaminari

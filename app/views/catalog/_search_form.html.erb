@@ -7,12 +7,12 @@
       <span class="hide-text"><%= t('blacklight.search.form.search_field.post_label') %></span>
     </div>
   <% end %>
-  <div class="text-field-with-icons">
+  <div class="text-field-with-icons" data-intro="Enter your search term here" data-step="1" >
     <div class="icons">
-      <a title="Show search help" id="toggle-search-syntax" href="#"><i class="icon-question-circle"></i></a>
+      <a title="Show search help" id="toggle-search-syntax" href="#" data-intro="Detailed help and tips" data-step="2"><i class="icon-question-circle"></i></a>
       <a title="Clear search field" id="search-clear" href="#"><i class="icon-times"></i></a>
       <a title="Undo clear" id="undo-clear" href="#" class="hide"><i class="icon-repeat"></i></a>
-      <a title="More options" id="more-options" href="#"><i class="icon-chevron-down"></i></a>
+      <a title="More options" id="more-options" href="#" data-intro="Your search history" data-step="3"><i class="icon-chevron-down"></i></a>
       <a title="Less options" id="less-options" href="#" class="hide"><i class="icon-chevron-up"></i></a>
     </div>
     <%= text_field_tag :q, params[:q], :class => "search_q q", :id => "q"%>

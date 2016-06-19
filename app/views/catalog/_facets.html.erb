@@ -1,7 +1,8 @@
 <% # main container for facets/limits menu -%>
 <div id="facets" class="facets sidenav">
 
-  <div class="facets-collapse">
+  <%= stylesheet_link_tag "https://cdn.jsdelivr.net/intro.js/2.1.0/introjs.min.css", media: "all" %>
+  <div class="facets-collapse" data-intro="Narrow down your search by type or author" data-step="4" data-position="right" >
   <%= render_facet_partials %>
   <% if can? :tag, Bookmark %>
     <%= render_tag_partials %>
