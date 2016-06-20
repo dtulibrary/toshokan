@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe "FreeciteHelper::FreeciteRequest" do
   describe "#call" do
-    it "returns a response with journal title, volume and pages" do
+    it "returns a response with journal title, volume and page" do
       stub_request(:post, "http://freecite.library.brown.edu/citations/create").
         to_return(
 :status => 200,
@@ -15,7 +15,7 @@ describe "FreeciteHelper::FreeciteRequest" do
 
       expect(response.journal_title).to eq("Physical Chemistry Chemical Physics 2012")
       expect(response.volume).to eq("14")
-      expect(response.pages).to eq("751")
+      expect(response.page).to eq("751")
     end
 
     it "returns a response with the unabbreviated names of the first author" do

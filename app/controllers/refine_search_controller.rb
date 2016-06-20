@@ -22,10 +22,10 @@ class RefineSearchController < ApplicationController
 
   def map_freecite_response_to_jsonable_toshokan_response(freecite_response)
     {
-      "authors" => freecite_response.unabbreviated_names_of_the_first_author,
+      "author" => freecite_response.unabbreviated_names_of_the_first_author,
       "journal_title" => freecite_response.journal_title,
       "volume" => freecite_response.volume,
-      "pages" => freecite_response.pages,
+      "page" => freecite_response.page,
       "publisher" => freecite_response.publisher,
       "year" => freecite_response.year,
       "title" => freecite_response.title
@@ -38,10 +38,10 @@ class RefineSearchController < ApplicationController
 
   def parse_refined_query_to_jsonable_structure(query)
     {
-      "authors" => parse_field_from_refined_query("authors", query),
+      "author" => parse_field_from_refined_query("author", query),
       "journal_title" => parse_field_from_refined_query("journal_title", query),
       "volume" => parse_field_from_refined_query("volume", query),
-      "pages" => parse_field_from_refined_query("pages", query),
+      "page" => parse_field_from_refined_query("page", query),
       "publisher" => parse_field_from_refined_query("publisher", query),
       "year" => parse_field_from_refined_query("year", query),
       "title" => parse_field_from_refined_query("title", query)

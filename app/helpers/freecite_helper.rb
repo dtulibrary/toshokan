@@ -24,7 +24,7 @@ module FreeciteHelper
       @values[:volume] || ""
     end
 
-    def pages
+    def page
       @values[:pages] || ""
     end
 

@@ -17,10 +17,10 @@
     var refinedTitleInput = $('#refined_title_input');
     var refinedJournalInput = $('#refined_journal_input');
     var refinedVolumeInput = $('#refined_volume_input');
-    var refinedPagesInput = $('#refined_pages_input');
+    var refinedPageInput = $('#refined_page_input');
     var refinedPublisherInput = $('#refined_publisher_input');
     var refinedYearInput = $('#refined_year_input');
-    var refinedAuthorsInput = $('#refined_authors_input');
+    var refinedAuthorInput = $('#refined_author_input');
 
     var parseQuery = function(query) {
       var setRefinedTitle = function(newTitle) {
@@ -35,8 +35,8 @@
         refinedVolumeInput.val(newVolume);
       };
 
-      var setRefinedPages = function(newPages) {
-        refinedPagesInput.val(newPages);
+      var setRefinedPage = function(newPage) {
+        refinedPageInput.val(newPage);
       };
 
       var setRefinedPublisher = function(newPublisher) {
@@ -47,8 +47,8 @@
         refinedYearInput.val(newYear);
       };
 
-      var setRefinedAuthors = function(newAuthors) {
-        refinedAuthorsInput.val(newAuthors);
+      var setRefinedAuthor = function(newAuthor) {
+        refinedAuthorInput.val(newAuthor);
       };
 
       var queryFreeCite = function() {
@@ -60,11 +60,11 @@
             }
         ).then(
           function(data, textStatus, jqXHR) {
-            setRefinedAuthors(data.authors);
+            setRefinedAuthor(data.author);
             setRefinedTitle(data.title);
             setRefinedJournalTitle(data.journal_title);
             setRefinedVolume(data.volume);
-            setRefinedPages(data.pages);
+            setRefinedPage(data.page);
             setRefinedPublisher(data.publisher);
             setRefinedYear(data.year);
             showRefineSearchButton.show();
@@ -86,8 +86,8 @@
         var baseUrl = "/en/catalog?q=";
 
         var params = [];
-        if (refinedAuthorsInput.val())
-          params.push('authors:"' + refinedAuthorsInput.val() + '"');
+        if (refinedAuthorInput.val())
+          params.push('author:"' + refinedAuthorInput.val() + '"');
         if (refinedTitleInput.val())
           params.push('title:"' + refinedTitleInput.val() + '"');
         if (refinedJournalInput.val())
@@ -98,8 +98,8 @@
           params.push('publisher:"' + refinedPublisherInput.val() + '"');
         if (refinedYearInput.val())
           params.push('year:"' + refinedYearInput.val() + '"');
-        if (refinedPagesInput.val())
-          params.push('pages:"' + refinedPagesInput.val() + '"');
+        if (refinedPageInput.val())
+          params.push('page:"' + refinedPageInput.val() + '"');
 
         var result = baseUrl + encodeURI(params.join(" "));
 
