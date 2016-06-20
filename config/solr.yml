@@ -17,5 +17,5 @@ development:
 
 test:
   jetty_path: './jetty'
-  url: 'http://findit-solr:8983/solr/metastore'
-  toc_url: 'http://findit-solr:8983/solr/toc'
+  url: 'http://localhost:8983/solr/metastore'
+  toc_url: 'http://localhost:8983/solr/toc'
