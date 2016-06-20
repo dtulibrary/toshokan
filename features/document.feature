@@ -53,3 +53,7 @@ Then I should see "Language: eng"
 Scenario: View patent doctype
 When I go to the record page for "177-Lu labeled peptide for site-specific uPAR-targeting"
 Then I should see "Document type: Patent"
+
+Scenario: View Journal Subtitle
+  When I go to the record page for "Talent among Chinese Entrepreneurs at Home and Abroad"
+  Then I should see "New Horizons in Management"
