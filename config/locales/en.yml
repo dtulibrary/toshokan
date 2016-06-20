@@ -54,6 +54,8 @@ en:
         journal_issue_ssf: 'Issue'
         dissertation_date_ssf: 'Dissertation date'
         supervisor_ts: "Supervisors"
+        inventor_ts: 'Inventors'
+        patent_number_ss: 'Patent number'
         facet:
           author_facet: 'Author'
           format: 'Type'
@@ -320,6 +322,8 @@ en:
         journal_page_ssf: 'Pages'
         issn_ss: 'ISSN'
         dissertation_date_ssf: 'Dissertation date'
+        inventor_ts: 'Inventors'
+        patent_number_ss: 'Patent number'
       show_field_labels:
         abstract_ts: 'Abstract'
         affiliation_ts: 'Affiliations'
@@ -345,6 +349,8 @@ en:
         journal_issue_ssf: 'Issue'
         dissertation_date_ssf: 'Dissertation date'
         supervisor_ts: "Supervisors"
+        inventor_ts: 'Inventors'
+        patent_number_ss: 'Patent number'
       facet_field_labels:
         author_facet: 'Author'
         format: 'Type'
