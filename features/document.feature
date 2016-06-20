@@ -30,3 +30,26 @@ Scenario: Do not export a record for a journal
    And I click on the first document
   Then I should not see the "Export to BibTeX" link 
    And I should not see the "Export to RIS" link
+
+Scenario: View patent keywords
+When I go to the record page for "Omni rotational driving and steering wheel"
+Then I should see "steering wheel modul"
+
+Scenario: View patent abstract
+When I go to the record page for "Omni rotational driving and steering wheel"
+Then I should see "Abstract of WO 2008138346  (A1) There is disclosed a driving and steering wheel"
+
+Scenario: View patent affiliations
+When I go to the record page for "Omni rotational driving and steering wheel"
+Then I should see "Department of Industrial and Civil Engineering, Faculty of Engineering, SDU"
+Then I should see "Faculty of Engineering, SDU"
+Then I should see "Institute of Chemical Engineering, Biotechnology and Environmental Technology, Faculty of Engineering, SDU"
+Then I should see "Institute of Technology and Innovation, Faculty of Engineering, SDU"
+
+Scenario: View patent language
+When I go to the record page for "Apparatus for loading and unloading a cargo compartment of an aircraft"
+Then I should see "Language: eng"
+
+Scenario: View patent doctype
+When I go to the record page for "177-Lu labeled peptide for site-specific uPAR-targeting"
+Then I should see "Document type: Patent"
