@@ -40,7 +40,7 @@
     };
   $(function() {
       var $citationCountElement = $('#citation_count_lookup');
-      if (!$citationCountElement) return;
+      if ($citationCountElement.size() == 0) return;
       var api = $citationCountElement.data('api');
       var doi = $citationCountElement.data('doi');
       var pmid = $citationCountElement.data('pmid');
