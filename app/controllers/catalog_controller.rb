@@ -27,9 +27,11 @@ class CatalogController < ApplicationController
       end
     end
 
+     config.solr_path = 'toshokan'
+     config.document_solr_path = 'toshokan_document'
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = {
-      :qt => '/toshokan',
+      :qt => 'toshokan',
       :q => '*:*',
       :rows => 10
     }
@@ -39,7 +41,7 @@ class CatalogController < ApplicationController
     ## parameters included in the Blacklight-jetty document requestHandler.
     #
     config.default_document_solr_params = {
-      :qt => '/toshokan_document',
+      :qt => 'toshokan_document',
       :q => "{!raw f=#{SolrDocument.unique_key} v=$id}"
     #  ## These are hard-coded in the blacklight 'document' requestHandler
     #  # :fl => '*',
@@ -79,6 +81,7 @@ class CatalogController < ApplicationController
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
     #config.add_facet_field 'format', :collapse => false
+    config.add_facet_field 'fulltext_availability_ss', label: 'Online Access', helper_method: :online_access_facet_display
     config.add_facet_field 'format', :collapse => false
     #config.add_facet_field 'subformat_s', :collapse => false
     # config.add_facet_field 'pub_date_tsort', :label => I18n.t('blacklight.search.fields.facet.pub_date_tsort'), :range => true

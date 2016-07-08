@@ -35,4 +35,16 @@ module CatalogHelper
     (document['source_ss'] || []).any? { |s| ['orbit','sorbit'].include? s }
   end
 
+  # Customise the access facet display based on the user type
+  def online_access_facet_display(field_value)
+    case current_user.type
+      when :dtu_student, :dtu_staff, :walkin
+        field_value == 'dtu' ? 'YES' : 'NODISPLAY'
+      when :anonymous, :public
+        field_value == 'dtupub' ? 'YES' : 'NODISPLAY'
+      else
+        false
+    end
+  end
+
 end
