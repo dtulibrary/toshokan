@@ -21,6 +21,7 @@ module Reference
   def to_bibtex
     bib_doc = Reference::Entry.new
     bib_doc.type = self.to_semantic_values[:format].first
+    bib_doc.subtype = self["subformat_s"]
     self.to_semantic_values.select { |field, values| BIBTEX_FIELD_NAMES.include? field.to_sym }.each do |field,values|
       case(field)   
       when :journal
@@ -66,15 +67,26 @@ module Reference
       :keywords => "KW"
     }
 
+    def ris_type
+      return 'CPAPER' if subtype.to_sym.eql?(:conference_paper)
+      return 'CHAP' if subtype.to_sym.eql?(:bookchapter)
+      return 'PAT' if subtype.to_sym.eql?(:patent)
+
+      return case type
+        when :article
+          'JOUR'
+        when :book
+          'BOOK'
+        when :journal
+          'JFULL'
+        when :thesis
+          'THES'
+        else
+          'GEN'
+        end
+    end
+
     def to_ris(options = {})
-      ris_type = case type
-                 when :article
-                   'JOUR'
-                 when :book
-                   'BOOK'
-                 when :journal
-                   'JFULL'
-                 end
       # keyword must be followed by two spaces in order to work with reference manager
       content = "TY  - #{ris_type}\n"
 
