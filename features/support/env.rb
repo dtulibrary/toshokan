@@ -71,3 +71,6 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 OmniAuth.config.test_mode = true
 Riyosha.config.test_mode = true
 Alert.test_mode = true
+
+# Allow connections to solr host and localhost
+WebMock.disable_net_connect!(allow: ['findit-solr','localhost'])
