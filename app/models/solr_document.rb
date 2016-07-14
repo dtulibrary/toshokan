@@ -42,6 +42,7 @@ class SolrDocument
      :identifier  => "doi_s",
      # BibTeX, Ris
      :author      => "author_ts",
+     :inventor    => "inventor_ts",
      :editor      => "editor_ts",
      :journal     => "journal_title_ts",
      :volume      => "journal_vol_ssf",
