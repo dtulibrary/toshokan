@@ -18,6 +18,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # prefer to use XPath just remove this line and adjust any selectors in your
 # steps to use the XPath syntax.
 Capybara.default_selector = :css
+Capybara.javascript_driver = :webkit
 
 
 # By default, any exception happening in your Rails application will bubble up
@@ -73,4 +74,12 @@ Riyosha.config.test_mode = true
 Alert.test_mode = true
 
 # Allow connections to solr host and localhost
-WebMock.disable_net_connect!(allow: ['findit-solr','localhost'])
+WebMock.disable_net_connect!(allow: ['findit-solr','localhost','127.0.0.1'])
+
+Capybara::Webkit.configure do |config|
+  #config.debug = true
+  config.block_unknown_urls
+  config.allow_url("getit")
+end
+
+Rails.configuration.getit[:url] = "http://getit:3000"

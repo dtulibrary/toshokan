@@ -81,6 +81,8 @@ group :development do
   gem 'foreman'
 end
 
+gem 'capybara-webkit'
+
 # Deploy with Capistrano
 gem 'rvm-capistrano', '~> 1.2.5'
 gem 'capistrano', '~> 2.15'
