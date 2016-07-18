@@ -1,25 +1,27 @@
-<h5 style="margin: 8px 15px">Filter <%= number_with_delimiter @count %> results</h5>
-<div id="facets" class="facets sidenav">
-  <div class="facets-collapse">
-    <% @facets.each do |type, values| %>
-      <div class="panel panel-default facet_limit <%= order_facet_active?(type) ? 'facet_limit-active' : '' %>">
-        <div class="collapsed collapse-toggle panel-heading" data-target="#facet-<%= type %>" data-toggle="collapse">
-          <h5 class="panel-title">
-            <%= t "toshokan.orders.facets.#{type}.title" %>
-          </h5>
-        </div>
-        <div id="facet-<%= type %>" class="panel-collapse facet-content <%= order_facet_active?(type) ? 'in' : 'collapse' %>">
-          <div class="panel-body">
-            <ul class="facet-values list-unstyled">
-              <% values.each do |term, count| %>
-                <li>
-                  <%= render :partial => 'facet_value', :locals => {:type => type, :term => term, :count => count} %>
-                </li>
-              <% end %>
-            </ul>
+<% unless @facets.blank? %>
+  <h5 style="margin: 8px 15px">Filter <%= number_with_delimiter @count %> results</h5>
+  <div id="facets" class="facets sidenav">
+    <div class="facets-collapse">
+      <% @facets.each do |type, values| %>
+        <div class="panel panel-default facet_limit <%= order_facet_active?(type) ? 'facet_limit-active' : '' %>">
+          <div class="collapsed collapse-toggle panel-heading" data-target="#facet-<%= type %>" data-toggle="collapse">
+            <h5 class="panel-title">
+              <%= t "toshokan.orders.facets.#{type}.title" %>
+            </h5>
+          </div>
+          <div id="facet-<%= type %>" class="panel-collapse facet-content <%= order_facet_active?(type) ? 'in' : 'collapse' %>">
+            <div class="panel-body">
+              <ul class="facet-values list-unstyled">
+                <% values.each do |term, count| %>
+                  <li>
+                    <%= render :partial => 'facet_value', :locals => {:type => type, :term => term, :count => count} %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>
