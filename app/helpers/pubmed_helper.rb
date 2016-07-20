@@ -11,7 +11,7 @@ module PubmedHelper
   def link_to_pubmed document
     return unless pubmed_url(document).present?
 
-    link_to( image_tag('pubmed_large.svg'), pubmed_url(document),
+    link_to(image_tag('pubmed_large.svg', style: 'width: 64px; height: 23px;'), pubmed_url(document),
       :class  => 'pubmed-backlink',
       :target => '_blank',
       :title  => t('toshokan.tools.metrics.pubmed.title'))
