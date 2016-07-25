@@ -191,7 +191,22 @@ module Toshokan
       },
     }
 
-    config.delay_jobs = true
+
+    config.library_support.deep_merge!({
+      :url      => 'https://support.dtic.dk',
+      :api_key  => 'aaed78b047d66f6e82208ba957b96c253e13cc82',
+      :project_ids => {
+        :journal_article    => 'article_requests_staging',
+        :conference_article => 'conference_article_requests_staging',
+        :book               => 'book_requests_staging',
+        :other              => 'dtu-users-other-requests-staging',
+        :failed_requests    => 'failed_automatic_requests_staging',
+        :book_suggestions   => 'book_suggestion_staging',
+      },
+    }) if config.respond_to? :library_support
+
+
+    config.delay_jobs = false
 
     config.scopus_url = "http://www.scimagojr.com/journalsearch.php?q=%s&tip=iss"
     config.orbit_url  = "http://orbit.dtu.dk/en/publications/id(%s).html"
