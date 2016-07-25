@@ -12,7 +12,7 @@
 
       <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
 
-      <% if refine_search_configured? && can?(:view, :refine_search_query)%>
+      <% if refine_search_enabled? && can?(:view, :refine_search_query)%>
         <%= render :partial => 'refine_search_query' %>
       <% end %>
 

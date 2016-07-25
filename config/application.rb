@@ -105,7 +105,8 @@ module Toshokan
     }
 
     config.freecite = {
-        :url => 'http://freecite:3000/citation/search'
+        :url => 'http://freecite:3000/citation/search',
+        :enabled => true
     }
 
     config.action_mailer.smtp_settings = {
