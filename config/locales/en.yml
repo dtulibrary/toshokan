@@ -63,7 +63,6 @@ en:
           subformat_s: 'Subtype'
           journal_title_facet: 'Journal Title'
           pub_date_tsort: 'Publication Year'
-          isolanguage_facet: 'Language'
         limit:
           toc: 'Articles in'
           author: 'Author'
@@ -358,7 +357,6 @@ en:
         format: 'Type'
         journal_title_facet: 'Journal Title'
         pub_date_tsort: 'Publication Year'
-        isolanguage_facet: 'Language'
       search_field_labels:
         all_fields: 'Everything'
         author: 'Author'

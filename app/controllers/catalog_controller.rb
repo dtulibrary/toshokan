@@ -84,7 +84,6 @@ class CatalogController < ApplicationController
     # config.add_facet_field 'pub_date_tsort', :label => I18n.t('blacklight.search.fields.facet.pub_date_tsort'), :range => true
     config.add_facet_field 'author_facet', :limit => 20
     config.add_facet_field 'journal_title_facet', :limit => 20
-    config.add_facet_field 'isolanguage_facet', :limit => 20
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
