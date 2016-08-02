@@ -4,7 +4,7 @@ class RefineSearchController < ApplicationController
   include RefineSearchHelper
 
   def parse_search_query
-    if not refine_search_enabled?
+    if not refine_search_configured?
       render json: {}
       return
     end
