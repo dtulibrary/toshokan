@@ -112,6 +112,18 @@ module OrdersHelper
     when 'delivery_manual'
       url = "#{LibrarySupport.url}/issues/#{event.data}"
       link_to url, url
+    when 'delivery_done'
+      render_order_event_data_download_url(event)
+    when 'redelivery_done'
+      render_order_event_data_download_url(event)
+    else
+      event.data
+    end
+  end
+
+  def render_order_event_data_download_url(event)
+    if /^http/.match(event.data)
+      link_to "Download", event.data, :class => 'btn btn-primary btn-small', :target => '_blank'
     else
       event.data
     end

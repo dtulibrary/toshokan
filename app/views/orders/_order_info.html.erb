@@ -25,9 +25,7 @@
   <% end %>
   <br>
   <%= l order.created_at, :format => :long %><br>
-  <% order.order_events.each do |order_event| %>
-    <% if order_event.name == 'delivery_done' %>
-      <div class="dtu-grey"><%= order_event.data %></div>
-    <% end %>
+  <% order.order_events.select { |order_event| ['delivery_done', 'redelivery_done'].include?(order_event.name) }.each do |order_event| %>
+    <%= render_order_event_data order, order_event %><br>
   <% end %>
 </div>
