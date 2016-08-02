@@ -1,10 +1,9 @@
 <% if can?(:view, :extended_info) || !@restricted_events.include?(order_event.name) %>
     <dt><%= l order_event.created_at, :format => :long %></dt>
     <dd><%= t "toshokan.orders.events.#{order_event.name}" %></dd>
-    <% unless order_event.data.blank? || cannot?(:view, :extended_info) %>
+    <% if !order_event.data.blank? && (can?(:view, :extended_info) || order_event.name == 'delivery_done') %>
       <dd class="event-data">
         <%= render_order_event_data @order, order_event %>
       </dd>
     <% end %>
 <% end %>
-
