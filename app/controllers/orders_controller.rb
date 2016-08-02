@@ -188,7 +188,6 @@ class OrdersController < ApplicationController
     order.email = local_params[:email] unless local_params[:email].blank?
     order.mobile = local_params[:mobile] unless local_params[:mobile].blank?
     order.customer_ref = local_params[:customer_ref] unless local_params[:customer_ref].blank?
-    order.physical_delivery = local_params[:physical_delivery] unless local_params[:physical_delivery].blank?
   end
 
   # Update params with values from order

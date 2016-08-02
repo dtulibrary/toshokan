@@ -13,9 +13,6 @@
     <%= label_tag :customer_ref, t('toshokan.orders.form.customer_ref_html') %>
     <%= text_field_tag :customer_ref, params[:customer_ref] %>
   <% end %>
-
-  <%= render 'physical_delivery_section' %>
-
   <% if @order.flow.fields.include? :terms_accepted %>
     <%= check_box_tag :terms_accepted, params[:terms_accepted] %>
     <%= render_terms_accepted_label %>

@@ -25,11 +25,6 @@ class LibrarySupport
     issue_description << "\nCancel reason: #{options[:reason]}\n" if options[:reason]
     issue_description << "\"View order in DTU Findit\":#{order_url}" if order.id
 
-    issue_description << I18n.t("toshokan.assistance_requests.forms.sections.physical_delivery.values.#{order.physical_delivery}")
-    if order.physical_delivery == 'internal_mail'
-      issue_description << "<pre>#{user.address.reject {|k,v| v.blank?}.collect {|k,v| v}.join("\n")}</pre>"
-    end
-
     issue = {
       :project_id    => LibrarySupport.project_ids[:failed_requests],
       :subject       => "#{order.user} requests \"#{order.document['title_ts'].first}\""[0..254],
