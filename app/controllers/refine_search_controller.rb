@@ -1,14 +1,7 @@
 require 'uri'
 
 class RefineSearchController < ApplicationController
-  include RefineSearchHelper
-
   def parse_search_query
-    if not refine_search_configured?
-      render json: {}
-      return
-    end
-
     query = URI.decode(params[:q] || "")
 
     if query.nil? || query.empty?
@@ -21,7 +14,7 @@ class RefineSearchController < ApplicationController
       return
     end
 
-    freecite_response = FreeciteHelper::FreeciteRequest.new(Rails.configuration.freecite[:url], query).call
+    freecite_response = FreeciteHelper::FreeciteRequest.new(query).call
     render json: map_freecite_response_to_jsonable_toshokan_response(freecite_response)
   end
 
@@ -45,10 +38,10 @@ class RefineSearchController < ApplicationController
 
   def parse_refined_query_to_jsonable_structure(query)
     {
-      "authors" => parse_field_from_refined_query("author", query),
+      "authors" => parse_field_from_refined_query("authors", query),
       "journal_title" => parse_field_from_refined_query("journal_title", query),
       "volume" => parse_field_from_refined_query("volume", query),
-      "pages" => parse_field_from_refined_query("page", query),
+      "pages" => parse_field_from_refined_query("pages", query),
       "publisher" => parse_field_from_refined_query("publisher", query),
       "year" => parse_field_from_refined_query("year", query),
       "title" => parse_field_from_refined_query("title", query)

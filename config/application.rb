@@ -104,10 +104,6 @@ module Toshokan
         :url => 'http://localhost:3003'
     }
 
-    config.freecite = {
-        :url => 'http://freecite:3000/citation/search'
-    }
-
     config.action_mailer.smtp_settings = {
     }
 

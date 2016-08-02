@@ -87,7 +87,7 @@
 
         var params = [];
         if (refinedAuthorsInput.val())
-          params.push('author:"' + refinedAuthorsInput.val() + '"');
+          params.push('authors:"' + refinedAuthorsInput.val() + '"');
         if (refinedTitleInput.val())
           params.push('title:"' + refinedTitleInput.val() + '"');
         if (refinedJournalInput.val())
@@ -99,7 +99,7 @@
         if (refinedYearInput.val())
           params.push('year:"' + refinedYearInput.val() + '"');
         if (refinedPagesInput.val())
-          params.push('page:"' + refinedPagesInput.val() + '"');
+          params.push('pages:"' + refinedPagesInput.val() + '"');
 
         var result = baseUrl + encodeURI(params.join(" "));
 
