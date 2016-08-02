@@ -1,66 +1,43 @@
 (function ($) {
-  var Count = function(data, provider, postfix) {
-      if (data[provider] == undefined) return;
 
-      this.provider = provider;
-      this.count = data[provider]['count'];
-      this.url = data[provider]['url'];
-      this.postfix = postfix;
+    var CitationCount = function(data){
+        var Count = function(data, provider, prettyProvider) {
+            if (data[provider] == undefined) return;
+            this.count = data[provider]['count'];
+            this.url = data[provider]['url'];
+            this.appendCitationCountToElement = function(element) {
+              if (!this.hasUrl() && !this.hasCount())
+                return;
 
-      this.updateCitationCountElement = function() {
-        if (!this.hasUrl() && !this.hasCount())
-          return;
-
-        this.updateBadgeLink();
-        this.showBadge();
-
-        // Change href-attribute of all links which are children of
-        // #{provider}_citation_count_wrapper element.
-        // Currently (2016-07-22) this is used to turn the Altmetric logo into
-        // a link.
-        this.updateAllLinksInsideWrapper();
-      };
-
-      this.hasUrl = function() {
-        return this.url !== undefined && this.url !== null && this.url !== '';
-      };
-
-      this.hasCount = function() {
-        return this.count !== undefined && this.count !== null && this.count !== '';
-      };
-
-      this.updateBadgeLink = function() {
-        link = $("#"+this.provider+"_citation_count a");
-        if (!this.hasUrl()) {
-          link.removeAttr("href");
-        } else {
-          link.attr("href", this.url);
-        }
-        link.text(this.count + " " + this.postfix);
-      };
-
-      this.showBadge = function() {
-        badge = $("#"+this.provider+"_citation_count");
-        badge.show();
-      };
-
-      this.updateAllLinksInsideWrapper = function() {
-        wrapper = $("#"+this.provider+"_citation_count_wrapper");
-        if (wrapper.size() != 0) {
-          var self = this;
-
-          wrapper.find("a").each(function(i, a) {
-            if (!self.hasUrl()) {
-              $(a).removeAttr("href");
-            } else {
-              $(a).attr("href", self.url);
-            }
-          });
-
-          wrapper.show();
-        }
-      };
-  };
+              element.append(this.citationCountHTML());
+            };
+            this.hasUrl = function() {
+              return this.url !== undefined && this.url !== null && this.url !== '';
+            };
+            this.hasCount = function() {
+              return this.count !== undefined && this.count !== null && this.count !== '';
+            };
+            this.citationCountHTML = function() {
+              return '<div>' + this.wrapInLink(this.text()) + '</div>';
+            };
+            this.text = function() {
+              return 'Citation count ' + prettyProvider + ': ' + this.count;
+            };
+            this.wrapInLink = function(toBeWrapped) {
+              if (this.hasUrl()) {
+                return "<a href='" + this.url + "'>" + toBeWrapped + '</a>';
+              } else {
+                return toBeWrapped;
+              }
+            };
+        };
+        this.elsevier = new Count(data, 'elsevier', 'Elsevier');
+        this.wok = new Count(data, 'web_of_science', 'Web of Science');
+        this.appendCitationCountToElement = function(element) {
+          this.elsevier.appendCitationCountToElement(element);
+          this.wok.appendCitationCountToElement(element);
+        };
+    };
   $(function() {
       var $citationCountElement = $('#citation_count_lookup');
       if ($citationCountElement.size() == 0) return;
@@ -68,36 +45,22 @@
       var doi = $citationCountElement.data('doi');
       var pmid = $citationCountElement.data('pmid');
       var scopusId = $citationCountElement.data('scopus_id');
-
       $.ajax(api, {
-        data: {
-          doi: doi,
-          scopus_id: scopusId,
-          pmid: pmid
-        }}).then(
+          data: {
+              doi: doi,
+              scopus_id: scopusId,
+              pmid: pmid
+          }}).then(
         function(data, textStatus, jqXHR) {
-          var elsevier = new Count(data, 'elsevier', '(citation count)');
-          var wok = new Count(data, 'web_of_science', '(citation count)');
+            $citationCountElement.empty();
 
-          elsevier.updateCitationCountElement();
-          wok.updateCitationCountElement();
+            var citeCount = new CitationCount(data);
+            citeCount.appendCitationCountToElement($citationCountElement);
         },
         function(jqXHR, textStatus, errorThrown) {
-          if (window.console !== undefined) {
-            console.error("Could not connect to citation count service: " + textStatus);
-          }
-        });
-
-      $.ajax("http://api.altmetric.com/v1/doi/" + doi, {})
-        .then(function(data, textStatus, jqXHR) {
-          var altmetric = new Count({altmetric:{url: data.details_url, count: Math.round(data.score)}}, 'altmetric', '(score)');
-
-          altmetric.updateCitationCountElement();
-        },
-        function(jqXHR, textStatus, errorThrown) {
-          if (window.console !== undefined) {
-            console.error("Could not connect to altmetric service: " + textStatus);
-          }
+            if (window.console !== undefined) {
+                console.error("Could not connect to citation count service: " + textStatus);
+            }
         });
     });
 })(jQuery);
