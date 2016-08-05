@@ -1,0 +1,3 @@
+rake db:migrate
+rspec
+
