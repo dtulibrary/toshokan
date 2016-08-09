@@ -1,8 +1,14 @@
-bundle exec rake db:setup
-bundle exec rake db:test:prepare
+# install dependencies
+bundle install
+# prepare test database
+bundle exec rake --trace db:migrate
+# load database from schema.rb
+bundle exec rake db:test:load
+# start solr test server 
 bundle exec rake jetty:start
+# index to solr test server
 bundle exec rake metastore:testdata:index
-
-# should we run Cucumber tests on jenkins?
+# run tests
 bundle exec rake
-
+# stop solr test server
+bundle exec rake jetty:stop
