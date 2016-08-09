@@ -3,7 +3,8 @@ RUN apt-get update -qq && apt-get install -y \
   build-essential \
   libpq-dev \
   libxslt1-dev \
-  libxml2-dev
+  libxml2-dev \
+  default-jdk
 
 # for nokogiri
 ENV NOKOGIRI_USE_SYSTEM_LIBRARIES 1
