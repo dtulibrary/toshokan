@@ -133,6 +133,6 @@ module OrdersHelper
     can?(:order, :article) && 
     (params[:resolve].blank? || can?(:search, :dtu)) &&
     (document['format'] == 'article') &&
-    (document['subformat_s'].blank? || document['subformat_s'] == 'journal_article')
+    (document['subformat_s'].blank? || document['subformat_s'] == 'journal_article' || document['subformat_s'] == 'conference_paper')
   end
 end
