@@ -135,4 +135,8 @@ module OrdersHelper
     (document['format'] == 'article') &&
     (document['subformat_s'].blank? || document['subformat_s'] == 'journal_article' || document['subformat_s'] == 'conference_paper')
   end
+
+  def commercial_supplier?(supplier)
+    [:rd, :tib].include?(supplier)
+  end
 end

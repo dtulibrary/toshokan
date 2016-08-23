@@ -1,8 +1,13 @@
-<%= form_tag new_order_path, :method => :get, "data-price" => (current_user.employee? && supplier == :rd) ? render_scan_price(OpenStruct.new(:type => :dtu_expense), :rd) : render_scan_price(current_user, supplier) do %>
+<%= form_tag new_order_path, {
+  :method      => :get,
+  "data-price" => (current_user.employee? && commercial_supplier?(supplier)) ?
+                  render_scan_price(OpenStruct.new(:type => :dtu_expense), supplier) :
+                  render_scan_price(current_user, supplier)
+} do %>
   <%= hidden_field_tag :supplier, supplier %>
   <%= hidden_field_tag :open_url, open_url %>
   <%= hidden_field_tag :order_return_url, request.fullpath %>
-  <% if current_user.dtu? && supplier == :rd %>
+  <% if current_user.dtu? && commercial_supplier?(supplier) %>
     <%=
       button_tag t('toshokan.orders.order_now'),
         :value => 'create',
@@ -11,8 +16,8 @@
           t('toshokan.modals.request_document.text',
             :title => @document.has_key?('title_ts') ? @document['title_ts'].first : '',
             :author => @document.has_key?('author_ts') ? render_author_list(@document[:author_ts], nil, { :suppress_link => true, :max_length => 1, :append => t('toshokan.catalog.shortened_list.et_al') }) : '',
-            :dtu_price => render_scan_price(OpenStruct.new(:type => :dtu_expense), :rd),
-            :price => render_scan_price(current_user, :rd),
+            :dtu_price => render_scan_price(OpenStruct.new(:type => :dtu_expense), supplier),
+            :price => render_scan_price(current_user, supplier),
             :note => current_user.student? ? "#{t('toshokan.modals.request_document.note')} " : ''),
           :title => t('toshokan.modals.request_document.title')
     %>
