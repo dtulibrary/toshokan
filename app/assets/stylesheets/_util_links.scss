@@ -9,13 +9,14 @@
     border-radius: 5px;
     background-color: $dtu_orange;
   }
-  
+
   #login-popover {
     color: $dtu_grey_dark;
     a {
       color: #fff;
       font-size: 0.9em;
       display: block;
+      margin-top: 5px;
     }
     .arrow {
       left: 60%;
