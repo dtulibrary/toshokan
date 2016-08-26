@@ -186,7 +186,7 @@ module PayIt
             :DKK => 0
           },
           :tib => {
-            :DKK => 3200
+            :DKK => 19200
           }
         }
       }
