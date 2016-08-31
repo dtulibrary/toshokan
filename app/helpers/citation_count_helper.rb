@@ -6,7 +6,7 @@ module CitationCountHelper
   def citation_count_text(document, opts = {})
     identifiers = citation_count_identifiers(document)
     api_path = Rails.configuration.getit[:url] + '/citation_count'
-    content_tag(:div, '', id: 'citation_count_lookup', data: identifiers.merge(api: api_path))
+    content_tag(:div, "", {id: 'citation_count_lookup', data: identifiers.merge(api: api_path)})
   end
 
   def citation_count_identifiers(document)
