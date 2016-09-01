@@ -239,5 +239,6 @@ module Toshokan
       :secret    => '',
     }
 
+    config.enable_creation_of_redmine_issues = false
   end
 end
