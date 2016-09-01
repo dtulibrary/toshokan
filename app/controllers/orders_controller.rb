@@ -316,13 +316,38 @@ class OrdersController < ApplicationController
       when :cancel
         # Only cancel in DIBS if order was paid for
         PayIt::Dibs.delay.cancel @order if @order.payment_status
+
+        cancelled_by = @order.supplier
+        previous_delivery_status = @order.delivery_status
+
+        @order.order_events << OrderEvent.new(:name => 'delivery_cancelled', :data => params[:reason])
         @order.delivery_status = :cancelled
 
-        if @order.user && (@order.user.employee? || @order.user.student?)
+        # TODO TLNI: Should :redelivery_requested be added?
+        if [:initiated, :delivery_requested].include?(previous_delivery_status)
+          # No confirmation message has been received
+          # Update with supplier_order_id from cancellation message
+          @order.supplier_order_id = params[:supplier_order_id] if params[:supplier_order_id]
+        end
+
+        ordered_by_employee_or_student = lambda do |order|
+          order.user && (order.user.employee? || order.user.student?)
+        end
+
+        if ordered_by_employee_or_student.call(@order) && cancelled_by == :rd
+          # Pass order to TIB
+          @order.supplier = :tib
+          @order.supplier_order_id = nil
+          @order.order_events << OrderEvent.new(:name => 'delivery_requested', :data => 'Ordered from TIB after RD cancellation.')
+          DocDel.delay.request_delivery @order, order_delivery_url(@order.uuid), :timecap_base => Time.now.iso8601 if DocDel.enabled?
+        end
+
+        if ordered_by_employee_or_student.call(@order) && cancelled_by != :rd
           # Create library support issue
           LibrarySupport.delay.submit_failed_request @order, order_status_url(@order.uuid), :reason => params[:reason]
-        else
-          @order.order_events << OrderEvent.new(:name => 'delivery_cancelled', :data => params[:reason])
+        end
+
+        if !ordered_by_employee_or_student.call(@order)
           SendIt.delay.send_cancellation_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
         end
 

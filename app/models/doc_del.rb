@@ -33,7 +33,17 @@ class DocDel
 
     save_order = false
     begin
-      response = HTTParty.post "#{DocDel.url}/rest/orders.json", :timeout => DocDel.timeout, :body => params
+      if order.delivery_status == :initiated && order.docdel_order_id.nil?
+        response = HTTParty.post "#{DocDel.url}/rest/orders.json", :timeout => DocDel.timeout, :body => params
+      end
+
+      if order.delivery_status != :initiated && !order.docdel_order_id.nil?
+        response = HTTParty.put "#{DocDel.url}/rest/orders/#{order.docdel_order_id}.json", :timeout => DocDel.timeout, :body => params
+      end
+
+      if !((order.delivery_status == :initiated && order.docdel_order_id.nil?) || (order.delivery_status != :initiated && !order.docdel_order_id.nil?))
+        raise Exception.new("This should not happen") # TODO TLNI: Remove this
+      end
     rescue Net::ReadTimeout
       Rails.logger.error "Read DocDel response timed out after #{DocDel.timeout} seconds when posting delivery request to DocDel"
       # We miss the DocDel order id when timing out but we assume the order went through
@@ -57,5 +67,4 @@ class DocDel
       raise "Error communicating with DocDel"
     end
   end
-
 end
