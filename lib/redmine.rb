@@ -6,6 +6,8 @@ class Redmine
   end
 
   def create_issue params
+    return {'issue' => {'id' => 0}} if Rails.configuration.respond_to?(:enable_creation_of_redmine_issues) && !Rails.configuration.enable_creation_of_redmine_issues
+
     send_create_request :issues, :issue => params
   end
 
