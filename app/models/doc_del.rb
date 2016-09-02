@@ -42,7 +42,7 @@ class DocDel
       end
 
       if !((order.delivery_status == :initiated && order.docdel_order_id.nil?) || (order.delivery_status != :initiated && !order.docdel_order_id.nil?))
-        raise Exception.new("This should not happen") # TODO TLNI: Remove this
+        Rails.logger.info "Delivery of an order which does not satisfy ((order.delivery_status == :initiated && order.docdel_order_id.nil?) || (order.delivery_status != :initiated && !order.docdel_order_id.nil?)) was requested. This should not happen. Order: #{order}. Params: #{params}."
       end
     rescue Net::ReadTimeout
       Rails.logger.error "Read DocDel response timed out after #{DocDel.timeout} seconds when posting delivery request to DocDel"
