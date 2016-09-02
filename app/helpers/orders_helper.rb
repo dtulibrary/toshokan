@@ -104,7 +104,21 @@ module OrdersHelper
 
     case event.name
     when /.*confirmed/
-      t 'toshokan.orders.supplier_order_id', :supplier => t("toshokan.orders.suppliers.#{order.supplier}"), :order_id => order.supplier_order_id
+      if order.order_events.select { |e| "delivery_requested".eql?e.name }.count > 1
+        is_last_delivery_request = lambda do |e|
+          order.order_events.order(:created_at).select { |other_e| /.*confirmed/.match(other_e.name) }.last.id == e.id
+        end
+
+        # This order has been requested at several suppliers. Since only the
+        # latest supplier is stored we are unable to show previous suppliers.
+        if is_last_delivery_request.call(event)
+          return t 'toshokan.orders.supplier_order_id', :supplier => t("toshokan.orders.suppliers.#{order.supplier}"), :order_id => order.supplier_order_id
+        else
+          return ""
+        end
+      else
+        t 'toshokan.orders.supplier_order_id', :supplier => t("toshokan.orders.suppliers.#{order.supplier}"), :order_id => order.supplier_order_id
+      end
     when 'reordered'
       t 'toshokan.orders.reordered_by', :name => event.data
     when 'payment_authorized'
