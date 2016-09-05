@@ -41,7 +41,7 @@
 
       this.showBadge = function() {
         badge = $("#"+this.provider+"_citation_count");
-        badge.show();
+        badge.removeClass("hide");
       };
 
       this.updateAllLinksInsideWrapper = function() {

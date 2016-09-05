@@ -67,7 +67,7 @@
             setRefinedPages(data.pages);
             setRefinedPublisher(data.publisher);
             setRefinedYear(data.year);
-            showRefineSearchButton.show();
+            showRefineSearchButton.removeClass("hide");
           },
           function(jqXHR, textStatus, errorThrown) {
             console.log("parse_search_query request failed.");
@@ -110,8 +110,8 @@
     });
 
     showRefineSearchButton.click(function() {
-      showRefineSearchButton.hide();
-      refineSearchQueryElement.show();
+      showRefineSearchButton.addClass("hide");
+      refineSearchQueryElement.removeClass("hide");
     });
   });
 })(jQuery);
