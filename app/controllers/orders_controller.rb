@@ -323,7 +323,6 @@ class OrdersController < ApplicationController
         @order.order_events << OrderEvent.new(:name => 'delivery_cancelled', :data => params[:reason])
         @order.delivery_status = :cancelled
 
-        # TODO TLNI: Should :redelivery_requested be added?
         if [:initiated, :delivery_requested].include?(previous_delivery_status)
           # No confirmation message has been received
           # Update with supplier_order_id from cancellation message
