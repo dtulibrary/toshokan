@@ -16,7 +16,7 @@ module ScopusHelper
       :target => '_blank',
       :title  => t('toshokan.tools.metrics.scopus.title'))
     .concat(content_tag(:div, {id: 'elsevier_citation_count', class: 'badge', style: 'display: none'}) do
-      link_to("","", {style: 'color: inherit; text-decoration: inherit;'})
+      link_to("","", {style: 'color: inherit; text-decoration: inherit;', target: '_blank'})
     end)
   end
 end

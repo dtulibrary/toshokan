@@ -16,7 +16,7 @@ module IsiHelper
       :target => '_blank',
       :title  => t('toshokan.tools.metrics.isi.title'))
     .concat(content_tag(:div, {id: 'web_of_science_citation_count', class: 'badge', style: 'display: none'}) do
-      link_to("","", {style: 'color: inherit; text-decoration: inherit;'})
+      link_to("","", {style: 'color: inherit; text-decoration: inherit;', target: '_blank'})
     end)
   end
 end
