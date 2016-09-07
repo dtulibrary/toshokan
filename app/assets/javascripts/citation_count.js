@@ -1,11 +1,11 @@
 (function ($) {
-  var Count = function(data, provider, postfix) {
+  var Count = function(data, provider, prefix) {
       if (data[provider] == undefined) return;
 
       this.provider = provider;
       this.count = data[provider]['count'];
       this.url = data[provider]['url'];
-      this.postfix = postfix;
+      this.prefix = prefix;
 
       this.updateCitationCountElement = function() {
         if (!this.hasUrl() && !this.hasCount())
@@ -36,7 +36,7 @@
         } else {
           link.attr("href", this.url);
         }
-        link.text(this.count + " " + this.postfix);
+        link.text(this.prefix + " " + this.count);
       };
 
       this.showBadge = function() {
@@ -57,7 +57,7 @@
             }
           });
 
-          wrapper.show();
+          wrapper.removeClass("hide");
         }
       };
   };
@@ -76,8 +76,8 @@
           pmid: pmid
         }}).then(
         function(data, textStatus, jqXHR) {
-          var elsevier = new Count(data, 'elsevier', '(citation count)');
-          var wok = new Count(data, 'web_of_science', '(citation count)');
+          var elsevier = new Count(data, 'elsevier', 'Citations: ');
+          var wok = new Count(data, 'web_of_science', 'Citations: ');
 
           elsevier.updateCitationCountElement();
           wok.updateCitationCountElement();
@@ -90,7 +90,7 @@
 
       $.ajax("http://api.altmetric.com/v1/doi/" + doi, {})
         .then(function(data, textStatus, jqXHR) {
-          var altmetric = new Count({altmetric:{url: data.details_url, count: Math.round(data.score)}}, 'altmetric', '(score)');
+          var altmetric = new Count({altmetric:{url: data.details_url, count: Math.round(data.score)}}, 'altmetric', 'Score: ');
 
           altmetric.updateCitationCountElement();
         },
