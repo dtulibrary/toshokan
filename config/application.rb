@@ -191,7 +191,7 @@ module Toshokan
       },
     }
 
-    config.delay_jobs = false
+    config.delay_jobs = true
 
     config.scopus_url = "http://www.scimagojr.com/journalsearch.php?q=%s&tip=iss"
     config.orbit_url  = "http://orbit.dtu.dk/en/publications/id(%s).html"
