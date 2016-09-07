@@ -118,11 +118,10 @@ module Toshokan
     end
 
     def get_resolver_result(params)
-
-      params.merge!({:qt => '/resolve', :rows => 2, :echoParams => 'all'})
+      params.merge!({:rows => 2, :echoParams => 'all'})
           .merge!(blacklight_config[:resolver_params])
       updated_params = strip_whitespace(params)
-      res = blacklight_solr.send_and_receive(blacklight_config.solr_path, :params => add_inclusive_access_filter(updated_params))
+      res = blacklight_solr.send_and_receive('resolve', :params => add_inclusive_access_filter(updated_params))
       solr_response = Blacklight::SolrResponse.new(res, updated_params)
       count = 0
       unless solr_response.docs.empty?
