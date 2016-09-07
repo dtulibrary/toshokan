@@ -43,5 +43,7 @@ public/assets
 
 # Ignore Aptana/Eclipse project files
 .project
+# Ignore RubyMine project files
+/.idea
 
 /TAGS
