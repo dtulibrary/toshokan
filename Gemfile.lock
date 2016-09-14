@@ -284,6 +284,8 @@ GEM
     quiet_assets (1.0.3)
       railties (>= 3.1, < 5.0)
     rack (1.5.5)
+    rack-mini-profiler (0.10.1)
+      rack (>= 1.2.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rack-utf8_sanitizer (1.1.0)
@@ -455,6 +457,7 @@ DEPENDENCIES
   pg
   puma
   quiet_assets
+  rack-mini-profiler
   rack-utf8_sanitizer (~> 1.1.0)
   rails (~> 4.1.0)
   rails-footnotes
@@ -475,3 +478,4 @@ DEPENDENCIES
   unicode
   uuidtools
   webmock
+

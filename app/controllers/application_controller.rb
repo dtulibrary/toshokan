@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate
   before_filter :set_google_analytics_dimensions_and_metrics
   before_filter :set_search_history
+  before_filter :enable_profiling
 
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
@@ -20,6 +21,10 @@ class ApplicationController < ActionController::Base
 
   def current_locale
     I18n.locale
+  end
+
+  def enable_profiling
+    Rack::MiniProfiler.authorize_request if current_user && current_user.super_admin?
   end
 
   helper_method :current_locale

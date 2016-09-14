@@ -43,6 +43,10 @@ class User < ActiveRecord::Base
     impersonating ? [] : super
   end
 
+  def super_admin?
+    @super_admin = (employee? && roles.collect(&:code).include?('ADM'))
+  end
+
   def public?
     !dtu?
   end
