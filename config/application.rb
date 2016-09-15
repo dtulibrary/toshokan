@@ -157,15 +157,18 @@ module Toshokan
     }
 
     config.library_support = {
-      :url         => '',
+      :url         => 'http://redmine:3000',
       :timeout     => 10*60, # 10 minutes
-      :api_key     => '',
+      :api_key     => '7009b5189f6097414327f5fcd433d2a9559bc332',
       :reply_to    => '',
       :project_ids => {
-        :journal_article    => '',
-        :conference_article => '',
-        :book               => '',
-        :failed_requests    => '',
+        :journal_article    => 'article_requests',
+        :conference_article => 'conference_article_requests',
+        :book               => 'book_requests',
+        :other              => 'dtu-other',
+        :failed_requests    => 'failed_automatic_requests',
+        :book_suggestions   => 'book_suggestions',
+        :tib_orders_delivered_as_print => 'tib-orders-delivered-as-print',
       },
       # TODO: When the library support Redmine instance is updated
       #       to version >= 2.4, the custom fields should be retrieved
