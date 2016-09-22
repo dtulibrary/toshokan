@@ -6,13 +6,16 @@ def create_dummy_order
   order.order_events << OrderEvent.new(:name => :delivery_requested)
   order.delivery_status = :initiated
   order.save!
-  puts "Order created (id:#{order.id} uuid:#{order.uuid})!"
+  puts "Order created!"
+  puts "ID: #{order.id}"
+  puts "UUID: #{order.uuid}"
 
   url = "http://findit:3000/en/orders/#{order.uuid}/delivery"
 
   puts "Requesting delivery of document (url:#{url}) ..."
   DocDel.request_delivery order, url, :timecap_base => Time.now.iso8601 if DocDel.enabled?
   puts "Delivery requested!"
+  puts "DOCDEL_ORDER_ID: #{order.docdel_order_id}"
 end
 
 create_dummy_order
