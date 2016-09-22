@@ -281,8 +281,30 @@ class OrdersController < ApplicationController
     @order = Order.find_by_uuid params[:uuid]
     delivery_status = params[:status].to_sym
 
-    if [:deliver, :confirm, :cancel].include? delivery_status
+    if [:physically_deliver, :deliver, :confirm, :cancel].include? delivery_status
       case delivery_status
+      when :physically_deliver
+        is_redelivery = [:reordered, :redelivery_requested].include? @order.delivery_status
+
+        @order.order_events << OrderEvent.new(:name => is_redelivery ? 'physical_redelivery_done' : 'physical_delivery_done', :data => "")
+        @order.delivery_status = delivery_status
+        @order.delivered_at = Time.now
+        @order.delivered_year = @order.delivered_at.year
+        @order.delivered_month = @order.delivered_at.month
+        @order.save!
+
+        LibrarySupport.delay.submit_physical_delivery(@order, order_status_url(@order.uuid), {:reordered => is_redelivery})
+
+        SendIt.delay.send_delivery_mail @order, :url => params[:url], :order => {:status_url => order_status_url(@order.uuid)}
+
+        # Do not send receipt mails to DTU staff or when order has been reordered
+        unless (@order.user && @order.user.employee?) || is_redelivery
+          SendIt.delay.send_receipt_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
+        end
+
+        # Only capture amounts for orders that were paid for and that weren't reordered
+        PayIt::Dibs.delay.capture @order if @order.payment_status && !is_redelivery
+
       when :deliver
         logger.error "No 'url' parameter on delivery event for order #{@order.dibs_order_id}" unless params[:url]
         is_redelivery = [:reordered, :redelivery_requested].include? @order.delivery_status

@@ -26,6 +26,8 @@ en:
         payment_cancelled: Payment cancelled
         payment_captured: Payment completed
         request_manual: Order sent to a librarian
+        physical_delivery_done: Hard copy delivered
+        physical_redelivery_done: Hard copy re-delivered
       facets:
         order_price:
           title: Order price (in DKK excl. VAT)

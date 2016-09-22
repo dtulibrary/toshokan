@@ -7,6 +7,50 @@ class LibrarySupport
     Redmine.new LibrarySupport.url, LibrarySupport.api_key, :timeout => LibrarySupport.timeout
   end
 
+  def self.submit_physical_delivery order, order_url, options = {}
+    title = (order.document['title_ts'].first || "")
+    user_name = (order.user || "").to_s
+    author = (order.document['author_ts'].first || "")
+    length_of_variable_fields = title.length + user_name.length
+
+    send_mail_link = send_mail_link_for order.user, {
+      'subject'  => "Regarding your document request",
+      'body'     => "\"#{title}\" by #{author}",
+    }
+
+    issue_description = []
+    issue_description << "#{phonebook_link_for(order.user) || order.user}, #{send_mail_link}, requested the following which is now ready for delivery:\n" if order.user
+    issue_description << '<pre>'
+    issue_description << "#{order.supplier.to_s.upcase} order ID:\n   #{order.supplier_order_id}"
+    issue_description << order.document.reject {|k,vs| k.to_s == 'open_url' || vs.blank?}
+                                       .collect {|k,vs| "#{I18n.t "toshokan.catalog.show_field_labels.#{k}"}:\n   #{vs.first}"}
+                                       .join("\n")
+    issue_description << '</pre>'
+    issue_description << 'Send by DTU Internal Mail to'
+    issue_description << "<pre>#{order.user.address.reject {|k,v| v.blank?}.collect {|k,v| v}.join("\n")}</pre>"
+
+    issue = {
+      :project_id    => LibrarySupport.project_ids[:tib_orders_delivered_as_print],
+      :subject       => "Delivery of " + "\"#{(title)[0..(226-([226, length_of_variable_fields].min))]}\"" + " requested by #{user_name}",
+      :description   => issue_description.join("\n"),
+      :custom_fields => [
+        LibrarySupport.custom_fields[:dtu_unit].merge({
+          :value => dtu_unit_for(order.user),
+        }),
+        LibrarySupport.custom_fields[:reordered].merge({
+          :value => options[:reordered] ? 'Yes' : 'No',
+        }),
+      ]
+    }
+
+    Rails.logger.debug "Creating redmine issue:\n#{issue}"
+    response = redmine.create_issue issue
+    if !response.try :[], "issue"
+      Rails.logger.error "Error submitting physical delivery to library support Redmine. Redmine response:\n#{response || 'nil'}"
+      raise
+    end
+  end
+
   def self.submit_failed_request order, order_url, options = {}
     return unless order.user.dtu?
 
