@@ -2,31 +2,6 @@
   <h1><%= t 'toshokan.catalog.home.title_html' %><br>
     <span class="subtitle"><%= t 'toshokan.catalog.home.subtitle' %>. <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=13806304"><%= t 'toshokan.read_more' %></a></span>
   </h1>
-  <div class="row">
-    <div class="col-md-4 feature-highlight">
-      <%= image_tag 'FA_ok.png' %>
-      <p>
-        <%= t 'toshokan.catalog.home.features.coverage' %><br>
-        <% if can? :search, :dtu %>
-          <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=13937966"><%= t 'toshokan.read_more' %></a>
-        <% else %>
-          <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=14267802"><%= t 'toshokan.read_more' %></a>
-        <% end %>
-      </p>
-    </div>
-    <div class="col-md-4 feature-highlight">
-      <%= image_tag 'FA_search.png' %>
-      <p> 
-        <%= t 'toshokan.catalog.home.features.search', :count => number_to_human(@response.total, :precision => (@response.total >= 100_000_000 ? 3 : 2)).downcase %>
-        <br>
-        <a target="_blank" href="http://api.libguides.com/api_box.php?iid=3935&bid=14174533"><%= t 'toshokan.read_more' %></a>
-      </p>
-    </div>
-    <div class="col-md-4 feature-highlight">
-      <%= image_tag 'FA_download.png' %>
-      <p>
-        <%= t 'toshokan.catalog.home.features.download' %>
-      </p>
-    </div>
-  </div>
+
+  <%= render :partial => 'shared/search_bar' %>
 </div>
