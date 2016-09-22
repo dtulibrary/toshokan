@@ -1,8 +1,4 @@
-<div id="sidebar" class="col-md-3">
- <%= render :partial=>'facets' unless @document_list.empty? %>
-</div><!--/well -->
-
-<div id="content" class="col-md-9">
+<div id="content" class="col-md-9 col-md-push-3 mb-50">
 
     <% unless has_search_parameters? %>
             <%# if there are no input/search related params, display the "home" partial -%>
@@ -43,3 +39,9 @@
 <% if has_search_parameters? %>
   <div style="height: 5em; clear: both">&nbsp;</div>
 <% end %>
+
+<div id="sidebar" class="col-md-3 col-md-pull-9">
+ <%= render :partial=>'facets' unless @document_list.empty? %>
+</div><!--/well -->
+
+
