@@ -1,4 +1,4 @@
-<%= form_tag search_action_url, :method => :get, :class => 'search-query-form form-inline clearfix' do %>
+<%= form_tag search_action_url, :method => :get, :class => 'clearfix' do %>
   <%= render_hash_as_hidden_fields(params_for_search().except(:q, :search_field, :qt, :page, :utf8)) %>
   <% unless search_fields.empty? %>
     <div class="pull-left hide">
@@ -7,20 +7,26 @@
       <span class="hide-text"><%= t('blacklight.search.form.search_field.post_label') %></span>
     </div>
   <% end %>
-  <div class="text-field-with-icons">
-    <div class="icons">
-      <a title="Show search help" id="toggle-search-syntax" href="#"><i class="icon-question-circle"></i></a>
-      <a title="Clear search field" id="search-clear" href="#"><i class="icon-times"></i></a>
-      <a title="Undo clear" id="undo-clear" href="#" class="hide"><i class="icon-repeat"></i></a>
-      <a title="More options" id="more-options" href="#"><i class="icon-chevron-down"></i></a>
-      <a title="Less options" id="less-options" href="#" class="hide"><i class="icon-chevron-up"></i></a>
-    </div>
-    <%= text_field_tag :q, params[:q], :class => "search_q q", :id => "q"%>
+
+  <div class="input-group">
+    <%= text_field_tag :q, params[:q], :class => "search_q q form-control redborder", :id => "q"%>
+    <span class="input-group-btn">
+      <button type="submit" class="btn btn-search redborder" id="search">
+        <span><%=t('blacklight.search.form.submit')%></span>
+        <i class="icon-search"></i>
+      </button>
+    </span>
   </div>
-  <button type="submit" class="btn btn-primary search-btn" id="search">
-    <span class="submit-search-text hidden-tablet"><%=t('blacklight.search.form.submit')%></span>
-    <i class="icon-search hidden-desktop"></i>
-  </button>
+
+  <div class="icons">
+    <a title="Show search help" id="toggle-search-syntax" href="#"><i class="icon-question-circle"></i></a>
+    <a title="Clear search field" id="search-clear" href="#"><i class="icon-times"></i></a>
+    <a title="Undo clear" id="undo-clear" href="#" class="hide"><i class="icon-repeat"></i></a>
+    <a title="More options" id="more-options" href="#"><i class="icon-chevron-down"></i></a>
+    <a title="Less options" id="less-options" href="#" class="hide"><i class="icon-chevron-up"></i></a>
+  </div>
+
 <% end %>
+
 <%= render 'catalog/search_help' %>
 <%= render 'catalog/search_options' %>
