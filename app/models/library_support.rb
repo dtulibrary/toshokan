@@ -46,7 +46,10 @@ class LibrarySupport
 
     Rails.logger.debug "Creating redmine issue:\n#{issue}"
     response = redmine.create_issue issue
-    if !response.try :[], "issue"
+    if response.try :[], "issue"
+      is_redelivery = options[:reordered]
+      order.order_events << OrderEvent.new(:name => is_redelivery ? 'physical_redelivery_done' : 'physical_delivery_done', :data => response['issue']['id'])
+    else
       Rails.logger.error "Error submitting physical delivery to library support Redmine. Redmine response:\n#{response || 'nil'}"
       raise
     end

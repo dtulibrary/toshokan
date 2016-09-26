@@ -286,7 +286,6 @@ class OrdersController < ApplicationController
       when :physically_deliver
         is_redelivery = [:reordered, :redelivery_requested].include? @order.delivery_status
 
-        @order.order_events << OrderEvent.new(:name => is_redelivery ? 'physical_redelivery_done' : 'physical_delivery_done', :data => "")
         @order.delivery_status = delivery_status
         @order.delivered_at = Time.now
         @order.delivered_year = @order.delivered_at.year

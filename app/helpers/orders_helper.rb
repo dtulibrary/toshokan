@@ -123,6 +123,12 @@ module OrdersHelper
       t 'toshokan.orders.reordered_by', :name => event.data
     when 'payment_authorized'
       t 'toshokan.orders.paid_with_card', :card_no => event.data
+    when 'physical_delivery_done'
+      url = "#{LibrarySupport.url}/issues/#{event.data}"
+      link_to url, url
+    when 'physical_redelivery_done'
+      url = "#{LibrarySupport.url}/issues/#{event.data}"
+      link_to url, url
     when 'delivery_manual'
       url = "#{LibrarySupport.url}/issues/#{event.data}"
       link_to url, url
