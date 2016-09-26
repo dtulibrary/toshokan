@@ -19,6 +19,7 @@ class LibrarySupport
     }
 
     issue_description = []
+    issue_description << "View order in Findit: #{options[:findit_url]}\n"
     issue_description << "#{phonebook_link_for(order.user) || order.user}, #{send_mail_link}, requested the following which is now ready for delivery:\n" if order.user
     issue_description << '<pre>'
     issue_description << "#{order.supplier.to_s.upcase} order ID:\n   #{order.supplier_order_id}"

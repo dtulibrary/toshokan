@@ -293,7 +293,7 @@ class OrdersController < ApplicationController
         @order.delivered_month = @order.delivered_at.month
         @order.save!
 
-        LibrarySupport.delay.submit_physical_delivery(@order, order_status_url(@order.uuid), {:reordered => is_redelivery})
+        LibrarySupport.delay.submit_physical_delivery(@order, order_status_url(@order.uuid), {:reordered => is_redelivery, :findit_url => request.protocol + request.host_with_port + order_status_path(@order.uuid)})
 
         SendIt.delay.send_delivery_mail @order, :url => params[:url], :order => {:status_url => order_status_url(@order.uuid)}
 
