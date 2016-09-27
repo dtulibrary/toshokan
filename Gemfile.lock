@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/dtulibrary/dtu_rails_common.git
-  revision: 34de3d9c5eb766066eb271dae57cdee7b88eac1f
+  revision: 82a295ba83321be2dd6c6aa53e03b5dfc78f17c0
   specs:
     dtu_rails_common (0.0.4)
       bootstrap-sass (~> 3.3.0)
