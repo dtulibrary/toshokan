@@ -79,6 +79,7 @@ class CatalogController < ApplicationController
     # :show may be set to false if you don't want the facet to be drawn in the
     # facet bar
     #config.add_facet_field 'format', :collapse => false
+    config.add_facet_field 'fulltext_availability_ss', label: 'Online Access', helper_method: :online_access_display 
     config.add_facet_field 'format', :collapse => false
     #config.add_facet_field 'subformat_s', :collapse => false
     # config.add_facet_field 'pub_date_tsort', :label => I18n.t('blacklight.search.fields.facet.pub_date_tsort'), :range => true
