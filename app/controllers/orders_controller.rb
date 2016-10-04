@@ -294,8 +294,6 @@ class OrdersController < ApplicationController
 
         LibrarySupport.delay.submit_physical_delivery(@order, order_status_url(@order.uuid), {:reordered => is_redelivery, :findit_url => request.protocol + request.host_with_port + order_status_path(@order.uuid)})
 
-        SendIt.delay.send_delivery_mail @order, :url => params[:url], :order => {:status_url => order_status_url(@order.uuid)}
-
         # Do not send receipt mails to DTU staff or when order has been reordered
         unless (@order.user && @order.user.employee?) || is_redelivery
           SendIt.delay.send_receipt_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
