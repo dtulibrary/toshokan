@@ -58,6 +58,7 @@ class LibrarySupport
       Delayed::Worker.logger.info "submit_physical_delivery: adding order event ..."
       is_redelivery = options[:reordered]
       order.order_events << OrderEvent.new(:name => is_redelivery ? 'physical_redelivery_done' : 'physical_delivery_done', :data => response['issue']['id'])
+      order.save!
       Delayed::Worker.logger.info "submit_physical_delivery: order event added."
     else
       Delayed::Worker.logger.error "submit_physical_delivery: Error submitting physical delivery to library support Redmine. Redmine response:\n#{response || 'nil'}"
