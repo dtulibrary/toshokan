@@ -225,6 +225,13 @@ class CatalogController < ApplicationController
       redirect_to catalog_index_path(params) and return
     end
 
+    @tags = current_user.tags(:order => 'name')
+    @alerts = Alert.all(current_user, "journal") || []
+    @orders = Order.where('delivery_status is not null').order('created_at desc')
+    @orders = @orders.where 'user_id = ?', current_user.id unless can? :view_any, Order
+    @saved_searches = current_user.searches.where(saved: true).order("created_at DESC").page params[:page]
+    @alerted_searches = current_user.searches.where(alerted: true).order("created_at DESC").page params[:page]
+
     # Require authentication if request has tag parameters
     if any_tag_in_params?
       require_authentication unless can? :tag, Bookmark

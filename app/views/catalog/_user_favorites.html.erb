@@ -1,12 +1,40 @@
 <div class="well">
   <% if current_user.authenticated? || current_user.impersonating? %>
     <h4><%= current_user %></h4>
-    <ul>
+    <ul class="list-unstyled user-favorites">
+      <li>
+        <%= link_to saved_search_history_path do %>
+          <i class='icon-star'></i> <%= t('toshokan.search_history.saved_filter') %>
+          <div class="pull-right">
+            <%= @saved_searches.count %>
+          </div>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to alerted_search_history_path do %>
+          <i class="icon-bell"></i> <%= t('toshokan.search_history.alerted_filter') %>
+          <div class="pull-right">
+            <%= @alerted_searches.count %>
+          </div>
+        <% end %>
+      </li>
+      <% if can? :alert, :journal %>
+        <li>
+          <%= link_to alerts_path do %>
+            <i class='icon-bell'></i> <%= t('toshokan.mylibrary.menu.journals') %>
+            <div class="pull-right">
+              <%= @alerts.count %>
+            </div>
+          <% end %>
+        </li>
+      <% end %>
       <% if can? :tag, Bookmark %>
         <li>
           <%= link_to manage_tags_path do %>
             <i class='icon-tags'></i> <%= t('toshokan.mylibrary.menu.tags') %>
-            <%= debug @user %>
+            <div class="pull-right">
+              <%= @tags.count %>
+            </div>
           <% end %>
         </li>
       <% end %>
@@ -17,10 +45,14 @@
           <% end %>
         </li>
       <% end %>
-      <% if can? :alert, :journal %>
+      <hr />
+      <% if can? :view, Order %>
         <li>
-          <%= link_to alerts_path do %>
-            <i class='icon-bell'></i> <%= t('toshokan.mylibrary.menu.journals') %>
+          <%= link_to orders_path do %>
+            <i class="icon-shopping-cart"></i> <%= t 'toshokan.header_links.orders' %>
+            <div class="pull-right">
+              <%= @orders.count %>
+            </div>
           <% end %>
         </li>
       <% end %>
@@ -31,7 +63,6 @@
           <% end %>
         </li>
       <% end %>
-      <hr />
       <% if can? :switch, User %>
         <li>
           <%= link_to switch_user_path, :id => 'switch_user' do %>
@@ -49,13 +80,6 @@
         <li>
           <%= link_to users_path do %>
             <i class='icon-dashboard'></i> <%= t('toshokan.header_links.admin') %>
-          <% end %>
-        </li>
-      <% end %>
-      <% if can? :view, Order %>
-        <li>
-          <%= link_to orders_path do %>
-            <i class="icon-shopping-cart"></i> <%= t 'toshokan.header_links.orders' %>
           <% end %>
         </li>
       <% end %>
