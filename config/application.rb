@@ -86,7 +86,7 @@ module Toshokan
 
     config.auth = {
       :stub    => false,
-      :cas_url => 'http://localhost:3001/users',
+      :cas_url => 'https://auth.findit.dtu.dk/users',
       :api_url => 'http://localhost:3001/rest',
       :ip      => {
         :walk_in  => [],
@@ -210,7 +210,7 @@ module Toshokan
     }
 
     config.alert = {
-      :url       => 'http://alert:3000',
+      :url       => 'http://alerting:3000',
       :test_mode => false,
     }
 
