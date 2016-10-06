@@ -1,0 +1,64 @@
+<div class="well">
+  <% if current_user.authenticated? || current_user.impersonating? %>
+    <h4><%= current_user %></h4>
+    <ul>
+      <% if can? :tag, Bookmark %>
+        <li>
+          <%= link_to manage_tags_path do %>
+            <i class='icon-tags'></i> <%= t('toshokan.mylibrary.menu.tags') %>
+            <%= debug @user %>
+          <% end %>
+        </li>
+      <% end %>
+      <% if can? :view, :search_history %>
+        <li>
+          <%= link_to search_history_path do %>
+            <i class='icon-clock-o'></i> <%= t('toshokan.mylibrary.menu.search_history') %>
+          <% end %>
+        </li>
+      <% end %>
+      <% if can? :alert, :journal %>
+        <li>
+          <%= link_to alerts_path do %>
+            <i class='icon-bell'></i> <%= t('toshokan.mylibrary.menu.journals') %>
+          <% end %>
+        </li>
+      <% end %>
+      <% if can? :view, :my_publications %>
+        <li>
+          <%= link_to 'http://orbit.dtu.dk/admin/workspace.xhtml', :target => '_blank' do %>
+            <i class="icon-file-text"></i> <%= t 'toshokan.mylibrary.menu.my_publications' %>
+          <% end %>
+        </li>
+      <% end %>
+      <hr />
+      <% if can? :switch, User %>
+        <li>
+          <%= link_to switch_user_path, :id => 'switch_user' do %>
+            <i class='icon-user'></i> <%= t('toshokan.header_links.switch_user') %>
+          <% end %>
+        </li>
+      <% elsif can? :switch_back, User %>
+        <li>
+          <%= link_to user_session_path, :method => :put, :id => 'switch_back' do %>
+            <i class='icon-user'></i> <%= t('toshokan.header_links.switch_back') %>
+          <% end %>
+        </li>
+      <% end %>
+      <% if can? :update, User %>
+        <li>
+          <%= link_to users_path do %>
+            <i class='icon-dashboard'></i> <%= t('toshokan.header_links.admin') %>
+          <% end %>
+        </li>
+      <% end %>
+      <% if can? :view, Order %>
+        <li>
+          <%= link_to orders_path do %>
+            <i class="icon-shopping-cart"></i> <%= t 'toshokan.header_links.orders' %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

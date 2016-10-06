@@ -1,47 +1,40 @@
 <div id="content" class="col-md-9 col-md-push-3 mb-50">
 
-    <% unless has_search_parameters? %>
-            <%# if there are no input/search related params, display the "home" partial -%>
-            <%= render 'home' %>
-    <% else %>
+  <% if has_search_parameters? %>
+    <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
 
+    <%= render :partial => 'refine_search_query' if can? :view, :refine_search_query %>
 
-      <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
+    <%= render 'sort_and_per_page' %>
 
-      <%= render :partial => 'refine_search_query' if can? :view, :refine_search_query %>
+    <%= render :partial => 'did_you_mean' %>
 
-      <%= render 'sort_and_per_page' %>
-
-      <%= render :partial => 'did_you_mean' %>
-
-      <% if @document_list.empty? %>
-        <% if any_tag_in_params? %>
-          <%= render 'no_hits_for_tag' %>
-        <% else %>
-          <%= render 'no_hits' %>
-        <% end %>
+    <% if @document_list.empty? %>
+      <% if any_tag_in_params? %>
+        <%= render 'no_hits_for_tag' %>
       <% else %>
-
-        <% if params[:assistance_request] %>
-          <%= render 'assistance_resolver' %>
-        <% end %>
-
-        <%= render_document_index %>
+        <%= render 'no_hits' %>
       <% end %>
-
-
-            <%= render 'results_pagination' %>
-
-
+    <% else %>
+      <% if params[:assistance_request] %>
+        <%= render 'assistance_resolver' %>
+      <% end %>
+      <%= render_document_index %>
     <% end %>
 
+    <%= render 'results_pagination' %>
+  <% else %>
+    <%# if there are no input/search related params, display the "home" partial -%>
+    <%= render 'home' %>
+  <% end %>
+
 </div>
-<% if has_search_parameters? %>
-  <div style="height: 5em; clear: both">&nbsp;</div>
-<% end %>
 
 <div id="sidebar" class="col-md-3 col-md-pull-9">
- <%= render :partial=>'facets' unless @document_list.empty? %>
-</div><!--/well -->
+  <%= render 'user_favorites' %>
+  <% if has_search_parameters?  %>
+    <%= render :partial=>'facets' unless @document_list.empty? %>
+  <% end %>
+</div>
 
 
