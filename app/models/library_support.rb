@@ -8,20 +8,20 @@ class LibrarySupport
   end
 
   def self.submit_physical_delivery order, order_url, options = {}
-    Rails.logger.info "submit_physical_delivery called."
+    Delayed::Worker.logger.info "submit_physical_delivery called."
     title = (order.document['title_ts'].first || "")
     user_name = (order.user || "").to_s
     author = (order.document['author_ts'].first || "")
     length_of_variable_fields = title.length + user_name.length
 
-    Rails.logger.info "submit_physical_delivery: generating send_mail_link ..."
+    Delayed::Worker.logger.info "submit_physical_delivery: generating send_mail_link ..."
     send_mail_link = send_mail_link_for order.user, {
       'subject'  => "Regarding your document request",
       'body'     => "\"#{title}\" by #{author}",
     }
-    Rails.logger.info "submit_physical_delivery: send_mail_link generated."
+    Delayed::Worker.logger.info "submit_physical_delivery: send_mail_link generated."
 
-    Rails.logger.info "submit_physical_delivery: generating issue_description ..."
+    Delayed::Worker.logger.info "submit_physical_delivery: generating issue_description ..."
     issue_description = []
     issue_description << "View order in Findit: #{options[:findit_url]}\n"
     issue_description << "#{phonebook_link_for(order.user) || order.user}, #{send_mail_link}, requested the following which is now ready for delivery:\n" if order.user
@@ -33,9 +33,9 @@ class LibrarySupport
     issue_description << '</pre>'
     issue_description << 'Send by DTU Internal Mail to'
     issue_description << "<pre>#{order.user.address.reject {|k,v| v.blank?}.collect {|k,v| v}.join("\n")}</pre>"
-    Rails.logger.info "submit_physical_delivery: issue_description generated."
+    Delayed::Worker.logger.info "submit_physical_delivery: issue_description generated."
 
-    Rails.logger.info "submit_physical_delivery: generating issue hash ..."
+    Delayed::Worker.logger.info "submit_physical_delivery: generating issue hash ..."
     issue = {
       :project_id    => LibrarySupport.project_ids[:tib_orders_delivered_as_print],
       :subject       => "Delivery of " + "\"#{(title)[0..(226-([226, length_of_variable_fields].min))]}\"" + " requested by #{user_name}",
@@ -49,18 +49,18 @@ class LibrarySupport
         }),
       ]
     }
-    Rails.logger.info "submit_physical_delivery: issue hash generated."
+    Delayed::Worker.logger.info "submit_physical_delivery: issue hash generated."
 
-    Rails.logger.info "submit_physical_delivery: creating redmine issue:\n#{issue} ..."
+    Delayed::Worker.logger.info "submit_physical_delivery: creating redmine issue:\n#{issue} ..."
     response = redmine.create_issue issue
     if response.try :[], "issue"
-      Rails.logger.info "submit_physical_delivery: redmine issue created."
-      Rails.logger.info "submit_physical_delivery: adding order event ..."
+      Delayed::Worker.logger.info "submit_physical_delivery: redmine issue created."
+      Delayed::Worker.logger.info "submit_physical_delivery: adding order event ..."
       is_redelivery = options[:reordered]
       order.order_events << OrderEvent.new(:name => is_redelivery ? 'physical_redelivery_done' : 'physical_delivery_done', :data => response['issue']['id'])
-      Rails.logger.info "submit_physical_delivery: order event added."
+      Delayed::Worker.logger.info "submit_physical_delivery: order event added."
     else
-      Rails.logger.error "submit_physical_delivery: Error submitting physical delivery to library support Redmine. Redmine response:\n#{response || 'nil'}"
+      Delayed::Worker.logger.error "submit_physical_delivery: Error submitting physical delivery to library support Redmine. Redmine response:\n#{response || 'nil'}"
       raise
     end
   end
