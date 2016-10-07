@@ -345,4 +345,35 @@ describe "SolrDocument" do
       expect(journal["issn_ss"]).to match_array ["00014575", "18792057"]
     end
   end
+  describe "fulltext_link" do
+    it "returns a url from the fulltext hashes" do
+      article_with_fulltext = SolrDocument.new(
+        "fulltext_list_ssf" => [
+            "{\"source\":\"arxiv\",\"local\":false,\"type\":\"openaccess\",\"url\":\"http://arxiv.org/abs/1508.06689\"}",
+            "{\"source\":\"arxiv\",\"local\":false,\"type\":\"openaccess\"}"
+        ])
+      expect(article_with_fulltext.fulltext_link).to eql "http://arxiv.org/abs/1508.06689"
+    end
+    it "returns nil if there is no url in the fulltext hash" do
+      article_with_no_fulltext_url = SolrDocument.new(
+        "fulltext_list_ssf" => [ "{\"source\":\"arxiv\",\"local\":false,\"type\":\"openaccess\"}" ])
+      expect(article_with_no_fulltext_url.fulltext_link).to eql nil
+    end
+    it "returns nil if no fulltext json is present" do
+      article_without_fulltext = SolrDocument.new
+      expect(article_without_fulltext.fulltext_link).to eql nil
+    end
+  end
+  describe "fulltext_link_for_user" do
+    let(:anon_user) { User.new }
+    let(:doc) { SolrDocument.new(
+        "fulltext_list_ssf" => [
+            "{\"source\":\"arxiv\",\"local\":false,\"type\":\"openaccess\",\"url\":\"http://arxiv.org/abs/1508.06689\"}",
+        ],
+        "fulltext_availability_ss" => ['dtu', 'dtupub']
+    )}
+    it 'should give access to the url for dtupublic users' do
+      expect(doc.fulltext_link_for_user(anon_user)).to eql 'http://arxiv.org/abs/1508.06689'
+    end
+  end
 end

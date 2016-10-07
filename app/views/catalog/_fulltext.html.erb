@@ -3,6 +3,12 @@
     <dt>Availability</dt>
     <dd class="fulltext-options">
         <ul class="list-inline">
+            <% if document.fulltext_link_for_user(current_user).present? %>
+                <li>
+                    <i class="icon-download"></i>
+                    <%= link_to 'Download', document.fulltext_link_for_user(current_user) %>
+                </li>
+            <% end %>
           <% if render_assistance_request_option?(document) %>
             <li class="getit-entry request-assistance hide"><i class="icon-file"></i>Request</li>
           <% end %>
