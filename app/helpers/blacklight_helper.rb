@@ -87,7 +87,7 @@ module BlacklightHelper
   def render_facet_item(solr_field, item)
     if facet_in_params?(solr_field, item.value)
       render_selected_facet_value(solr_field, item)          
-    elsif solr_field == 'fulltext_availability_ss' && !display_online_access_facet?(item.value)
+    elsif solr_field == 'fulltext_availability_ss' && !display_online_access_value?(item.value)
       nil
     else
       render_facet_value(solr_field, item)
