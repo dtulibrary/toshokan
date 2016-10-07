@@ -38,19 +38,12 @@ module CatalogHelper
   # Called from DTU override of render_facet_item
   # Return true for the access type that corresponds
   # to the current user.
-  def display_online_access_facet?(field_value)
-    case current_user.type
-      when :dtu_student, :dtu_staff, :walkin
-        field_value == 'dtu' ? true : false
-      when :anonymous, :public
-        field_value == 'dtupub' ? true: false
-      else
-        false
-      end
+  def display_online_access_value?(field_value)
+    field_value == current_user.access_type ? true : false
   end
 
   # If we're getting this far the user should have access
-  def online_access_display(value)
-    'YES'
+  def online_access_facet_display(value)
+    'Yes'
   end
 end
