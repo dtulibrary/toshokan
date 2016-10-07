@@ -84,6 +84,17 @@ class User < ActiveRecord::Base
     :anonymous
   end
 
+  def access_type
+    case self.type
+      when :dtu_student, :dtu_staff, :walkin
+        'dtu'
+      when :anonymous, :public
+        'dtupub'
+      else
+        ''
+      end
+  end
+
   def image_url
     dtu? && user_data['dtu']['image_url']
   end
