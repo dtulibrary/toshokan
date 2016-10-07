@@ -13,7 +13,7 @@
       </p>
     <% else %>
       <dl>
-        <%= render @order.order_events %>
+        <%= render @order.order_events.order(:created_at) %>
       </dl>
     <% end %>
 
