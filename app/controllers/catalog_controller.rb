@@ -80,7 +80,7 @@ class CatalogController < ApplicationController
     # facet bar
     #config.add_facet_field 'format', :collapse => false
     # We overwrite facet methods to ensure only the documents with access are included in facet display
-    config.add_facet_field 'fulltext_availability_ss', label: 'Online Access', helper_method: :online_access_facet_display, collapse: false
+    config.add_facet_field 'fulltext_availability_ss', label: 'Online Access', helper_method: :online_access_facet_display, collapse: false, if: :show_online_access_facet?
     config.add_facet_field 'format', :collapse => false
     #config.add_facet_field 'subformat_s', :collapse => false
     # config.add_facet_field 'pub_date_tsort', :label => I18n.t('blacklight.search.fields.facet.pub_date_tsort'), :range => true

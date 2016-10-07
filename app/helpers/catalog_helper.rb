@@ -46,4 +46,9 @@ module CatalogHelper
   def online_access_facet_display(value)
     'Yes'
   end
+
+  # Only show the facet box if there is content for the current user
+  def show_online_access_facet?(_field_config, facets)
+    facets.items.map(&:value).include? current_user.access_type
+  end
 end
