@@ -31,7 +31,9 @@
 </div>
 
 <div id="sidebar" class="col-md-3 col-md-pull-9">
-  <%= render 'user_favorites' %>
+  <% if current_user.authenticated? %>
+    <%= render 'user_favorites' %>
+  <% end %>
   <% if has_search_parameters?  %>
     <%= render :partial=>'facets' unless @document_list.empty? %>
   <% end %>
