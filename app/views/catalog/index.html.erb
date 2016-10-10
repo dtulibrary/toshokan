@@ -1,4 +1,4 @@
-<div id="content" class="col-md-9 col-md-push-3 mb-50">
+<div id="content" class="col-md-12 mb-50">
 
   <% if has_search_parameters? %>
     <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
@@ -25,18 +25,17 @@
     <%= render 'results_pagination' %>
   <% else %>
     <%# if there are no input/search related params, display the "home" partial -%>
-    <%= render 'home' %>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 mb-20">
+        <%= render 'home' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1">
+        <%= render 'user_favorites' %>
+      </div>
+    </div>
   <% end %>
 
 </div>
-
-<div id="sidebar" class="col-md-3 col-md-pull-9">
-  <% if current_user.authenticated? %>
-    <%= render 'user_favorites' %>
-  <% end %>
-  <% if has_search_parameters?  %>
-    <%= render :partial=>'facets' unless @document_list.empty? %>
-  <% end %>
-</div>
-
 
