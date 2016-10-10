@@ -284,6 +284,8 @@ class OrdersController < ApplicationController
     if [:physically_deliver, :deliver, :confirm, :cancel].include? delivery_status
       case delivery_status
       when :physically_deliver
+        logger.info "OrdersController#delivery (delivery_status=#{delivery_status} @order.uuid=#{@order.uuid}) called for order: #{@order.to_json(:include => :order_events)}"
+
         is_redelivery = [:reordered, :redelivery_requested].include? @order.delivery_status
 
         @order.delivery_status = delivery_status
@@ -292,15 +294,21 @@ class OrdersController < ApplicationController
         @order.delivered_month = @order.delivered_at.month
         @order.save!
 
+        logger.info "OrdersController#delivery (delivery_status=#{delivery_status} @order.uuid=#{@order.uuid}) calling LibrarySupport.submit_physical_delivery (delayed) ..."
         LibrarySupport.delay.submit_physical_delivery(@order, order_status_url(@order.uuid), {:reordered => is_redelivery, :findit_url => request.protocol + request.host_with_port + order_status_path(@order.uuid)})
+        logger.info "OrdersController#delivery (delivery_status=#{delivery_status} @order.uuid=#{@order.uuid}) called LibrarySupport.submit_physical_delivery!"
 
         # Do not send receipt mails to DTU staff or when order has been reordered
         unless (@order.user && @order.user.employee?) || is_redelivery
+          logger.info "OrdersController#delivery (delivery_status=#{delivery_status} @order.uuid=#{@order.uuid}) calling SendIt.send_receipt_mail (delayed) ..."
           SendIt.delay.send_receipt_mail @order, :order => {:status_url => order_status_url(@order.uuid)}
+          logger.info "OrdersController#delivery (delivery_status=#{delivery_status} @order.uuid=#{@order.uuid}) called SendIt.send_receipt_mail!"
         end
 
         # Only capture amounts for orders that were paid for and that weren't reordered
+        logger.info "OrdersController#delivery (delivery_status=#{delivery_status} @order.uuid=#{@order.uuid}) calling PayIt::Dibs.send_receipt_mail (delayed) ..."
         PayIt::Dibs.delay.capture @order if @order.payment_status && !is_redelivery
+        logger.info "OrdersController#delivery (delivery_status=#{delivery_status} @order.uuid=#{@order.uuid}) called PayIt::Dibs.send_receipt_mail!"
 
       when :deliver
         logger.error "No 'url' parameter on delivery event for order #{@order.dibs_order_id}" unless params[:url]

@@ -35,4 +35,20 @@ module CatalogHelper
     (document['source_ss'] || []).any? { |s| ['orbit','sorbit'].include? s }
   end
 
+  # Called from DTU override of render_facet_item
+  # Return true for the access type that corresponds
+  # to the current user.
+  def display_online_access_value?(field_value)
+    field_value == current_user.access_type ? true : false
+  end
+
+  # If we're getting this far the user should have access
+  def online_access_facet_display(value)
+    'Yes'
+  end
+
+  # Only show the facet box if there is content for the current user
+  def show_online_access_facet?(_field_config, facets)
+    facets.items.map(&:value).include? current_user.access_type
+  end
 end
