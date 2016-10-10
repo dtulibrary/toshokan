@@ -87,7 +87,7 @@ module Toshokan
     config.auth = {
       :stub    => false,
       :cas_url => 'https://auth.findit.dtu.dk/users',
-      :api_url => 'http://localhost:3001/rest',
+      :api_url => 'https://auth.findit.dtu.dk/rest',
       :ip      => {
         :walk_in  => [],
         :campus   => [],
