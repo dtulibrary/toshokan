@@ -11,7 +11,7 @@ module ScopusHelper
   def link_to_scopus document
     return unless scopus_url(document).present?
 
-    link_to(image_tag('scopus_logo.png', style: 'width: 64px; height: 18px;'), scopus_url(document),
+    link_to("Scopus", scopus_url(document),
       :class  => 'scopus-backlink',
       :target => '_blank',
       :title  => t('toshokan.tools.metrics.scopus.title'))

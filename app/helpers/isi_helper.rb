@@ -11,7 +11,7 @@ module IsiHelper
   def link_to_isi document
     return unless isi_url(document)
 
-    link_to(image_tag('isi_logo2.png', style: 'width: 64px; height: 60px;'), isi_url(document),
+    link_to("Web of Science", isi_url(document),
       :class  => 'isi-backlink',
       :target => '_blank',
       :title  => t('toshokan.tools.metrics.isi.title'))

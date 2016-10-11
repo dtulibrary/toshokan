@@ -7,7 +7,7 @@ module DtuOrbitHelper
   def link_to_dtu_orbit document
     href = (document['backlink_ss'] || []).select { |l| l.start_with? 'http://orbit.dtu.dk' }.first
     if href
-      link_to(image_tag('dtu_rails_common/dtu.png'), href,
+      link_to("DTU", href,
               :class  => 'dtu-orbit-backlink',
               :target => '_blank',
               :title  => t('toshokan.tools.metrics.dtu_orbit.title'))
