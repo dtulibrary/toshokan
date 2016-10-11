@@ -9,6 +9,9 @@ module AltmetricHelper
       link_to("", {target: '_blank'}) do
         "Altmetric"
       end
+      .concat(content_tag(:span) do
+        " "
+      end)
       .concat(content_tag(:div, {id: 'altmetric_citation_count', class: 'badge hide'}) do
         link_to("","", {style: 'color: inherit; text-decoration: inherit;', target: '_blank'})
       end)
