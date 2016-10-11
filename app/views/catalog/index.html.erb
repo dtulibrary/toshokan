@@ -1,28 +1,37 @@
 <div id="content" class="col-md-12 mb-50">
 
   <% if has_search_parameters? %>
-    <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
+    <div class="row">
+      <div class="col-md-3">
+        <%= render :partial=>'facets' unless @document_list.empty? %>
+      </div>
+      <div class="col-md-9">
 
-    <%= render :partial => 'refine_search_query' if can? :view, :refine_search_query %>
+        <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
 
-    <%= render 'sort_and_per_page' %>
+        <%= render :partial => 'refine_search_query' if can? :view, :refine_search_query %>
 
-    <%= render :partial => 'did_you_mean' %>
+        <%= render 'sort_and_per_page' %>
 
-    <% if @document_list.empty? %>
-      <% if any_tag_in_params? %>
-        <%= render 'no_hits_for_tag' %>
-      <% else %>
-        <%= render 'no_hits' %>
-      <% end %>
-    <% else %>
-      <% if params[:assistance_request] %>
-        <%= render 'assistance_resolver' %>
-      <% end %>
-      <%= render_document_index %>
-    <% end %>
+        <%= render :partial => 'did_you_mean' %>
 
-    <%= render 'results_pagination' %>
+        <% if @document_list.empty? %>
+          <% if any_tag_in_params? %>
+            <%= render 'no_hits_for_tag' %>
+          <% else %>
+            <%= render 'no_hits' %>
+          <% end %>
+        <% else %>
+          <% if params[:assistance_request] %>
+            <%= render 'assistance_resolver' %>
+          <% end %>
+          <%= render_document_index %>
+        <% end %>
+
+        <%= render 'results_pagination' %>
+
+      </div>
+    </div>
   <% else %>
     <%# if there are no input/search related params, display the "home" partial -%>
     <div class="row">

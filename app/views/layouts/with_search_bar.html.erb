@@ -11,7 +11,7 @@
 <% end %>
 
 <% content_for :masthead do %>
-  <% unless current_page?('/') %>
+  <% if has_search_parameters?  %>
     <%= render :partial => 'shared/search_bar' %>
   <% end %>
 <% end %>

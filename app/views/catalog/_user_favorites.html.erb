@@ -1,99 +1,100 @@
 <% if current_user.authenticated? || current_user.impersonating? %>
   <div class="row user-favorites">
 
-    <div class="col-md-3 well">
-      <ul class="list-unstyled">
-        <li>
-          <%= link_to saved_search_history_path do %>
-            <i class='icon-star'></i> <%= t('toshokan.search_history.saved_filter') %>
+    <div class="col-md-4 ">
+      <div class="well dtucards">
+        <%= link_to saved_search_history_path do %>
+          <i class='icon-star'></i>
+          <%= t('toshokan.search_history.saved_filter') %>
           <div class="pull-right">
             <%= @saved_searches.count %>
           </div>
         <% end %>
-        </li>
-        <li>
-          <%= link_to alerted_search_history_path do %>
-            <i class="icon-bell"></i> <%= t('toshokan.search_history.alerted_filter') %>
+        <p>List of all the articles you have 'starred'</p>
+      </div>
+    </div>
+
+    <div class="col-md-4 ">
+      <div class="well dtucards">
+        <%= link_to alerted_search_history_path do %>
+          <i class="icon-bell"></i>
+          <%= t('toshokan.search_history.alerted_filter') %>
           <div class="pull-right">
             <%= @alerted_searches.count %>
           </div>
         <% end %>
-        </li>
+        <p>List of all the searches you have 'alerted'</p>
+      </div>
+    </div>
+
+    <div class="col-md-4 ">
+      <div class="well dtucards">
         <% if can? :alert, :journal %>
-          <li>
-            <%= link_to alerts_path do %>
-              <i class='icon-bell'></i> <%= t('toshokan.mylibrary.menu.journals') %>
+          <%= link_to alerts_path do %>
+            <i class='icon-bell'></i>
+            <%= t('toshokan.mylibrary.menu.journals') %>
             <div class="pull-right">
               <%= @alerts.count %>
             </div>
           <% end %>
-          </li>
         <% end %>
-      </ul>
+      </div>
     </div>
 
-    <div class="col-md-3 col-md-offset-1 well">
-      <ul class="list-unstyled">
+    <div class="col-md-4  ">
+      <div class="well dtucards">
         <% if can? :tag, Bookmark %>
-          <li>
-            <%= link_to manage_tags_path do %>
-              <i class='icon-tags'></i> <%= t('toshokan.mylibrary.menu.tags') %>
+          <%= link_to manage_tags_path do %>
+            <i class='icon-tags'></i>
+            <%= t('toshokan.mylibrary.menu.tags') %>
             <div class="pull-right">
               <%= @tags.count %>
             </div>
           <% end %>
-          </li>
         <% end %>
-        <% if can? :view, :search_history %>
-          <li>
-            <%= link_to search_history_path do %>
-              <i class='icon-clock-o'></i> <%= t('toshokan.mylibrary.menu.search_history') %>
-          <% end %>
-          </li>
-        <% end %>
-      </ul>
+        <p>List of the articles you have tagged/bookmarked</p>
+      </div>
     </div>
 
-    <div class="col-md-3 col-md-offset-1 well">
-      <ul class="list-unstyled">
+    <div class="col-md-4  ">
+      <div class="well dtucards">
+        <% if can? :view, :search_history %>
+          <%= link_to search_history_path do %>
+            <i class='icon-clock-o'></i> 
+            <%= t('toshokan.mylibrary.menu.search_history') %>
+          <% end %>
+        <% end %>
+        <p>Your most recent searches</p>
+      </div>
+    </div>
+
+    <div class="col-md-4  ">
+      <div class="well dtucards">
         <% if can? :view, Order %>
-          <li>
-            <%= link_to orders_path do %>
-              <i class="icon-shopping-cart"></i> <%= t 'toshokan.header_links.orders' %>
+          <%= link_to orders_path do %>
+            <i class="icon-shopping-cart"></i>
+            <%= t 'toshokan.header_links.orders' %>
             <div class="pull-right">
               <%= @orders.count %>
             </div>
           <% end %>
-          </li>
+          <p>A list of your orders</p>
         <% end %>
+      </div>
+
+    </div>
+
+    <div class="col-md-4  ">
+      <div class="well dtucards">
         <% if can? :view, :my_publications %>
-          <li>
-            <%= link_to 'http://orbit.dtu.dk/admin/workspace.xhtml', :target => '_blank' do %>
-              <i class="icon-file-text"></i> <%= t 'toshokan.mylibrary.menu.my_publications' %>
+          <%= link_to 'http://orbit.dtu.dk/admin/workspace.xhtml', :target => '_blank' do %>
+            <i class="icon-file-text"></i>
+            <%= t 'toshokan.mylibrary.menu.my_publications' %>
           <% end %>
-          </li>
         <% end %>
-        <% if can? :switch, User %>
-          <li>
-            <%= link_to switch_user_path, :id => 'switch_user' do %>
-              <i class='icon-user'></i> <%= t('toshokan.header_links.switch_user') %>
-          <% end %>
-          </li>
-        <% elsif can? :switch_back, User %>
-          <li>
-            <%= link_to user_session_path, :method => :put, :id => 'switch_back' do %>
-              <i class='icon-user'></i> <%= t('toshokan.header_links.switch_back') %>
-          <% end %>
-          </li>
-        <% end %>
-        <% if can? :update, User %>
-          <li>
-            <%= link_to users_path do %>
-              <i class='icon-dashboard'></i> <%= t('toshokan.header_links.admin') %>
-          <% end %>
-          </li>
-        <% end %>
-      </ul>
-    </div> <!-- col-md -->
+
+      </div>
+
+    </div>
   </div> <!-- /row -->
 <% end %>
