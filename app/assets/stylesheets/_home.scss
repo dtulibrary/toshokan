@@ -45,6 +45,8 @@
 }
 
 .dtucards{
+  text-overflow: ellipsis;
+  overflow: auto;
   height: 150px;
   p{
     margin-top:10px;
