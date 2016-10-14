@@ -12,7 +12,7 @@
 
 <% content_for :masthead do %>
   <%# if has_search_parameters?  %>
-  <% if !current_page?('/') && !current_page?('/en/catalog') %>
+  <% if !current_page?('/')  %>
     <%= render :partial => 'shared/search_bar' %>
   <% end %>
 <% end %>
