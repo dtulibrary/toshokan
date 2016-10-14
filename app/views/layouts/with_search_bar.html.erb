@@ -13,7 +13,10 @@
 <% content_for :masthead do %>
   <%# if has_search_parameters?  %>
   <% if !current_page?('/')  %>
-    <%= render :partial => 'shared/search_bar' %>
+    <%# We need the smaller top search box on all pages EXCEPT '/' and 'en/catalog' without params %>
+    <% unless current_page?('/en/catalog') && !params[:q] %>
+      <%= render :partial => 'shared/search_bar' %>
+    <% end %>
   <% end %>
 <% end %>
 
