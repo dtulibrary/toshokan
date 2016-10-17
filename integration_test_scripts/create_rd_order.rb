@@ -15,6 +15,7 @@ def create_dummy_order
   puts "Requesting delivery of document (url:#{url}) ..."
   DocDel.request_delivery order, url, :timecap_base => Time.now.iso8601 if DocDel.enabled?
   puts "Delivery requested!"
+  puts "DOCDEL_ORDER_ID: #{order.docdel_order_id}"
 end
 
 create_dummy_order
