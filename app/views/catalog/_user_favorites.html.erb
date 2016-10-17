@@ -1,6 +1,11 @@
 <% if current_user.authenticated? || current_user.impersonating? %>
   <div class="row user-favorites">
 
+    <div class="col-md-12">
+      <h4><%= current_user %></h4>
+      <%= current_user.user_data["dtu"]["org_units"]  %>
+    </div>
+
     <div class="col-md-4 ">
       <div class="well dtucards">
         <%= link_to saved_search_history_path do %>
