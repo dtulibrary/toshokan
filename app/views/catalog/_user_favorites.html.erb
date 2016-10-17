@@ -2,19 +2,20 @@
   <div class="row user-favorites">
 
     <div class="col-md-12">
-      <div class="well">
+      <div class="dtucardwide">
         <h4>
-          <%= current_user %> -
-          <span class="text-muted">
-            <%= t('toshokan.orders.facets.org_unit.values.' + current_user.user_data["dtu"]["org_units"][0].to_s )  %>
-            <%# debug current_user.user_data  %>
-          </span>
+          <%= current_user %>
+          <% if user_works_at_dtu? %>
+            <span class="text-muted">
+              - <%= t('toshokan.orders.facets.org_unit.values.' + current_user.user_data["dtu"]["org_units"][0].to_s )  %>
+            </span>
+          <% end %>
         </h4>
       </div>
     </div>
 
-    <div class="col-md-4 ">
-      <div class="well dtucards">
+    <div class="col-md-4">
+      <div class="dtucard">
         <%= link_to saved_search_history_path do %>
           <i class='icon-star'></i>
           <%= t('toshokan.search_history.saved_filter') %>
@@ -26,8 +27,8 @@
       </div>
     </div>
 
-    <div class="col-md-4 ">
-      <div class="well dtucards">
+    <div class="col-md-4">
+      <div class="dtucard">
         <%= link_to alerted_search_history_path do %>
           <i class="icon-search"></i>
           <%= t('toshokan.search_history.alerted_filter') %>
@@ -39,8 +40,8 @@
       </div>
     </div>
 
-    <div class="col-md-4 ">
-      <div class="well dtucards">
+    <div class="col-md-4">
+      <div class="dtucard">
         <% if can? :alert, :journal %>
           <%= link_to alerts_path do %>
             <i class='icon-bell'></i>
@@ -54,8 +55,8 @@
       </div>
     </div>
 
-    <div class="col-md-4  ">
-      <div class="well dtucards">
+    <div class="col-md-4">
+      <div class="dtucard">
         <% if can? :tag, Bookmark %>
           <%= link_to manage_tags_path do %>
             <i class='icon-tags'></i>
@@ -69,8 +70,8 @@
       </div>
     </div>
 
-    <div class="col-md-4  ">
-      <div class="well dtucards">
+    <div class="col-md-4">
+      <div class="dtucard">
         <% if can? :view, :search_history %>
           <%= link_to search_history_path do %>
             <i class='icon-clock-o'></i> 
@@ -81,8 +82,8 @@
       </div>
     </div>
 
-    <div class="col-md-4  ">
-      <div class="well dtucards">
+    <div class="col-md-4">
+      <div class="dtucard">
         <% if can? :view, Order %>
           <%= link_to orders_path do %>
             <i class="icon-shopping-cart"></i>
@@ -97,8 +98,8 @@
 
     </div>
 
-    <div class="col-md-4  ">
-      <div class="well dtucards">
+    <div class="col-md-4">
+      <div class="dtucard">
         <% if can? :view, :my_publications %>
           <%= link_to 'http://orbit.dtu.dk/admin/workspace.xhtml', :target => '_blank' do %>
             <i class="icon-file-text"></i>
@@ -114,8 +115,8 @@
   <%# user is not logged in %>
   <div class="row user-favorites">
 
-    <div class="col-md-4  ">
-      <div class="well dtucards">
+    <div class="col-md-4">
+      <div class="dtucard">
         <% if can? :view, :search_history %>
           <%= link_to search_history_path do %>
             <i class='icon-clock-o'></i>
@@ -127,7 +128,7 @@
     </div>
 
     <div class="col-md-4">
-      <div class="well dtucards text-center">
+      <div class="dtucard text-center">
         <p class="text-danger">Log in to use all of Findit's features</p>
         <%= link_to new_user_session_path(:url => request.fullpath), :class => "btn btn-lg btn-success" do %>
           <i class='icon-signin'></i> <%= t('toshokan.header_links.login') %>
@@ -135,8 +136,8 @@
       </div>
     </div>
 
-    <div class="col-md-4 ">
-      <div class="well dtucards">
+    <div class="col-md-4">
+      <div class="dtucard">
         <%= link_to saved_search_history_path do %>
           <i class='icon-star'></i>
           <%= t('toshokan.search_history.saved_filter') %>

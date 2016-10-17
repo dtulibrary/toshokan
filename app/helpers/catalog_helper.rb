@@ -51,4 +51,9 @@ module CatalogHelper
   def show_online_access_facet?(_field_config, facets)
     facets.items.map(&:value).include? current_user.access_type
   end
+
+  def user_works_at_dtu?
+    current_user.user_data["dtu"]["org_units"].present?
+  end
+
 end
