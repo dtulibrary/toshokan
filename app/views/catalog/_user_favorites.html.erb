@@ -2,8 +2,15 @@
   <div class="row user-favorites">
 
     <div class="col-md-12">
-      <h4><%= current_user %></h4>
-      <%= current_user.user_data["dtu"]["org_units"]  %>
+      <div class="well">
+        <h4>
+          <%= current_user %> -
+          <span class="text-muted">
+            <%= t('toshokan.orders.facets.org_unit.values.' + current_user.user_data["dtu"]["org_units"][0].to_s )  %>
+            <%# debug current_user.user_data  %>
+          </span>
+        </h4>
+      </div>
     </div>
 
     <div class="col-md-4 ">
