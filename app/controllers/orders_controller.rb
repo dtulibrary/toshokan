@@ -341,9 +341,6 @@ class OrdersController < ApplicationController
         @order.save!
 
       when :cancel
-        # Only cancel in DIBS if order was paid for
-        PayIt::Dibs.delay.cancel @order if @order.payment_status
-
         cancelled_by = @order.supplier
         previous_delivery_status = @order.delivery_status
 
@@ -360,7 +357,14 @@ class OrdersController < ApplicationController
           order.user && (order.user.employee? || order.user.student?)
         end
 
-        if ordered_by_employee_or_student.call(@order) && cancelled_by == :rd
+        order_should_be_passed_to_tib = lambda do |order, cancelled_by|
+          ordered_by_employee_or_student.call(order) && cancelled_by == :rd
+        end
+
+        # Only cancel in DIBS if order was paid for and it should not be passed to TIB
+        PayIt::Dibs.delay.cancel @order if @order.payment_status && !order_should_be_passed_to_tib.call(@order, cancelled_by)
+
+        if order_should_be_passed_to_tib.call(@order, cancelled_by)
           # Pass order to TIB
           @order.supplier = :tib
           @order.supplier_order_id = nil
