@@ -5,7 +5,7 @@
 <div id="util-links" class="util-links pull-right <%= current_user.impersonating? ? 'impersonating' : '' %>">
   <!-- Login -->
   <% if can? :login, User %>
-    <%= link_to new_user_session_path(:url => request.fullpath) do %>
+    <%= link_to new_user_session_path(:url => request.fullpath), :class => "btn btn-xs btn-success" do %>
       <i class='icon-signin'></i> <%= t('toshokan.header_links.login') %>
     <% end %>
     <% if !cookies[:shunt_hint] && !current_user.walk_in? && !params[:dlib] %>

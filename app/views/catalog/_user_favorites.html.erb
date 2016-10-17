@@ -98,4 +98,43 @@
 
     </div>
   </div> <!-- /row -->
+<% else %>
+  <%# user is not logged in %>
+  <div class="row user-favorites">
+
+    <div class="col-md-4  ">
+      <div class="well dtucards">
+        <% if can? :view, :search_history %>
+          <%= link_to search_history_path do %>
+            <i class='icon-clock-o'></i>
+            <%= t('toshokan.mylibrary.menu.search_history') %>
+          <% end %>
+        <% end %>
+        <p>Your most recent searches can be shown here:</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="well dtucards text-center">
+        <p class="text-danger">Log in to use all of Findit's features</p>
+        <%= link_to new_user_session_path(:url => request.fullpath), :class => "btn btn-lg btn-success" do %>
+          <i class='icon-signin'></i> <%= t('toshokan.header_links.login') %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="col-md-4 ">
+      <div class="well dtucards">
+        <%= link_to saved_search_history_path do %>
+          <i class='icon-star'></i>
+          <%= t('toshokan.search_history.saved_filter') %>
+          <div class="pull-right">
+            <%= @saved_searches.count %>
+          </div>
+        <% end %>
+        <p>List of all the articles you have 'starred'</p>
+      </div>
+    </div>
+
+  </div>
 <% end %>
