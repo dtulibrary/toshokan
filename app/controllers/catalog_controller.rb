@@ -83,7 +83,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'fulltext_availability_ss', label: 'Online Access', helper_method: :online_access_facet_display, collapse: false, if: :show_online_access_facet?
     config.add_facet_field 'format', :collapse => false
     #config.add_facet_field 'subformat_s', :collapse => false
-    # config.add_facet_field 'pub_date_tsort', :label => I18n.t('blacklight.search.fields.facet.pub_date_tsort'), :range => true
+    config.add_facet_field 'pub_date_tsort', :label => I18n.t('blacklight.search.fields.facet.pub_date_tsort'), :range => true
     config.add_facet_field 'author_facet', :limit => 20
     config.add_facet_field 'journal_title_facet', :limit => 20
     config.add_facet_field 'isolanguage_facet', :limit => 20
