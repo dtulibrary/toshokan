@@ -7,7 +7,8 @@
       $('.document').each(function() {
         var fulltext = $(this).find('.fulltext-options > ul');
 
-        if (fulltext.length && $(this).find('.Z3988').length > 0) {
+        // Use OpenURL to do GetIt lookup unless there's already a download link present
+        if (fulltext.length && $(this).find('.Z3988').length > 0 && $(this).find('.icon-download').length == 0) {
           var openUrl = $(this).find(".Z3988").attr("title");
           var spinner = $("<li />");
           var showBookLoan = openUrl.indexOf("alis_id") > -1;
@@ -150,7 +151,11 @@
         "data-toggle"    : "tooltip",
         "data-placement" : "bottom"
       });
-
+      // If we have a download url, add a link in the text
+      if (data.url != null) {
+          item.text('');
+          item.append($('<a />', { text: data.list_text, "href": data.url }));
+      }
       if (data.tool_tip) {
         $(item).tooltip();
       }
