@@ -259,6 +259,10 @@ module Toshokan
       :secret    => '',
     }
 
+    config.dedup_changes_mq = {
+      :amqp_url => 'amqp://guest:guest@rabbitmq:5672'
+    }
+
     config.enable_creation_of_redmine_issues = false
   end
 end

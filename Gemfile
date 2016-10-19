@@ -86,3 +86,5 @@ end
 # Deploy with Capistrano
 gem 'rvm-capistrano', '~> 1.2.5'
 gem 'capistrano', '~> 2.15'
+
+gem 'sneakers'
