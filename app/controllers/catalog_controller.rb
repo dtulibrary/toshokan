@@ -19,6 +19,7 @@ class CatalogController < ApplicationController
       "mm" => "100%"
     }
 
+    config.autocomplete_path = '/solr/metastore/suggest'
     # Add support for :limit field type. Used by ToC filters. See also LimitsHelper.
     config[:limit_fields] = {}
     class << config

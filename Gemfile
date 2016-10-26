@@ -32,6 +32,8 @@ gem 'kaminari'
 gem 'lisbn'
 gem 'rack-utf8_sanitizer', '~> 1.1.0'
 gem 'rack-mini-profiler'
+gem "twitter-typeahead-rails", '0.11.1-corejavascript'
+
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -80,6 +82,9 @@ group :development do
   gem 'byebug'
   gem 'hirb'  # Used by rake steps
   gem 'foreman'
+  gem 'xray-rails'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 # Deploy with Capistrano

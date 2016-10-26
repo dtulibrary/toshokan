@@ -41,3 +41,4 @@
 
 // Mustache templating
 //=require jquery.mustache.js
+//= require 'twitter/typeahead'

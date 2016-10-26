@@ -1,5 +1,7 @@
 Toshokan::Application.routes.draw do
 
+  resources :suggest, only: :index, defaults: { format: 'json' }
+    
   scope "(:locale)", :locale => /en|da/ do
 
     # Catalog and related

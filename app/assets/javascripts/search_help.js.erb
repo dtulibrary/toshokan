@@ -61,7 +61,7 @@
     });
 
     $("#q").keydown(function (event) {
-      if ($.ui.keyCode.SPACE == event.which && event.ctrlKey) {
+      if ($.ui && $.ui.keyCode.SPACE == event.which && event.ctrlKey) {
         toggleSearchSyntax();
         return false;
       } else if (syntaxVisible) {
