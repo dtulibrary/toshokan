@@ -221,6 +221,9 @@ class CatalogController < ApplicationController
     config.add_limit_field 'subject', :fields => ['keywords_ts']
   end
 
+  def typeahead
+  end
+
   def index
     # Ensure that all responses that renders a search result has /(en|da)/catalog in the url
     # Why: because we want to disallow crawlers from search results but allow crawlers on the index page

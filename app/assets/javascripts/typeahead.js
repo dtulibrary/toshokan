@@ -3,42 +3,99 @@
 $(document).ready(function() {
 
     'use strict';
-    $('[data-autocomplete-enabled="true"]').each(function() {
+    $('#grouped_suggestions[data-autocomplete-enabled="true"]').each(function() {
         var $el = $(this);
         var suggestUrl = $el.data().autocompletePath;
 
-        var terms = new Bloodhound({
+        var allterms = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace("term"),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             sufficient: 1,
             remote: {
-                url: suggestUrl + '?q=%QUERY',
+                url: suggestUrl + '?q=%QUERY&dictionary=keywords_lookup',
+                wildcard: '%QUERY'
+            }
+        });
+        var journaltitles = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace("term"),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            sufficient: 1,
+            remote: {
+                url: suggestUrl + '?q=%QUERY&dictionary=journal_lookup',
+                wildcard: '%QUERY'
+            }
+        });
+        var authors = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace("term"),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            sufficient: 1,
+            remote: {
+                url: suggestUrl + '?q=%QUERY&dictionary=author_lookup',
                 wildcard: '%QUERY'
             }
         });
 
     //('term')/terms.initialize();
-    var promise = terms.initialize();
+    allterms.initialize();
 
-    promise
-    .done(function() {
-        console.log('ready to go!'); 
-        $el.typeahead({
-                hint: false,
-                highlight: true,
-                minLength: 2,
-                async: true,
-                limit: 5
-            },
-            {
-                name: 'terms',
-                displayKey: 'term',
-                source: terms
-            });
+    $el.typeahead({
+            hint: false,
+            highlight: true,
+            minLength: 2,
+            async: true,
+            limit: 5
+        },
+        {
+            name: 'terms',
+            displayKey: 'term',
+            source: allterms,
+            templates: {
+                header: '<h3>Subjects</h3>'
+            }
+        },
+        {
+            name: 'terms',
+            displayKey: 'term',
+            source: journaltitles,
+            templates: {
+                header: '<h3>Journal Titles</h3>'
+            }
+        },
+        {
+            name: 'terms',
+            displayKey: 'term',
+            source: authors,
+            templates: {
+                header: '<h3>Authors</h3>'
+            }
+        });
     });
-    });
-    $('.typeahead').bind('typeahead:asyncreceive', function(ev, query, name) {
-          console.log('Receive: ' + query);
+    $('#mixed_suggestions[data-autocomplete-enabled="true"]').each(function() {
+        var $el = $(this);
+        var suggestUrl = $el.data().autocompletePath;
+
+        var allterms = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace("term"),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            sufficient: 1,
+            remote: {
+                url: suggestUrl + '?q=%QUERY&dictionary=allterms_lookup',
+                wildcard: '%QUERY'
+            }
+        });
+
+    $el.typeahead({
+            hint: false,
+            highlight: true,
+            minLength: 2,
+            async: true,
+            limit: 5
+        },
+        {
+            name: 'terms',
+            displayKey: 'term',
+            source: allterms
+        });
     });
 });
 

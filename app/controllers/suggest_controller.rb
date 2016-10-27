@@ -4,7 +4,7 @@ class SuggestController < ApplicationController
   def index
     respond_to do |format|
       format.json do
-        render json: SuggestService.query(params[:q], blacklight_solr, suggest_endpoint)
+        render json: SuggestService.query(params[:q], params[:dictionary], blacklight_solr, suggest_endpoint)
       end
     end
   end
