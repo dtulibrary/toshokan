@@ -1,0 +1,19 @@
+<% content_for :head do %>
+  <%= render :partial => 'shared/head' %>
+<% end %>
+
+<% content_for :menu do %>
+<% end %>
+
+<% content_for :logo do %>
+  <%= link_to image_tag("DTU_Findit.svg", style: 'width: 187px; height: 30px;'), root_path, :class => 'findit-logo pull-left' %>
+<% end %>
+
+<% content_for :masthead do %>
+<% end %>
+
+<% content_for :modal do %>
+  <%= render partial: 'shared/modals' %>
+<% end %>
+
+<%= render template: "layouts/dtu" %>

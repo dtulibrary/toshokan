@@ -90,6 +90,9 @@ Toshokan::Application.routes.draw do
     get   '/pages/authentication_required_catalog', :to => 'pages#authentication_required_catalog', :as => 'authentication_required_catalog'
     get   '/about',                                 :to => 'pages#about'
 
+    # Errors
+    get '/404', to: 'errors#not_found'
+    get '/500', to: 'errors#internal_server_error'
 
     get   '/',                                      :to => 'catalog#index'
   end
