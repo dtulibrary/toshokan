@@ -1,0 +1,9 @@
+<div class="col-lg-12">
+  <%= form_for @query, url: {action: 'update'} do |f| %>
+    <%= f.label 'Name' %>
+    <%= f.text_field 'name', class: 'form-control' %>
+    <%= f.label 'Query string' %>
+    <%= f.text_field 'query_string', class: 'form-control' %>
+    <%= f.button 'Submit' %>
+  <% end %>
+</div>
