@@ -6,7 +6,7 @@ class QueriesController < ApplicationController
   end
 
   def index
-    @queries = Query.all
+    @queries = Query.all.order('name asc')
     @counts  = QueryResultDocument.where(rejected: false).group('query_id').count
   end
 
