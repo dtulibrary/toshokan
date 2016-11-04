@@ -51,7 +51,7 @@ namespace :orbit do
             duplicate          = duplicate_response['response']['docs'].first
 
             # Delete any rejected document that is now in ORBIT (it is automatically rejected by the search)
-            QueryResultDocument.where(document_id: duplicate['cluster_id_ss'].first, rejected: true).delete_all
+            QueryResultDocument.where(document_id: duplicate['cluster_id_ss'].first, rejected: true).delete_all if duplicate
 
             # Create the result document unless it exists and is ignored
             doc_params = {
