@@ -3,6 +3,9 @@ module RSolr
 
     alias_method :execute_without_rails_caching_and_retries, :execute
 
+    # @param h Net::HTTP
+    # @param request Net::HTTP::Get
+    # @param options Hash
     def try_request(h, request, options = {})
       options = {
         :retries => 0,
@@ -11,6 +14,7 @@ module RSolr
       }.merge(options)
 
       (options[:retries]).downto(0) do |retries_left|
+
         response = h.request request
         charset = response.type_params["charset"]
         response = {:status => response.code.to_i, :headers => response.to_hash, :body => force_charset(response.body, charset)}
@@ -24,6 +28,14 @@ module RSolr
 
     end
 
+
+    # Explanation of Caching code:
+    #
+    # 1. Before making a request FindIt makes a cache key out of the request params
+    # 2. FindIt then looks for a cache entry with this key and reads its `last_modified` attribute
+    # 3. It adds this `last_modified` attribute as a header on the HTTP request and queries Solr.
+    # 4. If Solr returns a HTTP 304 (Not Modified) the cached entry is returned,
+    #    otherwise the response body is written to the cache and returned
     def execute client, request_context
       if [:get, :head].exclude? request_context[:method]
         return execute_without_rails_caching_and_retries client, request_context
@@ -31,7 +43,8 @@ module RSolr
 
       bench_start = Time.now
 
-      # Add cache header to request params
+      # Get cache entry from Dalli and use its
+      # last_modified attribute to ask Solr if it has been updated
       params = request_context[:params]
       cache_key = params.hash.to_s
       cache_entry = Rails.cache.read(cache_key)
@@ -58,11 +71,12 @@ module RSolr
         end
 
         # log request and statistics in json format
-        log_message = {:status => response[:status], :cache => (cache_hit ? :hit : :miss ), :params => params, :time => '%.1f ms' % ((Time.now.to_f - bench_start.to_f)*1000), :retries => retries}
+        log_message = {:status => response[:status], :cache => (cache_hit ? :hit : :miss ), :params => params, :time => '%.1f ms' % ((Time.now.to_f - bench_start.to_f) * 1000), :retries => retries}
         Rails.logger.info("RSolr#execute #{log_message.to_json}")
 
-        # TODO: send statistics to ganglia
-
+        # Send statistics to Grafana
+        time_taken = (Time.now - bench_start) * 1000
+        monitor_query_time(time_taken, params["q"], retries, cache_hit)
       # catch the undefined closed? exception -- this is a confirmed ruby bug
       rescue NoMethodError
         $!.message == "undefined method `closed?' for nil:NilClass" ?
@@ -73,6 +87,16 @@ module RSolr
       response
     end
 
+    def monitor_query_time(time_taken, query, retries, cache_hit)
+      if Rails.application.config.try(:monitoring_id) && Rails.application.config.monitoring_id.present?
+        DtuMonitoring::InfluxWriter.delay.write(
+          "solr_response_time",
+          { app: Rails.application.config.monitoring_id },
+          { value: time_taken, q: query, retries: retries, cache_hit: cache_hit },
+          Time.now.to_i
+        )
+      end
+    end
 
   end
 
