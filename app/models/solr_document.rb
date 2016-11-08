@@ -170,7 +170,7 @@ class SolrDocument
 
   # Try and get a fulltext link from the fulltext_list
   # This method doesn't look at authentication - this should
-  # prior to calling!
+  # be done prior to calling!
   def fulltext_link
     if self['fulltext_list_ssf'].present?
       # Convert json strings to hashes and combine in one hash
@@ -178,12 +178,14 @@ class SolrDocument
         .map{ |j| JSON.parse(j) }
         .inject(&:merge)
       fulltext_hash["url"]
+    elsif self.respond_to?(:export_as_openurl_ctx_kev)
+      "http://sfx.cvt.dk/sfx_test?#{export_as_openurl_ctx_kev}"
     end
   end
 
   def fulltext_link_for_user(user)
     if self['fulltext_availability_ss'].try(:include?, user.access_type)
-      fulltext_link 
+      fulltext_link
     end
   end
 
