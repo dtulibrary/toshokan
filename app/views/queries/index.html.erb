@@ -5,7 +5,7 @@
       <ul class="list-group">
         <% @queries.each do |q| %>
           <li class="list-group-item">
-            <span class="badge"><%= @counts[q.id] || 0 %></span>
+            <span class="badge"><%= number_with_delimiter(@counts[q.id] || 0) %></span>
             <%= link_to q.name, show_query_path(q) %>
             <div style="color: #999"><small>Run: <%= q.run_at.nil? ? 'never' : l(q.run_at, format: :short) %></small></div>
           </li>
