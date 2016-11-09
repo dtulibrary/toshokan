@@ -244,6 +244,8 @@ class CatalogController < ApplicationController
       extra_search_params = blacklight_config[:resolver_params]
       params.delete :from_resolver
     end
+    # Get rid of right and left quote marks (for queries from Word etc)
+    params[:q].gsub!(/[\u201c\u201d]/, '"') if params[:q].present?
 
     @query = URI.encode((params[:q] || ""))
     (@response, @document_list) = get_search_results(params, extra_search_params)
