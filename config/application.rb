@@ -73,6 +73,9 @@ module Toshokan
     config.time_zone                      = 'CET'
     config.active_record.default_timezone = :local
 
+    # Errors handler
+    config.exceptions_app = self.routes
+
     config.application_name = 'DTU Findit'
 
     config.solr_document = {

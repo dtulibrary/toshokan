@@ -55,6 +55,10 @@ class Ability
         can :view, :extended_info
         can :resend, LibrarySupport
       end
+
+      if user.roles.include? Role.find_by_code('CAT')
+        can :manage, Query
+      end
     end
 
     # User can switch back if he is impersonating another user

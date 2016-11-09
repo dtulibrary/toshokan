@@ -1,0 +1,21 @@
+<% content_for :head do %>
+  <%= render :partial => 'shared/head' %>
+<% end %>
+
+<% content_for :menu do %>
+  <%= render partial: '/user_util_links' %>
+<% end %>
+
+<% content_for :logo do %>
+  <%= link_to image_tag("DTU_Findit.svg", style: 'width: 187px; height: 30px;'), root_path, :class => 'findit-logo pull-left' %>
+<% end %>
+
+<% content_for :masthead do %>
+  <div style="height: 149px; line-height: 149px; font-size: 2.5em">ORBIT Lists</div>
+<% end %>
+
+<% content_for :modal do %>
+  <%= render partial: 'shared/modals' %>
+<% end %>
+
+<%= render template: "layouts/dtu" %>

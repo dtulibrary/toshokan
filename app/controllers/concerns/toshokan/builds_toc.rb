@@ -14,6 +14,7 @@ module Toshokan
       end
 
       return nil unless document[:format] == 'journal'
+      return nil unless document[:issn_ss].present?
 
       # get facets counts per year to help us decide how much of the toc to display
       query = "issn_ss:(#{document[:issn_ss].join(' OR ')})"

@@ -7,8 +7,11 @@ module AltmetricHelper
   def altmetric_badge(document, opts={})
     content_tag(:div, {id: 'altmetric_citation_count_wrapper', class: 'hide'}) do
       link_to("", {target: '_blank'}) do
-        image_tag('altmetric.svg', style: 'width: 64px; height: 12px;')
+        "Altmetric"
       end
+      .concat(content_tag(:span) do
+        " "
+      end)
       .concat(content_tag(:div, {id: 'altmetric_citation_count', class: 'badge hide'}) do
         link_to("","", {style: 'color: inherit; text-decoration: inherit;', target: '_blank'})
       end)

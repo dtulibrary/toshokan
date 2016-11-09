@@ -1,0 +1,9 @@
+<div class="col-lg-12">
+  <%= form_for @query do |f| %>
+    <%= f.label 'name', 'Name' %>
+    <%= f.text_field 'name', class: 'form-control' %>
+    <%= f.label 'query_string', 'Query string' %>
+    <%= f.text_field 'query_string', class: 'form-control' %>
+    <%= f.button 'Submit' %>
+  <% end %>
+</div>

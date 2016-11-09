@@ -26,6 +26,7 @@ class DocDel
       :callback_url => callback_url
     }
 
+    params[:findit_user_type] = order.user.type if order.user
     params[:user_id] = order.user.identifier if order.user
     params[:timecap_base] = options[:timecap_base] || Time.now.iso8601
 

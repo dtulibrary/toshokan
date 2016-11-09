@@ -38,6 +38,6 @@ if File.exists? File.dirname(__FILE__) + '/../application.local.rb'
   require File.dirname(__FILE__) + '/../application.local.rb'
 end
 
-unless defined?(Rails::Console)
+unless defined?(Rails::Console) || ENV['NO_BYEBUG']
   Byebug.start_server 'localhost', 8888
 end

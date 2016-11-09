@@ -1,0 +1,33 @@
+<div class="col-lg-12">
+  <h3><%= @query.name %>
+    <span class="badge" style="font-size: 0.75em; vertical-align: top"><%= number_with_delimiter(@docs.count) %></span>
+  </h3>
+  <hr>
+  <% @docs.each_with_index do |doc, i| %>
+    <div class="row">
+      <% if doc.duplicate %>
+        <div class="col-lg-12">
+          <h4>Possible duplicate</h4>
+          <div class="row">
+            <div class="col-lg-6">
+              <h5>Subject document</h5>
+              <h4><%= doc.document['title_ts'].try(:first) || 'No title' %></h4>
+              <%= render partial: 'document', locals: {query_result_doc: doc, document: SolrDocument.new(doc.document) }%>
+            </div>
+            <div class="col-lg-6">
+              <h5>In ORBIT</h5>
+              <h4><%= doc.duplicate['title_ts'].try(:first) || 'No title' %></h4>
+              <%= render partial: 'document', locals: {query_result_doc: doc, document: SolrDocument.new(doc.duplicate)} %>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="col-lg-12">
+          <h4><%= doc.document['title_ts'].try(:first) || 'No title' %></h4>
+          <%= render partial: 'document', locals: {query_result_doc: doc, document: SolrDocument.new(doc.document)} %>
+        </div>
+      <% end %>
+    </div>
+    <hr>
+  <% end %>
+</div>

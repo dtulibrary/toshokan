@@ -1,0 +1,60 @@
+<% # Authors %>
+<% if document[:author_ts] && document[:author_ts].count < 10 %>
+  <p><%= document[:author_ts].join('<br/>').html_safe %></p>
+<% elsif document[:author_ts] %>
+  <p>
+    <%= document[:author_ts].slice(0,10).join('<br/>').html_safe %>
+    <em> and <%= document[:author_ts].count-10 %> more </em>
+  </p>
+<% end %>
+
+<% # Affiliations %>
+<% if document[:affiliation_ts] && document[:affiliation_ts].count < 10 %>
+  <p><%= document[:affiliation_ts].join('<br/>').html_safe %></p>
+<% elsif document[:affiliation_ts] %>
+  <p><%= document[:affiliation_ts].slice(0,10).join('<br/>').html_safe %><em> and <%= document[:affiliation_ts].count-10 %> more </em></p>
+<% end %>
+
+<% # Host publication %>
+<p>
+  <%= document[:journal_title_ts].try(:first) || document[:conf_title_ts].try(:first) %>,
+  <%= 
+    [
+      document['pub_date_tis'],
+      document['journal_vol_ssf'],
+      document['journal_issue_ssf'],
+      document['journal_page_ssf']
+    ]
+      .join(',').html_safe
+  %>
+</p>
+
+<% # Document id %>
+<p>
+  <code>cluster_id_ss:<%= document['cluster_id_ss'].first %></code>
+</p>
+
+<% # Actions %>
+<div class="btn-group">
+  <% orbit_id = document['source_id_ss'].find {|s| s.start_with?('orbit')} %>
+  <% if orbit_id %>
+    <%= link_to 'View in ORBIT',
+                "http://orbit.dtu.dk/en/publications/id(#{orbit_id.split(':').last}).html",
+                :target => '_blank',
+                :class  => 'btn btn-default' %> 
+  <% else %>
+    <%= link_to 'View in FindIt', 
+                catalog_path(id: document[:cluster_id_ss].first),
+                :target => '_blank',
+                :class  => 'btn btn-default' %>
+    <%= link_to 'ORBIT search (title)',
+                "http://orbit.dtu.dk/en/searchall.html?searchall=#{document[:title_ts].try(:first)}",
+                :target => '_blank',
+                :class  => 'btn btn-default' %>
+    <%= link_to 'ORBIT search (authors)',
+                "http://orbit.dtu.dk/en/publications/search.html?search=#{document[:author_ts].join(' ').gsub(/\W/, ' ').gsub(/\s+/, ' ')}",
+                :target => '_blank', 
+                :class  => 'btn btn-default' %>
+    <%= link_to 'Reject', reject_query_doc_path(id: @query.id, doc_id: query_result_doc.id), method: 'put', class: 'btn btn-default' %>
+  <% end %>
+</div>

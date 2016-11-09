@@ -83,7 +83,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'fulltext_availability_ss', label: 'Online Access', helper_method: :online_access_facet_display, collapse: false, if: :show_online_access_facet?
     config.add_facet_field 'format', :collapse => false
     #config.add_facet_field 'subformat_s', :collapse => false
-    # config.add_facet_field 'pub_date_tsort', :label => I18n.t('blacklight.search.fields.facet.pub_date_tsort'), :range => true
+    config.add_facet_field 'pub_date_tis', :label => I18n.t('blacklight.search.fields.facet.pub_date_tsort'), :range => true
     config.add_facet_field 'author_facet', :limit => 20
     config.add_facet_field 'journal_title_facet', :limit => 20
     config.add_facet_field 'isolanguage_facet', :limit => 20
@@ -251,6 +251,8 @@ class CatalogController < ApplicationController
       extra_search_params = blacklight_config[:resolver_params]
       params.delete :from_resolver
     end
+    # Get rid of right and left quote marks (for queries from Word etc)
+    params[:q].gsub!(/[\u201c\u201d]/, '"') if params[:q].present?
 
     @query = URI.encode((params[:q] || ""))
     (@response, @document_list) = get_search_results(params, extra_search_params)
@@ -272,14 +274,6 @@ class CatalogController < ApplicationController
         end
       end
     end
-    monitor_response
-  end
-
-  def monitor_response
-    return unless Rails.application.config.respond_to?(:monitoring_id)
-    return unless @response.present?
-    return unless @response.respond_to?(:to_json)
-    DtuMonitoring::BlacklightResponse.delay.monitor(Rails.application.config.monitoring_id, @response.to_json, Time.now.to_i)
   end
 
   def show

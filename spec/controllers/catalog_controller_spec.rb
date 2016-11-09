@@ -30,6 +30,13 @@ describe CatalogController do
           get :index, params
           expect(response).to render_template('catalog/index')
         end
+        context "when using curly quotes" do
+          let(:params) { {q: '“cyber warfare”'} }
+          it 'replaces curly quotes with ASCII quotes' do
+            get :index, params
+            expect(controller.params[:q]).to eq '"cyber warfare"'
+          end
+        end
       end
 
       context 'without ability to tag' do

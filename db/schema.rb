@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150304133938) do
+ActiveRecord::Schema.define(version: 20161103121841) do
 
   create_table "assistance_requests", force: true do |t|
     t.string   "type"
@@ -38,8 +38,8 @@ ActiveRecord::Schema.define(version: 20150304133938) do
     t.text     "email"
     t.text     "pickup_location"
     t.text     "physical_location"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "conference_isxn"
     t.text     "conference_pages"
     t.text     "book_publisher"
@@ -89,8 +89,8 @@ ActiveRecord::Schema.define(version: 20150304133938) do
     t.integer  "user_id",       null: false
     t.string   "document_id"
     t.string   "title"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "user_type"
     t.string   "document_type"
   end
@@ -107,8 +107,8 @@ ActiveRecord::Schema.define(version: 20150304133938) do
     t.datetime "failed_at"
     t.string   "locked_by"
     t.string   "queue"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
@@ -136,8 +136,8 @@ ActiveRecord::Schema.define(version: 20150304133938) do
     t.string   "delivery_status"
     t.datetime "payed_at"
     t.datetime "delivered_at"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "user_id"
     t.text     "open_url"
     t.string   "masked_card_number"
@@ -166,16 +166,36 @@ ActiveRecord::Schema.define(version: 20150304133938) do
     t.float    "end"
     t.boolean  "stop"
     t.boolean  "finished"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "progresses", ["name"], name: "index_progresses_on_name"
 
+  create_table "queries", force: true do |t|
+    t.text     "name"
+    t.text     "query_string"
+    t.boolean  "enabled",      default: false
+    t.integer  "latest_count"
+    t.datetime "run_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "query_result_documents", force: true do |t|
+    t.text     "document_id"
+    t.text     "document"
+    t.text     "duplicate"
+    t.boolean  "rejected",    default: false
+    t.integer  "query_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "roles", force: true do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "code"
   end
 
@@ -187,8 +207,8 @@ ActiveRecord::Schema.define(version: 20150304133938) do
   create_table "searches", force: true do |t|
     t.text     "query_params"
     t.integer  "user_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "user_type"
     t.string   "title"
     t.boolean  "saved",        default: false
@@ -200,8 +220,8 @@ ActiveRecord::Schema.define(version: 20150304133938) do
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
     t.text     "data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id"
@@ -218,8 +238,8 @@ ActiveRecord::Schema.define(version: 20150304133938) do
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
     t.integer  "bookmark_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "taggings", ["bookmark_id"], name: "index_taggings_on_bookmark_id"
@@ -230,8 +250,8 @@ ActiveRecord::Schema.define(version: 20150304133938) do
     t.string   "name"
     t.integer  "user_id"
     t.boolean  "shared"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "tags", ["name", "user_id"], name: "index_tags_on_name_and_user_id", unique: true
@@ -242,8 +262,8 @@ ActiveRecord::Schema.define(version: 20150304133938) do
     t.string   "provider"
     t.string   "identifier"
     t.string   "email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "user_data"
   end
 

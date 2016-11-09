@@ -78,6 +78,17 @@ Toshokan::Application.routes.draw do
     # User management
     resources :users,                               :only => [:index, :update, :destroy]
 
+    # ORBIT Queries
+    get    '/queries',                    to: 'queries#index',     as: 'queries_index'
+    get    '/queries/new',                to: 'queries#new',       as: 'new_query'
+    post   '/queries',                    to: 'queries#create',    as: 'queries'
+    get    '/queries/:id',                to: 'queries#show',      as: 'show_query'
+    get    '/queries/:id/try',            to: 'queries#try_query', as: 'try_query'
+    delete '/queries/:id',                to: 'queries#destroy',   as: 'destroy_query'
+    put    '/queries/:id',                to: 'queries#update',    as: 'update_query'
+    patch  '/queries/:id',                to: 'queries#update'
+    get    '/queries/:id/edit',           to: 'queries#edit',      as: 'edit_query'
+    put    '/queries/:id/reject/:doc_id', to: 'queries#reject',    as: 'reject_query_doc'
 
     # Feedback
     resource :feedback, :only => [:new, :create]
@@ -90,6 +101,9 @@ Toshokan::Application.routes.draw do
     get   '/pages/authentication_required_catalog', :to => 'pages#authentication_required_catalog', :as => 'authentication_required_catalog'
     get   '/about',                                 :to => 'pages#about'
 
+    # Errors
+    get '/404', to: 'errors#not_found'
+    get '/500', to: 'errors#internal_server_error'
 
     get   '/',                                      :to => 'catalog#index'
   end
