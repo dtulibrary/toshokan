@@ -3,6 +3,11 @@
     <span class="badge" style="font-size: 0.75em; vertical-align: top"><%= number_with_delimiter(@docs.count) %></span>
   </h3>
   <hr>
+  <% if @docs.empty? %>
+    <p>
+      There are no results for this query.
+    </p>
+  <% end %>
   <% @docs.each_with_index do |doc, i| %>
     <div class="row">
       <% if doc.duplicate %>

@@ -16,7 +16,12 @@ class Query < ActiveRecord::Base
     ]
   end
 
+  def self.normalize(query_string)
+    query_string.gsub(/^\s+|\s+$/, '')
+                .gsub(/\s+/, ' ')
+  end
+
   def to_solr_query
-    [query_string, ::Query.common_filter_query].flatten.join(' AND ')
+    [::Query.normalize(query_string), ::Query.common_filter_query].flatten.join(' AND ')
   end
 end

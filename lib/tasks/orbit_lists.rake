@@ -25,8 +25,7 @@ namespace :orbit do
       solr         = Blacklight.solr
       cursor_mark  = '*'
       doc_counter  = 0
-      query_string = q.query_string.gsub(/^\s+|\s+$/, '')
-                                   .gsub(/\s+/, ' ')
+      query_string = Query.normalize(q.query_string)
 
       loop do
         solr_fields = %w(
