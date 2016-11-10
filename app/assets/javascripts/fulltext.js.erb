@@ -7,8 +7,7 @@
       $('.document').each(function() {
         var fulltext = $(this).find('.fulltext-options > ul');
 
-        // Use OpenURL to do GetIt lookup unless there's already a download link present
-        if (fulltext.length && $(this).find('.Z3988').length > 0 && $(this).find('.icon-download').length == 0) {
+        if (fulltext.length && $(this).find('.Z3988').length > 0) {
           var openUrl = $(this).find(".Z3988").attr("title");
           var spinner = $("<li />");
           var showBookLoan = openUrl.indexOf("alis_id") > -1;
@@ -154,7 +153,7 @@
       // If we have a download url, add a link in the text
       if (data.url != null) {
           item.text('');
-          item.append($('<a />', { text: data.list_text, "href": data.url }));
+          item.append($('<a />', { text: data.list_text, "href": data.url, "target": "_blank" }));
       }
       if (data.tool_tip) {
         $(item).tooltip();
@@ -162,6 +161,10 @@
 
       $(item).prepend("<i class='" + data.icon + "'></i>");
       elm.append(item);
+      // Hide the GetIt link if we have a url - this has to be done after we've added the link to the DOM
+      if (data.url != null) {
+          item.siblings('.getit.pull-right').hide();
+      }
     }
   };
 
