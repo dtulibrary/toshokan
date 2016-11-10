@@ -1,4 +1,7 @@
 .query-enabled {
+  code {
+    white-space: pre-wrap;
+  }
 }
 
 .query-disabled {
@@ -7,5 +10,6 @@
   code {
     color: #999;
     background-color: inherit;
+    white-space: pre-wrap;
   }
 }
