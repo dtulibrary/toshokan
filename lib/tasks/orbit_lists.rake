@@ -22,9 +22,11 @@ namespace :orbit do
          .each do |q|
       puts "Running '#{q.name}':"
 
-      solr        = Blacklight.solr
-      cursor_mark = '*'
-      doc_counter = 0
+      solr         = Blacklight.solr
+      cursor_mark  = '*'
+      doc_counter  = 0
+      query_string = q.query_string.gsub(/^\s+|\s+$/, '')
+                                   .gsub(/\s+/, ' ')
 
       loop do
         solr_fields = %w(
@@ -44,7 +46,7 @@ namespace :orbit do
 
         solr_params = {
           :cursorMark => cursor_mark,
-          :q          => q.query_string,
+          :q          => query_string,
           :fq         => common_fq + ['NOT source_ss:orbit'],
           :rows       => 100,
           :facet      => false,
