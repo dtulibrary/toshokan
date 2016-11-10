@@ -1,4 +1,5 @@
-form.edit_query textarea {
+form[class $= '_query'] textarea {
+  margin-bottom: 5px;
   font-family: monospace;
 }
 
