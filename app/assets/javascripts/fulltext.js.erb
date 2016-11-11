@@ -150,6 +150,11 @@
         "data-toggle"    : "tooltip",
         "data-placement" : "bottom"
       });
+      // If GetIt gives us a link, show it on the index page
+      if (data.url != null) {
+          item.text('');
+          item.append($('<a />', { text: data.list_text, "href": data.url, "target": "_blank" }));
+      }
 
       if (data.tool_tip) {
         $(item).tooltip();
@@ -157,6 +162,10 @@
 
       $(item).prepend("<i class='" + data.icon + "'></i>");
       elm.append(item);
+      // Hide the GetIt link if we have a url - this has to be done after we've added the link to the DOM
+      if (data.url != null) {
+          item.siblings('.getit.pull-right').hide()
+      }
     }
   };
 
