@@ -1,7 +1,17 @@
 require 'json'
 
 namespace :docdelsync do
-  desc "Create missing orders in docdel"
+  task :find_out_of_sync_orders => :environment do
+    orders = Order.where("created_at > '2016-11-01' AND docdel_order_id IS NOT NULL")
+    orders.each do |order|
+      docdel_order = DocDel.show(order.docdel_order_id)
+      docdel_status = ((docdel_order || {})["order_requests"] || []).collect { |order_request| (((order_request || {})["order_status"] || {})["code"] || "") }
+      if docdel_status.any? { |status| status.eql?("deliver") } && !order.order_events.collect { |order_event| order_event.name }.any? { |order_event_name| ["physical_delivery_done", "delivery_done"].include?(order_event_name) }
+        puts "DocDel Order (docdel_order_id: #{order.docdel_order_id}) is marked as delivered. The corresponding Findit Order (uuid: #{order.uuid}) is not marked as delivered. It may be out of sync!"
+      end
+    end
+  end
+
   task :create_missing => :environment do
     print_usage = lambda do
       STDERR.puts ''
