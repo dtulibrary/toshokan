@@ -1,4 +1,4 @@
-<% if can? :view, :search_history && @document['issn_ss'].present? %>
+<% if can?(:view, :search_history) && @document['issn_ss'].present? %>
   <div id="alert_tools" class="well tools">
     <ul class="list-unstyled">
         <li class="nav-header journal-alert-header"><h4><i class="icon-bell"></i><%= t('toshokan.alerts.title') %></h4></li>
