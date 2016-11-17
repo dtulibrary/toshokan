@@ -295,4 +295,41 @@ class LibrarySupport
       '7'       => 'Others',
     }[user.user_data["dtu"]["org_units"].first]
   end
+
+  def fetch_paginated_ids_of_updated_issues_from_redmine(updated_after = DateTime.new, options = {})
+    options["offset"] = options["offset"] || 0
+    options.merge!({"limit" => "100", "sort" => "updated_on:asc"})
+    options.merge!("updated_on" => ">=#{updated_after.strftime("%Y-%m-%d")}") unless updated_after == DateTime.new
+
+    redmine = self.class.redmine
+    reponse = redmine.send_get_request("issues", options) || {"issues" => []}
+
+    issues = reponse["issues"] || []
+
+    issue_ids = issues.collect { |issue| issue["id"] }
+    issue_update_dates = issues.collect { |issue| DateTime.parse(issue["updated_on"]) }
+
+    Struct.new(:issue_ids, :updated_after, :fetch_next_page).new(issue_ids, updated_after, lambda { fetch_paginated_ids_of_updated_issues_from_redmine(updated_after, {"offset" => options["offset"] + 100}) })
+  end
+
+  def fetch_issues_from_redmine(updated_after = DateTime.new, options = {})
+    ids_of_issues_to_update = []
+
+    redmine_issue_page = fetch_paginated_ids_of_updated_issues_from_redmine
+    while not redmine_issue_page.issue_ids.empty? do
+      ids_of_issues_to_update.concat(redmine_issue_page.issue_ids)
+      redmine_issue_page = redmine_issue_page.fetch_next_page.call
+    end
+
+    ids_of_issues_to_update.collect do |issue_id|
+      redmine = self.class.redmine
+      redmine.send_get_request("issues/#{issue_id}", "include" => "journals")
+    end.reject { |issue| issue.nil? }
+  end
+
+  def synchronize_order_events_from_redmine
+    issues = fetch_issues_from_redmine
+    repository = RedmineIssueRepository.new(issues)
+    SynchronizeOrdersWithRedmineIssues.new(repository).call
+  end
 end

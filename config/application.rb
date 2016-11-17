@@ -173,6 +173,12 @@ module Toshokan
         :book_suggestions   => 'book_suggestions',
         :tib_orders_delivered_as_print => 'tib-orders-delivered-as-print',
       },
+      :status_values => {
+        '1' => 'New',
+        '2' => 'Requested/inprocess',
+        '3' => 'Feedback - waiting',
+        '5' => 'Closed',
+      },
       # TODO: When the library support Redmine instance is updated
       #       to version >= 2.4, the custom fields should be retrieved
       #       dynamically from Redmine instead of this hard config.
@@ -181,6 +187,14 @@ module Toshokan
         :dtu_unit => {
           :id   => '1',
           :name => 'DTU Unit',
+        },
+        :document_supplier => {
+          :id   => '2',
+          :name => 'Document Supplier',
+        },
+        :delivery_request_resolved_as => {
+          :id   => '5',
+          :name => 'Delivery Request Resolved As',
         },
         :failed_from => {
           :id   => '10',

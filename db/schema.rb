@@ -118,6 +118,8 @@ ActiveRecord::Schema.define(version: 20161103121841) do
     t.string   "name"
     t.text     "data"
     t.datetime "created_at"
+    t.string   "redmine_issue_id"
+    t.string   "redmine_journal_entry_id"
   end
 
   add_index "order_events", ["name"], name: "index_order_events_on_name"
