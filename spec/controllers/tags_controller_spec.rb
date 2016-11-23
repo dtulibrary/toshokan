@@ -160,9 +160,10 @@ describe TagsController do
         end
 
         context 'when tag does not exist' do
-          it 'is not found' do
-            post :destroy, id: 12345, return_url: root_path
-            expect(response).to be_not_found
+          it 'raises a routing error' do
+            expect {
+              post :destroy, id: 12345, return_url: root_path
+            }.to raise_error(ActionController::RoutingError)
           end
         end
       end
@@ -199,9 +200,10 @@ describe TagsController do
         end
 
         context 'when tag does not exist' do
-          it 'is not found' do
-            get :edit, id: '12345'
-            expect(response).to be_not_found
+          it 'raises a routing error' do
+            expect {
+              get :edit, id: '12345'
+            }.to raise_error(ActionController::RoutingError)
           end
         end
 
@@ -257,17 +259,19 @@ describe TagsController do
           end
 
           context 'without tag_name parameter' do
-            it 'redirects to Authentication Required' do
-              put :update, id: tag.id
-              expect(response).to be_not_found
+            it 'raises a routing error' do
+              expect {
+                put :update, id: tag.id
+              }.to raise_error(ActionController::RoutingError)
             end
           end
         end
 
         context 'when tag does not exist' do
-          it 'is not found' do
-            put :update, id: '12345'
-            expect(response).to be_not_found
+          it 'raises a routing error' do
+            expect {
+              put :update, id: '12345'
+            }.to raise_error(ActionController::RoutingError)
           end
         end
       end

@@ -11,9 +11,10 @@ describe ProgressController do
     end
 
     context 'when progress object does not exist' do
-      it 'returns 404' do
-        xhr :get, :show, :format => :json, :name => 'I don\'t exist'
-        expect(response).to be_not_found
+      it 'raises a routing error' do
+        expect {
+          xhr :get, :show, :format => :json, :name => 'I don\'t exist'
+        }.to raise_error(ActionController::RoutingError)
       end
     end
 

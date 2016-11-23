@@ -282,19 +282,23 @@ class CatalogController < ApplicationController
     rescue Blacklight::Exceptions::InvalidSolrID
 
       # check whether document is available for dtu users if the user does not already have dtu search rights
-      if can? :search, :public
-        @response, @document = get_solr_response_for_doc_id nil, {:fq => ["access_ss:#{Rails.application.config.search[:dtu]}"]}
-        if @document.nil?
-          not_found
-        else
-          if current_user.authenticated?
-            redirect_to authentication_required_catalog_path(:url => request.url)
+      begin
+        if can? :search, :public
+          @response, @document = get_solr_response_for_doc_id nil, {:fq => ["access_ss:#{Rails.application.config.search[:dtu]}"]}
+          if @document.nil?
+            not_found
           else
-            # anonymous user, send to DTU login
-            force_authentication({:only_dtu => true})
+            if current_user.authenticated?
+              redirect_to authentication_required_catalog_path(:url => request.url)
+            else
+              # anonymous user, send to DTU login
+              force_authentication({:only_dtu => true})
+            end
           end
+        else
+          not_found
         end
-      else
+      rescue Blacklight::Exceptions::InvalidSolrID
         not_found
       end
     else

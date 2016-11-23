@@ -98,10 +98,10 @@ describe CatalogController do
 
     context "when document does not exist" do
 
-      it "is not found" do
-        params = {:id => "123456789"}
-        get :show, params
-        expect(response).to be_not_found
+      it "raises a routing error" do
+        expect {
+          get :show, id: '123456789'
+        }.to raise_error(ActionController::RoutingError)
       end
     end
   end

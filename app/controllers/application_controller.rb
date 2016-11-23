@@ -4,7 +4,7 @@ require 'uri'
 class ApplicationController < ActionController::Base
   include Blacklight::Controller
 
-  rescue_from ActionController::RoutingError, :with => :render_not_found
+  #rescue_from ActionController::RoutingError, :with => :render_not_found
 
   protect_from_forgery
 
@@ -230,7 +230,7 @@ class ApplicationController < ActionController::Base
   # Call this to bail out quickly and easily when something is not found.
   # It will be rescued and rendered as a 404
   def not_found
-    raise ActionController::RoutingError.new 'Not found'
+    raise ActionController::RoutingError.new 'Not Found'
   end
 
   # Render 401

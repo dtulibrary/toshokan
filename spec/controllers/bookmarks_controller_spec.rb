@@ -110,9 +110,10 @@ describe BookmarksController do
       end
 
       context 'when bookmark does not exist' do
-        it 'is not found' do
-          post :destroy, :id => document.id, :return_url => root_path
-          expect(response).to be_not_found
+        it 'raises a routing error' do
+          expect {
+            post :destroy, :id => document.id, :return_url => root_path
+          }.to raise_error(ActionController::RoutingError)
         end
       end
     end
