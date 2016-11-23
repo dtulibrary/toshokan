@@ -17,7 +17,7 @@ en:
         thesis:
         report:
         standard:
-          - '<a href="http://sd.ds.dk" target="_blank">Danish Standards</a> &mdash; national standardisation organisation in Denmark (with full texts)'
+          - '<a href="http://sd.ds.dk.proxy.findit.dtu.dk" target="_blank">Danish Standards</a> &mdash; national standardisation organisation in Denmark (with full texts)'
         patent:
           - '<a href="http://www.epo.org/searching/free/espacenet.html" target="_blank">Espacenet</a> patent search'
         other:
