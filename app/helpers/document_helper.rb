@@ -86,4 +86,9 @@ module DocumentHelper
     args[:document][args[:field]].each_with_index.map {|aff, i| "<span class=\"affiliation\"><sup>#{i+1}</sup> #{aff}</span>" }.join('<hr style="margin: 0.25em 0">').html_safe
   end
 
+  def render_iso_language(args)
+    args[:document][args[:field]].map {|iso_lang| I18n.t("toshokan.iso_languages.#{iso_lang}", default: iso_lang)}
+                                 .join('<br>')
+                                 .html_safe
+  end
 end

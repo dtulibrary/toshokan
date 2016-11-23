@@ -127,7 +127,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'isbn_ss'
     config.add_show_field 'issn_ss'
     config.add_show_field 'doi_ss'
-    config.add_show_field 'language_ss'
+    config.add_show_field 'language_ss', :helper_method => :render_iso_language
     config.add_show_field 'abstract_ts'
     config.add_show_field 'keywords_ts', :helper_method => :render_keyword_links
     config.add_show_field 'subformat_s', :helper_method => :render_subtype

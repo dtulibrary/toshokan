@@ -48,7 +48,7 @@ Then I should see "Institute of Technology and Innovation, Faculty of Engineerin
 
 Scenario: View patent language
 When I go to the record page for "Apparatus for loading and unloading a cargo compartment of an aircraft"
-Then I should see "Language: eng"
+Then I should see "Language: English"
 
 Scenario: View patent doctype
 When I go to the record page for "177-Lu labeled peptide for site-specific uPAR-targeting"
