@@ -12,7 +12,7 @@ en:
         conference_article:
           - '<a href="http://scholar.google.com" target="_blank">Google Scholar</a>'
         book:
-          - 'Danish union catalogue, <a href="http://www.bibliotek.dk" target="_blank">bibliotek.dk</a>'
+          - 'Danish union catalogue, <a href="http://www.bibliotek.dk/eng" target="_blank">bibliotek.dk</a>'
           - '<a href="http://books.google.com" target="_blank">Google Books</a>'
         thesis:
         report:

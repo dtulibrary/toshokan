@@ -771,7 +771,7 @@ en:
             search result by using the search filters. For more information on searching, check out the
             <a href="http://api.libguides.com/api_box.php?iid=3935&bid=14174533" target="_blank">General search help</a>.
           for_books_html:
-            For books, the Danish union catalogue, <a href="http://www.bibliotek.dk/?lingo=eng" target="_blank">bibliotek.dk</a> or
+            For books, the Danish union catalogue, <a href="http://www.bibliotek.dk/eng" target="_blank">bibliotek.dk</a> or
             <a href="http://books.google.com" target="_blank">Google Books</a> might have what you are searching for.
           for_articles_html:
             For journal articles and conference articles,
