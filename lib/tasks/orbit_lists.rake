@@ -53,7 +53,7 @@ namespace :orbit do
           :sort       => 'id asc'
         }
 
-        response = solr.get('toshokan', params: solr_params)
+        response = solr.post('toshokan', params: solr_params)
         print "Processing #{response['response']['numFound']} results: " if cursor_mark == '*'
 
         if response['cursorMark'] == cursor_mark
@@ -65,10 +65,7 @@ namespace :orbit do
           response['response']['docs'].each do |doc|
             dedup = doc['cluster_id_ss'].first
 
-            # We don't want docs to be included in the results for more than one query (the first one that is run).
-            # This enables us to create catch-all queries that, when run after all the normal queries are run,
-            # will search on very loose criteria that will probably also match a lot of the docs matched
-            # by the normal queries without having the results from the pre
+            # Skip document if it was processed by previous queries
             next if seen_docs.include?(dedup)
 
             # Check for similar already registered document in ORBIT
@@ -78,10 +75,10 @@ namespace :orbit do
               :rows  => 1,
               :facet => false
             }
-            duplicate_response = solr.get('toshokan', params: duplicate_params)
+            duplicate_response = solr.post('toshokan', params: duplicate_params)
             duplicate          = duplicate_response['response']['docs'].first
 
-            # Create the result document unless it exists and is ignored
+            # Create the result document unless it exists and is rejected
             doc_params = {
               :query       => q,
               :document_id => doc['cluster_id_ss'].first,
