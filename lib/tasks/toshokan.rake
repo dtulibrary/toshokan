@@ -7,6 +7,10 @@ if Rails.env == "test"
 end
 
 namespace :orders do
+  task :synchronize_with_redmine => :environment do
+    LibrarySupport.new.synchronize_order_events_from_redmine
+  end
+
   task :retrofit_org_units => :environment do
     if ENV['DTUBASE_URL']
       counter = {
