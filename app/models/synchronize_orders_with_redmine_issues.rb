@@ -23,7 +23,7 @@ class SynchronizeOrdersWithRedmineIssues
 
   def get_order_by_redmine_issue_id(issue_id)
     null_order_event = Struct.new(:order).new(nil)
-    (OrderEvent.where(:name => "delivery_manual", :data => issue_id).first || null_order_event).order
+    (OrderEvent.where(:name => "delivery_manual", :data => issue_id.to_s).first || null_order_event).order
   end
 
   def remove_old_events(events, order)
