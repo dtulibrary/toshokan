@@ -33,4 +33,8 @@ class RedmineIssueRepository
       ["id", "notes", "created_on"].inject({}) { |previous_value,key| previous_value.merge({key => journal_entry[key]}) }.merge("issue_id" => issue["issue"]["id"])
     end
   end
+
+  def latest_issue_update_time
+    @issues.collect { |issue| DateTime.parse(issue["issue"]["updated_on"]) }.sort.last || DateTime.new
+  end
 end

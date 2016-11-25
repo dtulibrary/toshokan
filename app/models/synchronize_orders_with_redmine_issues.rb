@@ -11,23 +11,29 @@ class SynchronizeOrdersWithRedmineIssues
       journal_entries = @redmine_issue_repository.journal_entries(redmine_issue_id)
       journal_notes = @redmine_issue_repository.journal_notes(redmine_issue_id)
 
-      events = (journal_notes.collect { |journal_note| map_journal_note_to_order_event(journal_note, order) } + journal_entries.collect { |journal_entry| map_journal_entry_to_order_event(journal_entry, order) }).reject { |order_event| order_event.nil? }
+      events = map_journal_entries_and_journal_notes_to_order_events(journal_entries, journal_notes, order)
       events = remove_old_events(events, order)
 
       order.order_events.concat(events)
       order.save!
     end
+
+    RedmineSynchronization.new("runtime" => DateTime.now, "latest_issue_update_time" => @redmine_issue_repository.latest_issue_update_time).save!
   end
 
   private
+
+  def map_journal_entries_and_journal_notes_to_order_events(journal_entries, journal_notes, order)
+    (journal_notes.collect { |journal_note| map_journal_note_to_order_event(journal_note, order) } + journal_entries.collect { |journal_entry| map_journal_entry_to_order_event(journal_entry, order) }).reject { |order_event| order_event.nil? }
+  end
 
   def get_order_by_redmine_issue_id(issue_id)
     null_order_event = Struct.new(:order).new(nil)
     (OrderEvent.where(:name => "delivery_manual", :data => issue_id.to_s).first || null_order_event).order
   end
 
-  def remove_old_events(events, order)
-    events.reject { |new_order_event| order.order_events.any? { |old_order_event| old_order_event.name == new_order_event.name && old_order_event.redmine_journal_entry_id == new_order_event.redmine_journal_entry_id } }
+  def remove_old_events(events_to_filter, order)
+    events_to_filter.reject { |new_order_event| order.order_events.any? { |old_order_event| old_order_event.name == new_order_event.name && old_order_event.redmine_journal_entry_id == new_order_event.redmine_journal_entry_id } }
   end
 
   def map_journal_entry_to_order_event(journal_entry, order = nil)

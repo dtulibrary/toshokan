@@ -327,8 +327,8 @@ class LibrarySupport
     end.reject { |issue| issue.nil? }
   end
 
-  def synchronize_order_events_from_redmine
-    issues = fetch_issues_from_redmine
+  def synchronize_order_events_from_redmine(updated_after = DateTime.new)
+    issues = fetch_issues_from_redmine(updated_after)
     repository = RedmineIssueRepository.new(issues)
     SynchronizeOrdersWithRedmineIssues.new(repository).call
   end

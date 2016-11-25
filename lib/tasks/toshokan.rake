@@ -8,7 +8,8 @@ end
 
 namespace :orders do
   task :synchronize_with_redmine => :environment do
-    LibrarySupport.new.synchronize_order_events_from_redmine
+    latest_redmine_synchronization = RedmineSynchronization.order(:latest_issue_update_time => :desc).first || Struct.new(:latest_issue_update_time).new(DateTime.new)
+    LibrarySupport.new.synchronize_order_events_from_redmine(latest_redmine_synchronization.latest_issue_update_time)
   end
 
   task :retrofit_org_units => :environment do

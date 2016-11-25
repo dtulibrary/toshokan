@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161103121841) do
+ActiveRecord::Schema.define(version: 20161125094526) do
 
   create_table "assistance_requests", force: true do |t|
     t.string   "type"
@@ -192,6 +192,11 @@ ActiveRecord::Schema.define(version: 20161103121841) do
     t.integer  "query_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "redmine_synchronizations", force: true do |t|
+    t.datetime "runtime"
+    t.datetime "latest_issue_update_time"
   end
 
   create_table "roles", force: true do |t|
