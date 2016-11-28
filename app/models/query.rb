@@ -29,7 +29,7 @@ class Query < ActiveRecord::Base
   end
 
   def self.normalize(query_string)
-    query_string.strip.squeeze
+    query_string.split.join(' ')
   end
 
   # Combine this query and the common filter query
