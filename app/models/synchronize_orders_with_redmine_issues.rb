@@ -14,6 +14,7 @@ class SynchronizeOrdersWithRedmineIssues
       events = map_journal_entries_and_journal_notes_to_order_events(journal_entries, journal_notes, order)
       events = remove_old_events(events, order)
 
+      # TODO TLNI: Set order.delivery_status
       order.order_events.concat(events)
       order.save!
     end
