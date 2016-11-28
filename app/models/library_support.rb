@@ -315,7 +315,7 @@ class LibrarySupport
   def fetch_issues_from_redmine(updated_after = DateTime.new, options = {})
     ids_of_issues_to_update = []
 
-    redmine_issue_page = fetch_paginated_ids_of_updated_issues_from_redmine
+    redmine_issue_page = fetch_paginated_ids_of_updated_issues_from_redmine(updated_after, options)
     while not redmine_issue_page.issue_ids.empty? do
       ids_of_issues_to_update.concat(redmine_issue_page.issue_ids)
       redmine_issue_page = redmine_issue_page.fetch_next_page.call
