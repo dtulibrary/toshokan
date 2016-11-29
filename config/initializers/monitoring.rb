@@ -19,7 +19,7 @@ class Monitor
         "events",
         { app: Rails.application.config.monitoring_id },
         { status: status },
-        Time.now.to_i)
+        (Time.now.to_f * 1000).round)
     end
   end
 
@@ -29,7 +29,7 @@ class Monitor
         "search_response_time",
         { app: Rails.application.config.monitoring_id },
         { value: duration, path: path, status: status},
-        Time.now.to_i)
+        (Time.now.to_f * 1000).round)
     end
   end
 
