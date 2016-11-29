@@ -72,8 +72,8 @@ class SynchronizeOrdersWithRedmineIssues
       "created_at" => DateTime.parse(journal_entry["created_on"]),
       "name" => order_event_name,
       "data" => order_event_data,
-      "redmine_issue_id" => journal_entry["issue_id"],
-      "redmine_journal_entry_id" => journal_entry["journal_entry_id"],
+      "redmine_issue_id" => journal_entry["issue_id"].to_s,
+      "redmine_journal_entry_id" => journal_entry["journal_entry_id"].to_s,
     })
   end
 
@@ -91,8 +91,8 @@ class SynchronizeOrdersWithRedmineIssues
       "created_at" => DateTime.parse(journal_note["created_on"]),
       "name" => "note",
       "data" => journal_note["notes"],
-      "redmine_journal_entry_id" => journal_note["id"],
-      "redmine_issue_id" => journal_note["issue_id"]
+      "redmine_journal_entry_id" => journal_note["id"].to_s,
+      "redmine_issue_id" => journal_note["issue_id"].to_s
     })
   end
 end
