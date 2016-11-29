@@ -89,7 +89,8 @@ module RSolr
 
     def monitor_query_time(time_taken, query, retries, cache_hit)
       if Rails.application.config.try(:monitoring_id) && Rails.application.config.monitoring_id.present?
-        DtuMonitoring::InfluxWriter.delay.write(
+        query = "blank" unless query.present?
+        DtuMonitoring::InfluxWriter.delay(priority: 10).write(
           "solr_response_time",
           { app: Rails.application.config.monitoring_id },
           { value: time_taken, q: query, retries: retries, cache_hit: cache_hit },

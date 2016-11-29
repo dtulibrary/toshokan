@@ -15,7 +15,7 @@ end
 class Monitor
   def self.server_error(status)
     if enabled?
-      DtuMonitoring::InfluxWriter.delay.write(
+      DtuMonitoring::InfluxWriter.delay(priority: 0).write(
         "events",
         { app: Rails.application.config.monitoring_id },
         { status: status },
@@ -25,7 +25,7 @@ class Monitor
 
   def self.response_time(duration, path, status)
     if enabled?
-      DtuMonitoring::InfluxWriter.delay.write(
+      DtuMonitoring::InfluxWriter.delay(priority: 0).write(
         "search_response_time",
         { app: Rails.application.config.monitoring_id },
         { value: duration, path: path, status: status},
