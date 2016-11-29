@@ -298,7 +298,7 @@ class LibrarySupport
 
   def fetch_paginated_ids_of_updated_issues_from_redmine(updated_after = DateTime.new, options = {})
     options["offset"] = options["offset"] || 0
-    options.merge!({"limit" => "100", "sort" => "updated_on:asc"})
+    options.merge!({"limit" => "100", "sort" => "updated_on:asc", "status_id" => "*"})
     options.merge!("updated_on" => ">=#{updated_after.strftime("%Y-%m-%d")}") unless updated_after == DateTime.new
 
     redmine = self.class.redmine
