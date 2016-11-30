@@ -328,7 +328,12 @@ class LibrarySupport
   end
 
   def synchronize_order_events_from_redmine(updated_after = DateTime.new)
+    Rails.logger.info "Synchronizing orders with events from Redmine that are newer than #{updated_after.strftime("%Y-%m-%d")}"
+
+    Rails.logger.debug "Fetching Redmine isuess ..."
     issues = fetch_issues_from_redmine(updated_after)
+    Rails.logger.debug "#{issues.length} issue(s) fetched."
+
     repository = RedmineIssueRepository.new(issues)
     SynchronizeOrdersWithRedmineIssues.new(repository).call
   end
