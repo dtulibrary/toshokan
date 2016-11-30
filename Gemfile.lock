@@ -16,9 +16,9 @@ GIT
 
 GIT
   remote: git://github.com/dtulibrary/dtu_rails_common.git
-  revision: 82a295ba83321be2dd6c6aa53e03b5dfc78f17c0
+  revision: 1908a3b2e4a1a13bd4872a3591929a772ae84da8
   specs:
-    dtu_rails_common (0.0.4)
+    dtu_rails_common (0.0.5)
       bootstrap-sass (~> 3.3.0)
       devise (~> 3.4.1)
       httparty
@@ -130,6 +130,13 @@ GEM
       csl (~> 1.2)
     code_analyzer (0.4.5)
       sexp_processor
+    coffee-rails (4.1.1)
+      coffee-script (>= 2.2.0)
+      railties (>= 4.0.0, < 5.1.x)
+    coffee-script (2.4.1)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.10.0)
     colored (1.2)
     columnize (0.8.9)
     crack (0.4.2)
@@ -410,6 +417,9 @@ GEM
       crack (>= 0.3.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
+    xray-rails (0.1.18)
+      coffee-rails
+      rails (>= 3.1.0)
 
 PLATFORMS
   ruby
@@ -434,7 +444,7 @@ DEPENDENCIES
   database_cleaner
   delayed_job_active_record
   dtu_monitoring (= 1.2.2)!
-  dtu_rails_common (~> 0.0.4)!
+  dtu_rails_common (= 0.0.5)!
   eventmachine (~> 1.0.0.rc4)
   factory_girl_rails (~> 4.0)
   feature_flipper
@@ -478,4 +488,5 @@ DEPENDENCIES
   unicode
   uuidtools
   webmock
+  xray-rails
 

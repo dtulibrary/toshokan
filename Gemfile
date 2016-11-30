@@ -5,7 +5,7 @@ gem 'activerecord-session_store'
 
 gem 'jquery-rails', '~> 2.3.0'
 gem 'blacklight', '~> 5.7'
-gem 'dtu_rails_common', '~> 0.0.4', :github => 'dtulibrary/dtu_rails_common'
+gem 'dtu_rails_common', '0.0.5', :github => 'dtulibrary/dtu_rails_common'
 gem 'dtu_monitoring', '1.2.2', :github => 'dtulibrary/dtu_monitoring'
 gem 'unicode'
 
@@ -64,6 +64,7 @@ group :test, :development do
 end
 
 group :development do
+  gem 'xray-rails'
   gem 'sass'
   gem 'brakeman'
   gem 'rails_best_practices'
