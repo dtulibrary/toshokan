@@ -52,7 +52,7 @@ Then I should see "Language: English"
 
 Scenario: View patent doctype
 When I go to the record page for "177-Lu labeled peptide for site-specific uPAR-targeting"
-Then I should see "Document type: Patent"
+Then I should see "Types: Other (Patent)"
 
 Scenario: View Journal Subtitle
   When I go to the record page for "Talent among Chinese Entrepreneurs at Home and Abroad"

@@ -79,4 +79,19 @@ describe DocumentHelper do
     end
   end
 
+  describe '#render_types' do
+    it 'calls out to #render_type when 3-part types are missing' do
+      expect(helper).to receive(:render_type)
+      helper.render_types(document: {'format' => 'article'}, field: 'types_ss')
+    end
+
+    it 'returns value from #render_type when 3-part types are missing' do
+      expect(helper.render_types(document: {'types_ss' => ['bib:article'], 'format' => 'article'}, field: 'types_ss')).to eq 'Article'
+    end
+
+    it 'combines tranlations for format and subformat' do
+      expected_value = "#{I18n.t 'toshokan.catalog.formats.article'} (#{I18n.t 'toshokan.catalog.subformats.journal_article'})"
+      expect(helper.render_types(document: {'types_ss' => ['bib:article:journal_article']}, field: 'types_ss')).to eq expected_value
+    end
+  end
 end

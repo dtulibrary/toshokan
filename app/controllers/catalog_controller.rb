@@ -121,8 +121,8 @@ class CatalogController < ApplicationController
     config.add_show_field 'journal_page_ssf', :format => ['book']
     config.add_show_field 'journal_title_ts', :format => ['article','thesis','other'], :helper_method => :render_journal_info_show
     config.add_show_field 'conf_title_ts', :helper_method => :render_conference_info_show
-    config.add_show_field 'format', :helper_method => :render_type
-    #config.add_show_field 'subformat_s', :helper_method => :render_subtype
+    config.add_show_field 'format', helper_method: :render_type, suppressed_by: ['types_ss']
+    config.add_show_field 'types_ss', helper_method: :render_types, separator: '; '
     config.add_show_field 'publisher_ts'
     config.add_show_field 'isbn_ss'
     config.add_show_field 'issn_ss'
@@ -130,7 +130,6 @@ class CatalogController < ApplicationController
     config.add_show_field 'language_ss', :helper_method => :render_iso_language
     config.add_show_field 'abstract_ts'
     config.add_show_field 'keywords_ts', :helper_method => :render_keyword_links
-    config.add_show_field 'subformat_s', :helper_method => :render_subtype
     config.add_show_field 'udc_ss'
     config.add_show_field 'dissertation_date_ssf', :helper_method => :render_dissertation_date, :format => ['thesis']
     config.add_show_field 'supervisor_ts', :helper_method => :render_author_links

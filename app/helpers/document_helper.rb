@@ -4,6 +4,21 @@ module DocumentHelper
     I18n.t("toshokan.catalog.formats.#{args[:document][args[:field]]}")
   end
 
+  def render_types(args)
+    values = (args[:document][args[:field]] || []).map {|type| type.split(':')}
+    return render_type(args.merge(field: 'format')) unless values.any? {|parts| parts.length == 3}
+
+    lookup = -> (n, v) { I18n.t "toshokan.catalog.#{n}.#{v}" }
+
+    (args[:document][args[:field]] || [])
+      .map {|type| type.split(':')}
+      .select {|parts| parts.length == 3}
+      .map {|parts| parts[1..2]}
+      .map {|format,subformat| "#{lookup.('formats', format)} (#{lookup.('subformats', subformat)})"}
+      .join(args[:separator] || '; ')
+      .html_safe
+  end
+
   def render_subtype args
     I18n.t("toshokan.catalog.subformats.#{args[:document][args[:field]]}")
   end
