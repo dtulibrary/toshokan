@@ -592,6 +592,7 @@ en:
         yes_please_dtu_html: Yes please &mdash; I'm from DTU.
         no_thanks: "No thanks."
       orders: "Orders"
+      queries: 'ORBIT lists'
     tags:
       all: "All"
       untagged: "Untagged"

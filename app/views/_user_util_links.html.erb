@@ -93,6 +93,13 @@
             <% end %>
           </li>
         <% end %>
+        <% if can? :manage, Query %>
+          <li>
+            <%= link_to queries_index_path do %>
+              <i class="icon-bell"></i> <%= t 'toshokan.header_links.queries' %>
+            <% end %>
+          </li>
+        <% end %>
         <% if can? :logout, User %>
           <li>
             <%= link_to destroy_user_session_path(:return_url => root_path) do %>
