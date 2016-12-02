@@ -61,9 +61,14 @@ class SynchronizeOrdersWithRedmineIssues
       order_event_data = ""
     end
 
-    if "cf" == journal_entry["property"] && "Delivery Request Resolved As" == map_custom_field_id_to_custom_field_name(journal_entry["name"])
+    if "cf" == journal_entry["property"] && "Delivery Request Resolved As" == map_custom_field_id_to_custom_field_name(journal_entry["name"]) && journal_entry["new_value"] != ""
       order_event_name = "resolved"
       order_event_data = journal_entry["new_value"]
+    end
+
+    if "cf" == journal_entry["property"] && "Delivery Request Resolved As" == map_custom_field_id_to_custom_field_name(journal_entry["name"]) && journal_entry["new_value"] == ""
+      order_event_name = "not_resolved"
+      order_event_data = ""
     end
 
     if "cf" == journal_entry["property"] && "Document Supplier" == map_custom_field_id_to_custom_field_name(journal_entry["name"])
