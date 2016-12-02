@@ -1,5 +1,61 @@
 require 'rails_helper'
 
+describe SynchronizeOrderStatusWithRedmineIssue do
+  it "marks the order as delivered when it has been marked as a 'TIB - DRM' in Redmine" do
+    order = FactoryGirl.create :order, :delivery_status => :initiated
+    JSON.parse('[{"id":180483,"name":"note","data":"GI129962161290","created_at":"2016-11-02T08:44:55.000+01:00","redmine_issue_id":"15248","redmine_journal_entry_id":"24371"},{"id":180484,"name":"requested_or_inprocess","data":"","created_at":"2016-11-02T08:44:55.000+01:00","redmine_issue_id":"15248","redmine_journal_entry_id":"24371"},{"id":180485,"name":"document_supplier_changed","data":"TIB Hannover","created_at":"2016-11-02T08:44:55.000+01:00","redmine_issue_id":"15248","redmine_journal_entry_id":"24371"},{"id":180486,"name":"closed","data":"","created_at":"2016-11-02T15:03:59.000+01:00","redmine_issue_id":"15248","redmine_journal_entry_id":"24405"},{"id":180487,"name":"resolved","data":"TIB - DRM","created_at":"2016-11-02T15:03:59.000+01:00","redmine_issue_id":"15248","redmine_journal_entry_id":"24405"},{"id":126698,"name":"delivery_manual","data":"15248","created_at":"2016-11-01T13:46:13.392+01:00","redmine_issue_id":null,"redmine_journal_entry_id":null},{"id":126208,"name":"delivery_requested","data":null,"created_at":"2016-10-28T18:51:22.881+02:00","redmine_issue_id":null,"redmine_journal_entry_id":null},{"id":126697,"name":"delivery_cancelled","data":"Bortkommet","created_at":"2016-11-01T13:46:10.509+01:00","redmine_issue_id":null,"redmine_journal_entry_id":null}]').each { |h| FactoryGirl.create :order_event, h.merge(:order => order) }
+
+    SynchronizeOrderStatusWithRedmineIssue.new(order).call
+
+    expect(order.delivery_status).to be(:deliver)
+  end
+
+  it "marks the order as delivered when it has been marked as a 'TIB - Print' in Redmine" do
+    order = FactoryGirl.create :order, :delivery_status => :initiated
+    JSON.parse('[{"id":182218,"name":"note","data":"TIBSUBITO:GI127291360191","created_at":"2016-11-21T12:38:00.000+01:00","redmine_issue_id":"15512","redmine_journal_entry_id":"24917"},{"id":182219,"name":"requested_or_inprocess","data":"","created_at":"2016-11-21T12:38:00.000+01:00","redmine_issue_id":"15512","redmine_journal_entry_id":"24917"},{"id":182220,"name":"document_supplier_changed","data":"TIB Hannover","created_at":"2016-11-21T12:38:00.000+01:00","redmine_issue_id":"15512","redmine_journal_entry_id":"24917"},{"id":182221,"name":"closed","data":"","created_at":"2016-11-24T13:05:11.000+01:00","redmine_issue_id":"15512","redmine_journal_entry_id":"25058"},{"id":182222,"name":"resolved","data":"TIB - Print","created_at":"2016-11-24T13:05:11.000+01:00","redmine_issue_id":"15512","redmine_journal_entry_id":"25058"},{"id":129071,"name":"delivery_manual","data":"15512","created_at":"2016-11-15T14:14:26.075+01:00","redmine_issue_id":null,"redmine_journal_entry_id":null},{"id":129070,"name":"request_manual","data":"8457","created_at":"2016-11-15T14:14:23.235+01:00","redmine_issue_id":null,"redmine_journal_entry_id":null}]').each { |h| FactoryGirl.create :order_event, h.merge(:order => order) }
+
+    SynchronizeOrderStatusWithRedmineIssue.new(order).call
+
+    expect(order.delivery_status).to be(:deliver)
+  end
+
+  it "marks the order as cancelled when it has been marked as 'Duplicate' in Redmine" do
+    order = FactoryGirl.create :order, :delivery_status => :initiated
+    JSON.parse('[{"id":181248,"name":"closed","data":"","created_at":"2016-11-15T07:47:08.000+01:00","redmine_issue_id":"15491","redmine_journal_entry_id":"24724"},{"id":181249,"name":"resolved","data":"Duplicate request","created_at":"2016-11-15T07:47:08.000+01:00","redmine_issue_id":"15491","redmine_journal_entry_id":"24724"},{"id":128889,"name":"request_manual","data":"8451","created_at":"2016-11-14T18:14:04.743+01:00","redmine_issue_id":null,"redmine_journal_entry_id":null},{"id":128906,"name":"delivery_manual","data":"15491","created_at":"2016-11-14T18:31:40.015+01:00","redmine_issue_id":null,"redmine_journal_entry_id":null}]').each { |h| FactoryGirl.create :order_event, h.merge(:order => order) }
+
+    SynchronizeOrderStatusWithRedmineIssue.new(order).call
+
+    expect(order.delivery_status).to be(:cancelled)
+  end
+
+  it "marks the order as cancelled when it has been marked as 'Rejected' in Redmine" do
+    order = FactoryGirl.create :order, :delivery_status => :initiated
+    JSON.parse('[{"id":181806,"name":"closed","data":"","created_at":"2016-11-22T09:40:44.000+01:00","redmine_issue_id":"15595","redmine_journal_entry_id":"24937"},{"id":181807,"name":"document_supplier_changed","data":"DTU Library","created_at":"2016-11-22T09:40:44.000+01:00","redmine_issue_id":"15595","redmine_journal_entry_id":"24937"},{"id":181808,"name":"resolved","data":"Rejected - Requested ressource is in DTU Findit","created_at":"2016-11-22T09:40:44.000+01:00","redmine_issue_id":"15595","redmine_journal_entry_id":"24937"},{"id":129601,"name":"delivery_manual","data":"15595","created_at":"2016-11-18T13:03:12.037+01:00","redmine_issue_id":null,"redmine_journal_entry_id":null},{"id":129596,"name":"request_manual","data":"8501","created_at":"2016-11-18T12:58:23.578+01:00","redmine_issue_id":null,"redmine_journal_entry_id":null}]').each { |h| FactoryGirl.create :order_event, h.merge(:order => order) }
+
+    SynchronizeOrderStatusWithRedmineIssue.new(order).call
+
+    expect(order.delivery_status).to be(:cancelled)
+  end
+
+  it "marks the order as delivered when it has been marked as a 'Success' in Redmine" do
+    order = FactoryGirl.create :order, :delivery_status => :initiated
+    JSON.parse('[{"id":183052,"name":"delivery_manual","data":"15744","created_at":"2016-11-30T09:13:48.964+01:00","redmine_issue_id":null,"redmine_journal_entry_id":null},{"id":183051,"name":"request_manual","data":"8604","created_at":"2016-11-30T09:13:43.519+01:00","redmine_issue_id":null,"redmine_journal_entry_id":null},{"id":183212,"name":"closed","data":"","created_at":"2016-11-30T12:55:45.000+01:00","redmine_issue_id":"15744","redmine_journal_entry_id":"25298"},{"id":183213,"name":"document_supplier_changed","data":"DTU Library","created_at":"2016-11-30T12:55:45.000+01:00","redmine_issue_id":"15744","redmine_journal_entry_id":"25298"},{"id":183214,"name":"resolved","data":"Success - Document retrieved and delivered to user","created_at":"2016-11-30T12:55:45.000+01:00","redmine_issue_id":"15744","redmine_journal_entry_id":"25298"}]').each { |h| FactoryGirl.create :order_event, h.merge(:order => order) }
+
+    SynchronizeOrderStatusWithRedmineIssue.new(order).call
+
+    expect(order.delivery_status).to be(:deliver)
+  end
+
+  it "marks the order as cancelled when it has been marked as 'Terminated' in Redmine" do
+    order = FactoryGirl.create :order, :delivery_status => :initiated
+    JSON.parse('[{"id":182974,"name":"delivery_manual","data":"15733","created_at":"2016-11-29T17:18:06.385+01:00","redmine_issue_id":null,"redmine_journal_entry_id":null},{"id":183142,"name":"note","data":"henvist til AQUAs eget bibliotek i Charlottenlund","created_at":"2016-11-30T08:05:12.000+01:00","redmine_issue_id":"15733","redmine_journal_entry_id":"25271"},{"id":183143,"name":"closed","data":"","created_at":"2016-11-30T08:05:12.000+01:00","redmine_issue_id":"15733","redmine_journal_entry_id":"25271"},{"id":183144,"name":"resolved","data":"Terminated - Other reason (state reason in issue)","created_at":"2016-11-30T08:05:12.000+01:00","redmine_issue_id":"15733","redmine_journal_entry_id":"25271"}]').each { |h| FactoryGirl.create :order_event, h.merge(:order => order) }
+
+    SynchronizeOrderStatusWithRedmineIssue.new(order).call
+
+    expect(order.delivery_status).to be(:cancelled)
+  end
+end
+
 describe SynchronizeOrdersWithRedmineIssues do
   it "does nothing when no issues are given" do
     order = FactoryGirl.create :order

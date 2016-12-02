@@ -17,11 +17,12 @@ class SynchronizeOrdersWithRedmineIssues
       events = map_journal_entries_and_journal_notes_to_order_events(journal_entries, journal_notes, order)
       events = remove_old_events(events, order)
 
-      # TODO TLNI: Set order.delivery_status
       order.order_events.concat(events)
       order.save!
 
       Rails.logger.info "Updated order (id=#{order.id}) with #{events.length} new order event(s)."
+
+      SynchronizeOrderStatusWithRedmineIssue.new(order).call
     end
 
     RedmineSynchronization.new("runtime" => DateTime.now, "latest_issue_update_time" => @redmine_issue_repository.latest_issue_update_time).save!
