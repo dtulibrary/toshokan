@@ -74,9 +74,6 @@ module RSolr
         log_message = {:status => response[:status], :cache => (cache_hit ? :hit : :miss ), :params => params, :time => '%.1f ms' % ((Time.now.to_f - bench_start.to_f) * 1000), :retries => retries}
         Rails.logger.info("RSolr#execute #{log_message.to_json}")
 
-        # Send statistics to Grafana
-        time_taken = (Time.now - bench_start) * 1000
-        monitor_query_time(time_taken, params["q"], retries, cache_hit)
       # catch the undefined closed? exception -- this is a confirmed ruby bug
       rescue NoMethodError
         $!.message == "undefined method `closed?' for nil:NilClass" ?
@@ -86,19 +83,5 @@ module RSolr
 
       response
     end
-
-    def monitor_query_time(time_taken, query, retries, cache_hit)
-      if Rails.application.config.try(:monitoring_id) && Rails.application.config.monitoring_id.present?
-        query = "blank" unless query.present?
-        DtuMonitoring::InfluxWriter.delay(priority: 10).write(
-          "solr_response_time",
-          { app: Rails.application.config.monitoring_id },
-          { value: time_taken, q: query, retries: retries, cache_hit: cache_hit },
-          Time.now.to_i
-        )
-      end
-    end
-
   end
-
 end
