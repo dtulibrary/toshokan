@@ -19,7 +19,7 @@ module IsiHelper
       " "
     end)
     .concat(content_tag(:div, {id: 'web_of_science_citation_count', class: 'badge hide'}) do
-      link_to("","", {style: 'color: inherit; text-decoration: inherit;', target: '_blank'})
+      link_to("","", {style: 'color: inherit; text-decoration: inherit;', target: '_blank', title: t('toshokan.tools.metrics.isi.title')})
     end)
   end
 end

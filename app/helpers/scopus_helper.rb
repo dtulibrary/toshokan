@@ -19,7 +19,7 @@ module ScopusHelper
       " "
     end)
     .concat(content_tag(:div, {id: 'elsevier_citation_count', class: 'badge hide'}) do
-      link_to("","", {style: 'color: inherit; text-decoration: inherit;', target: '_blank'})
+      link_to("","", {style: 'color: inherit; text-decoration: inherit;', target: '_blank', title: t('toshokan.tools.metrics.scopus.title')})
     end)
   end
 end
