@@ -947,3 +947,16 @@ en:
     assistance_resolver:
       question: Was this what you were looking for?
       answer: No, please send my request
+  errors_controller:
+    "401":
+      title: Access Denied
+      message: "You are not allowed to access this resource"
+    "404":
+      title: Not found
+      message:  "The resource you were looking for does not exist"
+    "422":
+      title: Change rejected
+      message: "The change you requested was rejected"
+    "500":
+      title: Internal system error
+      message: "Something went wrong while processing your request. Please try again later or contact us."

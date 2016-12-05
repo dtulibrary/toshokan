@@ -2,8 +2,13 @@
 ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*args|
     data = args.extract_options!
     status = data[:status] || 0
-    if [500, 503].include?(status)
-      Monitor.server_error(status)
+    if status == 500
+      message = {
+        status: status,
+        path: data[:path],
+        action: "#{data[:params]['controller']}##{data[:params]['action']}"
+      }
+      Monitor.server_error(message)
     elsif data[:controller] == 'CatalogController' && data[:action] == 'index'
       event = ActiveSupport::Notifications::Event.new(*args, data)
       path = data[:path] || ''
@@ -13,12 +18,12 @@ ActiveSupport::Notifications.subscribe "process_action.action_controller" do |*a
 end
 
 class Monitor
-  def self.server_error(status)
+  def self.server_error(messages)
     if enabled?
       DtuMonitoring::InfluxWriter.delay(priority: 0).write(
         "events",
         { app: Rails.application.config.monitoring_id },
-        { status: status },
+        messages,
         (Time.now.to_f * 1000).round)
     end
   end

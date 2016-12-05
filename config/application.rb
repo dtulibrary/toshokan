@@ -73,8 +73,8 @@ module Toshokan
     config.time_zone                      = 'CET'
     config.active_record.default_timezone = :local
 
-    # Errors handler
-    config.exceptions_app = self.routes
+    # Errors handler - invoke show action with current Rack env
+    config.exceptions_app = ->(env) {ErrorsController.action(:show).call(env)}
 
     config.application_name = 'DTU Findit'
 
