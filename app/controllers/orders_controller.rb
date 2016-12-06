@@ -393,7 +393,7 @@ class OrdersController < ApplicationController
 
   def status
     @order = Order.find_by_uuid params[:uuid]
-    @restricted_events = ['payment_authorized', 'reordered', 'reorder_confirmed', 'note', 'closed', 'document_supplier_changed', 'resolved', 'requested_or_inprocess']
+    @restricted_events = ['payment_authorized', 'reordered', 'reorder_confirmed', 'note', 'document_supplier_changed', 'requested_or_inprocess']
   end
 
   def reorder
