@@ -102,7 +102,8 @@ class CatalogController < ApplicationController
     config.add_index_field 'conf_title_ts', :format => ['article'], :helper_method => :render_conference_info_index, :suppressed_by => ['journal_title_ts']
     config.add_index_field 'pub_date_tis', :format => ['book']
     config.add_index_field 'journal_page_ssf', :format => ['book']
-    config.add_index_field 'format', :helper_method => :render_type
+    config.add_index_field 'format', helper_method: :render_type, suppressed_by: ['types_ss']
+    config.add_index_field 'types_ss', helper_method: :render_types, separator: '; '
     #config.add_index_field 'subformat_s', :helper_method => :render_subtype
     config.add_index_field 'doi_ss'
     config.add_index_field 'publisher_ts', :format => ['book', 'journal']
