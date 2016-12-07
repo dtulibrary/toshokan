@@ -25,7 +25,7 @@ dd.fulltext-options {
   padding-bottom: 10px;
 
   li:first-child h4 {
-    margin-top: 0px; 
+    margin-top: 0px;
   }
 
   .btn-primary {
@@ -116,4 +116,43 @@ dd.fulltext-options {
   .location {
     margin-top: 5px;
   }
+}
+.access-information {
+    border: 1px solid #ddd;
+}
+ul.access-menu {
+    list-style-type: none;
+    margin: 0;
+    margin-top: 1em;
+    padding: 0;
+}
+.access-nav {
+    font-size: 1.3em;
+    margin-bottom: 1em;
+}
+.access-nav > div { padding-top: .3em; }
+.access-nav > div:last-of-type {
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background-color: #eee;
+}
+
+.fulltext-options {
+    margin-top: -5px;
+    font-size: 1.2em;
+}
+.fulltext-options > ul {
+    list-style-type: none;
+    -webkit-padding-start: 0px;
+}
+.fulltext-options i {
+    margin-right: .5em;
+}
+li.getit-entry {
+    border-bottom: 1px solid #eee;
+    padding-bottom: .2em;
+    padding-top: .2em;
+}
+li.getit-entry:last-of-type{
+    border-bottom: none;
 }

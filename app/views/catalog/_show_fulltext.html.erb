@@ -7,7 +7,7 @@
          open_url += "&rft.jtitle=#{URI.encode_www_form_component @document['conf_title_ts'].first}" if @document['conf_title_ts'] && !@document['journal_title_ts'] %>
       <% [:rd, :dtu, :tib].each do |supplier| %>
         <li class="order-<%= supplier %>-scan order-scan hide">
-          <%= render :partial => 'order_scan_form', :locals => { :supplier => supplier, :open_url => open_url, :index => false } %>
+            <%= render :partial => 'order_scan_form', :locals => { :document => @document, :supplier => supplier, :open_url => open_url, :index => false } %>
         </li>
       <% end %>
     <% end %>

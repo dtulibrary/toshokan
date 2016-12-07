@@ -37,8 +37,8 @@
 
           addResource(
             openUrl,
-            "fulltext_info",
-            partial(layoutIndex, fulltext),
+            "fulltext",
+            partial(layoutIndexMod, fulltext),
             epilogue
           );
 
@@ -214,6 +214,137 @@
     }
   }
 
+  var layoutIndexMod= function (elm, data, count) {
+    if (data != null) {
+      var action = null;
+      var headerElm = elm;
+
+      if (data.subtype.match(/_scan/)) {
+        if (elm.find(".order-scan").length > 0) {
+          if (data.subtype == "dtic_scan") {
+            action = elm.find("li.order-dtu-scan > form");
+          } else if (data.subtype == "tib_scan") {
+            action = elm.find("li.order-tib-scan > form");
+          } else if (data.subtype == "rd_scan") {
+            action = elm.find("li.order-rd-scan > form");
+          }
+          $(action).find("button").text(data.button_text);
+          data.lead_text = action.attr("data-price");
+          $(action).addClass("getit-entry");
+        }
+      } else if (data.subtype.match(/nal/)) {
+        var otherHeader = elm.parent().find(".other-header")
+        otherHeader.show();
+
+        link = $("<a />", {
+          text          : '<%= I18n.t 'toshokan.tools.nal.map' %>',
+          "class"       : "fulltext btn btn-primary btn-small dropdown-toggle",
+          "title"       : data.tool_tip,
+          "href"        : "",
+          "data-toggle" : "modal",
+          "data-target" : "#nal-locations-modal",
+          "target"      : "_blank"
+        });
+
+        action = $("<div />", {"class" : "nal"});
+        action.append(link);
+
+        $.each(data.urls, function () {
+          if (toshokan.libraries[this.id]) {
+            $('#nal-locations').append(
+              '<div class="nal-location" data-url="' + this.url + '">' +
+              '  <input type="checkbox" name="' + this.id + '" checked="checked"> ' +
+              '  <span>' + toshokan.libraries[this.id].displayName.en + '</span>' +
+              '</div>'
+            );
+          }
+        });
+
+        $('#nal-locations input').click(function () {
+          toshokan.nal.updateMap();
+        });
+
+        $('#nal-locations-modal').on('shown.bs.modal', function () {
+          toshokan.nal.updateMap();
+        });
+
+        headerElm = otherHeader;
+        data.icon = 'icon-home';
+        data.lead_text = data.button_text;
+
+      } else {
+        action = $("<a/>", {
+          text          : data.button_text,
+          "class"       : "fulltext btn btn-primary btn-small",
+          "title"       : data.tool_tip,
+          "href"        : data.url,
+          "data-toggle" : "tooltip",
+          "target"      : "_blank"
+        });
+      }
+
+      if (action != null) {
+        $(action).tooltip();
+
+        var template =
+          "<li class='fulltext-item getit-entry'> \
+          <div class='row'> \
+          <div class='col-md-2'>{{&action}} </div>\
+          <div class='col-md-6'> \
+          <small>{{&short_explanation}}</small> \
+            {{#holdings_list.length}} \
+              <div class='coverage'> \
+                <p><small><%= I18n.t('toshokan.tools.coverage') %>:</small></p> \
+                {{#holdings_list}} \
+                  {{#embargo.length}} \
+                    <p><small>Last {{#showEmbargo}}{{embargo}}{{/showEmbargo}} not available</small></p> \
+                  {{/embargo.length}} \
+                  {{^embargo}} \
+                    <p><small> \
+                    {{fromyear}}{{#fromvolume}} vol. {{fromvolume}}{{/fromvolume}}{{#fromissue}} iss. {{fromissue}}{{/fromissue}} \
+                    &mdash; \
+                    {{toyear}}{{#tovolume}} vol. {{tovolume}}{{/tovolume}}{{#toissue}} iss. {{toissue}}{{/toissue}} \
+                    </small></p> \
+                  {{/embargo}} \
+                {{/holdings_list}} \
+              </div> \
+            {{/holdings_list.length}} \
+              </div> \
+            <div class='col-md-4'> \
+            <div class='fulltext-action'> \
+              <div class='leadtext'> \
+              {{#lead_text}}<strong>{{lead_text}}</strong>{{/lead_text}}<br/> \
+                {{#explanation}}<small>{{&explanation}}</small>{{/explanation}} \
+              </div> \
+            </div> \
+            </div> \
+            </div> \
+          </li>" ;
+        action = $("<span />").append(action);
+        data.action = action.html();
+        data.showEmbargo = function() {
+           return function (embargo, render) {
+              embargo = render(embargo).split(",");
+              if(embargo[1] > 1) {
+                return embargo[1] + " " + embargo[0] + "s";
+              } else {
+                return embargo[0];
+              }
+           };
+        };
+        if (data.holdings_list) {
+          data.holdings_list.sort(function(a, b) { return a.fromyear - b.fromyear; }).reverse;
+        }
+        var item = Mustache.render(template, data);
+
+      if(count == 0) {
+        headerElm.append(item);
+      } else {
+        $(".fulltext-item").filter(":last").after(item);
+      }
+      }
+    }
+  };
   var layoutShow = function (elm, data, count) {
     if (data != null) {
       var action = null;
