@@ -38,7 +38,7 @@
         <div class="media-body">
           <%= render_document_partial @document, :show %>
         </div>
-        <%= render 'nal_modal' %>
+        <%= render partial: 'nal_modal', locals: {nal_ref: nal_ref(@document)} %>
         <%= render 'dtu_location_modal' %>
 
         <%= render :partial => 'tags', :locals => { :document => @document} %>

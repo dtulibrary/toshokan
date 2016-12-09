@@ -13,14 +13,14 @@
             </div>
         </div>
         <div class="fulltext-options">
-            <ul>
+            <%- nal_ref = nal_ref(document) %>
+            <ul data-nal-ref="<%= nal_ref %>">
             <% if render_scan_option?(document) %>
               <% # Quick-fix for getting conf title to DocDel when no journal title is available.
                  open_url = document.export_as_openurl_ctx_kev
                  open_url += "&rft.jtitle=#{URI.encode_www_form_component document['conf_title_ts'].first}" if document['conf_title_ts'] && !document['journal_title_ts'] %>
               <% [:rd, :dtu, :tib].each do |supplier| %>
                 <li class="order-<%= supplier %>-scan order-scan hide">
-            Rendering partial!!!!
                     <%= render :partial => 'order_scan_form', :locals => { :document => document, :supplier => supplier, :open_url => open_url, :index => false } %>
                 </li>
               <% end %>
@@ -37,4 +37,6 @@
             </ul>
         </div>
     </div>
+    <%= render partial: 'nal_modal', locals: { nal_ref: nal_ref } %>
+    <%= render 'dtu_location_modal' %>
 <%- end -%>

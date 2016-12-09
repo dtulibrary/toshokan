@@ -38,7 +38,7 @@
           addResource(
             openUrl,
             "fulltext",
-            partial(layoutIndexMod, fulltext),
+            partial(layoutIndex, fulltext),
             epilogue
           );
 
@@ -88,10 +88,11 @@
         var placeholder = $("<li />");
         fulltext.after(placeholder);
         fulltext.spin(spinProperties);
+        var $containingList = $('ul#fulltext');
         addResource(
           openUrl,
           "fulltext",
-          partial(layoutShow, placeholder),
+          partial(layoutShow, $containingList),
           epilogue
         );
 
@@ -140,35 +141,55 @@
   };
 
   /*** Layout functions ***/
+  /* These methods are responsible for adding elements
+     to the DOM based on GetIt responses.
+     elm refers to a parent element,
+     data is the GetIt response
+     count is the number of existing responses for that item
+   */
 
-  var layoutIndex = function (elm, data) {
+  var layoutIndex = function (elm, data, count) {
     if (data != null) {
-      var item = $("<li />", {
-        "class"          : "getit-entry",
-        text             : data.list_text,
-        "title"          : data.tool_tip,
-        "data-toggle"    : "tooltip",
-        "data-placement" : "bottom"
-      });
-      // If GetIt gives us a link, show it on the index page
-      if (data.url != null) {
-          item.text('');
-          item.append($('<a />', { text: data.list_text, "href": data.url, "target": "_blank" }));
-      }
+      var action = null;
+      var headerElm = elm;
 
-      if (data.tool_tip) {
-        $(item).tooltip();
-      }
-
-      $(item).prepend("<i class='" + data.icon + "'></i>");
-      elm.append(item);
-      // Hide the GetIt link if we have a url - this has to be done after we've added the link to the DOM
-      if (data.url != null) {
-          item.siblings('.getit.pull-right').hide()
+      data, action = renderAction(data, elm);
+      if (action != null) {
+          var item = renderItem(data, action, fulltext_layouts.index);
+          if(count == 0) {
+            headerElm.append(item);
+          } else {
+            headerElm.find(".fulltext-item").filter(":last").after(item);
+          }
       }
     }
   };
 
+  var layoutShow = function (elm, data, count) {
+    if (data != null) {
+      var action = null;
+      var headerElm = elm;
+      var headerSelector;
+
+      data, action = renderAction(data, elm);
+      if (action != null) {
+        var item = renderItem(data, action, fulltext_layouts.show);
+        if (headerSelector) {
+          if ($('#fulltext > ' + headerSelector + ' + .fulltext-item').length > 0) {
+            $(".fulltext-item").filter(":last").after(item);
+          } else {
+            $('#fulltext > ' + headerSelector).after(item);
+          }
+        } else {
+          if(count == 0) {
+            headerElm.append(item);
+          } else {
+            headerElm.find(".fulltext-item").filter(":last").after(item);
+          }
+        }
+      }
+    }
+  };
   var layoutIndexLoan = function (elm, data) {
     if (data != null) {
       item_text = data.summary.text_long != null ? data.summary.text_long : data.summary.text;
@@ -214,44 +235,64 @@
     }
   }
 
-  var layoutIndexMod= function (elm, data, count) {
-    if (data != null) {
-      var action = null;
-      var headerElm = elm;
+  /**
+   * Choose and call the correct rendering method
+   * based on the data available.
+   */
+  function renderAction(data, elm) {
+      function renderScan(data, elm) {
+          var action = null;
+          if (elm.find(".order-scan").length > 0) {
+              if (data.subtype == "dtic_scan") {
+                action = elm.find("li.order-dtu-scan > form");
+              } else if (data.subtype == "tib_scan") {
+                action = elm.find("li.order-tib-scan > form");
+              } else if (data.subtype == "rd_scan") {
+                action = elm.find("li.order-rd-scan > form");
+              }
+              $(action).find("button").text(data.button_text);
+              data.lead_text = action.attr("data-price");
+              $(action).addClass("getit-entry");
+            }
+        return data, action;
+      }
 
-      if (data.subtype.match(/_scan/)) {
-        if (elm.find(".order-scan").length > 0) {
-          if (data.subtype == "dtic_scan") {
-            action = elm.find("li.order-dtu-scan > form");
-          } else if (data.subtype == "tib_scan") {
-            action = elm.find("li.order-tib-scan > form");
-          } else if (data.subtype == "rd_scan") {
-            action = elm.find("li.order-rd-scan > form");
-          }
-          $(action).find("button").text(data.button_text);
-          data.lead_text = action.attr("data-price");
-          $(action).addClass("getit-entry");
-        }
-      } else if (data.subtype.match(/nal/)) {
-        var otherHeader = elm.parent().find(".other-header")
-        otherHeader.show();
+      function renderDefault(data) {
+            var action = $("<a/>", {
+              text          : data.button_text,
+              "class"       : "fulltext btn btn-primary btn-small",
+              "title"       : data.tool_tip,
+              "href"        : data.url,
+              "data-toggle" : "tooltip",
+              "target"      : "_blank"
+            });
+            return data, action;
+      }
 
-        link = $("<a />", {
-          text          : '<%= I18n.t 'toshokan.tools.nal.map' %>',
-          "class"       : "fulltext btn btn-primary btn-small dropdown-toggle",
-          "title"       : data.tool_tip,
-          "href"        : "",
-          "data-toggle" : "modal",
-          "data-target" : "#nal-locations-modal",
-          "target"      : "_blank"
-        });
+      function renderNal(data, elm) {
+            // this part is only relevant for the show page
+            var otherHeader = elm.parent().find(".other-header")
+            otherHeader.show();
+
+            var nal_ref = "#" + elm.data('nalRef');
+            link = $("<a />", {
+              text          : '<%= I18n.t 'toshokan.tools.nal.map' %>',
+              "class"       : "fulltext btn btn-primary btn-small dropdown-toggle",
+              "title"       : data.tool_tip,
+              "href"        : "",
+              "data-toggle" : "modal",
+              "data-target" : nal_ref,
+              "target"      : "_blank",
+              "onclick"     : "initializeNalMap('" + nal_ref + "')"
+            });
 
         action = $("<div />", {"class" : "nal"});
         action.append(link);
 
+        $nal_modal = $(nal_ref);
         $.each(data.urls, function () {
           if (toshokan.libraries[this.id]) {
-            $('#nal-locations').append(
+            $nal_modal.find('.nal-locations').append(
               '<div class="nal-location" data-url="' + this.url + '">' +
               '  <input type="checkbox" name="' + this.id + '" checked="checked"> ' +
               '  <span>' + toshokan.libraries[this.id].displayName.en + '</span>' +
@@ -260,34 +301,59 @@
           }
         });
 
-        $('#nal-locations input').click(function () {
-          toshokan.nal.updateMap();
+        $nal_modal.find('.nal-locations input').click(function () {
+          toshokan.nal.updateMap(nal_ref);
         });
 
-        $('#nal-locations-modal').on('shown.bs.modal', function () {
-          toshokan.nal.updateMap();
+        $(nal_ref).on('shown.bs.modal', function () {
+          toshokan.nal.updateMap(nal_ref);
         });
 
-        headerElm = otherHeader;
         data.icon = 'icon-home';
         data.lead_text = data.button_text;
-
-      } else {
-        action = $("<a/>", {
-          text          : data.button_text,
-          "class"       : "fulltext btn btn-primary btn-small",
-          "title"       : data.tool_tip,
-          "href"        : data.url,
-          "data-toggle" : "tooltip",
-          "target"      : "_blank"
-        });
+        return data, action;
       }
 
-      if (action != null) {
-        $(action).tooltip();
+      if (data.subtype.match(/_scan/)) {
+          data, action = renderScan(data, elm);
+      } else if (data.subtype.match(/nal/)) {
+        data, action = renderNal(data, elm);
+      } else {
+          data, action = renderDefault(data);
+      }
+      return data, action;
+  }
 
-        var template =
-          "<li class='fulltext-item getit-entry'> \
+  var fulltext_layouts = {
+      show: "<li class='fulltext-item getit-entry'> \
+            <strong><i class='{{icon}}'></i>{{short_name}}</strong> ({{type}}) \
+            <p><small>{{&short_explanation}}</small></p> \
+            {{#holdings_list.length}} \
+              <div class='coverage'> \
+                <p><small><%= I18n.t('toshokan.tools.coverage') %>:</small></p> \
+                {{#holdings_list}} \
+                  {{#embargo.length}} \
+                    <p><small>Last {{#showEmbargo}}{{embargo}}{{/showEmbargo}} not available</small></p> \
+                  {{/embargo.length}} \
+                  {{^embargo}} \
+                    <p><small> \
+                    {{fromyear}}{{#fromvolume}} vol. {{fromvolume}}{{/fromvolume}}{{#fromissue}} iss. {{fromissue}}{{/fromissue}} \
+                    &mdash; \
+                    {{toyear}}{{#tovolume}} vol. {{tovolume}}{{/tovolume}}{{#toissue}} iss. {{toissue}}{{/toissue}} \
+                    </small></p> \
+                  {{/embargo}} \
+                {{/holdings_list}} \
+              </div> \
+            {{/holdings_list.length}} \
+            <div class='fulltext-action'> \
+              <div class='leadtext'> \
+                {{#lead_text}}<div><strong>{{lead_text}}</strong></div>{{/lead_text}} \
+                {{#explanation}}<div><small>{{&explanation}}</small></div>{{/explanation}} \
+              </div> \
+              <div>{{&action}}</div> \
+            </div> \
+            </li>",
+      index: "<li class='fulltext-item getit-entry'> \
           <div class='row'> \
           <div class='col-md-2'>{{&action}} </div>\
           <div class='col-md-6'> \
@@ -319,135 +385,12 @@
             </div> \
             </div> \
             </div> \
-          </li>" ;
-        action = $("<span />").append(action);
-        data.action = action.html();
-        data.showEmbargo = function() {
-           return function (embargo, render) {
-              embargo = render(embargo).split(",");
-              if(embargo[1] > 1) {
-                return embargo[1] + " " + embargo[0] + "s";
-              } else {
-                return embargo[0];
-              }
-           };
-        };
-        if (data.holdings_list) {
-          data.holdings_list.sort(function(a, b) { return a.fromyear - b.fromyear; }).reverse;
-        }
-        var item = Mustache.render(template, data);
+          </li>"
+  }
 
-      if(count == 0) {
-        headerElm.append(item);
-      } else {
-        $(".fulltext-item").filter(":last").after(item);
-      }
-      }
-    }
-  };
-  var layoutShow = function (elm, data, count) {
-    if (data != null) {
-      var action = null;
-      var headerElm = elm;
-      var headerSelector;
-
-      if (data.subtype.match(/_scan/)) {
-        if ($(".order-scan").length > 0) {
-          if (data.subtype == "dtic_scan") {
-            action = $("li.order-dtu-scan > form");
-          } else if (data.subtype == "tib_scan") {
-            action = $("li.order-tib-scan > form");
-          } else if (data.subtype == "rd_scan") {
-            action = $("li.order-rd-scan > form");
-          }
-          $(action).find("button").text(data.button_text);
-          data.lead_text = action.attr("data-price");
-          $(action).addClass("getit-entry");
-        }
-      } else if (data.subtype.match(/nal/)) {
-        var otherHeader = elm.parent().find(".other-header")
-        otherHeader.show();
-        headerSelector = '.other-header';
-
-        link = $("<a />", {
-          text          : '<%= I18n.t 'toshokan.tools.nal.map' %>',
-          "class"       : "fulltext btn btn-primary btn-small dropdown-toggle",
-          "title"       : data.tool_tip,
-          "href"        : "",
-          "data-toggle" : "modal",
-          "data-target" : "#nal-locations-modal",
-          "target"      : "_blank"
-        });
-
-        action = $("<div />", {"class" : "nal"});
-        action.append(link);
-
-        $.each(data.urls, function () {
-          if (toshokan.libraries[this.id]) {
-            $('#nal-locations').append(
-              '<div class="nal-location" data-url="' + this.url + '">' +
-              '  <input type="checkbox" name="' + this.id + '" checked="checked"> ' +
-              '  <span>' + toshokan.libraries[this.id].displayName.en + '</span>' +
-              '</div>'
-            );
-          }
-        });
-
-        $('#nal-locations input').click(function () {
-          toshokan.nal.updateMap();
-        });
-
-        $('#nal-locations-modal').on('shown.bs.modal', function () {
-          toshokan.nal.updateMap();
-        });
-
-        headerElm = otherHeader;
-        data.icon = 'icon-home';
-        data.lead_text = data.button_text;
-
-      } else {
-        action = $("<a/>", {
-          text          : data.button_text,
-          "class"       : "fulltext btn btn-primary btn-small",
-          "title"       : data.tool_tip,
-          "href"        : data.url,
-          "data-toggle" : "tooltip",
-          "target"      : "_blank"
-        });
-      }
-
-      if (action != null) {
+  function renderItem(data, action, template){
         $(action).tooltip();
 
-        var template =
-          "<li class='fulltext-item getit-entry'> \
-            <strong><i class='{{icon}}'></i>{{short_name}}</strong> ({{type}}) \
-            <p><small>{{&short_explanation}}</small></p> \
-            {{#holdings_list.length}} \
-              <div class='coverage'> \
-                <p><small><%= I18n.t('toshokan.tools.coverage') %>:</small></p> \
-                {{#holdings_list}} \
-                  {{#embargo.length}} \
-                    <p><small>Last {{#showEmbargo}}{{embargo}}{{/showEmbargo}} not available</small></p> \
-                  {{/embargo.length}} \
-                  {{^embargo}} \
-                    <p><small> \
-                    {{fromyear}}{{#fromvolume}} vol. {{fromvolume}}{{/fromvolume}}{{#fromissue}} iss. {{fromissue}}{{/fromissue}} \
-                    &mdash; \
-                    {{toyear}}{{#tovolume}} vol. {{tovolume}}{{/tovolume}}{{#toissue}} iss. {{toissue}}{{/toissue}} \
-                    </small></p> \
-                  {{/embargo}} \
-                {{/holdings_list}} \
-              </div> \
-            {{/holdings_list.length}} \
-            <div class='fulltext-action'> \
-              <div class='leadtext'> \
-                {{#lead_text}}<div><strong>{{lead_text}}</strong></div>{{/lead_text}} \
-                {{#explanation}}<div><small>{{&explanation}}</small></div>{{/explanation}} \
-              </div> \
-              <div>{{&action}}</div> \
-            </div> \
-          </li>" ;
         action = $("<span />").append(action);
         data.action = action.html();
         data.showEmbargo = function() {
@@ -463,22 +406,7 @@
         if (data.holdings_list) {
           data.holdings_list.sort(function(a, b) { return a.fromyear - b.fromyear; }).reverse;
         }
-        var item = Mustache.render(template, data);
+        return Mustache.render(template, data);
+  }
 
-        if (headerSelector) {
-          if ($('#fulltext > ' + headerSelector + ' + .fulltext-item').length > 0) {
-            $(".fulltext-item").filter(":last").after(item);
-          } else {
-            $('#fulltext > ' + headerSelector).after(item);
-          }
-        } else {
-          if(count == 0) {
-            headerElm.after(item);
-          } else {
-            $(".fulltext-item").filter(":last").after(item);
-          }
-        }
-      }
-    }
-  };
 })(jQuery);

@@ -23,7 +23,8 @@ toshokan.nal = (function () {
       $('#nal-locations-modal').modal('hide');
     },
 
-    updateMap : function () {
+    updateMap : function (modal_ref) {
+      var $modal_target = $(modal_ref);
       removeMarkers();
 
       var center = {
@@ -31,12 +32,12 @@ toshokan.nal = (function () {
         long : 11.351166
       };
       var zoom = 6;
-      
-      $('#nal-locations .nal-location').each(function () {
+
+      $modal_target.find('.nal-locations .nal-location').each(function () {
         var url = $(this).attr('data-url');
 
         $(this).find('input:checkbox:checked').each(function () {
-          var id = this.name; 
+          var id = this.name;
           var library = toshokan.libraries[id];
 
           $.each(library.branches, function () {
@@ -80,7 +81,7 @@ toshokan.nal = (function () {
             });
           });
         });
-      }); 
+     });
 
       map.setZoom(zoom);
       google.maps.event.trigger(map, 'resize');
@@ -89,32 +90,31 @@ toshokan.nal = (function () {
   };
 })();
 
-(function ($) {
-  $(function () {
+function initializeNalMap(nal_ref) {
     // Initialize NAL map if available
-    $('#nal-map').each(function () {
+    var $nal_target = $(nal_ref);
+    $nal_target.find('.nal-map').each(function () {
       var map = new google.maps.Map(this, {
         zoom : 6,
         center : new google.maps.LatLng(55.964576,11.351166),
         mapTypeId : google.maps.MapTypeId.ROADMAP
-      }); 
+      });
       toshokan.nal.setMap(map);
     });
 
-    $('#select-all-nal-locations').click(function () {
-      $('#nal-locations input').each(function () {
+    $nal_target.find('.select-all-nal-locations').click(function () {
+      $nal_target.find('.nal-locations input').each(function () {
         this.checked = true;
       });
-      toshokan.nal.updateMap();
+      toshokan.nal.updateMap(nal_ref);
       return false;
     });
 
-    $('#select-no-nal-locations').click(function () {
-      $('#nal-locations input').each(function () {
+    $nal_target.find('.select-no-nal-locations').click(function () {
+      $nal_target.find('.nal-locations input').each(function () {
         this.checked = false;
       });
-      toshokan.nal.updateMap();
+      toshokan.nal.updateMap(nal_ref);
       return false;
     });
-  });
-})(jQuery);
+}
