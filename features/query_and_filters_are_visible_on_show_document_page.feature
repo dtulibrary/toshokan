@@ -6,8 +6,8 @@ visible in the search form.
 
 Scenario: User clicks on a document from the search result
   Given I've searched for "water"
-    And I've limited the "Type" facet to "Article"
+    And I've limited the "Types" facet to "Article (Journal article)"
    When I click on the first document
    Then I should see the search form filled with "water"
-    And the "Type" facet should be constrained to "Article"
+    And the "Types" facet should be constrained to "Article (Journal article)"
     But I shouldn't see any links to remove the constraint

@@ -895,6 +895,36 @@ en:
         report: 'Report'
         electronic: 'Electronic'
         print: 'Printed'
+      types:
+        bib:
+          article:
+            conference_paper: 'Article (Conference paper)'
+            journal_article: 'Article (Journal article)'
+            bookchapter: 'Article (Book chapter)'
+            preprint: 'Article (Preprint)'
+            article: 'Article (Unspecified)'
+          book:
+            ebook: 'Book (Electronic)'
+            printed: 'Book (Printed)'
+            book: 'Book (Unspecified)'
+          journal:
+            electronic: 'Journal (Electronic)'
+            print: 'Journal (Printed)'
+            journal: 'Journal (Unspecified)'
+          other:
+            patent: 'Other (Patent)'
+            standard: 'Other (Standard)'
+            report: 'Other (Report)'
+            other: 'Other (Unspecified)'
+          thesis:
+            doctoral: 'Thesis (Doctoral)'
+            phd: 'Thesis (PhD)'
+            master: 'Thesis (Master)'
+            bachelor: 'Thesis (Bachelor)'
+            thesis: 'Thesis (Unspecified)'
+        person:
+          person:
+            researcher: 'Person (Researcher)'
       find_in_issue: 'Find all articles in same issue'
       find_by_author: "Find other material by %{author}"
       find_about_subject: "Find other material about %{subject}"
