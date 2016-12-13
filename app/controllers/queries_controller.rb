@@ -44,7 +44,7 @@ class QueriesController < ApplicationController
       q.save
       flash[:notice] = "The query '#{q.name}' was #{q.enabled ? 'enabled' : 'disabled'}"
     else
-      [:name, :query_string].each do |f|
+      [:name, :query_string, :filter].each do |f|
         q.send("#{f}=", params[:query][f]) if params[:query].has_key? f
       end
       q.save
