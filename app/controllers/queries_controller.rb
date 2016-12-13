@@ -76,6 +76,6 @@ class QueriesController < ApplicationController
   private
 
   def query_params
-    params.require(:query).permit(:name, :query_string)
+    params.require(:query).permit(:name, :query_string, :filter)
   end
 end

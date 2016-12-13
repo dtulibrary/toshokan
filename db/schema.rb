@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161125094526) do
+ActiveRecord::Schema.define(version: 20161213102153) do
 
   create_table "assistance_requests", force: true do |t|
     t.string   "type"
@@ -182,6 +182,7 @@ ActiveRecord::Schema.define(version: 20161125094526) do
     t.datetime "run_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "filter",       default: false, null: false
   end
 
   create_table "query_result_documents", force: true do |t|

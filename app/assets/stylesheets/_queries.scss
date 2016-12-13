@@ -7,6 +7,12 @@ form[class $= '_query'] textarea {
   code {
     white-space: pre-wrap;
   }
+
+  .filter-info {
+    background-color: #ed9;
+    color: #333;
+    padding: 0.1em 0.2em;
+  }
 }
 
 .query-disabled {
@@ -16,5 +22,11 @@ form[class $= '_query'] textarea {
     color: #999;
     background-color: inherit;
     white-space: pre-wrap;
+  }
+  
+  .filter-info {
+    background-color: #ddd;
+    color: #999;
+    padding: 0.1em 0.2em;
   }
 }

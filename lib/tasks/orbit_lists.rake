@@ -4,17 +4,10 @@ namespace :orbit do
   desc 'Generate ORBIT lists'
   task :generate_lists => :environment do
     common_fq = Query.common_filter_query
-    seen_docs = Set.new
 
     # Delete all documents that haven't been rejected. They will come back if they haven't been registered in ORBIT.
     QueryResultDocument.where(rejected: false)
                        .delete_all
-
-    # Make sure we don't report any rejected documents again
-    QueryResultDocument.where(rejected: true)
-                       .each do |query_doc|
-      seen_docs.add(query_doc.document_id)
-    end
 
     # Run and report for each query (in the same order as they appear in the UI)
     Query.where(enabled: true)
@@ -22,10 +15,18 @@ namespace :orbit do
          .each do |q|
       puts "Running '#{q.name}':"
 
-      solr         = Blacklight.solr
-      cursor_mark  = '*'
-      doc_counter  = 0
-      query_string = Query.normalize(q.query_string)
+      solr          = Blacklight.solr
+      cursor_mark   = '*'
+      doc_counter   = 0
+      query_string  = Query.normalize(q.query_string)
+      seen_docs     = Set.new
+      rejected_docs = Set.new
+
+      # Make sure we don't report any rejected documents again
+      QueryResultDocument.where(rejected: true, query: q)
+                         .each do |query_doc|
+        rejected_docs.add(query_doc.document_id)
+      end
 
       loop do
         solr_fields = %w(
@@ -65,8 +66,11 @@ namespace :orbit do
           response['response']['docs'].each do |doc|
             dedup = doc['cluster_id_ss'].first
 
-            # Skip document if it was processed by previous queries
-            next if seen_docs.include?(dedup)
+            # Skip rejected document
+            next if rejected_docs.include?(dedup)
+
+            # Skip document if it was processed by previous queries and this query has filter flag set
+            next if q.filter && seen_docs.include?(dedup)
 
             # Check for similar already registered document in ORBIT
             duplicate_params = {

@@ -38,6 +38,9 @@
               <%= link_to 'Remove', destroy_query_path(q), method: 'delete', class: 'btn btn-default' %>
             </div>
           </h4>
+          <% if q.filter %>
+            <p><span class="filter-info">Filters documents processed by other queries</span></p>
+          <% end %>
           <code><%= q.query_string %></code>
         </div>
       <% end %>
