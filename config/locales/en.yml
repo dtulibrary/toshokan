@@ -33,7 +33,7 @@ en:
         author_ts: 'Authors'
         editor_ts: 'Editors'
         doi_ss: 'DOI'
-        types_ss: 'Type'
+        types_ss: 'Types'
         isbn_ss: 'ISBN'
         issn_ss: 'ISSN'
         journal_title_ts: 'Journal'
