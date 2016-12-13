@@ -4,6 +4,7 @@ namespace :orbit do
   desc 'Generate ORBIT lists'
   task :generate_lists => :environment do
     common_fq = Query.common_filter_query
+    seen_docs = Set.new
 
     # Delete all documents that haven't been rejected. They will come back if they haven't been registered in ORBIT.
     QueryResultDocument.where(rejected: false)
@@ -19,7 +20,6 @@ namespace :orbit do
       cursor_mark   = '*'
       doc_counter   = 0
       query_string  = Query.normalize(q.query_string)
-      seen_docs     = Set.new
       rejected_docs = Set.new
 
       # Make sure we don't report any rejected documents again
