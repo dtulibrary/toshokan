@@ -80,43 +80,18 @@ describe DocumentHelper do
   end
 
   describe '#render_types' do
-    it 'calls out to #render_type when types field is missing' do
+    it 'calls out to #render_type when 3-part types are missing' do
       expect(helper).to receive(:render_type)
       helper.render_types(document: {'format' => 'article'}, field: 'types_ss')
     end
 
-    it 'prefers #render_genre over #render_type when type field is available' do
-      expect(helper).to receive(:render_genre)
-      expect(helper).to_not receive(:render_genre)
-      helper.render_types(document: {'format' => 'article', 'types_ss' => ['bib:article:journal_article']}, field: 'types_ss')
+    it 'returns value from #render_type when 3-part types are missing' do
+      expect(helper.render_types(document: {'types_ss' => ['bib:article'], 'format' => 'article'}, field: 'types_ss')).to eq 'Article'
     end
 
-    it 'renders translation for unspecified subformat' do
-      expect(helper.render_types(document: {'types_ss' => ['bib:article']}, field: 'types_ss')).to eq 'Article (Unspecified)'
-    end
-
-    it 'renders translation for single type' do
-      expect(helper.render_types(document: {'types_ss' => ['bib:article:journal_article']}, field: 'types_ss')).to eq 'Article (Journal article)'
-    end
-
-    it 'joins multiple types using the default separator when no separator is given' do
-      document = {
-        'types_ss' => [
-          'bib:article:journal_article',
-          'bib:article:conference_paper'
-        ]
-      }
-      expect(helper.render_types(document: document, field: 'types_ss')).to eq 'Article (Journal article); Article (Conference paper)'
-    end
-
-    it 'joins multiple types using the supplied separator' do
-      document = {
-        'types_ss' => [
-          'bib:article:journal_article',
-          'bib:article:conference_paper'
-        ]
-      }
-      expect(helper.render_types(document: document, field: 'types_ss', separator: ' - ')).to eq 'Article (Journal article) - Article (Conference paper)'
+    it 'combines tranlations for format and subformat' do
+      expected_value = "#{I18n.t 'toshokan.catalog.formats.article'} (#{I18n.t 'toshokan.catalog.subformats.journal_article'})"
+      expect(helper.render_types(document: {'types_ss' => ['bib:article:journal_article']}, field: 'types_ss')).to eq expected_value
     end
   end
 end

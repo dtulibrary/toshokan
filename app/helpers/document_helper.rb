@@ -5,20 +5,18 @@ module DocumentHelper
   end
 
   def render_types(args)
-    # Fall back to rendering format if document doesn't have types field
-    return render_type(args.merge(field: 'format')) unless args[:document].has_key?(args[:field])
+    values = (args[:document][args[:field]] || []).map {|type| type.split(':')}
+    return render_type(args.merge(field: 'format')) unless values.any? {|parts| parts.length == 3}
+
+    lookup = -> (n, v) { I18n.t "toshokan.catalog.#{n}.#{v}" }
 
     (args[:document][args[:field]] || [])
-      .map {|genre| render_genre(genre)}
+      .map {|type| type.split(':')}
+      .select {|parts| parts.length == 3}
+      .map {|parts| parts[1..2]}
+      .map {|format,subformat| "#{lookup.('formats', format)} (#{lookup.('subformats', subformat)})"}
       .join(args[:separator] || '; ')
       .html_safe
-  end
-
-  def render_genre(genre)
-    # Genres are guaranteed to always have minimum 2 parts
-    parts = genre.split(':')
-    parts << parts.last # Repeat last part to make sure we always have 3 parts
-    I18n.t("toshokan.catalog.types.#{parts[0..2].join('.')}").html_safe
   end
 
   def render_subtype args
