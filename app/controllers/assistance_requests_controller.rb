@@ -4,6 +4,7 @@ class AssistanceRequestsController < ApplicationController
 
   include Toshokan::PerformsSearches
   include Toshokan::Resolver
+  include AssistanceRequestsHelper
 
 
   def index
