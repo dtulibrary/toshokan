@@ -9,10 +9,6 @@ namespace :orbit do
     common_fq = Query.common_filter_query
     seen_docs = Set.new
 
-    # Delete all documents that haven't been rejected. They will come back if they haven't been registered in ORBIT.
-    QueryResultDocument.where(rejected: false)
-                       .delete_all
-
     # Run and report for each query (in the same order as they appear in the UI)
     Query.where(enabled: true)
          .order('name asc')
@@ -24,6 +20,11 @@ namespace :orbit do
       doc_counter   = 0
       query_string  = Query.normalize(q.query_string)
       rejected_docs = Set.new
+
+      # Delete all documents that haven't been rejected for this query.
+      # They will come back if they haven't been registered in ORBIT.
+      QueryResultDocument.where(rejected: false, query: q)
+                         .delete_all
 
       # Fetch all documents that were rejected for this query
       QueryResultDocument.where(rejected: true, query: q)
