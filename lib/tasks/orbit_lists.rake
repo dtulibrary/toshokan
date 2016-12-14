@@ -97,13 +97,13 @@ namespace :orbit do
         end
 
         # Check for end of result
-        if response['response']['nextCursorMark'] == cursor_mark
+        if response['nextCursorMark'] == cursor_mark
           q.latest_count = doc_counter
           q.save
           puts "\n#{doc_counter} documents were added or updated."
           break
         else
-          cursor_mark = response['response']['nextCursorMark']
+          cursor_mark = response['nextCursorMark']
         end
       end
     end
