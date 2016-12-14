@@ -14,10 +14,10 @@
       <% end -%>
 
       <%= render :partial => 'tags',     :locals => { :document => document } %>
-      <%= render :partial => 'fulltext', :locals => { :document => document } %>
       <%= render :partial => 'metadata', :locals => { :document => document } %>
       <%= render :partial => 'openurl',  :locals => { :document => document } %>
     </dl>
+  <%= render :partial => 'fulltext', :locals => { :document => document } %>
   </div>
   <div class="col-sm-3 col-lg-2">
     <%= render_cover_image document %>

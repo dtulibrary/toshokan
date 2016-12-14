@@ -1,31 +1,8 @@
-
-dd.fulltext-options {
-  a {
-    color: $dtu_red_light;
-  }
-  i {
-    vertical-align: inherit;
-    margin: 0 5px 0 0;
-    &.getit {
-      color: $dtu_red;
-      font-size: 20px;
-      width: auto;
-      height: auto;
-      vertical-align: top;
-      margin-left: 5px;
-    }
-  }
-  ul.inline > li {
-    padding-left: 0px;
-    margin-right: 10px;
-  }
-}
-
 #fulltext {
   padding-bottom: 10px;
 
   li:first-child h4 {
-    margin-top: 0px; 
+    margin-top: 0px;
   }
 
   .btn-primary {
@@ -45,9 +22,6 @@ dd.fulltext-options {
     .leadtext {
       margin-right: 15px;
       margin-bottom: 0.5em;
-      i.icon-openaccess {
-        color: orange;
-      }
     }
     p {
       margin: 0 0 5px;
@@ -72,6 +46,7 @@ dd.fulltext-options {
     }
   }
 }
+i.icon-openaccess { color: orange; }
 
 .loan {
 
@@ -116,4 +91,44 @@ dd.fulltext-options {
   .location {
     margin-top: 5px;
   }
+}
+.access-information {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+ul.access-menu {
+    list-style-type: none;
+    margin: 0;
+    margin-top: 1em;
+    padding: 0;
+}
+.access-nav {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+}
+.access-nav > div { padding-top: .3em; }
+.access-nav > div:last-of-type {
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-top-right-radius: 10px;
+    background-color: #eee;
+}
+
+.fulltext-options {
+    margin-top: -5px;
+}
+.fulltext-options > ul {
+    list-style-type: none;
+    -webkit-padding-start: 0px;
+}
+.fulltext-options i {
+    margin-right: .5em;
+}
+li.getit-entry {
+    border-bottom: 1px solid #eee;
+    padding-bottom: .2em;
+    padding-top: .2em;
+}
+li.getit-entry:last-of-type{
+    border-bottom: none;
 }

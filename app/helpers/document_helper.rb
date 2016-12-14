@@ -108,4 +108,8 @@ module DocumentHelper
                                  .join('<br>')
                                  .html_safe
   end
+
+  def nal_ref(doc)
+    "nal-modal-#{doc.id}"
+  end
 end

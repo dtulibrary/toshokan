@@ -1,23 +1,41 @@
 <% unless document['format'] == "journal" %>
-  <dl class="dl-horizontal dl-invert">
-    <dt>Availability</dt>
-    <dd class="fulltext-options">
-        <ul class="list-inline">
-          <% if render_assistance_request_option?(document) %>
-            <li class="getit-entry request-assistance hide"><i class="icon-file"></i>Request</li>
-          <% end %>
-          <% if render_access_prohibited_option?(document) %>
-            <li class="getit-entry access-prohibited hide"><i class="icon-ban"></i>Access prohibited</li>
-          <% end %>
-          <li class="getit-entry not-available hide">
-            <p><%= t 'toshokan.tools.not_available' %></p>
-          </li>
-          <li class="getit pull-right">
-            <%= link_to catalog_path(document.id) do %>
-              <%= t('toshokan.availability.getit') %> <i class="icon-arrow-circle-right getit"></i>
-            <%- end -%>
-          </li>
-        </ul>
-    </dd>
-  </dl>
+    <div class="access-information col-md-12">
+        <div class="access-nav row">
+            <div class="col-md-4">
+                Access Options
+            </div>
+            <div class="col-md-8">
+                <%= link_to catalog_path(document.id) do %>
+                    <strong>Details</strong>
+                    <small>Metrics, stats, metadata etc.</small>
+                  <i class="icon-arrow-circle-right getit"></i>
+                <%- end -%>
+            </div>
+        </div>
+        <div class="fulltext-options">
+            <%- nal_ref = nal_ref(document) %>
+            <ul data-nal-ref="<%= nal_ref %>">
+            <% if render_scan_option?(document) %>
+              <% # Quick-fix for getting conf title to DocDel when no journal title is available.
+                 open_url = document.export_as_openurl_ctx_kev
+                 open_url += "&rft.jtitle=#{URI.encode_www_form_component document['conf_title_ts'].first}" if document['conf_title_ts'] && !document['journal_title_ts'] %>
+              <% [:rd, :dtu, :tib].each do |supplier| %>
+                <li class="order-<%= supplier %>-scan order-scan hide">
+                    <%= render :partial => 'order_scan_form', :locals => { :document => document, :supplier => supplier, :open_url => open_url, :index => false } %>
+                </li>
+              <% end %>
+            <% end %>
+              <% if render_assistance_request_option?(document) %>
+                <li class="getit-entry request-assistance hide"><i class="icon-file"></i>Request</li>
+              <% end %>
+              <% if render_access_prohibited_option?(document) %>
+                <li class="getit-entry access-prohibited hide"><i class="icon-ban"></i>Access prohibited</li>
+              <% end %>
+              <li class="getit-entry not-available hide">
+                <p><%= t 'toshokan.tools.not_available' %></p>
+              </li>
+            </ul>
+        </div>
+    </div>
+    <%= render partial: 'nal_modal', locals: { nal_ref: nal_ref } %>
 <%- end -%>
