@@ -1,4 +1,7 @@
 require 'set'
+require 'faraday'
+
+RETRY_DELAY_IN_SECONDS = 5
 
 namespace :orbit do
   desc 'Generate ORBIT lists'
@@ -17,7 +20,6 @@ namespace :orbit do
       puts "Running '#{q.name}':"
 
       q.run_at      = Time.new
-      solr          = Blacklight.solr
       cursor_mark   = '*'
       doc_counter   = 0
       query_string  = Query.normalize(q.query_string)
@@ -55,8 +57,11 @@ namespace :orbit do
           :sort       => 'id asc'
         }
 
-        response = solr.post('toshokan', params: solr_params)
-        print "Processing #{response['response']['numFound']} results: " if cursor_mark == '*'
+        response = solr_post('toshokan', params: solr_params)
+
+        next if response.nil?
+
+        puts "Processing #{response['response']['numFound']} documents:" if cursor_mark == '*'
 
         response['response']['docs'].each do |doc|
           dedup = doc['cluster_id_ss'].first
@@ -74,7 +79,7 @@ namespace :orbit do
             :rows  => 1,
             :facet => false
           }
-          duplicate_response = solr.post('toshokan', params: duplicate_params)
+          duplicate_response = solr_post('toshokan', params: duplicate_params)
           duplicate          = duplicate_response['response']['docs'].first
 
           # Create the result document unless it exists and is rejected
@@ -127,5 +132,22 @@ namespace :orbit do
         puts "Deleted rejected document with dedup: #{query_doc.document_id} since it's now registered in ORBIT."
       end
     end
+  end
+
+  def solr_post(path, options = {})
+    response = nil
+    loop do
+      begin
+        response = Blacklight.solr.post(path, options)
+        break if !response.nil? && response['responseHeader']['status'] == 0
+      rescue Faraday::ClientError => e
+        STDERR.puts "Client error: #{e.message}."
+      rescue Errno::ECONNREFUSED => e
+        STDERR.puts "Connection refused: #{e.message}."
+      end
+      STDERR.puts "Waiting #{RETRY_DELAY_IN_SECONDS} to try again..."
+      sleep RETRY_DELAY_IN_SECONDS
+    end
+    response
   end
 end
