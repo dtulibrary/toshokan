@@ -16,13 +16,14 @@ namespace :orbit do
          .each do |q|
       puts "Running '#{q.name}':"
 
+      q.run_at      = Time.new
       solr          = Blacklight.solr
       cursor_mark   = '*'
       doc_counter   = 0
       query_string  = Query.normalize(q.query_string)
       rejected_docs = Set.new
 
-      # Make sure we don't report any rejected documents again
+      # Fetch all documents that were rejected for this query
       QueryResultDocument.where(rejected: true, query: q)
                          .each do |query_doc|
         rejected_docs.add(query_doc.document_id)
@@ -57,52 +58,53 @@ namespace :orbit do
         response = solr.post('toshokan', params: solr_params)
         print "Processing #{response['response']['numFound']} results: " if cursor_mark == '*'
 
-        if response['cursorMark'] == cursor_mark
+        response['response']['docs'].each do |doc|
+          dedup = doc['cluster_id_ss'].first
+
+          # Skip rejected document
+          next if rejected_docs.include?(dedup)
+
+          # Skip document if it was processed by previous queries and this query has filter flag set
+          next if q.filter && seen_docs.include?(dedup)
+
+          # Check for similar already registered document in ORBIT
+          duplicate_params = {
+            :q     => "title_txt_stop:(#{doc['title_ts'].first})",
+            :fq    => common_fq + ['source_ss:orbit'],
+            :rows  => 1,
+            :facet => false
+          }
+          duplicate_response = solr.post('toshokan', params: duplicate_params)
+          duplicate          = duplicate_response['response']['docs'].first
+
+          # Create the result document unless it exists and is rejected
+          doc_params = {
+            :query       => q,
+            :document_id => doc['cluster_id_ss'].first,
+            :document    => doc,
+          }
+          doc_params[:duplicate] = duplicate unless duplicate.nil?
+
+          if QueryResultDocument.where(query: q, document_id: dedup, rejected: true).empty?
+            QueryResultDocument.create(doc_params)
+            doc_counter += 1
+            print duplicate.nil? ? '-' : '+'
+          else
+            print 'R'
+          end
+
+          seen_docs.add(dedup)
+        end
+
+        # Check for end of result
+        if response['response']['nextCursorMark'] == cursor_mark
           q.latest_count = doc_counter
-          q.run_at       = Time.new
           q.save
+          puts "\n#{doc_counter} documents were added or updated."
           break
         else
-          response['response']['docs'].each do |doc|
-            dedup = doc['cluster_id_ss'].first
-
-            # Skip rejected document
-            next if rejected_docs.include?(dedup)
-
-            # Skip document if it was processed by previous queries and this query has filter flag set
-            next if q.filter && seen_docs.include?(dedup)
-
-            # Check for similar already registered document in ORBIT
-            duplicate_params = {
-              :q     => "title_txt_stop:(#{doc['title_ts'].first})",
-              :fq    => common_fq + ['source_ss:orbit'],
-              :rows  => 1,
-              :facet => false
-            }
-            duplicate_response = solr.post('toshokan', params: duplicate_params)
-            duplicate          = duplicate_response['response']['docs'].first
-
-            # Create the result document unless it exists and is rejected
-            doc_params = {
-              :query       => q,
-              :document_id => doc['cluster_id_ss'].first,
-              :document    => doc,
-            }
-            doc_params[:duplicate] = duplicate unless duplicate.nil?
-
-            if QueryResultDocument.where(query: q, document_id: dedup, rejected: true).empty?
-              QueryResultDocument.create(doc_params) 
-              doc_counter += 1
-              print duplicate.nil? ? '-' : '+'
-            else
-              print 'R'
-            end
-
-            seen_docs.add(dedup)
-          end
-          cursor_mark = response['cursorMark']
+          cursor_mark = response['response']['nextCursorMark']
         end
-        puts "\n#{doc_counter} documents were added or updated."
       end
     end
   end
