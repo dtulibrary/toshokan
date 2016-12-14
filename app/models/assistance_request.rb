@@ -147,4 +147,74 @@ class AssistanceRequest < ActiveRecord::Base
     end
     co
   end
+
+  # Given a SolrDocument
+  # Map its values to a param hash suitable for
+  # use in the relevant assistance request form.
+  # See .form_sections method above for the different
+  # form types.
+  def self.params_for_doc(document)
+    genre = request_genre(document)
+    # transform the doc values so that keys are strings and values are singular
+    rft_params = Hash[
+      document.to_semantic_values.map do |k,v|
+        val = v.class == Array ? v.first : v
+        [k.to_s, val]
+      end
+    ]
+
+    # Loop through the relevant sections -
+    # if openurl name for a key is present in our params
+    # then we should use the value, with the key
+    # specified in the section
+    params = {}
+    form_sections[genre.to_s].each do |section|
+      ou_key = section[:ou]
+      if ou_key.in? rft_params.keys
+        param_key = section[:name]
+        param_val = rft_params[ou_key]
+        params[param_key] = param_val
+      end
+    end
+    params
+  end
+
+  # Determine the appropriate request genre
+  # for a SolrDocument.
+  def self.request_genre(document)
+    # No CFF for journals
+    return if document['format'] == 'journal'
+    # No CFF for printed and electronic books (unspecified books have CFF)
+    return if document['format'] == 'book' && ['printed', 'ebook'].include?(document['subformat_s'])
+    # No pre-populated CFF for journal articles
+    return if document['format'] == 'article' && document['subformat_s'] == 'journal_article'
+
+    return :thesis if document['format'] == 'thesis'
+
+    if document.has_key?('subformat_s')
+      case document['subformat_s']
+      when 'report'
+        :report
+      when 'standard'
+        :standard
+      when 'patent'
+        :patent
+      when 'journal_article'
+        :journal_article
+      when 'conference_paper'
+        :conference_article
+      else
+        :other
+      end
+    else
+      case document['format']
+      when 'article'
+        :journal_article
+      when 'book'
+        :book
+      when 'other'
+        :other
+      end
+    end
+  end
 end

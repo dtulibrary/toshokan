@@ -1,6 +1,6 @@
 module AssistanceRequestsHelper
-  
-  # Renders a label and a text field. 
+
+  # Renders a label and a text field.
   # Add :required => true to make the field required
   def labeled_text_field object_name, field_name, field_label, options = {}
     param_name = "#{object_name}[#{field_name}]"
@@ -23,7 +23,7 @@ module AssistanceRequestsHelper
         cssClass += ' error'
       end
       label_tag(param_name, "#{field_label} <span class=\"required-label\">(<i>required</i>)</span>".html_safe, :class => cssClass)
-    else 
+    else
       label_tag(param_name, "#{field_label} <span class=\"required-label hide\">(<i>required</i>)</span>".html_safe)
     end
   end
@@ -31,7 +31,7 @@ module AssistanceRequestsHelper
   def labeled_text_area object_name, field_name, field_label, options = {}
     param_name = "#{object_name}[#{field_name}]"
     options[:class] = 'required' if options[:required]
-    label_for(param_name, object_name, field_name, field_label, options) + 
+    label_for(param_name, object_name, field_name, field_label, options) +
     text_area_tag(param_name, params[object_name] && params[object_name][field_name], options)
   end
 
@@ -101,4 +101,24 @@ module AssistanceRequestsHelper
     )
   end
 
+  # Create a link to an assistance request form
+  # If we have the doc we just supply the cluster_id
+  # If there is no cluster id, we don't have the doc in the index
+  # so we parse the doc values to create a pre-filled request form
+  def assistance_request_link(document)
+    if document['cluster_id_ss'].present?
+      new_assistance_request_path(:record_id => document['cluster_id_ss'].first)
+    else
+      # get the right params for an assistance request
+      # wrap the params so they can be parsed by the assistance request form
+      genre = determine_assistance_request_genre(document)
+      req_params = AssistanceRequest.params_for_doc(document)
+      params = Hash[req_params.map{|k,v| ["assistance_request[#{k}]", v]}].merge(:genre => genre)
+      new_assistance_request_path(params)
+    end
+  end
+
+  def determine_assistance_request_genre(document)
+    AssistanceRequest.request_genre(document)
+  end
 end

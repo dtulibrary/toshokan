@@ -19,7 +19,7 @@
           <small>Request document from DTU Library Document Supply Service.</small>
         </p>
         <div class="fulltext-action">
-          <%= link_to 'Request', new_assistance_request_path(:record_id => @document['cluster_id_ss'].first), :class => 'btn btn-primary btn-small' %>
+          <%= link_to 'Request', assistance_request_link(@document), :class => 'btn btn-primary btn-small' %>
         </div>
       </li>
     <% end %>

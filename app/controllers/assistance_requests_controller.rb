@@ -152,42 +152,6 @@ class AssistanceRequestsController < ApplicationController
     params[:genre].to_sym if params[:genre]
   end
 
-  def determine_assistance_request_genre(document)
-    # No CFF for journals
-    return if document['format'] == 'journal'
-    # No CFF for printed and electronic books (unspecified books have CFF)
-    return if document['format'] == 'book' && ['printed', 'ebook'].include?(document['subformat_s'])
-    # No pre-populated CFF for journal articles
-    return if document['format'] == 'article' && document['subformat_s'] == 'journal_article'
-
-    return :thesis if document['format'] == 'thesis'
-
-    if document.has_key?('subformat_s')
-      case document['subformat_s']
-      when 'report'
-        :report
-      when 'standard'
-        :standard
-      when 'patent'
-        :patent
-      when 'journal_article'
-        :journal_article
-      when 'conference_paper'
-        :conference_article
-      else
-        :other
-      end
-    else
-      case document['format']
-      when 'article'
-        :journal_article
-      when 'book'
-        :book
-      when 'other'
-        :other
-      end
-    end
-  end
 
   # Returns a proc that will get the contents of a doc field or return '?'
   # Used to populate required fields
