@@ -118,6 +118,11 @@ module Toshokan
     end
 
     def get_resolver_result(params)
+      # Google scholar sometimes puts the doi in the rft_id field, we catch this and
+      # add it to the correct field so it can be used in resolving the search
+      if params['rft.doi'].blank? && params['rft_id'].present? && params['rft_id'].any? {|id| id.include?('doi')}
+        params['rft.doi'] = params['rft_id'].select {|id| id.include? 'doi' }.first
+      end
       params.merge!({:rows => 2, :echoParams => 'all'})
           .merge!(blacklight_config[:resolver_params])
       updated_params = strip_whitespace(params)
