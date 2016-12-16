@@ -127,6 +127,20 @@ describe "SolrDocument" do
     })
   end
 
+  describe 'inclusion of DtuMetastore::Fields' do
+    it 'should add methods for all document fields' do
+      expect(book).to respond_to :cluster_id
+    end
+    it 'should delegate methods to Hash access' do
+      expect(book.publisher).to eq ['Polyteknisk Forlag']
+      expect(book.title).to eq ['Kemiske enhedsoperationer']
+    end
+    it 'should have access to a Fields constant' do
+      expect(SolrDocument::METASTORE_FIELDS).to be_a Hash
+      expect(SolrDocument::METASTORE_FIELDS[:cluster_id]).to eq 'cluster_id_ss'
+    end
+  end
+
   describe "#to_bibtex" do
     it "generates a BibTeX reference for an article" do
       ref = article.to_bibtex

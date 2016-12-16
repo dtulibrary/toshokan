@@ -5,6 +5,7 @@ require 'openurl'
 class SolrDocument
   include Configured
   include Blacklight::Solr::Document
+  include DtuMetastore::Fields
 
   self.unique_key = SolrDocument.document_id
 

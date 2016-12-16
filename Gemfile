@@ -32,6 +32,7 @@ gem 'kaminari'
 gem 'lisbn'
 gem 'rack-utf8_sanitizer', '~> 1.1.0'
 gem 'rack-mini-profiler'
+gem 'dtu_metastore', :git => 'https://gitlab.cvt.dk/dtulibrary/dtu_metastore.git'
 
 # Gems used only for assets and not required
 # in production environments by default.

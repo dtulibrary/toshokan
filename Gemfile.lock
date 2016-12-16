@@ -39,6 +39,12 @@ GIT
       rails
       rsolr
 
+GIT
+  remote: https://gitlab.cvt.dk/dtulibrary/dtu_metastore.git
+  revision: a9abe00e720c1a0f23584ebc1eae6ed9fb0d9a2f
+  specs:
+    dtu_metastore (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -443,6 +449,7 @@ DEPENDENCIES
   dalli
   database_cleaner
   delayed_job_active_record
+  dtu_metastore!
   dtu_monitoring (= 1.2.2)!
   dtu_rails_common (= 0.0.5)!
   eventmachine (~> 1.0.0.rc4)
