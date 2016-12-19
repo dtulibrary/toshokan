@@ -64,7 +64,7 @@ class QueriesController < ApplicationController
 
   def reject
     doc = QueryResultDocument.find(params[:doc_id]) || not_found
-    if doc.update_attributes(document: nil, duplicate: nil, rejected: true)
+    if doc.update_attributes(document: '', duplicate: nil, rejected: true)
       flash[:notice] = 'Added result document to ignore list'
     else
       flash[:error] = 'Error when updating document'
