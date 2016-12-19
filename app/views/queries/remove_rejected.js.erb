@@ -1,0 +1,6 @@
+(function ($) {
+  // Remove HR element
+  $('#query-result-document-<%= @query_result_document.id %>').next().remove();
+  // Remove element containing query result document
+  $('#query-result-document-<%= @query_result_document.id %>').remove();
+})(jQuery);

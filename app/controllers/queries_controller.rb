@@ -63,13 +63,15 @@ class QueriesController < ApplicationController
   end
 
   def reject
-    doc = QueryResultDocument.find(params[:doc_id]) || not_found
-    if doc.update_attributes!(document: nil, duplicate: nil, rejected: true)
+    @query_result_document = QueryResultDocument.find(params[:doc_id]) || not_found
+    if @query_result_document.update_attributes!(document: nil, duplicate: nil, rejected: true)
+      render 'remove_rejected', status: 200 and return if request.xhr?
       flash[:notice] = 'Added result document to ignore list'
     else
+      head 400 and return if request.xhr?
       flash[:error] = 'Error when updating document'
     end
-    redirect_to show_query_path(doc.query)
+    redirect_to show_query_path(@query_result_document.query)
   end
 
   private

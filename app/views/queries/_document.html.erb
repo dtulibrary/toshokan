@@ -55,6 +55,6 @@
                 "http://orbit.dtu.dk/en/publications/search.html?search=#{document[:author_ts].join(' ').gsub(/\W/, ' ').gsub(/\s+/, ' ')}",
                 :target => '_blank', 
                 :class  => 'btn btn-default' %>
-    <%= link_to 'Reject', reject_query_doc_path(id: @query.id, doc_id: query_result_doc.id), method: 'put', class: 'btn btn-default' %>
+    <%= link_to 'Reject', reject_query_doc_path(id: @query.id, doc_id: query_result_doc.id), method: 'put', class: 'btn btn-default', remote: true %>
   <% end %>
 </div>

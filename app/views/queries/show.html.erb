@@ -9,7 +9,7 @@
     </p>
   <% end %>
   <% @docs.each_with_index do |doc, i| %>
-    <div class="row">
+    <div id="query-result-document-<%= doc.id %>" class="row">
       <% if doc.duplicate %>
         <div class="col-lg-12">
           <h4>Possible duplicate</h4>
