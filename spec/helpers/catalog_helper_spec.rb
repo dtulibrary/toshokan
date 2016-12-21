@@ -18,18 +18,4 @@ describe CatalogHelper do
       expect( helper.show_pagination? ).to be_truthy
     end
   end
-
-  describe "extra_body_classes" do
-    it "adds controller name and action with blacklight-prefix" do
-      allow(helper).to receive(:params).and_return({})
-      allow(helper).to receive(:controller).and_return(double(controller_name:"fake", action_name:"show"))
-      expect(helper.extra_body_classes).to eq ["blacklight-fake", "blacklight-fake-show"]
-    end
-    it "uses defaults if params[:resolve] is set" do
-      allow(helper).to receive(:params).and_return({resolve:"foo"})
-      expect(helper.extra_body_classes).to eq ["blacklight-catalog", "blacklight-catalog-show"]
-    end
-  end
-
-
 end
