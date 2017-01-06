@@ -921,6 +921,7 @@ en:
             phd: 'Thesis (PhD)'
             master: 'Thesis (Master)'
             bachelor: 'Thesis (Bachelor)'
+            diploma_bachelor: 'Thesis (Diploma Bachelor)'
             thesis: 'Thesis (Unspecified)'
         person:
           person:

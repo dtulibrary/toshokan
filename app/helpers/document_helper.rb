@@ -18,7 +18,8 @@ module DocumentHelper
     # Genres are guaranteed to always have minimum 2 parts
     parts = genre.split(':')
     parts << parts.last # Repeat last part to make sure we always have 3 parts
-    I18n.t("toshokan.catalog.genres.#{parts[0..2].join('.')}").html_safe 
+    default_val = parts.last.humanize.titleize # create default value in case we don't have the relevant locale entry
+    I18n.t("toshokan.catalog.genres.#{parts[0..2].join('.')}", default: default_val).html_safe
   end
 
   def render_subtype args
